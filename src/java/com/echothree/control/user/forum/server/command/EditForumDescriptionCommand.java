@@ -26,8 +26,6 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumDescription;
-import com.echothree.model.data.forum.server.value.ForumDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -75,13 +73,13 @@ public class EditForumDescriptionCommand
     public ForumDescription getEntity(EditForumDescriptionResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
         ForumDescription forumDescription = null;
-        String forumName = spec.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = spec.getForumName();
+        var forum = forumControl.getForumByName(forumName);
 
         if(forum != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -123,7 +121,7 @@ public class EditForumDescriptionCommand
     @Override
     public void doUpdate(ForumDescription forumDescription) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumDescriptionValue forumDescriptionValue = forumControl.getForumDescriptionValue(forumDescription);
+        var forumDescriptionValue = forumControl.getForumDescriptionValue(forumDescription);
 
         forumDescriptionValue.setDescription(edit.getDescription());
 

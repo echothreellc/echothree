@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected ColorSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ColorSpec spec = CoreUtil.getHome().getColorSpec();
+        var spec = CoreUtil.getHome().getColorSpec();
         
         spec.setColorName(findParameter(request, ParameterConstants.ORIGINAL_COLOR_NAME, actionForm.getOriginalColorName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected ColorEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ColorEdit edit = CoreUtil.getHome().getColorEdit();
+        var edit = CoreUtil.getHome().getColorEdit();
 
         edit.setColorName(actionForm.getColorName());
         edit.setRed(actionForm.getRed());

@@ -18,7 +18,6 @@ package com.echothree.control.user.authentication.common;
 
 import com.echothree.control.user.authentication.server.AuthenticationLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class AuthenticationUtil {
@@ -30,7 +29,7 @@ public class AuthenticationUtil {
     public static AuthenticationLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (AuthenticationLocal)ctx.lookup("ejb:echothree/echothree-server/AuthenticationBean!com.echothree.control.user.authentication.server.AuthenticationLocal");
         }
@@ -42,7 +41,7 @@ public class AuthenticationUtil {
     public static AuthenticationRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedRemote = (AuthenticationRemote)ctx.lookup("ejb:echothree/echothree-server/AuthenticationBean!com.echothree.control.user.authentication.common.AuthenticationRemote");
         }

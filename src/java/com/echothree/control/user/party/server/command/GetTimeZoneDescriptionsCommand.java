@@ -17,10 +17,8 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetTimeZoneDescriptionsForm;
-import com.echothree.control.user.party.common.result.GetTimeZoneDescriptionsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetTimeZoneDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetTimeZoneDescriptionsResult result = PartyResultFactory.getGetTimeZoneDescriptionsResult();
-        String javaTimeZoneName = form.getJavaTimeZoneName();
-        TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+        var result = PartyResultFactory.getGetTimeZoneDescriptionsResult();
+        var javaTimeZoneName = form.getJavaTimeZoneName();
+        var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         
         if(timeZone != null) {
             result.setTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));

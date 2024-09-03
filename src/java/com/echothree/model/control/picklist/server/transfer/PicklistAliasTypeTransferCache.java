@@ -17,10 +17,8 @@
 package com.echothree.model.control.picklist.server.transfer;
 
 import com.echothree.model.control.picklist.common.transfer.PicklistAliasTypeTransfer;
-import com.echothree.model.control.picklist.common.transfer.PicklistTypeTransfer;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
-import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PicklistAliasTypeTransferCache
@@ -34,16 +32,16 @@ public class PicklistAliasTypeTransferCache
     }
     
     public PicklistAliasTypeTransfer getPicklistAliasTypeTransfer(PicklistAliasType picklistAliasType) {
-        PicklistAliasTypeTransfer picklistAliasTypeTransfer = get(picklistAliasType);
+        var picklistAliasTypeTransfer = get(picklistAliasType);
         
         if(picklistAliasTypeTransfer == null) {
-            PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetail();
-            PicklistTypeTransfer picklistType = picklistControl.getPicklistTypeTransfer(userVisit, picklistAliasTypeDetail.getPicklistType());
-            String picklistAliasTypeName = picklistAliasTypeDetail.getPicklistAliasTypeName();
-            String validationPattern = picklistAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = picklistAliasTypeDetail.getIsDefault();
-            Integer sortOrder = picklistAliasTypeDetail.getSortOrder();
-            String description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage());
+            var picklistAliasTypeDetail = picklistAliasType.getLastDetail();
+            var picklistType = picklistControl.getPicklistTypeTransfer(userVisit, picklistAliasTypeDetail.getPicklistType());
+            var picklistAliasTypeName = picklistAliasTypeDetail.getPicklistAliasTypeName();
+            var validationPattern = picklistAliasTypeDetail.getValidationPattern();
+            var isDefault = picklistAliasTypeDetail.getIsDefault();
+            var sortOrder = picklistAliasTypeDetail.getSortOrder();
+            var description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage());
             
             picklistAliasTypeTransfer = new PicklistAliasTypeTransfer(picklistType, picklistAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(picklistAliasType, picklistAliasTypeTransfer);

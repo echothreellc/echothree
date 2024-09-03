@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetEmailAddressStatusChoicesForm;
 import com.echothree.control.user.contact.common.result.GetEmailAddressStatusChoicesResult;
 import com.echothree.model.control.contact.common.choice.EmailAddressStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class ContactEmailAddressStatusActionForm
     public void setupEmailAddressStatusChoices()
             throws NamingException {
         if(emailAddressStatusChoices == null) {
-            GetEmailAddressStatusChoicesForm form = ContactUtil.getHome().getGetEmailAddressStatusChoicesForm();
+            var form = ContactUtil.getHome().getGetEmailAddressStatusChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultEmailAddressStatusChoice(emailAddressStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getEmailAddressStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmailAddressStatusChoicesResult result = (GetEmailAddressStatusChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getEmailAddressStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmailAddressStatusChoicesResult)executionResult.getResult();
             emailAddressStatusChoices = result.getEmailAddressStatusChoices();
 
             if(emailAddressStatusChoice == null) {

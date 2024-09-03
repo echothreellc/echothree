@@ -23,9 +23,7 @@ import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ContentCategoryAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
-import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.model.data.content.server.entity.ContentCategory;
-import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -58,10 +56,10 @@ public class ContentCategoryIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final ContentCategory contentCategory) {
-        ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
-        ContentCatalogDetail contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
-        ContentCategory parentContentCategory = contentCategoryDetail.getParentContentCategory();
-        String description = contentControl.getBestContentCategoryDescription(contentCategory, language);
+        var contentCategoryDetail = contentCategory.getLastDetail();
+        var contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
+        var parentContentCategory = contentCategoryDetail.getParentContentCategory();
+        var description = contentControl.getBestContentCategoryDescription(contentCategory, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, contentCategory.getPrimaryKey());
 

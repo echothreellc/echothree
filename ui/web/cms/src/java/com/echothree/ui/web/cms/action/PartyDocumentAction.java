@@ -17,22 +17,15 @@
 package com.echothree.ui.web.cms.action;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.GetPartyDocumentForm;
 import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTypeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.document.common.DocumentOptions;
-import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.cms.framework.ByteArrayStreamInfo;
 import com.echothree.ui.web.cms.framework.CmsBaseDownloadAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
 import com.echothree.ui.web.cms.persistence.CmsCacheBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
@@ -86,7 +79,7 @@ public class PartyDocumentAction
 
     protected PartyDocumentTransfer getPartyDocument(HttpServletRequest request, PartyDocumentNames partyDocumentNames, Set<String> options)
             throws NamingException {
-        GetPartyDocumentForm commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
+        var commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
         PartyDocumentTransfer partyDocument = null;
 
         commandForm.setDocumentName(partyDocumentNames.documentName);
@@ -94,10 +87,10 @@ public class PartyDocumentAction
         
         commandForm.setOptions(options);
 
-        CommandResult commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
+        var commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyDocumentResult result = (GetPartyDocumentResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyDocumentResult)executionResult.getResult();
 
             partyDocument = result.getPartyDocument();
         }
@@ -132,15 +125,15 @@ public class PartyDocumentAction
     @Override
     protected String getETag(HttpServletRequest request)
             throws NamingException {
-        PartyDocumentNames partyDocumentNames = new PartyDocumentNames(request);
+        var partyDocumentNames = new PartyDocumentNames(request);
         String eTag = null;
 
         if(partyDocumentNames.hasAllNames()) {
-            Unmanaged.UnmanagedInstance<CmsCacheBean> cmsCacheBeanInstance = unmanagedCmsCacheBean.newInstance();
-            CmsCacheBean cmsCacheBean = cmsCacheBeanInstance.produce().inject().postConstruct().get();
-            Cache<String, Object> cache = cmsCacheBean.getCache();
-            String fqn = getFqn(partyDocumentNames);
-            PartyDocumentTransfer partyDocument = getCachedPartyDocument(cache, fqn);
+            var cmsCacheBeanInstance = unmanagedCmsCacheBean.newInstance();
+            var cmsCacheBean = cmsCacheBeanInstance.produce().inject().postConstruct().get();
+            var cache = cmsCacheBean.getCache();
+            var fqn = getFqn(partyDocumentNames);
+            var partyDocument = getCachedPartyDocument(cache, fqn);
 
             if(partyDocument == null) {
                 Set<String> options = new HashSet<>();
@@ -167,15 +160,15 @@ public class PartyDocumentAction
     @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         StreamInfo streamInfo = null;
-        PartyDocumentTransfer partyDocument = (PartyDocumentTransfer)request.getAttribute(attributeTransferObject);
+        var partyDocument = (PartyDocumentTransfer)request.getAttribute(attributeTransferObject);
 
         if(partyDocument != null) {
-            DocumentTransfer document = partyDocument.getDocument();
-            MimeTypeTransfer mimeType = document.getMimeType();
-            EntityAttributeTypeTransfer entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
-            String entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
-            EntityTimeTransfer entityTime = document.getEntityInstance().getEntityTime();
-            Long modifiedTime = entityTime.getUnformattedModifiedTime();
+            var document = partyDocument.getDocument();
+            var mimeType = document.getMimeType();
+            var entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
+            var entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
+            var entityTime = document.getEntityInstance().getEntityTime();
+            var modifiedTime = entityTime.getUnformattedModifiedTime();
             byte bytes[] = null;
 
             if(EntityAttributeTypes.CLOB.name().equals(entityAttributeTypeName)) {

@@ -19,11 +19,8 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.EventGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.common.workflow.EventGroupStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EventGroup;
-import com.echothree.model.data.core.server.entity.EventGroupDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -41,14 +38,14 @@ public class EventGroupTransferCache
     }
     
     public EventGroupTransfer getEventGroupTransfer(EventGroup eventGroup) {
-        EventGroupTransfer eventGroupTransfer = get(eventGroup);
+        var eventGroupTransfer = get(eventGroup);
         
         if(eventGroupTransfer == null) {
-            EventGroupDetail eventGroupDetail = eventGroup.getLastDetail();
-            String eventGroupName = eventGroupDetail.getEventGroupName();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(eventGroup.getPrimaryKey());
-            WorkflowEntityStatusTransfer eventGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var eventGroupDetail = eventGroup.getLastDetail();
+            var eventGroupName = eventGroupDetail.getEventGroupName();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(eventGroup.getPrimaryKey());
+            var eventGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS, entityInstance);
             
             eventGroupTransfer = new EventGroupTransfer(eventGroupName, eventGroupStatusTransfer);

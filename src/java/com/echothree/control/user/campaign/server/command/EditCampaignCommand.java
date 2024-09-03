@@ -27,10 +27,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.Campaign;
-import com.echothree.model.data.campaign.server.entity.CampaignDescription;
-import com.echothree.model.data.campaign.server.entity.CampaignDetail;
-import com.echothree.model.data.campaign.server.value.CampaignDescriptionValue;
-import com.echothree.model.data.campaign.server.value.CampaignDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,7 +87,7 @@ public class EditCampaignCommand
     public Campaign getEntity(EditCampaignResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         Campaign campaign;
-        String campaignName = spec.getCampaignName();
+        var campaignName = spec.getCampaignName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             campaign = campaignControl.getCampaignByName(campaignName);
@@ -121,8 +117,8 @@ public class EditCampaignCommand
     @Override
     public void doLock(CampaignEdit edit, Campaign campaign) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignDescription campaignDescription = campaignControl.getCampaignDescription(campaign, getPreferredLanguage());
-        CampaignDetail campaignDetail = campaign.getLastDetail();
+        var campaignDescription = campaignControl.getCampaignDescription(campaign, getPreferredLanguage());
+        var campaignDetail = campaign.getLastDetail();
 
         edit.setValue(campaignDetail.getValue());
         edit.setIsDefault(campaignDetail.getIsDefault().toString());
@@ -136,8 +132,8 @@ public class EditCampaignCommand
     @Override
     public void canUpdate(Campaign campaign) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = edit.getValue();
-        Campaign duplicateCampaign = campaignControl.getCampaignByValue(value);
+        var value = edit.getValue();
+        var duplicateCampaign = campaignControl.getCampaignByValue(value);
 
         if(duplicateCampaign != null && !campaign.equals(duplicateCampaign)) {
             addExecutionError(ExecutionErrors.DuplicateCampaignValue.name(), value);
@@ -148,9 +144,9 @@ public class EditCampaignCommand
     public void doUpdate(Campaign campaign) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
-        CampaignDetailValue campaignDetailValue = campaignControl.getCampaignDetailValueForUpdate(campaign);
-        CampaignDescription campaignDescription = campaignControl.getCampaignDescriptionForUpdate(campaign, getPreferredLanguage());
-        String description = edit.getDescription();
+        var campaignDetailValue = campaignControl.getCampaignDetailValueForUpdate(campaign);
+        var campaignDescription = campaignControl.getCampaignDescriptionForUpdate(campaign, getPreferredLanguage());
+        var description = edit.getDescription();
 
         campaignDetailValue.setValue(edit.getValue());
         campaignDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +161,7 @@ public class EditCampaignCommand
                 campaignControl.deleteCampaignDescription(campaignDescription, partyPK);
             } else {
                 if(campaignDescription != null && description != null) {
-                    CampaignDescriptionValue campaignDescriptionValue = campaignControl.getCampaignDescriptionValue(campaignDescription);
+                    var campaignDescriptionValue = campaignControl.getCampaignDescriptionValue(campaignDescription);
 
                     campaignDescriptionValue.setDescription(description);
                     campaignControl.updateCampaignDescriptionFromValue(campaignDescriptionValue, partyPK);

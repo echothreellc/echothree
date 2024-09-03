@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetGlResourceTypeChoicesForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetGlResourceTypeChoicesResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetGlResourceTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlResourceTypeChoicesResult result = AccountingResultFactory.getGetGlResourceTypeChoicesResult();
-        String defaultGlResourceTypeChoice = form.getDefaultGlResourceTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AccountingResultFactory.getGetGlResourceTypeChoicesResult();
+        var defaultGlResourceTypeChoice = form.getDefaultGlResourceTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setGlResourceTypeChoices(accountingControl.getGlResourceTypeChoices(defaultGlResourceTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

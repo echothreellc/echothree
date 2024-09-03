@@ -19,18 +19,13 @@ package com.echothree.ui.cli.dataloader.util.data.handler.index;
 import com.echothree.control.user.index.common.IndexUtil;
 import com.echothree.control.user.index.common.IndexService;
 import com.echothree.control.user.index.common.edit.IndexTypeEdit;
-import com.echothree.control.user.index.common.form.CreateIndexTypeForm;
-import com.echothree.control.user.index.common.form.EditIndexTypeForm;
 import com.echothree.control.user.index.common.form.IndexFormFactory;
 import com.echothree.control.user.index.common.result.EditIndexTypeResult;
 import com.echothree.control.user.index.common.spec.IndexSpecFactory;
-import com.echothree.control.user.index.common.spec.IndexTypeSpec;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -56,19 +51,19 @@ public class IndexTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("indexType")) {
-            IndexTypeSpec spec = IndexSpecFactory.getIndexTypeSpec();
-            EditIndexTypeForm editForm = IndexFormFactory.getEditIndexTypeForm();
+            var spec = IndexSpecFactory.getIndexTypeSpec();
+            var editForm = IndexFormFactory.getEditIndexTypeForm();
 
             spec.set(getAttrsMap(attrs));
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownIndexTypeName.name())) {
-                    CreateIndexTypeForm createForm = IndexFormFactory.getCreateIndexTypeForm();
+                    var createForm = IndexFormFactory.getCreateIndexTypeForm();
 
                     createForm.set(getAttrsMap(attrs));
 
@@ -81,18 +76,18 @@ public class IndexTypesHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditIndexTypeResult result = (EditIndexTypeResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditIndexTypeResult)executionResult.getResult();
 
                 if(result != null) {
-                    IndexTypeEdit edit = (IndexTypeEdit)result.getEdit();
-                    String editComponentVendorName = edit.getComponentVendorName();
-                    String editEntityTypeName = edit.getEntityTypeName();
-                    String componentVendorName = attrs.getValue("componentVendorName");
-                    String entityTypeName = attrs.getValue("entityTypeName");
-                    String isDefault = attrs.getValue("isDefault");
-                    String sortOrder = attrs.getValue("sortOrder");
-                    boolean changed = false;
+                    var edit = (IndexTypeEdit)result.getEdit();
+                    var editComponentVendorName = edit.getComponentVendorName();
+                    var editEntityTypeName = edit.getEntityTypeName();
+                    var componentVendorName = attrs.getValue("componentVendorName");
+                    var entityTypeName = attrs.getValue("entityTypeName");
+                    var isDefault = attrs.getValue("isDefault");
+                    var sortOrder = attrs.getValue("sortOrder");
+                    var changed = false;
                     
                     if((editComponentVendorName == null && componentVendorName != null) || (editComponentVendorName != null && componentVendorName == null)
                         || (editComponentVendorName != null && componentVendorName != null && !editComponentVendorName.equals(componentVendorName))) {

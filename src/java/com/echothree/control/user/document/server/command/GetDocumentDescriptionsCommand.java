@@ -18,12 +18,10 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetDocumentDescriptionsForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetDocumentDescriptionsResult;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetDocumentDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentDescriptionsResult result = DocumentResultFactory.getGetDocumentDescriptionsResult();
-        String documentName = form.getDocumentName();
-        Document document = documentControl.getDocumentByName(documentName);
+        var result = DocumentResultFactory.getGetDocumentDescriptionsResult();
+        var documentName = form.getDocumentName();
+        var document = documentControl.getDocumentByName(documentName);
         
         if(document != null) {
             result.setDocument(documentControl.getDocumentTransfer(getUserVisit(), document));

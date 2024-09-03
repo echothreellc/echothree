@@ -17,12 +17,9 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetUserVisitGroupForm;
-import com.echothree.control.user.user.common.result.GetUserVisitGroupResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -50,10 +47,10 @@ public class GetUserVisitGroupCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetUserVisitGroupResult result = UserResultFactory.getGetUserVisitGroupResult();
-        String userVisitGroupName = form.getUserVisitGroupName();
-        UserVisitGroup userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetUserVisitGroupResult();
+        var userVisitGroupName = form.getUserVisitGroupName();
+        var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
         
         if(userVisitGroup != null) {
             result.setUserVisitGroup(userControl.getUserVisitGroupTransfer(getUserVisit(), userVisitGroup));

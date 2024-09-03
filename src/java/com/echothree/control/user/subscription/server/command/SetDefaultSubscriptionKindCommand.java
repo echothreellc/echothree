@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.subscription.server.value.SubscriptionKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultSubscriptionKindCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKindDetailValue subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueByNameForUpdate(subscriptionKindName);
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueByNameForUpdate(subscriptionKindName);
         
         if(subscriptionKindDetailValue != null) {
             subscriptionKindDetailValue.setIsDefault(Boolean.TRUE);

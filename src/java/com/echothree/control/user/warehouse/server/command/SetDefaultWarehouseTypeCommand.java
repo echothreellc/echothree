@@ -21,7 +21,6 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.warehouse.server.value.WarehouseTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultWarehouseTypeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseTypeName = form.getWarehouseTypeName();
-        WarehouseTypeDetailValue warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueByNameForUpdate(warehouseTypeName);
+        var warehouseTypeName = form.getWarehouseTypeName();
+        var warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueByNameForUpdate(warehouseTypeName);
         
         if(warehouseTypeDetailValue != null) {
             warehouseTypeDetailValue.setIsDefault(Boolean.TRUE);

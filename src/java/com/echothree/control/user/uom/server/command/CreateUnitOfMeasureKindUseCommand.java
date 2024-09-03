@@ -18,9 +18,6 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureKindUseForm;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,11 +51,11 @@ public class CreateUnitOfMeasureKindUseCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType != null) {
-            boolean multipleUseError = false;
+            var multipleUseError = false;
             
             if(!unitOfMeasureKindUseType.getAllowMultiple()) {
                 if(uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType) != 0)
@@ -66,15 +63,15 @@ public class CreateUnitOfMeasureKindUseCommand
             }
             
             if(!multipleUseError) {
-                String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-                UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 
                 if(unitOfMeasureKind != null) {
-                    UnitOfMeasureKindUse unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
+                    var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
                     
                     if(unitOfMeasureKindUse == null) {
                         var isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortorder = Integer.valueOf(form.getSortOrder());
+                        var sortorder = Integer.valueOf(form.getSortOrder());
                         
                         uomControl.createUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortorder,
                                 getPartyPK());

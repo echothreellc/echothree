@@ -29,14 +29,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
-import com.echothree.model.data.training.server.entity.TrainingClassAnswerDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassAnswerTranslation;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
-import com.echothree.model.data.training.server.entity.TrainingClassSection;
-import com.echothree.model.data.training.server.value.TrainingClassAnswerDetailValue;
-import com.echothree.model.data.training.server.value.TrainingClassAnswerTranslationValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -105,20 +99,20 @@ public class EditTrainingClassAnswerCommand
     public TrainingClassAnswer getEntity(EditTrainingClassAnswerResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassAnswer trainingClassAnswer = null;
-        String trainingClassName = spec.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = spec.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = spec.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = spec.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = spec.getTrainingClassQuestionName();
+                var trainingClassQuestionName = spec.getTrainingClassQuestionName();
                 
                 trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    String trainingClassAnswerName = spec.getTrainingClassAnswerName();
+                    var trainingClassAnswerName = spec.getTrainingClassAnswerName();
 
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                         trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
@@ -164,8 +158,8 @@ public class EditTrainingClassAnswerCommand
     @Override
     public void doLock(TrainingClassAnswerEdit edit, TrainingClassAnswer trainingClassAnswer) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassAnswerTranslation trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslation(trainingClassAnswer, getPreferredLanguage());
-        TrainingClassAnswerDetail trainingClassAnswerDetail = trainingClassAnswer.getLastDetail();
+        var trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslation(trainingClassAnswer, getPreferredLanguage());
+        var trainingClassAnswerDetail = trainingClassAnswer.getLastDetail();
 
         edit.setTrainingClassAnswerName(trainingClassAnswerDetail.getTrainingClassAnswerName());
         edit.setIsCorrect(trainingClassAnswerDetail.getIsCorrect().toString());
@@ -185,22 +179,22 @@ public class EditTrainingClassAnswerCommand
     @Override
     public void canUpdate(TrainingClassAnswer trainingClassAnswer) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassAnswerName = edit.getTrainingClassAnswerName();
-        TrainingClassAnswer duplicateTrainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
+        var trainingClassAnswerName = edit.getTrainingClassAnswerName();
+        var duplicateTrainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
         if(duplicateTrainingClassAnswer != null && !trainingClassAnswer.equals(duplicateTrainingClassAnswer)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassAnswerName.name(), trainingClassAnswerName);
         } else {
-            MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-            String answerMimeTypeName = edit.getAnswerMimeTypeName();
-            String answer = edit.getAnswer();
+            var mimeTypeLogic = MimeTypeLogic.getInstance();
+            var answerMimeTypeName = edit.getAnswerMimeTypeName();
+            var answer = edit.getAnswer();
 
             answerMimeType = mimeTypeLogic.checkMimeType(this, answerMimeTypeName, answer, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredAnswerMimeTypeName.name(), ExecutionErrors.MissingRequiredAnswer.name(),
                     ExecutionErrors.UnknownAnswerMimeTypeName.name(), ExecutionErrors.UnknownAnswerMimeTypeUsage.name());
 
             if(!hasExecutionErrors()) {
-                String selected = edit.getSelected();
+                var selected = edit.getSelected();
 
                 selectedMimeType = mimeTypeLogic.checkMimeType(this, edit.getSelectedMimeTypeName(), selected, MimeTypeUsageTypes.TEXT.name(),
                         ExecutionErrors.MissingRequiredSelectedMimeTypeName.name(), ExecutionErrors.MissingRequiredSelected.name(),
@@ -220,10 +214,10 @@ public class EditTrainingClassAnswerCommand
     public void doUpdate(TrainingClassAnswer trainingClassAnswer) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
-        TrainingClassAnswerDetailValue trainingClassAnswerDetailValue = trainingControl.getTrainingClassAnswerDetailValueForUpdate(trainingClassAnswer);
-        TrainingClassAnswerTranslation trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslationForUpdate(trainingClassAnswer, getPreferredLanguage());
-        String answer = edit.getAnswer();
-        String selected = edit.getSelected();
+        var trainingClassAnswerDetailValue = trainingControl.getTrainingClassAnswerDetailValueForUpdate(trainingClassAnswer);
+        var trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslationForUpdate(trainingClassAnswer, getPreferredLanguage());
+        var answer = edit.getAnswer();
+        var selected = edit.getSelected();
 
         trainingClassAnswerDetailValue.setTrainingClassAnswerName(edit.getTrainingClassAnswerName());
         trainingClassAnswerDetailValue.setIsCorrect(Boolean.valueOf(edit.getIsCorrect()));
@@ -237,7 +231,7 @@ public class EditTrainingClassAnswerCommand
         } else if(trainingClassAnswerTranslation != null && (answer == null && selected == null)) {
             trainingControl.deleteTrainingClassAnswerTranslation(trainingClassAnswerTranslation, partyPK);
         } else if(trainingClassAnswerTranslation != null && (answer != null || selected != null)) {
-            TrainingClassAnswerTranslationValue trainingClassAnswerTranslationValue = trainingControl.getTrainingClassAnswerTranslationValue(trainingClassAnswerTranslation);
+            var trainingClassAnswerTranslationValue = trainingControl.getTrainingClassAnswerTranslationValue(trainingClassAnswerTranslation);
 
             trainingClassAnswerTranslationValue.setAnswerMimeTypePK(answerMimeType == null? null: answerMimeType.getPrimaryKey());
             trainingClassAnswerTranslationValue.setAnswer(answer);

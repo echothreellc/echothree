@@ -19,7 +19,6 @@ package com.echothree.model.control.contact.server.transfer;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismPurposeTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurposeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PartyContactMechanismPurposeTransferCache
@@ -31,12 +30,12 @@ public class PartyContactMechanismPurposeTransferCache
     }
     
     public PartyContactMechanismPurposeTransfer getPartyContactMechanismPurposeTransfer(PartyContactMechanismPurpose partyContactMechanismPurpose) {
-        PartyContactMechanismPurposeTransfer partyContactMechanismPurposeTransfer = get(partyContactMechanismPurpose);
+        var partyContactMechanismPurposeTransfer = get(partyContactMechanismPurpose);
         
         if(partyContactMechanismPurposeTransfer == null) {
-            PartyContactMechanismPurposeDetail partyContactMechanismPurposeDetail = partyContactMechanismPurpose.getLastDetail();
-            Boolean isDefault = partyContactMechanismPurposeDetail.getIsDefault();
-            Integer sortOrder = partyContactMechanismPurposeDetail.getSortOrder();
+            var partyContactMechanismPurposeDetail = partyContactMechanismPurpose.getLastDetail();
+            var isDefault = partyContactMechanismPurposeDetail.getIsDefault();
+            var sortOrder = partyContactMechanismPurposeDetail.getSortOrder();
             
             partyContactMechanismPurposeTransfer = new PartyContactMechanismPurposeTransfer(isDefault, sortOrder);
             put(partyContactMechanismPurpose, partyContactMechanismPurposeTransfer);

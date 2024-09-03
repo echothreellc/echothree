@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.core.entityblobattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.GetEntityBlobAttributeResult;
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.core.common.transfer.EntityBlobAttributeTransfer;
 import com.echothree.ui.web.main.framework.ByteArrayStreamInfo;
 import com.echothree.ui.web.main.framework.MainBaseDownloadAction;
 import com.echothree.ui.web.main.framework.MainBaseDownloadAction.StreamInfo;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
@@ -52,7 +48,7 @@ public class EntityBlobAttributeViewAction
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         StreamInfo streamInfo = null;
-        GetEntityBlobAttributeForm commandForm = CoreUtil.getHome().getGetEntityBlobAttributeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityBlobAttributeForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
@@ -63,16 +59,16 @@ public class EntityBlobAttributeViewAction
         options.add(CoreOptions.EntityBlobAttributeIncludeBlob);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityBlobAttribute(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityBlobAttribute(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityBlobAttributeResult result = (GetEntityBlobAttributeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityBlobAttributeResult)executionResult.getResult();
 
-            EntityBlobAttributeTransfer itemAttribute = result.getEntityBlobAttribute();
+            var itemAttribute = result.getEntityBlobAttribute();
 
             if(itemAttribute != null) {
-                String mimeType = itemAttribute.getMimeType().getMimeTypeName();
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(itemAttribute.getBlobAttribute().byteArrayValue());
+                var mimeType = itemAttribute.getMimeType().getMimeTypeName();
+                var byteArrayInputStream = new ByteArrayInputStream(itemAttribute.getBlobAttribute().byteArrayValue());
 
                 streamInfo = new ByteArrayStreamInfo(mimeType, byteArrayInputStream, null, null);
             }

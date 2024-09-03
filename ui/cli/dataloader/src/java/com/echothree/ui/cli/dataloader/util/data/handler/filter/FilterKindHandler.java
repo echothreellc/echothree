@@ -18,9 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.FilterService;
-import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentForm;
-import com.echothree.control.user.filter.common.form.CreateFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.CreateFilterTypeForm;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -52,7 +49,7 @@ public class FilterKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("filterKindDescription")) {
-            CreateFilterKindDescriptionForm commandForm = FilterFormFactory.getCreateFilterKindDescriptionForm();
+            var commandForm = FilterFormFactory.getCreateFilterKindDescriptionForm();
 
             commandForm.setFilterKindName(filterKindName);
             commandForm.set(getAttrsMap(attrs));
@@ -60,7 +57,7 @@ public class FilterKindHandler
             filterService.createFilterKindDescription(initialDataParser.getUserVisit(), commandForm);
         } else {
             if(localName.equals("filterType")) {
-                CreateFilterTypeForm commandForm = FilterFormFactory.getCreateFilterTypeForm();
+                var commandForm = FilterFormFactory.getCreateFilterTypeForm();
 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.set(getAttrsMap(attrs));
@@ -70,7 +67,7 @@ public class FilterKindHandler
                 initialDataParser.pushHandler(new FilterTypeHandler(initialDataParser, this, filterKindName, commandForm.getFilterTypeName()));
             } else {
                 if(localName.equals("filterAdjustment")) {
-                    CreateFilterAdjustmentForm commandForm = FilterFormFactory.getCreateFilterAdjustmentForm();
+                    var commandForm = FilterFormFactory.getCreateFilterAdjustmentForm();
 
                     commandForm.setFilterKindName(filterKindName);
                     commandForm.set(getAttrsMap(attrs));

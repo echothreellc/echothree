@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.accounting.departmentcontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.CreateContactTelephoneForm;
 import com.echothree.ui.web.main.action.accounting.departmentcontactmechanism.BaseDepartmentContactMechanismAction;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,9 +51,9 @@ public class ContactTelephoneAddAction
     public ActionForward executeAction(ActionMapping mapping, ContactTelephoneAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
-        CreateContactTelephoneForm commandForm = ContactUtil.getHome().getCreateContactTelephoneForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+        var commandForm = ContactUtil.getHome().getCreateContactTelephoneForm();
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -73,7 +71,7 @@ public class ContactTelephoneAddAction
             commandForm.setTelephoneExtension(actionForm.getTelephoneExtension());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = ContactUtil.getHome().createContactTelephone(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().createContactTelephone(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -86,8 +84,8 @@ public class ContactTelephoneAddAction
             actionForm.setCountryName(countryName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupDepartment(request, partyName);
             setupCountry(request, countryName);

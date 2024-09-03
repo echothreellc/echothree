@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateMimeTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -48,7 +47,7 @@ public class MimeTypesHandler
             throws SAXException {
         if(localName.equals("mimeType")) {
             try {
-                CreateMimeTypeForm commandForm = CoreFormFactory.getCreateMimeTypeForm();
+                var commandForm = CoreFormFactory.getCreateMimeTypeForm();
                 
                 commandForm.set(getAttrsMap(attrs));
                 

@@ -21,7 +21,6 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.cancellationpolicy.server.value.CancellationKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class SetDefaultCancellationKindCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKindDetailValue cancellationKindDetailValue = cancellationPolicyControl.getCancellationKindDetailValueByNameForUpdate(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKindDetailValue = cancellationPolicyControl.getCancellationKindDetailValueByNameForUpdate(cancellationKindName);
         
         if(cancellationKindDetailValue != null) {
             cancellationKindDetailValue.setIsDefault(Boolean.TRUE);

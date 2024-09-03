@@ -19,7 +19,6 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.CreateItemTypeForm;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -59,8 +58,8 @@ public class CreateItemTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemTypeName = form.getItemTypeName();
-        ItemType itemType = itemControl.getItemTypeByName(itemTypeName);
+        var itemTypeName = form.getItemTypeName();
+        var itemType = itemControl.getItemTypeByName(itemTypeName);
         
         if(itemType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

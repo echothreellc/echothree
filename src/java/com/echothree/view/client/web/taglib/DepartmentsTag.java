@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDepartmentsForm;
 import com.echothree.control.user.party.common.result.GetDepartmentsResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import javax.naming.NamingException;
@@ -99,7 +96,7 @@ public class DepartmentsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetDepartmentsForm commandForm = PartyUtil.getHome().getGetDepartmentsForm();
+            var commandForm = PartyUtil.getHome().getGetDepartmentsForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
@@ -107,8 +104,8 @@ public class DepartmentsTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDepartments(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getDepartments(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -116,8 +113,8 @@ public class DepartmentsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetDepartmentsResult result = (GetDepartmentsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetDepartmentsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getDepartments()), scope);
             }

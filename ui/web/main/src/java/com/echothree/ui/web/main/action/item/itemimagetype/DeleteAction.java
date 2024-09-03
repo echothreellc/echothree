@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.itemimagetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteItemImageTypeForm;
-import com.echothree.control.user.item.common.form.GetItemImageTypeForm;
 import com.echothree.control.user.item.common.result.GetItemImageTypeResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemImageTypeForm commandForm = ItemUtil.getHome().getGetItemImageTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemImageTypeForm();
         
         commandForm.setItemImageTypeName(actionForm.getItemImageTypeName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemImageType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemImageTypeResult result = (GetItemImageTypeResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getItemImageType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemImageTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM_IMAGE_TYPE, result.getItemImageType());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemImageTypeForm commandForm = ItemUtil.getHome().getDeleteItemImageTypeForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemImageTypeForm();
 
         commandForm.setItemImageTypeName(actionForm.getItemImageTypeName());
 

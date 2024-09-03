@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -61,10 +60,10 @@ public class SetSalesOrderStatusCommand
     
     @Override
     protected BaseResult execute() {
-        Order order = SalesOrderLogic.getInstance().getOrderByName(this, form.getOrderName());
+        var order = SalesOrderLogic.getInstance().getOrderByName(this, form.getOrderName());
 
         if(!hasExecutionErrors()) {
-            String salesOrderStatusChoice = form.getSalesOrderStatusChoice();
+            var salesOrderStatusChoice = form.getSalesOrderStatusChoice();
 
             SalesOrderLogic.getInstance().setSalesOrderStatus(session, this, order, salesOrderStatusChoice, getPartyPK());
         }

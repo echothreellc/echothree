@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.club.clubitem;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.form.GetClubItemsForm;
 import com.echothree.control.user.club.common.result.GetClubItemsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetClubItemsForm getClubItemsForm = ClubUtil.getHome().getGetClubItemsForm();
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var getClubItemsForm = ClubUtil.getHome().getGetClubItemsForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
             
             getClubItemsForm.setClubName(clubName);
 
-            CommandResult commandResult = ClubUtil.getHome().getClubItems(getUserVisitPK(request), getClubItemsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetClubItemsResult getClubItemsResult = (GetClubItemsResult)executionResult.getResult();
+            var commandResult = ClubUtil.getHome().getClubItems(getUserVisitPK(request), getClubItemsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getClubItemsResult = (GetClubItemsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CLUB, getClubItemsResult.getClub());
             request.setAttribute(AttributeConstants.CLUB_ITEMS, getClubItemsResult.getClubItems());

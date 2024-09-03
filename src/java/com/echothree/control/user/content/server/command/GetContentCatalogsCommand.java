@@ -18,14 +18,11 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentCatalogsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentCatalogsResult;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +59,8 @@ public class GetContentCatalogsCommand
 
     @Override
     protected Collection<ContentCatalog> getEntities() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         Collection<ContentCatalog> contentCatalogs = null;
 
@@ -71,7 +68,7 @@ public class GetContentCatalogsCommand
             var contentControl = Session.getModelController(ContentControl.class);
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -104,11 +101,11 @@ public class GetContentCatalogsCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentCatalog> entities) {
-        GetContentCatalogsResult result = ContentResultFactory.getGetContentCatalogsResult();
+        var result = ContentResultFactory.getGetContentCatalogsResult();
         
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
             result.setContentCatalogs(contentControl.getContentCatalogTransfers(userVisit, entities));

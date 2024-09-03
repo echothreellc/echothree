@@ -20,7 +20,6 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.scale.common.transfer.ScaleUseTypeTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleUseType;
-import com.echothree.model.data.scale.server.entity.ScaleUseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,14 +36,14 @@ public class ScaleUseTypeTransferCache
     }
 
     public ScaleUseTypeTransfer getScaleUseTypeTransfer(ScaleUseType scaleUseType) {
-        ScaleUseTypeTransfer scaleUseTypeTransfer = get(scaleUseType);
+        var scaleUseTypeTransfer = get(scaleUseType);
 
         if(scaleUseTypeTransfer == null) {
-            ScaleUseTypeDetail scaleUseTypeDetail = scaleUseType.getLastDetail();
-            String scaleUseTypeName = scaleUseTypeDetail.getScaleUseTypeName();
-            Boolean isDefault = scaleUseTypeDetail.getIsDefault();
-            Integer sortOrder = scaleUseTypeDetail.getSortOrder();
-            String description = scaleControl.getBestScaleUseTypeDescription(scaleUseType, getLanguage());
+            var scaleUseTypeDetail = scaleUseType.getLastDetail();
+            var scaleUseTypeName = scaleUseTypeDetail.getScaleUseTypeName();
+            var isDefault = scaleUseTypeDetail.getIsDefault();
+            var sortOrder = scaleUseTypeDetail.getSortOrder();
+            var description = scaleControl.getBestScaleUseTypeDescription(scaleUseType, getLanguage());
 
             scaleUseTypeTransfer = new ScaleUseTypeTransfer(scaleUseTypeName, isDefault, sortOrder, description);
             put(scaleUseType, scaleUseTypeTransfer);

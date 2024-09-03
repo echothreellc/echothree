@@ -17,18 +17,12 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelForm;
-import com.echothree.control.user.inventory.common.result.GetPartyInventoryLevelResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -61,15 +55,15 @@ public class GetPartyInventoryLevelCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetPartyInventoryLevelResult result = InventoryResultFactory.getGetPartyInventoryLevelResult();
-        Party party = getParty(form);
+        var result = InventoryResultFactory.getGetPartyInventoryLevelResult();
+        var party = getParty(form);
         
         if(party != null) {
             var itemControl = Session.getModelController(ItemControl.class);
             var partyControl = Session.getModelController(PartyControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByName(itemName);
-            UserVisit userVisit = getUserVisit();
+            var itemName = form.getItemName();
+            var item = itemControl.getItemByName(itemName);
+            var userVisit = getUserVisit();
             
             if(form.getPartyName() != null) {
                 result.setParty(partyControl.getPartyTransfer(userVisit, party));
@@ -82,11 +76,11 @@ public class GetPartyInventoryLevelCommand
             }
             
             if(item != null) {
-                String inventoryConditionName = form.getInventoryConditionName();
-                InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryConditionName = form.getInventoryConditionName();
+                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
-                    PartyInventoryLevel partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
+                    var partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
                     
                     if(partyInventoryLevel != null) {
                         result.setPartyInventoryLevel(inventoryControl.getPartyInventoryLevelTransfer(userVisit, partyInventoryLevel));

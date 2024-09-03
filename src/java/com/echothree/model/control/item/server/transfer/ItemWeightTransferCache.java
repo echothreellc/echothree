@@ -16,14 +16,11 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.common.transfer.ItemWeightTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemWeight;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,14 +36,14 @@ public class ItemWeightTransferCache
     
     @Override
     public ItemWeightTransfer getTransfer(ItemWeight itemWeight) {
-        ItemWeightTransfer itemWeightTransfer = get(itemWeight);
+        var itemWeightTransfer = get(itemWeight);
         
         if(itemWeightTransfer == null) {
-            ItemTransfer itemTransfer = itemControl.getItemTransfer(userVisit, itemWeight.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
+            var itemTransfer = itemControl.getItemTransfer(userVisit, itemWeight.getItem());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
                     itemWeight.getUnitOfMeasureType());
-            UnitOfMeasureKind weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-            String weight = formatUnitOfMeasure(weightUnitOfMeasureKind, itemWeight.getWeight());
+            var weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
+            var weight = formatUnitOfMeasure(weightUnitOfMeasureKind, itemWeight.getWeight());
             
             itemWeightTransfer = new ItemWeightTransfer(itemTransfer, unitOfMeasureTypeTransfer, weight);
             put(itemWeight, itemWeightTransfer);

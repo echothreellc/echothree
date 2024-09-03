@@ -18,15 +18,11 @@ package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.GetBatchAliasesForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
-import com.echothree.control.user.batch.common.result.GetBatchAliasesResult;
 import com.echothree.control.user.batch.server.command.util.BatchAliasUtil;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.batch.server.entity.Batch;
-import com.echothree.model.data.batch.server.entity.BatchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,16 +61,16 @@ public class GetBatchAliasesCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchAliasesResult result = BatchResultFactory.getGetBatchAliasesResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchAliasesResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String batchName = form.getBatchName();
-            Batch batch = batchControl.getBatchByName(batchType, batchName);
+            var batchName = form.getBatchName();
+            var batch = batchControl.getBatchByName(batchType, batchName);
 
             if(batch != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
 
                 result.setBatch(batchControl.getBatchTransfer(userVisit, batch));
                 result.setBatchAliases(batchControl.getBatchAliasTransfersByBatch(userVisit, batch));

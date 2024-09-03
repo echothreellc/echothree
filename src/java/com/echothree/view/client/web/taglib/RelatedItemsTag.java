@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetRelatedItemsForm;
 import com.echothree.control.user.item.common.result.GetRelatedItemsResult;
 import com.echothree.model.data.item.common.RelatedItemConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -145,7 +142,7 @@ public class RelatedItemsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetRelatedItemsForm commandForm = ItemUtil.getHome().getGetRelatedItemsForm();
+            var commandForm = ItemUtil.getHome().getGetRelatedItemsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setRelatedItemTypeName(relatedItemTypeName);
@@ -161,7 +158,7 @@ public class RelatedItemsTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = ItemUtil.getHome().getRelatedItems(getUserVisitPK(), commandForm);
+            var commandResult = ItemUtil.getHome().getRelatedItems(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -169,8 +166,8 @@ public class RelatedItemsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetRelatedItemsResult result = (GetRelatedItemsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetRelatedItemsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getRelatedItems()), scope);
 

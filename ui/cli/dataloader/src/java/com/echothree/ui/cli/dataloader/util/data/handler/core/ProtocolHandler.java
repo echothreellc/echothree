@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateProtocolDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,7 +49,7 @@ public class ProtocolHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("protocolDescription")) {
-            CreateProtocolDescriptionForm commandForm = CoreFormFactory.getCreateProtocolDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateProtocolDescriptionForm();
 
             commandForm.setProtocolName(protocolName);
             commandForm.set(getAttrsMap(attrs));

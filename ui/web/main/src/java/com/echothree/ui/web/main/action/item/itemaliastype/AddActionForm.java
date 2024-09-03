@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.item.itemaliastype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemAliasChecksumTypeChoicesForm;
 import com.echothree.control.user.item.common.result.GetItemAliasChecksumTypeChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemAliasChecksumTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -47,14 +44,14 @@ public class AddActionForm
     public void setupItemAliasChecksumTypeChoices() {
         if(itemAliasChecksumTypeChoices == null) {
             try {
-                GetItemAliasChecksumTypeChoicesForm form = ItemUtil.getHome().getGetItemAliasChecksumTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemAliasChecksumTypeChoicesForm();
 
                 form.setDefaultItemAliasChecksumTypeChoice(itemAliasChecksumTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemAliasChecksumTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemAliasChecksumTypeChoicesResult getItemAliasChecksumTypeChoicesResult = (GetItemAliasChecksumTypeChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemAliasChecksumTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemAliasChecksumTypeChoicesResult = (GetItemAliasChecksumTypeChoicesResult)executionResult.getResult();
                 itemAliasChecksumTypeChoices = getItemAliasChecksumTypeChoicesResult.getItemAliasChecksumTypeChoices();
 
                 if(itemAliasChecksumTypeChoice == null) {

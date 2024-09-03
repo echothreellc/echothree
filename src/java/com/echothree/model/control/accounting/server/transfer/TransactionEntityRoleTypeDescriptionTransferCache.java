@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class TransactionEntityRoleTypeDescriptionTransferCache
     
     @Override
     public TransactionEntityRoleTypeDescriptionTransfer getTransfer(TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription) {
-        TransactionEntityRoleTypeDescriptionTransfer transactionEntityRoleTypeDescriptionTransfer = get(transactionEntityRoleTypeDescription);
+        var transactionEntityRoleTypeDescriptionTransfer = get(transactionEntityRoleTypeDescription);
         
         if(transactionEntityRoleTypeDescriptionTransfer == null) {
-            TransactionEntityRoleTypeTransferCache transactionEntityRoleTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
-            TransactionEntityRoleTypeTransfer transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionEntityRoleTypeDescription.getLanguage());
+            var transactionEntityRoleTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
+            var transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionEntityRoleTypeDescription.getLanguage());
             
             transactionEntityRoleTypeDescriptionTransfer = new TransactionEntityRoleTypeDescriptionTransfer(languageTransfer, transactionEntityRoleTypeTransfer, transactionEntityRoleTypeDescription.getDescription());
             put(transactionEntityRoleTypeDescription, transactionEntityRoleTypeDescriptionTransfer);

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.invoice;
 
 import com.echothree.control.user.invoice.common.InvoiceUtil;
 import com.echothree.control.user.invoice.common.InvoiceService;
-import com.echothree.control.user.invoice.common.form.CreateInvoiceTypeForm;
 import com.echothree.control.user.invoice.common.form.InvoiceFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,7 +45,7 @@ public class InvoiceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("invoiceType")) {
-            CreateInvoiceTypeForm commandForm = InvoiceFormFactory.getCreateInvoiceTypeForm();
+            var commandForm = InvoiceFormFactory.getCreateInvoiceTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetOffersForm;
 import com.echothree.control.user.offer.common.result.GetOffersResult;
 import com.echothree.model.data.offer.common.OfferConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -109,7 +106,7 @@ public class OffersTag
     public int doStartTag()
             throws JspException {
         try {
-            GetOffersForm commandForm = OfferUtil.getHome().getGetOffersForm();
+            var commandForm = OfferUtil.getHome().getGetOffersForm();
             Map<String, Limit> limits = new HashMap<>();
             
             setOptions(options, null, commandForm);
@@ -121,7 +118,7 @@ public class OffersTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = OfferUtil.getHome().getOffers(getUserVisitPK(), commandForm);
+            var commandResult = OfferUtil.getHome().getOffers(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -129,8 +126,8 @@ public class OffersTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetOffersResult result = (GetOffersResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetOffersResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getOffers()), scope);
 

@@ -21,12 +21,10 @@ import com.echothree.control.user.contactlist.common.edit.PartyContactListEdit;
 import com.echothree.control.user.contactlist.common.form.EditPartyContactListForm;
 import com.echothree.control.user.contactlist.common.result.EditPartyContactListResult;
 import com.echothree.control.user.contactlist.common.spec.PartyContactListSpec;
-import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,7 +51,7 @@ public class EditAction
     @Override
     protected PartyContactListSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyContactListSpec spec = ContactListUtil.getHome().getPartyContactListSpec();
+        var spec = ContactListUtil.getHome().getPartyContactListSpec();
 
         spec.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setContactListName(findParameter(request, ParameterConstants.CONTACT_LIST_NAME, actionForm.getContactListName()));
@@ -64,7 +62,7 @@ public class EditAction
     @Override
     protected PartyContactListEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyContactListEdit edit = ContactListUtil.getHome().getPartyContactListEdit();
+        var edit = ContactListUtil.getHome().getPartyContactListEdit();
 
         edit.setPreferredContactMechanismPurposeName(actionForm.getPreferredContactMechanismPurposeChoice());
 
@@ -87,10 +85,10 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPartyContactListForm commandForm)
             throws Exception {
-        CommandResult commandResult = ContactListUtil.getHome().editPartyContactList(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditPartyContactListResult result = (EditPartyContactListResult)executionResult.getResult();
-        PartyContactListTransfer partyAlias = result.getPartyContactList();
+        var commandResult = ContactListUtil.getHome().editPartyContactList(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditPartyContactListResult)executionResult.getResult();
+        var partyAlias = result.getPartyContactList();
 
         if(partyAlias != null) {
             request.setAttribute(AttributeConstants.PARTY_CONTACT_LIST, partyAlias);

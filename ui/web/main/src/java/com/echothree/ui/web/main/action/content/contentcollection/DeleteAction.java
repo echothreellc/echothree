@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentcollection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.DeleteContentCollectionForm;
-import com.echothree.control.user.content.common.form.GetContentCollectionForm;
 import com.echothree.control.user.content.common.result.GetContentCollectionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,14 +58,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContentCollectionForm commandForm = ContentUtil.getHome().getGetContentCollectionForm();
+        var commandForm = ContentUtil.getHome().getGetContentCollectionForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCollection(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCollection(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCollectionResult result = (GetContentCollectionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCollectionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION, result.getContentCollection());
         }
@@ -77,7 +74,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContentCollectionForm commandForm = ContentUtil.getHome().getDeleteContentCollectionForm();
+        var commandForm = ContentUtil.getHome().getDeleteContentCollectionForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
 

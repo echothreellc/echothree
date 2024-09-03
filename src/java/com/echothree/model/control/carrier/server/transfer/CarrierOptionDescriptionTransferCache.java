@@ -17,9 +17,7 @@
 package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.model.control.carrier.common.transfer.CarrierOptionDescriptionTransfer;
-import com.echothree.model.control.carrier.common.transfer.CarrierOptionTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.carrier.server.entity.CarrierOptionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,12 +30,12 @@ public class CarrierOptionDescriptionTransferCache
     }
     
     public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(CarrierOptionDescription carrierOptionDescription) {
-        CarrierOptionDescriptionTransfer carrierOptionDescriptionTransfer = get(carrierOptionDescription);
+        var carrierOptionDescriptionTransfer = get(carrierOptionDescription);
         
         if(carrierOptionDescriptionTransfer == null) {
-            CarrierOptionTransfer carrierOptionTransfer = carrierControl.getCarrierOptionTransfer(userVisit, carrierOptionDescription.getCarrierOption());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, carrierOptionDescription.getLanguage());
-            String description = carrierOptionDescription.getDescription();
+            var carrierOptionTransfer = carrierControl.getCarrierOptionTransfer(userVisit, carrierOptionDescription.getCarrierOption());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, carrierOptionDescription.getLanguage());
+            var description = carrierOptionDescription.getDescription();
             
             carrierOptionDescriptionTransfer = new CarrierOptionDescriptionTransfer(languageTransfer, carrierOptionTransfer,
                     description);

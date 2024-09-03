@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.transfer.ForumMimeTypeTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,13 +36,13 @@ public class ForumMimeTypeTransferCache
     }
     
     public ForumMimeTypeTransfer getForumMimeTypeTransfer(ForumMimeType forumMimeType) {
-        ForumMimeTypeTransfer forumMimeTypeTransfer = get(forumMimeType);
+        var forumMimeTypeTransfer = get(forumMimeType);
         
         if(forumMimeTypeTransfer == null) {
-            ForumTransfer forum = forumControl.getForumTransfer(userVisit, forumMimeType.getForum());
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMimeType.getMimeType());
-            Boolean isDefault = forumMimeType.getIsDefault();
-            Integer sortOrder = forumMimeType.getSortOrder();
+            var forum = forumControl.getForumTransfer(userVisit, forumMimeType.getForum());
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMimeType.getMimeType());
+            var isDefault = forumMimeType.getIsDefault();
+            var sortOrder = forumMimeType.getSortOrder();
             
             forumMimeTypeTransfer = new ForumMimeTypeTransfer(forum, mimeType, isDefault, sortOrder);
             put(forumMimeType, forumMimeTypeTransfer);

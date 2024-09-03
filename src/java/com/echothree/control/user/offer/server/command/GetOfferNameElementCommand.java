@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferNameElementForm;
-import com.echothree.control.user.offer.common.result.GetOfferNameElementResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
@@ -69,7 +68,7 @@ public class GetOfferNameElementCommand
     
     @Override
     protected OfferNameElement getEntity() {
-        OfferNameElement offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByUniversalSpec(this, form);
+        var offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByUniversalSpec(this, form);
 
         if(offerNameElement != null) {
             sendEvent(offerNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,7 +80,7 @@ public class GetOfferNameElementCommand
     @Override
     protected BaseResult getResult(OfferNameElement offerNameElement) {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        GetOfferNameElementResult result = OfferResultFactory.getGetOfferNameElementResult();
+        var result = OfferResultFactory.getGetOfferNameElementResult();
 
         if(offerNameElement != null) {
             result.setOfferNameElement(offerNameElementControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));

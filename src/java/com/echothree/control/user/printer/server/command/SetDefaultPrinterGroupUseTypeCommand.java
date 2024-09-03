@@ -18,7 +18,6 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.SetDefaultPrinterGroupUseTypeForm;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.printer.server.value.PrinterGroupUseTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultPrinterGroupUseTypeCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = printerControl.getPrinterGroupUseTypeDetailValueByNameForUpdate(printerGroupUseTypeName);
+       var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+       var printerGroupUseTypeDetailValue = printerControl.getPrinterGroupUseTypeDetailValueByNameForUpdate(printerGroupUseTypeName);
         
         if(printerGroupUseTypeDetailValue != null) {
             printerGroupUseTypeDetailValue.setIsDefault(Boolean.TRUE);

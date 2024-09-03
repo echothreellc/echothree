@@ -17,13 +17,11 @@
 package com.echothree.control.user.license.server.command;
 
 import com.echothree.control.user.license.common.form.GetLicenseTypeDescriptionsForm;
-import com.echothree.control.user.license.common.result.GetLicenseTypeDescriptionsResult;
 import com.echothree.control.user.license.common.result.LicenseResultFactory;
 import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.license.server.entity.LicenseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetLicenseTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        GetLicenseTypeDescriptionsResult result = LicenseResultFactory.getGetLicenseTypeDescriptionsResult();
-        String licenseTypeName = form.getLicenseTypeName();
-        LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+        var result = LicenseResultFactory.getGetLicenseTypeDescriptionsResult();
+        var licenseTypeName = form.getLicenseTypeName();
+        var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
         
         if(licenseType != null) {
             result.setLicenseType(licenseControl.getLicenseTypeTransfer(getUserVisit(), licenseType));

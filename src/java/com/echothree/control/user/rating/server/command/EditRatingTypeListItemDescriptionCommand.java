@@ -19,18 +19,10 @@ package com.echothree.control.user.rating.server.command;
 import com.echothree.control.user.rating.common.edit.RatingEditFactory;
 import com.echothree.control.user.rating.common.edit.RatingTypeListItemDescriptionEdit;
 import com.echothree.control.user.rating.common.form.EditRatingTypeListItemDescriptionForm;
-import com.echothree.control.user.rating.common.result.EditRatingTypeListItemDescriptionResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.control.user.rating.common.spec.RatingTypeListItemDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.rating.server.entity.RatingType;
-import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
-import com.echothree.model.data.rating.server.entity.RatingTypeListItemDescription;
-import com.echothree.model.data.rating.server.value.RatingTypeListItemDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -71,37 +63,37 @@ public class EditRatingTypeListItemDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditRatingTypeListItemDescriptionResult result = RatingResultFactory.getEditRatingTypeListItemDescriptionResult();
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = RatingResultFactory.getEditRatingTypeListItemDescriptionResult();
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
-                String ratingTypeName = spec.getRatingTypeName();
-                RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                var ratingTypeName = spec.getRatingTypeName();
+                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
                 if(ratingType != null) {
-                    String ratingTypeListItemName = spec.getRatingTypeListItemName();
-                    RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
+                    var ratingTypeListItemName = spec.getRatingTypeListItemName();
+                    var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItem != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK)) {
-                                RatingTypeListItemDescription ratingTypeListItemDescription = ratingControl.getRatingTypeListItemDescription(ratingTypeListItem, language);
+                                var ratingTypeListItemDescription = ratingControl.getRatingTypeListItemDescription(ratingTypeListItem, language);
                                 
                                 if(ratingTypeListItemDescription != null) {
                                     result.setRatingTypeListItemDescription(ratingControl.getRatingTypeListItemDescriptionTransfer(getUserVisit(), ratingTypeListItemDescription));
                                     
                                     if(lockEntity(ratingTypeListItem)) {
-                                        RatingTypeListItemDescriptionEdit edit = RatingEditFactory.getRatingTypeListItemDescriptionEdit();
+                                        var edit = RatingEditFactory.getRatingTypeListItemDescriptionEdit();
                                         
                                         result.setEdit(edit);
                                         edit.setDescription(ratingTypeListItemDescription.getDescription());
@@ -114,12 +106,12 @@ public class EditRatingTypeListItemDescriptionCommand
                                     addExecutionError(ExecutionErrors.UnknownRatingTypeListItemDescription.name());
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
-                                RatingTypeListItemDescriptionValue ratingTypeListItemDescriptionValue = ratingControl.getRatingTypeListItemDescriptionValueForUpdate(ratingTypeListItem, language);
+                                var ratingTypeListItemDescriptionValue = ratingControl.getRatingTypeListItemDescriptionValueForUpdate(ratingTypeListItem, language);
                                 
                                 if(ratingTypeListItemDescriptionValue != null) {
                                     if(lockEntityForUpdate(ratingTypeListItem)) {
                                         try {
-                                            String description = edit.getDescription();
+                                            var description = edit.getDescription();
                                             
                                             ratingTypeListItemDescriptionValue.setDescription(description);
                                             

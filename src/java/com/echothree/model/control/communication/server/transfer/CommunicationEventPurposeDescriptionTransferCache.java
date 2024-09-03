@@ -17,9 +17,7 @@
 package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.model.control.communication.common.transfer.CommunicationEventPurposeDescriptionTransfer;
-import com.echothree.model.control.communication.common.transfer.CommunicationEventPurposeTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,12 +30,12 @@ public class CommunicationEventPurposeDescriptionTransferCache
     }
     
     public CommunicationEventPurposeDescriptionTransfer getCommunicationEventPurposeDescriptionTransfer(CommunicationEventPurposeDescription communicationEventPurposeDescription) {
-        CommunicationEventPurposeDescriptionTransfer communicationEventPurposeDescriptionTransfer = get(communicationEventPurposeDescription);
+        var communicationEventPurposeDescriptionTransfer = get(communicationEventPurposeDescription);
         
         if(communicationEventPurposeDescriptionTransfer == null) {
-            CommunicationEventPurposeTransfer communicationEventPurposeTransfer = communicationControl.getCommunicationEventPurposeTransfer(userVisit,
+            var communicationEventPurposeTransfer = communicationControl.getCommunicationEventPurposeTransfer(userVisit,
                     communicationEventPurposeDescription.getCommunicationEventPurpose());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationEventPurposeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationEventPurposeDescription.getLanguage());
             
             communicationEventPurposeDescriptionTransfer = new CommunicationEventPurposeDescriptionTransfer(languageTransfer, communicationEventPurposeTransfer, communicationEventPurposeDescription.getDescription());
             put(communicationEventPurposeDescription, communicationEventPurposeDescriptionTransfer);

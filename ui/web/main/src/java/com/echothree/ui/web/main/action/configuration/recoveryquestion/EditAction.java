@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.recoveryquestion;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.edit.RecoveryQuestionEdit;
-import com.echothree.control.user.user.common.form.EditRecoveryQuestionForm;
 import com.echothree.control.user.user.common.result.EditRecoveryQuestionResult;
-import com.echothree.control.user.user.common.spec.RecoveryQuestionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalRecoveryQuestionName = request.getParameter(ParameterConstants.ORIGINAL_RECOVERY_QUESTION_NAME);
+        var originalRecoveryQuestionName = request.getParameter(ParameterConstants.ORIGINAL_RECOVERY_QUESTION_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditRecoveryQuestionForm commandForm = UserUtil.getHome().getEditRecoveryQuestionForm();
-                RecoveryQuestionSpec spec = UserUtil.getHome().getRecoveryQuestionSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = UserUtil.getHome().getEditRecoveryQuestionForm();
+                var spec = UserUtil.getHome().getRecoveryQuestionSpec();
                 
                 if(originalRecoveryQuestionName == null)
                     originalRecoveryQuestionName = actionForm.getOriginalRecoveryQuestionName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setRecoveryQuestionName(originalRecoveryQuestionName);
                 
                 if(wasPost(request)) {
-                    RecoveryQuestionEdit edit = UserUtil.getHome().getRecoveryQuestionEdit();
+                    var edit = UserUtil.getHome().getRecoveryQuestionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +77,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = UserUtil.getHome().editRecoveryQuestion(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UserUtil.getHome().editRecoveryQuestion(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditRecoveryQuestionResult result = (EditRecoveryQuestionResult)executionResult.getResult();
+                            var result = (EditRecoveryQuestionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +97,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = UserUtil.getHome().editRecoveryQuestion(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditRecoveryQuestionResult result = (EditRecoveryQuestionResult)executionResult.getResult();
+
+                    var commandResult = UserUtil.getHome().editRecoveryQuestion(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditRecoveryQuestionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        RecoveryQuestionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalRecoveryQuestionName(edit.getRecoveryQuestionName());

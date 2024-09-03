@@ -21,12 +21,10 @@ import com.echothree.control.user.tag.common.edit.TagEdit;
 import com.echothree.control.user.tag.common.form.EditTagForm;
 import com.echothree.control.user.tag.common.result.EditTagResult;
 import com.echothree.control.user.tag.common.spec.TagSpec;
-import com.echothree.model.control.tag.common.transfer.TagTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,7 +51,7 @@ public class EditAction
     @Override
     protected TagSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TagSpec spec = TagUtil.getHome().getTagSpec();
+        var spec = TagUtil.getHome().getTagSpec();
         
         spec.setTagScopeName(findParameter(request, ParameterConstants.TAG_SCOPE_NAME, actionForm.getTagScopeName()));
         spec.setTagName(findParameter(request, ParameterConstants.ORIGINAL_TAG_NAME, actionForm.getOriginalTagName()));
@@ -64,7 +62,7 @@ public class EditAction
     @Override
     protected TagEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TagEdit edit = TagUtil.getHome().getTagEdit();
+        var edit = TagUtil.getHome().getTagEdit();
 
         edit.setTagName(actionForm.getTagName());
 
@@ -87,11 +85,11 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditTagForm commandForm)
             throws Exception {
-        CommandResult commandResult = TagUtil.getHome().editTag(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditTagResult result = (EditTagResult)executionResult.getResult();
+        var commandResult = TagUtil.getHome().editTag(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditTagResult)executionResult.getResult();
 
-        TagTransfer tag = result.getTag();
+        var tag = result.getTag();
         if(tag != null) {
             request.setAttribute(AttributeConstants.TAG, tag.getTagScope());
         }

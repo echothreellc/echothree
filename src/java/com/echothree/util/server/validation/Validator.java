@@ -28,19 +28,15 @@ import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
-import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.server.control.BaseCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.fieldtype.*;
 import com.google.common.base.Splitter;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -178,11 +174,11 @@ public class Validator {
      * @return An ArrayList if there are errors found, otherwise null
      */
     public Messages validateField(BaseForm form, FieldDefinition fieldDefinition) {
-        Messages validationMessages = new Messages();
-        String []splitFieldName = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fieldDefinition.getFieldName()).toArray(new String[0]);
-        String fieldName = splitFieldName[0];
-        String originalFieldValue = form == null ? null : (String)form.get(fieldName);
-        String fieldValue = originalFieldValue;
+        var validationMessages = new Messages();
+        var splitFieldName = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fieldDefinition.getFieldName()).toArray(new String[0]);
+        var fieldName = splitFieldName[0];
+        var originalFieldValue = form == null ? null : (String)form.get(fieldName);
+        var fieldValue = originalFieldValue;
         
         // Clean the String.
         fieldValue = StringUtils.getInstance().trimToNull(fieldValue);
@@ -193,14 +189,14 @@ public class Validator {
                 validationMessages.add(fieldName, new Message(ERROR_REQUIRED_FIELD));
             }
         } else {
-            FieldType fieldType = fieldDefinition.getFieldType();
-            Class fieldValidator = fieldTypes.get(fieldType);
+            var fieldType = fieldDefinition.getFieldType();
+            var fieldValidator = fieldTypes.get(fieldType);
             
             // Not all fieldTypes have an additional validator class
             if(fieldValidator != null) {
                 try {
-                    Constructor constructor = fieldValidator.getConstructor(new Class[]{Validator.class, BaseForm.class, Messages.class, String.class, String [].class, FieldDefinition.class});
-                    BaseFieldType baseFieldType = (BaseFieldType)constructor.newInstance(new Object[]{this, form, validationMessages, fieldValue, splitFieldName, fieldDefinition});
+                    var constructor = fieldValidator.getConstructor(new Class[]{Validator.class, BaseForm.class, Messages.class, String.class, String [].class, FieldDefinition.class});
+                    var baseFieldType = (BaseFieldType)constructor.newInstance(new Object[]{this, form, validationMessages, fieldValue, splitFieldName, fieldDefinition});
 
                     fieldValue = baseFieldType.validate();
                 } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -229,7 +225,7 @@ public class Validator {
     private final static FieldDefinition preferredClobMimeTypeNameFieldDefinition = new FieldDefinition("PreferredClobMimeTypeName", FieldType.MIME_TYPE, Boolean.FALSE, null, null);
     
     public void validatePreferredClobMimeTypeName(Messages formValidationMessages, BaseForm form) {
-        Messages validationMessages = validateField(form, preferredClobMimeTypeNameFieldDefinition);
+        var validationMessages = validateField(form, preferredClobMimeTypeNameFieldDefinition);
 
         if(validationMessages != null) {
             formValidationMessages.add(validationMessages);
@@ -237,11 +233,11 @@ public class Validator {
     }
     
     public void validateOptions(Messages formValidationMessages, BaseForm form) {
-        Set<String> options = form.getOptions();
+        var options = form.getOptions();
 
         if(options != null) {
             options.forEach((option) -> {
-                Matcher m = Patterns.Option.matcher(option);
+                var m = Patterns.Option.matcher(option);
                 if (!m.matches()) {
                     formValidationMessages.add(option, new Message(Validator.ERROR_INVALID_OPTION));
                 }
@@ -251,7 +247,7 @@ public class Validator {
     
     public static String validateLong(String fieldValue) {
         try {
-            Long testLong = Long.valueOf(fieldValue);
+            var testLong = Long.valueOf(fieldValue);
             
             fieldValue = testLong.toString();
         } catch (NumberFormatException nfe) {
@@ -267,7 +263,7 @@ public class Validator {
     
     public static String validateUnsignedLong(String unsignedLong) {
         if(unsignedLong != null) {
-            Matcher m = Patterns.UnsignedNumbers.matcher(unsignedLong);
+            var m = Patterns.UnsignedNumbers.matcher(unsignedLong);
 
             if(m.matches()) {
                 unsignedLong = validateLong(unsignedLong);
@@ -280,18 +276,18 @@ public class Validator {
     }
     
     public void validateLimits(Messages formValidationMessages, BaseForm form) {
-        Map<String, Limit> limits = form.getLimits();
+        var limits = form.getLimits();
 
         if(limits != null) {
             limits.keySet().stream().forEach((tableNameSingular) -> {
-                boolean validLimit = true;
-                Matcher m = Patterns.TableNameSingular.matcher(tableNameSingular);
+                var validLimit = true;
+                var m = Patterns.TableNameSingular.matcher(tableNameSingular);
                 if(m.matches()) {
-                    Limit limit = limits.get(tableNameSingular);
+                    var limit = limits.get(tableNameSingular);
 
                     if(limit != null) {
-                        String count = limit.getCount();
-                        String newCount = count == null ? null : validateUnsignedLong(count);
+                        var count = limit.getCount();
+                        var newCount = count == null ? null : validateUnsignedLong(count);
 
                         if(count == null || (count != null && newCount != null)) {
                             limit.setCount(newCount);
@@ -300,8 +296,8 @@ public class Validator {
                         }
 
                         if(validLimit) {
-                            String offset = limit.getOffset();
-                            String newOffset = offset == null ? null : validateUnsignedLong(offset);
+                            var offset = limit.getOffset();
+                            var newOffset = offset == null ? null : validateUnsignedLong(offset);
 
                             if(offset == null || (offset != null && newOffset != null)) {
                                 limit.setOffset(newOffset);
@@ -321,7 +317,7 @@ public class Validator {
     }
     
     public ValidationResult validate(BaseForm form, List<FieldDefinition> fieldDefinitions) {
-        Messages formValidationMessages = new Messages();
+        var formValidationMessages = new Messages();
         
         fieldDefinitions.stream().map((fieldDefinition) -> validateField(form, fieldDefinition)).filter((validationMessages) -> (validationMessages != null)).forEach((validationMessages) -> {
             formValidationMessages.add(validationMessages);
@@ -332,9 +328,9 @@ public class Validator {
             validateOptions(formValidationMessages, form);
             validateLimits(formValidationMessages, form);
         }
-        
-        boolean hasErrors = !formValidationMessages.isEmpty();
-        ValidationResult validationResult = new ValidationResult(hasErrors? formValidationMessages: null);
+
+        var hasErrors = !formValidationMessages.isEmpty();
+        var validationResult = new ValidationResult(hasErrors? formValidationMessages: null);
         
         return validationResult;
     }

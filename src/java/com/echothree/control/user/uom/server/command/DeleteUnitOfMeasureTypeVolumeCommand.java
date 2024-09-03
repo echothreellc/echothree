@@ -18,9 +18,6 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.DeleteUnitOfMeasureTypeVolumeForm;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeVolume;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,15 +49,15 @@ public class DeleteUnitOfMeasureTypeVolumeCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                UnitOfMeasureTypeVolume unitOfMeasureTypeVolume = uomControl.getUnitOfMeasureTypeVolumeForUpdate(unitOfMeasureType);
+                var unitOfMeasureTypeVolume = uomControl.getUnitOfMeasureTypeVolumeForUpdate(unitOfMeasureType);
                 
                 if(unitOfMeasureTypeVolume != null) {
                     uomControl.deleteUnitOfMeasureTypeVolume(unitOfMeasureTypeVolume, getPartyPK());

@@ -17,14 +17,12 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.CreateTagForm;
-import com.echothree.control.user.tag.common.result.CreateTagScopeResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.Tag;
-import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,12 +66,12 @@ public class CreateTagCommand
     protected BaseResult execute() {
         var result = TagResultFactory.getCreateTagResult();
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var tagScopeName = form.getTagScopeName();
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         Tag tag = null;
         
         if(tagScope != null) {
-            String tagName = form.getTagName();
+            var tagName = form.getTagName();
             tag = tagControl.getTagByName(tagScope, tagName);
             
             if(tag == null) {

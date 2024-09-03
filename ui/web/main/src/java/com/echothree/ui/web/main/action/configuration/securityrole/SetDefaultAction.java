@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.securityrole;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.SetDefaultSecurityRoleForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,14 +49,14 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultSecurityRoleForm commandForm = SecurityUtil.getHome().getSetDefaultSecurityRoleForm();
+        var commandForm = SecurityUtil.getHome().getSetDefaultSecurityRoleForm();
 
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
         commandForm.setSecurityRoleName(request.getParameter(ParameterConstants.SECURITY_ROLE_NAME));
 
         SecurityUtil.getHome().setDefaultSecurityRole(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.SECURITY_ROLE_GROUP_NAME, request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));

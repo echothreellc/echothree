@@ -28,14 +28,9 @@ import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.batch.server.entity.BatchEntity;
 import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.batch.server.entity.BatchTypeDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -59,11 +54,11 @@ public class BatchLogic
     }
     
     public SequenceType getBatchSequenceType(final ExecutionErrorAccumulator eea, final BatchType batchType) {
-        SequenceType sequenceType = null;
-        BatchType parentBatchType = batchType;
+        SequenceType sequenceType;
+        var parentBatchType = batchType;
 
         do {
-            BatchTypeDetail batchTypeDetail = parentBatchType.getLastDetail();
+            var batchTypeDetail = parentBatchType.getLastDetail();
 
             sequenceType = batchTypeDetail.getBatchSequenceType();
 
@@ -89,7 +84,7 @@ public class BatchLogic
 
     public Sequence getBatchSequence(final ExecutionErrorAccumulator eea, final BatchType batchType) {
         Sequence sequence = null;
-        SequenceType sequenceType = getBatchSequenceType(eea, batchType);
+        var sequenceType = getBatchSequenceType(eea, batchType);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
@@ -106,7 +101,7 @@ public class BatchLogic
 
     public String getBatchName(final ExecutionErrorAccumulator eea, final BatchType batchType) {
         String batchName = null;
-        Sequence sequence = getBatchSequence(eea, batchType);
+        var sequence = getBatchSequence(eea, batchType);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             batchName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
@@ -117,19 +112,19 @@ public class BatchLogic
 
     public Batch createBatch(final ExecutionErrorAccumulator eea, final String batchTypeName, final BasePK createdBy) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
         Batch batch = null;
 
         if(batchType != null) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            String batchName = getBatchName(eea, batchType);
+            var batchName = getBatchName(eea, batchType);
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                BatchTypeDetail batchTypeDetail = batchType.getLastDetail();
-                WorkflowEntrance workflowEntrance = batchTypeDetail.getBatchWorkflowEntrance();
+                var batchTypeDetail = batchType.getLastDetail();
+                var workflowEntrance = batchTypeDetail.getBatchWorkflowEntrance();
 
                 if(workflowEntrance == null) {
-                    Workflow workflow = batchTypeDetail.getBatchWorkflow();
+                    var workflow = batchTypeDetail.getBatchWorkflow();
 
                     if(workflow != null) {
                         workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
@@ -145,7 +140,7 @@ public class BatchLogic
 
                     if(workflowEntrance != null) {
                         var coreControl = Session.getModelController(CoreControl.class);
-                        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
+                        var entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
 
                         // TODO: A WorkEffort should be created for the batch entry, if it's manually entered.
                         workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
@@ -167,7 +162,7 @@ public class BatchLogic
 
     public BatchType getBatchTypeByName(final ExecutionErrorAccumulator eea, final String batchTypeName) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType == null) {
             handleExecutionError(UnknownBatchTypeNameException.class, eea, ExecutionErrors.UnknownBatchTypeName.name(), batchTypeName);
@@ -178,7 +173,7 @@ public class BatchLogic
 
     public BatchAliasType getBatchAliasTypeByName(final ExecutionErrorAccumulator eea, final BatchType batchType, final String batchAliasTypeName) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchAliasType batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
+        var batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
         if(batchAliasType == null) {
             handleExecutionError(UnknownBatchAliasTypeNameException.class, eea, ExecutionErrors.UnknownBatchAliasTypeName.name(),
@@ -190,7 +185,7 @@ public class BatchLogic
 
     public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchTypeName, final String batchName) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchType batchType = getBatchTypeByName(eea, batchTypeName);
+        var batchType = getBatchTypeByName(eea, batchTypeName);
         Batch batch = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -206,7 +201,7 @@ public class BatchLogic
 
     public Batch getBatchByNameForUpdate(final ExecutionErrorAccumulator eea, final String batchTypeName, final String batchName) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchType batchType = getBatchTypeByName(eea, batchTypeName);
+        var batchType = getBatchTypeByName(eea, batchTypeName);
         Batch batch = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -226,14 +221,14 @@ public class BatchLogic
     
     public BatchEntity createBatchEntity(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance, final Batch batch, final BasePK createdBy) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchType batchType = batch.getLastDetail().getBatchType();
+        var batchType = batch.getLastDetail().getBatchType();
         BatchEntity batchEntity = null;
 
         if(batchControl.countBatchTypeEntityTypesByBatchType(batchType) != 0) {
-            EntityType entityType = entityInstance.getEntityType();
+            var entityType = entityInstance.getEntityType();
 
             if(!batchControl.getBatchTypeEntityTypeExists(batchType, entityType)) {
-                EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+                var entityTypeDetail = entityType.getLastDetail();
 
                 handleExecutionError(UnknownBatchTypeEntityTypeException.class, eea, ExecutionErrors.UnknownBatchTypeEntityType.name(),
                         batchType.getLastDetail().getBatchTypeName(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),

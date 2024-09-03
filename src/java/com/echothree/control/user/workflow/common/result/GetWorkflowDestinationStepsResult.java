@@ -18,19 +18,11 @@ package com.echothree.control.user.workflow.common.result;
 
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationStepTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetWorkflowDestinationStepsResult
         extends BaseResult {
-    
-    WorkflowTransfer getWorkflow();
-    void setWorkflow(WorkflowTransfer workflow);
-    
-    WorkflowStepTransfer getWorkflowStep();
-    void setWorkflowStep(WorkflowStepTransfer workflowStep);
     
     WorkflowDestinationTransfer getWorkflowDestination();
     void setWorkflowDestination(WorkflowDestinationTransfer workflowDestination);

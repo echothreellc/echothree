@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityListItemForm;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -45,7 +44,7 @@ public class GetEntityListItemAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetEntityListItemForm commandForm = CoreUtil.getHome().getGetEntityListItemForm();
+        var commandForm = CoreUtil.getHome().getGetEntityListItemForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
@@ -54,7 +53,7 @@ public class GetEntityListItemAction
 
         BaseTag.setOptions(request.getParameter(ParameterConstants.OPTIONS), null, commandForm);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityListItem(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityListItem(getUserVisitPK(request), commandForm);
         
         return commandResult;
     }

@@ -16,16 +16,11 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
-import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.model.control.letter.server.control.LetterControl;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.letter.server.entity.Letter;
-import com.echothree.model.data.letter.server.entity.LetterDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -43,18 +38,18 @@ public class LetterTransferCache
     }
     
     public LetterTransfer getLetterTransfer(Letter letter) {
-        LetterTransfer letterTransfer = get(letter);
+        var letterTransfer = get(letter);
         
         if(letterTransfer == null) {
-            LetterDetail letterDetail = letter.getLastDetail();
-            ChainTypeTransfer chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, letterDetail.getChainType());
-            String letterName = letterDetail.getLetterName();
-            LetterSourceTransfer letterSourceTransfer = letterControl.getLetterSourceTransfer(userVisit, letterDetail.getLetterSource());
-            ContactList contactList = letterDetail.getContactList();
-            ContactListTransfer contactListTransfer = contactList == null? null: contactListControl.getContactListTransfer(userVisit, contactList);
-            Boolean isDefault = letterDetail.getIsDefault();
-            Integer sortOrder = letterDetail.getSortOrder();
-            String description = letterControl.getBestLetterDescription(letter, getLanguage());
+            var letterDetail = letter.getLastDetail();
+            var chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, letterDetail.getChainType());
+            var letterName = letterDetail.getLetterName();
+            var letterSourceTransfer = letterControl.getLetterSourceTransfer(userVisit, letterDetail.getLetterSource());
+            var contactList = letterDetail.getContactList();
+            var contactListTransfer = contactList == null? null: contactListControl.getContactListTransfer(userVisit, contactList);
+            var isDefault = letterDetail.getIsDefault();
+            var sortOrder = letterDetail.getSortOrder();
+            var description = letterControl.getBestLetterDescription(letter, getLanguage());
             
             letterTransfer = new LetterTransfer(chainTypeTransfer, letterName, letterSourceTransfer, contactListTransfer, isDefault,
                     sortOrder, description);

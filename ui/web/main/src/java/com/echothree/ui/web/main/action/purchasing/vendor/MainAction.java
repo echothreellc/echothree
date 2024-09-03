@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetVendorResultsForm;
-import com.echothree.control.user.search.common.form.SearchVendorsForm;
 import com.echothree.control.user.search.common.result.GetVendorResultsResult;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.model.control.search.common.SearchTypes;
@@ -26,8 +24,6 @@ import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -35,7 +31,6 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -61,16 +56,16 @@ public class MainAction
     
     private String getPartyName(HttpServletRequest request)
             throws NamingException {
-        GetVendorResultsForm commandForm = SearchUtil.getHome().getGetVendorResultsForm();
+        var commandForm = SearchUtil.getHome().getGetVendorResultsForm();
         String partyName = null;
         
         commandForm.setSearchTypeName(SearchTypes.VENDOR_REVIEW.name());
-        
-        CommandResult commandResult = SearchUtil.getHome().getVendorResults(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorResultsResult result = (GetVendorResultsResult)executionResult.getResult();
+
+        var commandResult = SearchUtil.getHome().getVendorResults(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorResultsResult)executionResult.getResult();
         Collection vendorResults = result.getVendorResults();
-        Iterator iter = vendorResults.iterator();
+        var iter = vendorResults.iterator();
         if(iter.hasNext()) {
             partyName = ((VendorResultTransfer)iter.next()).getPartyName();
         }
@@ -85,7 +80,7 @@ public class MainAction
         String partyName = null;
 
         if(wasPost(request)) {
-            SearchVendorsForm commandForm = SearchUtil.getHome().getSearchVendorsForm();
+            var commandForm = SearchUtil.getHome().getSearchVendorsForm();
 
             commandForm.setSearchTypeName(SearchTypes.VENDOR_REVIEW.name());
             commandForm.setFirstName(actionForm.getFirstName());
@@ -99,14 +94,14 @@ public class MainAction
             commandForm.setCreatedSince(actionForm.getCreatedSince());
             commandForm.setModifiedSince(actionForm.getModifiedSince());
 
-            CommandResult commandResult = SearchUtil.getHome().searchVendors(getUserVisitPK(request), commandForm);
+            var commandResult = SearchUtil.getHome().searchVendors(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchVendorsResult result = (SearchVendorsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchVendorsResult)executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {
@@ -117,15 +112,15 @@ public class MainAction
                 }
             }
         } else {
-            String firstName = request.getParameter(ParameterConstants.FIRST_NAME);
-            String lastName = request.getParameter(ParameterConstants.LAST_NAME);
+            var firstName = request.getParameter(ParameterConstants.FIRST_NAME);
+            var lastName = request.getParameter(ParameterConstants.LAST_NAME);
 
             actionForm.setFirstName(firstName);
             actionForm.setLastName(lastName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

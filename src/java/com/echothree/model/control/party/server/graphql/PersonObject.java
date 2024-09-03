@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.party.server.graphql;
 
-import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Person;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -36,7 +34,7 @@ public class PersonObject {
     @GraphQLField
     @GraphQLDescription("personal title")
     public PersonalTitleObject getPersonalTitle() {
-        PersonalTitle personalTitle = person.getPersonalTitle();
+        var personalTitle = person.getPersonalTitle();
         
         return personalTitle == null ? null : new PersonalTitleObject(personalTitle);
     }
@@ -62,7 +60,7 @@ public class PersonObject {
     @GraphQLField
     @GraphQLDescription("name suffix")
     public NameSuffixObject getNameSuffix() {
-        NameSuffix nameSuffix = person.getNameSuffix();
+        var nameSuffix = person.getNameSuffix();
         
         return nameSuffix == null ? null : new NameSuffixObject(nameSuffix);
     }

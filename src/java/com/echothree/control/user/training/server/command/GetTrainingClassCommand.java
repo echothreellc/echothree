@@ -17,7 +17,6 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.GetTrainingClassForm;
-import com.echothree.control.user.training.common.result.GetTrainingClassResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,7 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
-import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -79,9 +77,9 @@ public class GetTrainingClassCommand
 
     @Override
     protected BaseResult execute() {
-        GetTrainingClassResult result = TrainingResultFactory.getGetTrainingClassResult();
-        String trainingClassName = form.getTrainingClassName();
-        String partyTrainingClassName = form.getPartyTrainingClassName();
+        var result = TrainingResultFactory.getGetTrainingClassResult();
+        var trainingClassName = form.getTrainingClassName();
+        var partyTrainingClassName = form.getPartyTrainingClassName();
         var parameterCount = (trainingClassName == null ? 0 : 1) + (partyTrainingClassName == null ? 0 : 1);
 
         if(parameterCount == 1) {
@@ -96,7 +94,7 @@ public class GetTrainingClassCommand
                     addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
                 }
             } else {
-                PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+                var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
 
                 if(partyTrainingClass != null) {
                     PartyTrainingClassLogic.getInstance().checkPartyTrainingClassStatus(this, partyTrainingClass, partyPK);

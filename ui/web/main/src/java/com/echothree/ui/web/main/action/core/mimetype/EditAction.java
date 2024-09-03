@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected MimeTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        MimeTypeSpec spec = CoreUtil.getHome().getMimeTypeSpec();
+        var spec = CoreUtil.getHome().getMimeTypeSpec();
         
         spec.setMimeTypeName(findParameter(request, ParameterConstants.ORIGINAL_MIME_TYPE_NAME, actionForm.getOriginalMimeTypeName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected MimeTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        MimeTypeEdit edit = CoreUtil.getHome().getMimeTypeEdit();
+        var edit = CoreUtil.getHome().getMimeTypeEdit();
 
         edit.setMimeTypeName(actionForm.getMimeTypeName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

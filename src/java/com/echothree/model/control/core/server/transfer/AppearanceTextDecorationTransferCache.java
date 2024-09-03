@@ -17,8 +17,6 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.AppearanceTextDecorationTransfer;
-import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
-import com.echothree.model.control.core.common.transfer.TextDecorationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.AppearanceTextDecoration;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -35,11 +33,11 @@ public class AppearanceTextDecorationTransferCache
     }
 
     public AppearanceTextDecorationTransfer getAppearanceTextDecorationTransfer(AppearanceTextDecoration appearanceTextDecoration) {
-        AppearanceTextDecorationTransfer appearanceTextDecorationTransfer = get(appearanceTextDecoration);
+        var appearanceTextDecorationTransfer = get(appearanceTextDecoration);
 
         if(appearanceTextDecorationTransfer == null) {
-            AppearanceTransfer appearance = coreControl.getAppearanceTransfer(userVisit, appearanceTextDecoration.getAppearance());
-            TextDecorationTransfer textDecoration = coreControl.getTextDecorationTransfer(userVisit, appearanceTextDecoration.getTextDecoration());
+            var appearance = coreControl.getAppearanceTransfer(userVisit, appearanceTextDecoration.getAppearance());
+            var textDecoration = coreControl.getTextDecorationTransfer(userVisit, appearanceTextDecoration.getTextDecoration());
 
             appearanceTextDecorationTransfer = new AppearanceTextDecorationTransfer(appearance, textDecoration);
             put(appearanceTextDecoration, appearanceTextDecorationTransfer);

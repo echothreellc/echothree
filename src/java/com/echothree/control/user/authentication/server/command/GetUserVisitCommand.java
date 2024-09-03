@@ -18,9 +18,6 @@ package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.control.user.authentication.common.form.GetUserVisitForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserKeyDetail;
 import com.echothree.util.common.command.BaseResult;
@@ -36,9 +33,9 @@ public class GetUserVisitCommand
     
     @Override
     protected BaseResult execute() {
-        GetUserVisitResult result = AuthenticationResultFactory.getGetUserVisitResult();
-        UserControl userControl = getUserControl();
-        String userKeyName = form.getUserKeyName();
+        var result = AuthenticationResultFactory.getGetUserVisitResult();
+        var userControl = getUserControl();
+        var userKeyName = form.getUserKeyName();
         UserKeyDetail userKeyDetail = null;
         
         if(userKeyName != null) {
@@ -56,8 +53,8 @@ public class GetUserVisitCommand
         }
         
         setUserVisitPK(userControl.createUserVisit(userKey, null, null, null, null, null, null, null).getPrimaryKey());
-        
-        Party party = userKeyDetail.getParty();
+
+        var party = userKeyDetail.getParty();
         if(party != null) {
             userControl.associatePartyToUserVisit(getUserVisitForUpdate(), party, userKeyDetail.getPartyRelationship(), null);
         }

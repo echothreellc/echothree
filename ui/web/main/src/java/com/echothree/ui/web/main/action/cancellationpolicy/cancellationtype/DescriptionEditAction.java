@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationtype;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.edit.CancellationTypeDescriptionEdit;
-import com.echothree.control.user.cancellationpolicy.common.form.EditCancellationTypeDescriptionForm;
 import com.echothree.control.user.cancellationpolicy.common.result.EditCancellationTypeDescriptionResult;
-import com.echothree.control.user.cancellationpolicy.common.spec.CancellationTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-        String cancellationTypeName = request.getParameter(ParameterConstants.CANCELLATION_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+        var cancellationTypeName = request.getParameter(ParameterConstants.CANCELLATION_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditCancellationTypeDescriptionForm commandForm = CancellationPolicyUtil.getHome().getEditCancellationTypeDescriptionForm();
-                CancellationTypeDescriptionSpec spec = CancellationPolicyUtil.getHome().getCancellationTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = CancellationPolicyUtil.getHome().getEditCancellationTypeDescriptionForm();
+                var spec = CancellationPolicyUtil.getHome().getCancellationTypeDescriptionSpec();
                 
                 if(cancellationKindName == null)
                     cancellationKindName = actionForm.getCancellationKindName();
@@ -84,19 +79,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    CancellationTypeDescriptionEdit edit = CancellationPolicyUtil.getHome().getCancellationTypeDescriptionEdit();
+                    var edit = CancellationPolicyUtil.getHome().getCancellationTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().editCancellationTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CancellationPolicyUtil.getHome().editCancellationTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCancellationTypeDescriptionResult result = (EditCancellationTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditCancellationTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +104,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().editCancellationTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCancellationTypeDescriptionResult result = (EditCancellationTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = CancellationPolicyUtil.getHome().editCancellationTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCancellationTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CancellationTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setCancellationKindName(cancellationKindName);
@@ -135,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CANCELLATION_KIND_NAME, cancellationKindName);
             request.setAttribute(AttributeConstants.CANCELLATION_TYPE_NAME, cancellationTypeName);

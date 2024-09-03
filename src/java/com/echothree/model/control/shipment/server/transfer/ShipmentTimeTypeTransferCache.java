@@ -19,7 +19,6 @@ package com.echothree.model.control.shipment.server.transfer;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTimeTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
-import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,14 +36,14 @@ public class ShipmentTimeTypeTransferCache
 
     @Override
     public ShipmentTimeTypeTransfer getTransfer(ShipmentTimeType shipmentTimeType) {
-        ShipmentTimeTypeTransfer shipmentTimeTypeTransfer = get(shipmentTimeType);
+        var shipmentTimeTypeTransfer = get(shipmentTimeType);
         
         if(shipmentTimeTypeTransfer == null) {
-            ShipmentTimeTypeDetail shipmentTimeTypeDetail = shipmentTimeType.getLastDetail();
-            String shipmentTimeTypeName = shipmentTimeTypeDetail.getShipmentTimeTypeName();
-            Boolean isDefault = shipmentTimeTypeDetail.getIsDefault();
-            Integer sortOrder = shipmentTimeTypeDetail.getSortOrder();
-            String description = shipmentControl.getBestShipmentTimeTypeDescription(shipmentTimeType, getLanguage());
+            var shipmentTimeTypeDetail = shipmentTimeType.getLastDetail();
+            var shipmentTimeTypeName = shipmentTimeTypeDetail.getShipmentTimeTypeName();
+            var isDefault = shipmentTimeTypeDetail.getIsDefault();
+            var sortOrder = shipmentTimeTypeDetail.getSortOrder();
+            var description = shipmentControl.getBestShipmentTimeTypeDescription(shipmentTimeType, getLanguage());
             
             shipmentTimeTypeTransfer = new ShipmentTimeTypeTransfer(shipmentTimeTypeName, isDefault, sortOrder, description);
             put(shipmentTimeType, shipmentTimeTypeTransfer);

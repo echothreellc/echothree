@@ -18,17 +18,13 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workeffort;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
 import com.echothree.control.user.workeffort.common.WorkEffortService;
-import com.echothree.control.user.workeffort.common.form.CreateWorkEffortScopeForm;
-import com.echothree.control.user.workeffort.common.form.CreateWorkEffortTypeDescriptionForm;
 import com.echothree.control.user.workeffort.common.form.WorkEffortFormFactory;
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
 import com.echothree.control.user.workrequirement.common.WorkRequirementService;
-import com.echothree.control.user.workrequirement.common.form.CreateWorkRequirementTypeForm;
 import com.echothree.control.user.workrequirement.common.form.WorkRequirementFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workrequirement.WorkRequirementTypeHandler;
-import java.util.Map;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -61,7 +57,7 @@ public class WorkEffortTypeHandler
     throws SAXException {
         if(localName.equals("workEffortTypeDescription")) {
             try {
-                CreateWorkEffortTypeDescriptionForm commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeDescriptionForm();
+                var commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeDescriptionForm();
                 
                 commandForm.setWorkEffortTypeName(workEffortTypeName);
                 commandForm.set(getAttrsMap(attrs));
@@ -72,8 +68,8 @@ public class WorkEffortTypeHandler
             }
         } else if(localName.equals("workEffortScope")) {
             try {
-                CreateWorkEffortScopeForm commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeForm();
-                Map<String, Object> attrsMap = getAttrsMap(attrs);
+                var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeForm();
+                var attrsMap = getAttrsMap(attrs);
                 
                 commandForm.setWorkEffortTypeName(workEffortTypeName);
                 commandForm.set(attrsMap);
@@ -87,8 +83,8 @@ public class WorkEffortTypeHandler
             }
         } else if(localName.equals("workRequirementType")) {
             try {
-                CreateWorkRequirementTypeForm commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeForm();
-                Map<String, Object> attrsMap = getAttrsMap(attrs);
+                var commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeForm();
+                var attrsMap = getAttrsMap(attrs);
                 
                 commandForm.setWorkEffortTypeName(workEffortTypeName);
                 commandForm.set(attrsMap);

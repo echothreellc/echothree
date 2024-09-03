@@ -26,7 +26,6 @@ import com.echothree.control.user.security.common.result.EditSecurityRoleResult;
 import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
@@ -66,8 +65,8 @@ public class SecurityRoleGroupHandler
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = securityService.editSecurityRoleGroupDescription(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = securityService.editSecurityRoleGroupDescription(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleGroupDescription.name())) {
@@ -127,8 +126,8 @@ public class SecurityRoleGroupHandler
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = securityService.editSecurityRole(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = securityService.editSecurityRole(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleName.name())) {

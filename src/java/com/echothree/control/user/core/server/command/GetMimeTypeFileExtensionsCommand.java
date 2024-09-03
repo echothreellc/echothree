@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeFileExtensionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetMimeTypeFileExtensionsResult;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,7 +53,7 @@ public class GetMimeTypeFileExtensionsCommand
     @Override
     protected BaseResult getResult(Collection<MimeTypeFileExtension> entities) {
         var coreControl = getCoreControl();
-        GetMimeTypeFileExtensionsResult result = CoreResultFactory.getGetMimeTypeFileExtensionsResult();
+        var result = CoreResultFactory.getGetMimeTypeFileExtensionsResult();
 
         result.setMimeTypeFileExtensions(coreControl.getMimeTypeFileExtensionTransfers(getUserVisit(), entities));
 

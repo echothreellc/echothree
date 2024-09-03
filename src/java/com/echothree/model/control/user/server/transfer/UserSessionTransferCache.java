@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyRelationshipTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.transfer.UserSessionTransfer;
-import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -40,15 +36,15 @@ public class UserSessionTransferCache
     }
     
     public UserSessionTransfer getUserSessionTransfer(UserSession userSession) {
-        UserSessionTransfer userSessionTransfer = get(userSession);
+        var userSessionTransfer = get(userSession);
         
         if(userSessionTransfer == null) {
-            UserVisitTransfer userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userSession.getUserVisit());
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, userSession.getParty());
-            PartyRelationship partyRelationship = userSession.getPartyRelationship();
-            PartyRelationshipTransfer partyRelationshipTransfer = partyRelationship == null ? null : partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
-            Long unformattedIdentityVerifiedTime = userSession.getIdentityVerifiedTime();
-            String identityVerifiedTime = unformattedIdentityVerifiedTime == null ? null : formatTypicalDateTime(unformattedIdentityVerifiedTime);
+            var userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userSession.getUserVisit());
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, userSession.getParty());
+            var partyRelationship = userSession.getPartyRelationship();
+            var partyRelationshipTransfer = partyRelationship == null ? null : partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
+            var unformattedIdentityVerifiedTime = userSession.getIdentityVerifiedTime();
+            var identityVerifiedTime = unformattedIdentityVerifiedTime == null ? null : formatTypicalDateTime(unformattedIdentityVerifiedTime);
             
             userSessionTransfer = new UserSessionTransfer(userVisitTransfer, partyTransfer, partyRelationshipTransfer, unformattedIdentityVerifiedTime,
                     identityVerifiedTime);

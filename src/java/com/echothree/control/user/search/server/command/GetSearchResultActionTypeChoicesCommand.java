@@ -17,7 +17,6 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchResultActionTypeChoicesForm;
-import com.echothree.control.user.search.common.result.GetSearchResultActionTypeChoicesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -63,9 +62,9 @@ public class GetSearchResultActionTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchResultActionTypeChoicesResult result = SearchResultFactory.getGetSearchResultActionTypeChoicesResult();
-        String defaultSearchResultActionTypeChoice = form.getDefaultSearchResultActionTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SearchResultFactory.getGetSearchResultActionTypeChoicesResult();
+        var defaultSearchResultActionTypeChoice = form.getDefaultSearchResultActionTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSearchResultActionTypeChoices(searchControl.getSearchResultActionTypeChoices(defaultSearchResultActionTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

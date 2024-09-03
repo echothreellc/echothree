@@ -18,12 +18,7 @@ package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.GetBatchTypeEntityTypeForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
-import com.echothree.control.user.batch.common.result.GetBatchTypeEntityTypeResult;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.batch.server.entity.BatchTypeEntityType;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,21 +51,21 @@ public class GetBatchTypeEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchTypeEntityTypeResult result = BatchResultFactory.getGetBatchTypeEntityTypeResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchTypeEntityTypeResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
         
         if(batchType != null) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    BatchTypeEntityType batchTypeEntityType = batchControl.getBatchTypeEntityType(batchType, entityType);
+                    var batchTypeEntityType = batchControl.getBatchTypeEntityType(batchType, entityType);
 
                     if(batchTypeEntityType != null) {
                         result.setBatchTypeEntityType(batchControl.getBatchTypeEntityTypeTransfer(getUserVisit(), batchTypeEntityType));

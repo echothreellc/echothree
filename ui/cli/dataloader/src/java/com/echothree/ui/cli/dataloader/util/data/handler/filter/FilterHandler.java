@@ -18,10 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.FilterService;
-import com.echothree.control.user.filter.common.form.CreateFilterDescriptionForm;
-import com.echothree.control.user.filter.common.form.CreateFilterEntranceStepForm;
-import com.echothree.control.user.filter.common.form.CreateFilterStepDestinationForm;
-import com.echothree.control.user.filter.common.form.CreateFilterStepForm;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -57,9 +53,9 @@ public class FilterHandler
         if(localName.equals("filterDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -67,7 +63,7 @@ public class FilterHandler
             }
             
             try {
-                CreateFilterDescriptionForm commandForm = FilterFormFactory.getCreateFilterDescriptionForm();
+                var commandForm = FilterFormFactory.getCreateFilterDescriptionForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
@@ -82,9 +78,9 @@ public class FilterHandler
         } else if(localName.equals("filterStep")) {
             String filterStepName = null;
             String filterItemSelectorName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("filterStepName"))
                     filterStepName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("filterItemSelectorName"))
@@ -92,7 +88,7 @@ public class FilterHandler
             }
             
             try {
-                CreateFilterStepForm commandForm = FilterFormFactory.getCreateFilterStepForm();
+                var commandForm = FilterFormFactory.getCreateFilterStepForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
@@ -108,15 +104,15 @@ public class FilterHandler
             }
         } else if(localName.equals("filterEntranceStep")) {
             String filterStepName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("filterStepName"))
                     filterStepName = attrs.getValue(i);
             }
             
             try {
-                CreateFilterEntranceStepForm commandForm = FilterFormFactory.getCreateFilterEntranceStepForm();
+                var commandForm = FilterFormFactory.getCreateFilterEntranceStepForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
@@ -130,9 +126,9 @@ public class FilterHandler
         } else if(localName.equals("filterStepDestination")) {
             String fromFilterStepName = null;
             String toFilterStepName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("fromFilterStepName"))
                     fromFilterStepName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("toFilterStepName"))
@@ -140,7 +136,7 @@ public class FilterHandler
             }
             
             try {
-                CreateFilterStepDestinationForm commandForm = FilterFormFactory.getCreateFilterStepDestinationForm();
+                var commandForm = FilterFormFactory.getCreateFilterStepDestinationForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);

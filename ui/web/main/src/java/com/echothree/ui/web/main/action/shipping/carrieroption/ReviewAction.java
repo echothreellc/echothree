@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.shipping.carrieroption;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.GetCarrierOptionForm;
 import com.echothree.control.user.carrier.common.result.GetCarrierOptionResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-            String carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
-            GetCarrierOptionForm commandForm = CarrierUtil.getHome().getGetCarrierOptionForm();
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
+            var commandForm = CarrierUtil.getHome().getGetCarrierOptionForm();
             
             commandForm.setCarrierName(carrierName);
             commandForm.setCarrierOptionName(carrierOptionName);
-            
-            CommandResult commandResult = CarrierUtil.getHome().getCarrierOption(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCarrierOptionResult result = (GetCarrierOptionResult)executionResult.getResult();
+
+            var commandResult = CarrierUtil.getHome().getCarrierOption(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCarrierOptionResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CARRIER_OPTION, result.getCarrierOption());
             forwardKey = ForwardConstants.DISPLAY;

@@ -20,18 +20,11 @@ import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlResourceTypeEdit;
 import com.echothree.control.user.accounting.common.form.EditGlResourceTypeForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.EditGlResourceTypeResult;
 import com.echothree.control.user.accounting.common.spec.GlResourceTypeSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlResourceType;
-import com.echothree.model.data.accounting.server.entity.GlResourceTypeDescription;
-import com.echothree.model.data.accounting.server.entity.GlResourceTypeDetail;
-import com.echothree.model.data.accounting.server.value.GlResourceTypeDescriptionValue;
-import com.echothree.model.data.accounting.server.value.GlResourceTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -82,18 +75,18 @@ public class EditGlResourceTypeCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditGlResourceTypeResult result = AccountingResultFactory.getEditGlResourceTypeResult();
+        var result = AccountingResultFactory.getEditGlResourceTypeResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            String glResourceTypeName = spec.getGlResourceTypeName();
-            GlResourceType glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
+            var glResourceTypeName = spec.getGlResourceTypeName();
+            var glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
             
             if(glResourceType != null) {
                 if(editMode.equals(EditMode.LOCK)) {
                     if(lockEntity(glResourceType)) {
-                        GlResourceTypeDescription glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, getPreferredLanguage());
-                        GlResourceTypeEdit edit = AccountingEditFactory.getGlResourceTypeEdit();
-                        GlResourceTypeDetail glResourceTypeDetail = glResourceType.getLastDetail();
+                        var glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, getPreferredLanguage());
+                        var edit = AccountingEditFactory.getGlResourceTypeEdit();
+                        var glResourceTypeDetail = glResourceType.getLastDetail();
 
                         result.setGlResourceType(accountingControl.getGlResourceTypeTransfer(getUserVisit(), glResourceType));
 
@@ -117,20 +110,20 @@ public class EditGlResourceTypeCommand
                 addExecutionError(ExecutionErrors.UnknownGlResourceTypeName.name(), glResourceTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String glResourceTypeName = spec.getGlResourceTypeName();
-            GlResourceType glResourceType = accountingControl.getGlResourceTypeByNameForUpdate(glResourceTypeName);
+            var glResourceTypeName = spec.getGlResourceTypeName();
+            var glResourceType = accountingControl.getGlResourceTypeByNameForUpdate(glResourceTypeName);
             
             if(glResourceType != null) {
                 glResourceTypeName = edit.getGlResourceTypeName();
-                GlResourceType duplicateGlResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
+                var duplicateGlResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
                 
                 if(duplicateGlResourceType == null || glResourceType.equals(duplicateGlResourceType)) {
                     if(lockEntityForUpdate(glResourceType)) {
                         try {
                             var partyPK = getPartyPK();
-                            GlResourceTypeDetailValue glResourceTypeDetailValue = accountingControl.getGlResourceTypeDetailValueForUpdate(glResourceType);
-                            GlResourceTypeDescription glResourceTypeDescription = accountingControl.getGlResourceTypeDescriptionForUpdate(glResourceType, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var glResourceTypeDetailValue = accountingControl.getGlResourceTypeDetailValueForUpdate(glResourceType);
+                            var glResourceTypeDescription = accountingControl.getGlResourceTypeDescriptionForUpdate(glResourceType, getPreferredLanguage());
+                            var description = edit.getDescription();
                             
                             glResourceTypeDetailValue.setGlResourceTypeName(edit.getGlResourceTypeName());
                             glResourceTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -143,7 +136,7 @@ public class EditGlResourceTypeCommand
                             } else if(glResourceTypeDescription != null && description == null) {
                                 accountingControl.deleteGlResourceTypeDescription(glResourceTypeDescription, partyPK);
                             } else if(glResourceTypeDescription != null && description != null) {
-                                GlResourceTypeDescriptionValue glResourceTypeDescriptionValue = accountingControl.getGlResourceTypeDescriptionValue(glResourceTypeDescription);
+                                var glResourceTypeDescriptionValue = accountingControl.getGlResourceTypeDescriptionValue(glResourceTypeDescription);
                                 
                                 glResourceTypeDescriptionValue.setDescription(description);
                                 accountingControl.updateGlResourceTypeDescriptionFromValue(glResourceTypeDescriptionValue, partyPK);

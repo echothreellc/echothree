@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetEmployeeStatusChoicesForm;
 import com.echothree.control.user.party.common.result.GetEmployeeStatusChoicesResult;
 import com.echothree.model.control.employee.common.choice.EmployeeStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class StatusActionForm
     public void setupEmployeeStatusChoices()
             throws NamingException {
         if(employeeStatusChoices == null) {
-            GetEmployeeStatusChoicesForm form = PartyUtil.getHome().getGetEmployeeStatusChoicesForm();
+            var form = PartyUtil.getHome().getGetEmployeeStatusChoicesForm();
 
             form.setEmployeeName(employeeName);
             form.setDefaultEmployeeStatusChoice(employeeStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getEmployeeStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeStatusChoicesResult result = (GetEmployeeStatusChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getEmployeeStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeStatusChoicesResult)executionResult.getResult();
             employeeStatusChoices = result.getEmployeeStatusChoices();
 
             if(employeeStatusChoice == null)

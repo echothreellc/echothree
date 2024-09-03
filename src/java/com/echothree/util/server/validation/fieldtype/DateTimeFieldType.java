@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.model.data.party.server.entity.DateTimeFormatDetail;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
@@ -43,9 +42,9 @@ public class DateTimeFieldType
         if(fieldValue.equalsIgnoreCase("NOW")) {
             result = getSession().START_TIME_LONG.toString();
         } else {
-            DateTimeFormatDetail dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
-            ZoneId zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat() + " " + dateTimeFormatDetail.getJavaTimeFormatSeconds()).withZone(zoneId);
+            var dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
+            var zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());
+            var dtf = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat() + " " + dateTimeFormatDetail.getJavaTimeFormatSeconds()).withZone(zoneId);
             ZonedDateTime zdt = null;
             
             try {

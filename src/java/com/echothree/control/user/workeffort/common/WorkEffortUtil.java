@@ -18,7 +18,6 @@ package com.echothree.control.user.workeffort.common;
 
 import com.echothree.control.user.workeffort.server.WorkEffortLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class WorkEffortUtil {
@@ -30,7 +29,7 @@ public class WorkEffortUtil {
     public static WorkEffortLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (WorkEffortLocal)ctx.lookup("ejb:echothree/echothree-server/WorkEffortBean!com.echothree.control.user.workeffort.server.WorkEffortLocal");
         }
@@ -42,7 +41,7 @@ public class WorkEffortUtil {
     public static WorkEffortRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (WorkEffortRemote)ctx.lookup("ejb:echothree/echothree-server/WorkEffortBean!com.echothree.control.user.workeffort.common.WorkEffortRemote");
         }

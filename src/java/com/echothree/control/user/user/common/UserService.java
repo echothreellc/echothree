@@ -17,10 +17,6 @@
 package com.echothree.control.user.user.common;
 
 import com.echothree.control.user.user.common.form.*;
-import com.echothree.control.user.user.server.command.SetUserVisitPreferredCurrencyCommand;
-import com.echothree.control.user.user.server.command.SetUserVisitPreferredDateTimeFormatCommand;
-import com.echothree.control.user.user.server.command.SetUserVisitPreferredLanguageCommand;
-import com.echothree.control.user.user.server.command.SetUserVisitPreferredTimeZoneCommand;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 

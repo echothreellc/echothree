@@ -20,17 +20,12 @@ import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlAccountCategoryDescriptionEdit;
 import com.echothree.control.user.accounting.common.form.EditGlAccountCategoryDescriptionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.EditGlAccountCategoryDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.GlAccountCategoryDescriptionSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
-import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDescription;
-import com.echothree.model.data.accounting.server.value.GlAccountCategoryDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,25 +74,25 @@ public class EditGlAccountCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditGlAccountCategoryDescriptionResult result = AccountingResultFactory.getEditGlAccountCategoryDescriptionResult();
-        String glAccountCategoryName = spec.getGlAccountCategoryName();
-        GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+        var result = AccountingResultFactory.getEditGlAccountCategoryDescriptionResult();
+        var glAccountCategoryName = spec.getGlAccountCategoryName();
+        var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
         
         if(glAccountCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    GlAccountCategoryDescription glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescription(glAccountCategory, language);
+                    var glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescription(glAccountCategory, language);
                     
                     if(glAccountCategoryDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setGlAccountCategoryDescription(accountingControl.getGlAccountCategoryDescriptionTransfer(getUserVisit(), glAccountCategoryDescription));
 
                             if(lockEntity(glAccountCategory)) {
-                                GlAccountCategoryDescriptionEdit edit = AccountingEditFactory.getGlAccountCategoryDescriptionEdit();
+                                var edit = AccountingEditFactory.getGlAccountCategoryDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(glAccountCategoryDescription.getDescription());
@@ -113,12 +108,12 @@ public class EditGlAccountCategoryDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownGlAccountCategoryDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GlAccountCategoryDescriptionValue glAccountCategoryDescriptionValue = accountingControl.getGlAccountCategoryDescriptionValueForUpdate(glAccountCategory, language);
+                    var glAccountCategoryDescriptionValue = accountingControl.getGlAccountCategoryDescriptionValueForUpdate(glAccountCategory, language);
                     
                     if(glAccountCategoryDescriptionValue != null) {
                         if(lockEntityForUpdate(glAccountCategory)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 glAccountCategoryDescriptionValue.setDescription(description);
                                 

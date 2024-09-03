@@ -23,12 +23,6 @@ import com.echothree.model.control.subscription.server.logic.SubscriptionLogic;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.subscription.server.entity.Subscription;
-import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
-import com.echothree.model.data.subscription.server.entity.SubscriptionType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -64,42 +58,42 @@ public class CreateSubscriptionCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            String subscriptionTypeName = form.getSubscriptionTypeName();
-            SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+            var subscriptionTypeName = form.getSubscriptionTypeName();
+            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String partyName = form.getPartyName();
-                Party party = partyControl.getPartyByName(partyName);
+                var partyName = form.getPartyName();
+                var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    Subscription subscription = subscriptionControl.getSubscription(subscriptionType, party);
+                    var subscription = subscriptionControl.getSubscription(subscriptionType, party);
                     
                     if(subscription == null) {
                         var uomControl = Session.getModelController(UomControl.class);
-                        String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                        var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         UnitOfMeasureType unitOfMeasureType = null;
                         
                         if(unitOfMeasureTypeName != null) {
-                            UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                             
                             unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                         }
                         
                         if(unitOfMeasureTypeName == null || unitOfMeasureType != null) {
-                            String strSubscriptionTime = form.getSubscriptionTime();
-                            Long subscriptionTime = strSubscriptionTime == null? null: Long.valueOf(strSubscriptionTime);
+                            var strSubscriptionTime = form.getSubscriptionTime();
+                            var subscriptionTime = strSubscriptionTime == null? null: Long.valueOf(strSubscriptionTime);
                             
                             if(unitOfMeasureTypeName == null || subscriptionTime != null) {
                                 Long endTime = null;
-                                PartyPK createdBy = getPartyPK();
+                                var createdBy = getPartyPK();
                                 
                                 if(subscriptionTime != null) {
-                                    Conversion conversion = new Conversion(uomControl, unitOfMeasureType, subscriptionTime).convertToLowestUnitOfMeasureType();
+                                    var conversion = new Conversion(uomControl, unitOfMeasureType, subscriptionTime).convertToLowestUnitOfMeasureType();
                                     endTime = session.START_TIME + conversion.getQuantity();
                                 }
                                 

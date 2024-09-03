@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.customer.customeralias;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyAliasForm;
 import com.echothree.control.user.party.common.result.GetPartyAliasResult;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,16 +42,16 @@ public class CustomerAliasUtil {
 
     public void setupCustomer(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(MainBaseAction.getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(MainBaseAction.getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -71,14 +66,14 @@ public class CustomerAliasUtil {
 
     public void setupPartyAliasTransfer(HttpServletRequest request, String partyName, String partyAliasTypeName)
             throws NamingException {
-        GetPartyAliasForm commandForm = PartyUtil.getHome().getGetPartyAliasForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setPartyAliasTypeName(partyAliasTypeName);
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyAliasResult result = (GetPartyAliasResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyAliasResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_ALIAS, result.getPartyAlias());
     }

@@ -19,7 +19,6 @@ package com.echothree.control.user.period.server.command;
 import com.echothree.control.user.period.common.edit.PeriodEditFactory;
 import com.echothree.control.user.period.common.edit.PeriodKindDescriptionEdit;
 import com.echothree.control.user.period.common.form.EditPeriodKindDescriptionForm;
-import com.echothree.control.user.period.common.result.EditPeriodKindDescriptionResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.control.user.period.common.spec.PeriodKindDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -27,10 +26,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.period.server.entity.PeriodKind;
-import com.echothree.model.data.period.server.entity.PeriodKindDescription;
-import com.echothree.model.data.period.server.value.PeriodKindDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,25 +74,25 @@ public class EditPeriodKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        EditPeriodKindDescriptionResult result = PeriodResultFactory.getEditPeriodKindDescriptionResult();
-        String periodKindName = spec.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+        var result = PeriodResultFactory.getEditPeriodKindDescriptionResult();
+        var periodKindName = spec.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByName(periodKindName);
 
         if(periodKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    PeriodKindDescription periodKindDescription = periodControl.getPeriodKindDescription(periodKind, language);
+                    var periodKindDescription = periodControl.getPeriodKindDescription(periodKind, language);
 
                     if(periodKindDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setPeriodKindDescription(periodControl.getPeriodKindDescriptionTransfer(getUserVisit(), periodKindDescription));
 
                             if(lockEntity(periodKind)) {
-                                PeriodKindDescriptionEdit edit = PeriodEditFactory.getPeriodKindDescriptionEdit();
+                                var edit = PeriodEditFactory.getPeriodKindDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(periodKindDescription.getDescription());
@@ -113,13 +108,13 @@ public class EditPeriodKindDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownPeriodKindDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    PeriodKindDescription periodKindDescription = periodControl.getPeriodKindDescriptionForUpdate(periodKind, language);
-                    PeriodKindDescriptionValue periodKindDescriptionValue = periodControl.getPeriodKindDescriptionValue(periodKindDescription);
+                    var periodKindDescription = periodControl.getPeriodKindDescriptionForUpdate(periodKind, language);
+                    var periodKindDescriptionValue = periodControl.getPeriodKindDescriptionValue(periodKindDescription);
 
                     if(periodKindDescriptionValue != null) {
                         if(lockEntityForUpdate(periodKind)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
 
                                 periodKindDescriptionValue.setDescription(description);
 

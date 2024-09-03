@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.CreateLetterSourceForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -48,10 +46,10 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         if(wasPost(request)) {
-            CreateLetterSourceForm commandForm = LetterUtil.getHome().getCreateLetterSourceForm();
+            var commandForm = LetterUtil.getHome().getCreateLetterSourceForm();
             
             commandForm.setPartyName(actionForm.getPartyName());
             commandForm.setLetterSourceName(actionForm.getLetterSourceName());
@@ -61,8 +59,8 @@ public class AddAction
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().createLetterSource(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().createLetterSource(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

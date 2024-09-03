@@ -1,5 +1,35 @@
 # Changelog
 
+## 2024-09-01-01
+
+* Implement Workflows as an Entity Attribute Type [736](https://gitlab.echothree.com/echothree/echothree/-/issues/736)
+* Convert EditWorkflowDestination UC to Use BaseAbstractEditCommand [979](https://gitlab.echothree.com/echothree/echothree/-/issues/979)
+* Convert EditWorkflowEntrance UC to Use BaseAbstractEditCommand [981](https://gitlab.echothree.com/echothree/echothree/-/issues/981)
+* Convert GetUses UC to Use BasePaginatedMultipleEntitiesCommand [1129](https://gitlab.echothree.com/echothree/echothree/-/issues/1129)
+* Convert GetOffers UC to Use BasePaginatedMultipleEntitiesCommand [1133](https://gitlab.echothree.com/echothree/echothree/-/issues/1133)
+* Convert GetUseTypes UC to Use BasePaginatedMultipleEntitiesCommand [1136](https://gitlab.echothree.com/echothree/echothree/-/issues/1136)
+* Convert GetSelectorKinds UC to Use BasePaginatedMultipleEntitiesCommand [1138](https://gitlab.echothree.com/echothree/echothree/-/issues/1138)
+* Convert GetColors UC to Use BasePaginatedMultipleEntitiesCommand [1140](https://gitlab.echothree.com/echothree/echothree/-/issues/1140)
+* Convert GetAppearances UC to Use BasePaginatedMultipleEntitiesCommand [1144](https://gitlab.echothree.com/echothree/echothree/-/issues/1144)
+* Convert GetTextDecorations UC to Use BasePaginatedMultipleEntitiesCommand [1145](https://gitlab.echothree.com/echothree/echothree/-/issues/1145)
+* Convert GetMimeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1147](https://gitlab.echothree.com/echothree/echothree/-/issues/1147)
+* Convert GetFontStyles UC to Use BasePaginatedMultipleEntitiesCommand [1148](https://gitlab.echothree.com/echothree/echothree/-/issues/1148)
+* Convert GetTextTransformations UC to Use BasePaginatedMultipleEntitiesCommand [1149](https://gitlab.echothree.com/echothree/echothree/-/issues/1149)
+* Convert GetFontWeights UC to Use BasePaginatedMultipleEntitiesCommand [1150](https://gitlab.echothree.com/echothree/echothree/-/issues/1150)
+* Convert GetQueueTypes UC to Use BasePaginatedMultipleEntitiesCommand [1242](https://gitlab.echothree.com/echothree/echothree/-/issues/1242)
+* Convert GetFilterKinds UC to Use BasePaginatedMultipleEntitiesCommand [1252](https://gitlab.echothree.com/echothree/echothree/-/issues/1252)
+* Convert GetSequenceTypes UC to Use BasePaginatedMultipleEntitiesCommand [1255](https://gitlab.echothree.com/echothree/echothree/-/issues/1255)
+* Convert GetSequenceChecksumTypes UC to Use BasePaginatedMultipleEntitiesCommand [1256](https://gitlab.echothree.com/echothree/echothree/-/issues/1256)
+* Convert GetSequenceEncoderTypes UC to Use BasePaginatedMultipleEntitiesCommand [1257](https://gitlab.echothree.com/echothree/echothree/-/issues/1257)
+* Add Workflow Entrance Tests [1325](https://gitlab.echothree.com/echothree/echothree/-/issues/1325)
+* Add Workflow Destination Tests [1329](https://gitlab.echothree.com/echothree/echothree/-/issues/1329)
+* Update Google Tag ID [1333](https://gitlab.echothree.com/echothree/echothree/-/issues/1333)
+* Error Prone 2.30.0 Upgrade [1335](https://gitlab.echothree.com/echothree/echothree/-/issues/1335)
+* jOOQ 3.19.11 Upgrade [1336](https://gitlab.echothree.com/echothree/echothree/-/issues/1336)
+* graphql-java-annotations 21.5 Upgrade [1337](https://gitlab.echothree.com/echothree/echothree/-/issues/1337)
+* Add Pagination for workflowEntityStatuses [1339](https://gitlab.echothree.com/echothree/echothree/-/issues/1339)
+* Add Pagination for entityListItems [1340](https://gitlab.echothree.com/echothree/echothree/-/issues/1340)
+
 ## 2024-08-18-01
 
 * Convert EditWorkflowStep UC to Use BaseAbstractEditCommand [982](https://gitlab.echothree.com/echothree/echothree/-/issues/982)

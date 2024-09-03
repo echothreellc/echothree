@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -48,10 +46,10 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         if(wasPost(request)) {
-            CreateWarehouseForm commandForm = WarehouseUtil.getHome().getCreateWarehouseForm();
+            var commandForm = WarehouseUtil.getHome().getCreateWarehouseForm();
             
             commandForm.setWarehouseName(actionForm.getWarehouseName());
             commandForm.setWarehouseTypeName(actionForm.getWarehouseTypeChoice());
@@ -66,8 +64,8 @@ public class AddAction
             commandForm.setPicklistPrinterGroupName(actionForm.getPicklistPrinterGroupChoice());
             commandForm.setPackingListPrinterGroupName(actionForm.getPackingListPrinterGroupChoice());
             commandForm.setShippingManifestPrinterGroupName(actionForm.getShippingManifestPrinterGroupChoice());
-            
-            CommandResult commandResult = WarehouseUtil.getHome().createWarehouse(getUserVisitPK(request), commandForm);
+
+            var commandResult = WarehouseUtil.getHome().createWarehouse(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

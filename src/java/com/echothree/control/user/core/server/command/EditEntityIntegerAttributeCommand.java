@@ -20,23 +20,17 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityIntegerAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityIntegerAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditEntityIntegerAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityIntegerAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeInteger;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
-import com.echothree.model.data.core.server.value.EntityIntegerAttributeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -79,20 +73,20 @@ public class EditEntityIntegerAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        EditEntityIntegerAttributeResult result = CoreResultFactory.getEditEntityIntegerAttributeResult();
+        var result = CoreResultFactory.getEditEntityIntegerAttributeResult();
         var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = spec.getEntityAttributeName();
-                String entityAttributeUlid = spec.getEntityAttributeUlid();
+                var entityAttributeName = spec.getEntityAttributeName();
+                var entityAttributeUlid = spec.getEntityAttributeUlid();
                 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
@@ -100,7 +94,7 @@ public class EditEntityIntegerAttributeCommand
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                             var coreControl = getCoreControl();
                             EntityIntegerAttribute entityIntegerAttribute = null;
-                            BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                                 entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
@@ -110,7 +104,7 @@ public class EditEntityIntegerAttributeCommand
                                         result.setEntityIntegerAttribute(coreControl.getEntityIntegerAttributeTransfer(getUserVisit(), entityIntegerAttribute, entityInstance));
 
                                         if(lockEntity(basePK)) {
-                                            EntityIntegerAttributeEdit edit = CoreEditFactory.getEntityIntegerAttributeEdit();
+                                            var edit = CoreEditFactory.getEntityIntegerAttributeEdit();
 
                                             result.setEdit(edit);
                                             edit.setIntegerAttribute(entityIntegerAttribute.getIntegerAttribute().toString());
@@ -126,12 +120,12 @@ public class EditEntityIntegerAttributeCommand
                                             EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
-                                EntityAttributeInteger entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
-                                Integer integerAttribute = Integer.valueOf(edit.getIntegerAttribute());
+                                var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
+                                var integerAttribute = Integer.valueOf(edit.getIntegerAttribute());
 
                                 if(entityAttributeInteger != null) {
-                                    Integer upperRangeIntegerValue = entityAttributeInteger.getUpperRangeIntegerValue();
-                                    Integer lowerRangeIntegerValue = entityAttributeInteger.getLowerRangeIntegerValue();
+                                    var upperRangeIntegerValue = entityAttributeInteger.getUpperRangeIntegerValue();
+                                    var lowerRangeIntegerValue = entityAttributeInteger.getLowerRangeIntegerValue();
 
                                     if(upperRangeIntegerValue != null && integerAttribute > upperRangeIntegerValue){
                                         addExecutionError(ExecutionErrors.UpperRangeExceeded.name(),
@@ -150,7 +144,7 @@ public class EditEntityIntegerAttributeCommand
                                     if(entityIntegerAttribute != null) {
                                         if(lockEntityForUpdate(basePK)) {
                                             try {
-                                                EntityIntegerAttributeValue entityIntegerAttributeValue = coreControl.getEntityIntegerAttributeValueForUpdate(entityIntegerAttribute);
+                                                var entityIntegerAttributeValue = coreControl.getEntityIntegerAttributeValueForUpdate(entityIntegerAttribute);
 
                                                 entityIntegerAttributeValue.setIntegerAttribute(integerAttribute);
 

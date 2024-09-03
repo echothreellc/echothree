@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.selector.selectornode;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.edit.SelectorNodeDescriptionEdit;
-import com.echothree.control.user.selector.common.form.EditSelectorNodeDescriptionForm;
 import com.echothree.control.user.selector.common.result.EditSelectorNodeDescriptionResult;
-import com.echothree.control.user.selector.common.spec.SelectorNodeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,17 +56,17 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-        String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-        String selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+        var selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditSelectorNodeDescriptionForm commandForm = SelectorUtil.getHome().getEditSelectorNodeDescriptionForm();
-                SelectorNodeDescriptionSpec spec = SelectorUtil.getHome().getSelectorNodeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = SelectorUtil.getHome().getEditSelectorNodeDescriptionForm();
+                var spec = SelectorUtil.getHome().getSelectorNodeDescriptionSpec();
                 
                 if(selectorKindName == null)
                     selectorKindName = actionForm.getSelectorKindName();
@@ -92,19 +87,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    SelectorNodeDescriptionEdit edit = SelectorUtil.getHome().getSelectorNodeDescriptionEdit();
+                    var edit = SelectorUtil.getHome().getSelectorNodeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = SelectorUtil.getHome().editSelectorNodeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SelectorUtil.getHome().editSelectorNodeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditSelectorNodeDescriptionResult result = (EditSelectorNodeDescriptionResult)executionResult.getResult();
+                            var result = (EditSelectorNodeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -117,13 +112,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = SelectorUtil.getHome().editSelectorNodeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditSelectorNodeDescriptionResult result = (EditSelectorNodeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = SelectorUtil.getHome().editSelectorNodeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditSelectorNodeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        SelectorNodeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setSelectorKindName(selectorKindName);
@@ -145,8 +140,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

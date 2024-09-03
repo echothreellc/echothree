@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.item.server.entity.RelatedItemTypeDescription;
-import com.echothree.model.data.item.server.value.RelatedItemTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditRelatedItemTypeDescriptionCommand
     public RelatedItemTypeDescription getEntity(EditRelatedItemTypeDescriptionResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         RelatedItemTypeDescription relatedItemTypeDescription = null;
-        String relatedItemTypeName = spec.getRelatedItemTypeName();
-        RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+        var relatedItemTypeName = spec.getRelatedItemTypeName();
+        var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
         if(relatedItemType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditRelatedItemTypeDescriptionCommand
     @Override
     public void doUpdate(RelatedItemTypeDescription relatedItemTypeDescription) {
         var itemControl = Session.getModelController(ItemControl.class);
-        RelatedItemTypeDescriptionValue relatedItemTypeDescriptionValue = itemControl.getRelatedItemTypeDescriptionValue(relatedItemTypeDescription);
+        var relatedItemTypeDescriptionValue = itemControl.getRelatedItemTypeDescriptionValue(relatedItemTypeDescription);
         
         relatedItemTypeDescriptionValue.setDescription(edit.getDescription());
         

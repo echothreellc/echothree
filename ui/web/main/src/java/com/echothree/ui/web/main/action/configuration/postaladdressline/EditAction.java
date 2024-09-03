@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.postaladdressline;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.edit.PostalAddressLineEdit;
-import com.echothree.control.user.contact.common.form.EditPostalAddressLineForm;
 import com.echothree.control.user.contact.common.result.EditPostalAddressLineResult;
-import com.echothree.control.user.contact.common.spec.PostalAddressLineSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-        String originalPostalAddressLineSortOrder = request.getParameter(ParameterConstants.ORIGINAL_POSTAL_ADDRESS_LINE_SORT_ORDER);
+        var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+        var originalPostalAddressLineSortOrder = request.getParameter(ParameterConstants.ORIGINAL_POSTAL_ADDRESS_LINE_SORT_ORDER);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditPostalAddressLineForm commandForm = ContactUtil.getHome().getEditPostalAddressLineForm();
-                PostalAddressLineSpec spec = ContactUtil.getHome().getPostalAddressLineSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = ContactUtil.getHome().getEditPostalAddressLineForm();
+                var spec = ContactUtil.getHome().getPostalAddressLineSpec();
                 
                 if(postalAddressFormatName == null)
                     postalAddressFormatName = actionForm.getPostalAddressFormatName();
@@ -80,7 +75,7 @@ public class EditAction
                 spec.setPostalAddressLineSortOrder(originalPostalAddressLineSortOrder);
                 
                 if(wasPost(request)) {
-                    PostalAddressLineEdit edit = ContactUtil.getHome().getPostalAddressLineEdit();
+                    var edit = ContactUtil.getHome().getPostalAddressLineEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -91,14 +86,14 @@ public class EditAction
                     edit.setSuffix(actionForm.getSuffix());
                     edit.setAlwaysIncludeSuffix(actionForm.getAlwaysIncludeSuffix().toString());
                     edit.setCollapseIfEmpty(actionForm.getCollapseIfEmpty().toString());
-                    
-                    CommandResult commandResult = ContactUtil.getHome().editPostalAddressLine(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContactUtil.getHome().editPostalAddressLine(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditPostalAddressLineResult result = (EditPostalAddressLineResult)executionResult.getResult();
+                            var result = (EditPostalAddressLineResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -111,13 +106,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ContactUtil.getHome().editPostalAddressLine(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditPostalAddressLineResult result = (EditPostalAddressLineResult)executionResult.getResult();
+
+                    var commandResult = ContactUtil.getHome().editPostalAddressLine(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditPostalAddressLineResult)executionResult.getResult();
                     
                     if(result != null) {
-                        PostalAddressLineEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setPostalAddressFormatName(postalAddressFormatName);
@@ -141,8 +136,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMAT_NAME, postalAddressFormatName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

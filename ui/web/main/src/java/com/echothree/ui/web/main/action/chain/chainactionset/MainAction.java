@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.chain.chainactionset;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainActionSetsForm;
 import com.echothree.control.user.chain.common.result.GetChainActionSetsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,18 +48,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetChainActionSetsForm commandForm = ChainUtil.getHome().getGetChainActionSetsForm();
+        String forwardKey;
+        var commandForm = ChainUtil.getHome().getGetChainActionSetsForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
         commandForm.setChainName(request.getParameter(ParameterConstants.CHAIN_NAME));
 
-        CommandResult commandResult = ChainUtil.getHome().getChainActionSets(getUserVisitPK(request), commandForm);
+        var commandResult = ChainUtil.getHome().getChainActionSets(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainActionSetsResult result = (GetChainActionSetsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainActionSetsResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CHAIN, result.getChain());
             request.setAttribute(AttributeConstants.CHAIN_ACTION_SETS, result.getChainActionSets());

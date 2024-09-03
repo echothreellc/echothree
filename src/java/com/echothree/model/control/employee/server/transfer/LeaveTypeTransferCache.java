@@ -19,7 +19,6 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveType;
-import com.echothree.model.data.employee.server.entity.LeaveTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class LeaveTypeTransferCache
@@ -33,14 +32,14 @@ public class LeaveTypeTransferCache
     }
     
     public LeaveTypeTransfer getLeaveTypeTransfer(LeaveType leaveType) {
-        LeaveTypeTransfer leaveTypeTransfer = get(leaveType);
+        var leaveTypeTransfer = get(leaveType);
         
         if(leaveTypeTransfer == null) {
-            LeaveTypeDetail leaveTypeDetail = leaveType.getLastDetail();
-            String leaveTypeName = leaveTypeDetail.getLeaveTypeName();
-            Boolean isDefault = leaveTypeDetail.getIsDefault();
-            Integer sortOrder = leaveTypeDetail.getSortOrder();
-            String description = employeeControl.getBestLeaveTypeDescription(leaveType, getLanguage());
+            var leaveTypeDetail = leaveType.getLastDetail();
+            var leaveTypeName = leaveTypeDetail.getLeaveTypeName();
+            var isDefault = leaveTypeDetail.getIsDefault();
+            var sortOrder = leaveTypeDetail.getSortOrder();
+            var description = employeeControl.getBestLeaveTypeDescription(leaveType, getLanguage());
             
             leaveTypeTransfer = new LeaveTypeTransfer(leaveTypeName, isDefault, sortOrder, description);
             put(leaveType, leaveTypeTransfer);

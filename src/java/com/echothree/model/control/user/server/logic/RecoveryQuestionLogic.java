@@ -41,7 +41,7 @@ public class RecoveryQuestionLogic
     
     public RecoveryQuestion getRecoveryQuestionByName(final ExecutionErrorAccumulator eea, final String recoveryQuestionName) {
         var userControl = Session.getModelController(UserControl.class);
-        RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+        var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
 
         if(recoveryQuestion == null) {
             handleExecutionError(UnknownRecoveryQuestionNameException.class, eea, ExecutionErrors.UnknownRecoveryQuestionName.name(), recoveryQuestionName);

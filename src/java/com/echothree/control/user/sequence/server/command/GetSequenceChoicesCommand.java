@@ -17,13 +17,11 @@
 package com.echothree.control.user.sequence.server.command;
 
 import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.control.user.sequence.common.result.SequenceResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetSequenceChoicesCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        GetSequenceChoicesResult result = SequenceResultFactory.getGetSequenceChoicesResult();
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var result = SequenceResultFactory.getGetSequenceChoicesResult();
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType != null) {
-            String defaultSequenceChoice = form.getDefaultSequenceChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultSequenceChoice = form.getDefaultSequenceChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setSequenceChoices(sequenceControl.getSequenceChoices(defaultSequenceChoice, getPreferredLanguage(),
                     allowNullChoice, sequenceType));

@@ -18,15 +18,11 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetCustomerTypeContactListGroupForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetCustomerTypeContactListGroupResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
-import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactListGroup;
-import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetCustomerTypeContactListGroupCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerTypeContactListGroupResult result = ContactListResultFactory.getGetCustomerTypeContactListGroupResult();
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var result = ContactListResultFactory.getGetCustomerTypeContactListGroupResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListGroupName = form.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = form.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
             
             if(contactListGroup != null) {
-                CustomerTypeContactListGroup customerTypeContactListGroup = contactListControl.getCustomerTypeContactListGroup(customerType, contactListGroup);
+                var customerTypeContactListGroup = contactListControl.getCustomerTypeContactListGroup(customerType, contactListGroup);
                 
                 if(customerTypeContactListGroup != null) {
                     result.setCustomerTypeContactListGroup(contactListControl.getCustomerTypeContactListGroupTransfer(getUserVisit(), customerTypeContactListGroup));

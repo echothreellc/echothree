@@ -191,7 +191,7 @@ public abstract class Sprout
      */
     @Override
     protected ActionMessages getErrors(final HttpServletRequest request) {
-        final ActionMessages errors = super.getErrors( request );
+        final var errors = super.getErrors( request );
         errors.add( (ActionMessages) request.getSession().getAttribute( Globals.ERROR_KEY ) );
         return errors;
     }
@@ -218,7 +218,7 @@ public abstract class Sprout
      */
     @Override
     protected ActionMessages getMessages(final HttpServletRequest request) {
-        final ActionMessages msgs = super.getMessages( request );
+        final var msgs = super.getMessages( request );
         msgs.add( (ActionMessages) request.getSession().getAttribute( Globals.MESSAGE_KEY ) );
         return msgs;
     }

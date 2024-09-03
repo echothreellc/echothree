@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityListItemDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItemDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class EntityListItemDescriptionTransferCache
     }
     
     public EntityListItemDescriptionTransfer getEntityListItemDescriptionTransfer(EntityListItemDescription entityListItemDescription, EntityInstance entityInstance) {
-        EntityListItemDescriptionTransfer entityListItemDescriptionTransfer = get(entityListItemDescription);
+        var entityListItemDescriptionTransfer = get(entityListItemDescription);
         
         if(entityListItemDescriptionTransfer == null) {
-            EntityListItemTransfer entityListItemTransfer = coreControl.getEntityListItemTransfer(userVisit, entityListItemDescription.getEntityListItem(), entityInstance);
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, entityListItemDescription.getLanguage());
+            var entityListItemTransfer = coreControl.getEntityListItemTransfer(userVisit, entityListItemDescription.getEntityListItem(), entityInstance);
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityListItemDescription.getLanguage());
             
             entityListItemDescriptionTransfer = new EntityListItemDescriptionTransfer(languageTransfer, entityListItemTransfer,
                     entityListItemDescription.getDescription());

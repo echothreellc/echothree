@@ -26,13 +26,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
-import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDescription;
-import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDetail;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.value.ShipmentTimeTypeDescriptionValue;
-import com.echothree.model.data.shipment.server.value.ShipmentTimeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -94,11 +88,11 @@ public class EditShipmentTimeTypeCommand
     public ShipmentTimeType getEntity(EditShipmentTimeTypeResult result) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentTimeType shipmentTimeType = null;
-        String shipmentTypeName = spec.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = spec.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentTimeTypeName = spec.getShipmentTimeTypeName();
+            var shipmentTimeTypeName = spec.getShipmentTimeTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
@@ -133,8 +127,8 @@ public class EditShipmentTimeTypeCommand
     @Override
     public void doLock(ShipmentTimeTypeEdit edit, ShipmentTimeType shipmentTimeType) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentTimeTypeDescription shipmentTimeTypeDescription = shipmentControl.getShipmentTimeTypeDescription(shipmentTimeType, getPreferredLanguage());
-        ShipmentTimeTypeDetail shipmentTimeTypeDetail = shipmentTimeType.getLastDetail();
+        var shipmentTimeTypeDescription = shipmentControl.getShipmentTimeTypeDescription(shipmentTimeType, getPreferredLanguage());
+        var shipmentTimeTypeDetail = shipmentTimeType.getLastDetail();
 
         edit.setShipmentTimeTypeName(shipmentTimeTypeDetail.getShipmentTimeTypeName());
         edit.setIsDefault(shipmentTimeTypeDetail.getIsDefault().toString());
@@ -148,12 +142,12 @@ public class EditShipmentTimeTypeCommand
     @Override
     public void canUpdate(ShipmentTimeType shipmentTimeType) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = spec.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = spec.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentTimeTypeName = edit.getShipmentTimeTypeName();
-            ShipmentTimeType duplicateShipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
+            var shipmentTimeTypeName = edit.getShipmentTimeTypeName();
+            var duplicateShipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
             if(duplicateShipmentTimeType != null && !shipmentTimeType.equals(duplicateShipmentTimeType)) {
                 addExecutionError(ExecutionErrors.DuplicateShipmentTimeTypeName.name(), shipmentTypeName, shipmentTimeTypeName);
@@ -167,9 +161,9 @@ public class EditShipmentTimeTypeCommand
     public void doUpdate(ShipmentTimeType shipmentTimeType) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         var partyPK = getPartyPK();
-        ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue = shipmentControl.getShipmentTimeTypeDetailValueForUpdate(shipmentTimeType);
-        ShipmentTimeTypeDescription shipmentTimeTypeDescription = shipmentControl.getShipmentTimeTypeDescriptionForUpdate(shipmentTimeType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var shipmentTimeTypeDetailValue = shipmentControl.getShipmentTimeTypeDetailValueForUpdate(shipmentTimeType);
+        var shipmentTimeTypeDescription = shipmentControl.getShipmentTimeTypeDescriptionForUpdate(shipmentTimeType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         shipmentTimeTypeDetailValue.setShipmentTimeTypeName(edit.getShipmentTimeTypeName());
         shipmentTimeTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -184,7 +178,7 @@ public class EditShipmentTimeTypeCommand
                 shipmentControl.deleteShipmentTimeTypeDescription(shipmentTimeTypeDescription, partyPK);
             } else {
                 if(shipmentTimeTypeDescription != null && description != null) {
-                    ShipmentTimeTypeDescriptionValue shipmentTimeTypeDescriptionValue = shipmentControl.getShipmentTimeTypeDescriptionValue(shipmentTimeTypeDescription);
+                    var shipmentTimeTypeDescriptionValue = shipmentControl.getShipmentTimeTypeDescriptionValue(shipmentTimeTypeDescription);
 
                     shipmentTimeTypeDescriptionValue.setDescription(description);
                     shipmentControl.updateShipmentTimeTypeDescriptionFromValue(shipmentTimeTypeDescriptionValue, partyPK);

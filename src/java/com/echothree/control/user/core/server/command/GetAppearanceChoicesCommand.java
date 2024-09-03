@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetAppearanceChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetAppearanceChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +60,9 @@ public class GetAppearanceChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetAppearanceChoicesResult result = CoreResultFactory.getGetAppearanceChoicesResult();
-        String defaultAppearanceChoice = form.getDefaultAppearanceChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetAppearanceChoicesResult();
+        var defaultAppearanceChoice = form.getDefaultAppearanceChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setAppearanceChoices(coreControl.getAppearanceChoices(defaultAppearanceChoice, getPreferredLanguage(), allowNullChoice));
         

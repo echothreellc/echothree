@@ -21,8 +21,6 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.value.ContentCatalogDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,12 +62,12 @@ public class SetDefaultContentCatalogCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalogDetailValue contentCatalogDetailValue = contentControl.getContentCatalogDetailValueByNameForUpdate(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalogDetailValue = contentControl.getContentCatalogDetailValueByNameForUpdate(contentCollection, contentCatalogName);
             
             if(contentCatalogDetailValue != null) {
                 if(!contentCatalogDetailValue.getIsDefault()) {

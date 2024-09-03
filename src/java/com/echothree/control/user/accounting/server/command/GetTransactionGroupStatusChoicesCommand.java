@@ -18,9 +18,7 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetTransactionGroupStatusChoicesForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetTransactionGroupStatusChoicesResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,13 +51,13 @@ public class GetTransactionGroupStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionGroupStatusChoicesResult result = AccountingResultFactory.getGetTransactionGroupStatusChoicesResult();
-        String transactionGroupName = form.getTransactionGroupName();
-        TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
+        var result = AccountingResultFactory.getGetTransactionGroupStatusChoicesResult();
+        var transactionGroupName = form.getTransactionGroupName();
+        var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
         
         if(transactionGroupName == null || transactionGroup != null) {
-            String defaultTransactionGroupStatusChoice = form.getDefaultTransactionGroupStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultTransactionGroupStatusChoice = form.getDefaultTransactionGroupStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setTransactionGroupStatusChoices(accountingControl.getTransactionGroupStatusChoices(defaultTransactionGroupStatusChoice,
                     getPreferredLanguage(), allowNullChoice, transactionGroup, getPartyPK()));

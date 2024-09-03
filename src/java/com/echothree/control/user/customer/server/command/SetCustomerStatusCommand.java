@@ -22,7 +22,6 @@ import com.echothree.model.control.customer.server.logic.CustomerLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,11 +63,11 @@ public class SetCustomerStatusCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerName = form.getCustomerName();
-        Customer customer = customerControl.getCustomerByName(customerName);
+        var customerName = form.getCustomerName();
+        var customer = customerControl.getCustomerByName(customerName);
         
         if(customer != null) {
-            String customerStatusChoice = form.getCustomerStatusChoice();
+            var customerStatusChoice = form.getCustomerStatusChoice();
             
             CustomerLogic.getInstance().setCustomerStatus(session, this, customer.getParty(), customerStatusChoice, getPartyPK());
         } else {

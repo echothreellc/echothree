@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetCurrencyForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetCurrencyResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.core.common.ComponentVendors;
@@ -26,7 +25,6 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,7 +61,7 @@ public class GetCurrencyCommand
     protected Currency getEntity() {
         var accountingControl = Session.getModelController(AccountingControl.class);
         Currency currency = null;
-        String currencyIsoName = form.getCurrencyIsoName();
+        var currencyIsoName = form.getCurrencyIsoName();
         var parameterCount = (currencyIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
@@ -97,7 +95,7 @@ public class GetCurrencyCommand
     @Override
     protected BaseResult getResult(Currency currency) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetCurrencyResult result = AccountingResultFactory.getGetCurrencyResult();
+        var result = AccountingResultFactory.getGetCurrencyResult();
 
         if(currency != null) {
             result.setCurrency(accountingControl.getCurrencyTransfer(getUserVisit(), currency));

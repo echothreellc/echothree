@@ -76,7 +76,6 @@ package com.echothree.view.client.web.struts.sslext.taglib;
 import com.echothree.view.client.web.struts.sslext.util.SecureRequestUtils;
 import java.net.MalformedURLException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import org.apache.struts.Globals;
@@ -126,7 +125,7 @@ public class SecureFormTag
         
         // Create an appropriate "form" element based on our parameters
         //    HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
-        StringBuilder results = new StringBuilder("<form");
+        var results = new StringBuilder("<form");
         results.append(" name=\"");
         results.append(beanName);
         results.append("\"");
@@ -174,9 +173,9 @@ public class SecureFormTag
         results.append(">");
         
         // Add a transaction token (if present in our session)
-        HttpSession session = pageContext.getSession();
+        var session = pageContext.getSession();
         if(session != null) {
-            String token = (String) session.getAttribute(Globals.TRANSACTION_TOKEN_KEY);
+            var token = (String) session.getAttribute(Globals.TRANSACTION_TOKEN_KEY);
             if(token != null) {
                 results.append("<input type=\"hidden\" name=\"");
                 results.append(Constants.TOKEN_KEY);
@@ -197,12 +196,12 @@ public class SecureFormTag
         pageContext.setAttribute(Constants.FORM_KEY, this, PageContext.REQUEST_SCOPE);
         
         // Locate or create the bean associated with our form
-        int scope = PageContext.SESSION_SCOPE;
+        var scope = PageContext.SESSION_SCOPE;
         if("request".equals(beanScope)) {
             scope = PageContext.REQUEST_SCOPE;
         }
-        
-        Object bean = pageContext.getAttribute(beanName, scope);
+
+        var bean = pageContext.getAttribute(beanName, scope);
         if(bean == null) {
             // New and improved - use the values from the action mapping
             bean = RequestUtils.createActionForm((HttpServletRequest) pageContext.getRequest(), mapping, moduleConfig, servlet);

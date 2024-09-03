@@ -20,18 +20,13 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.transfer.CacheEntryTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.server.entity.CacheBlobEntry;
-import com.echothree.model.data.core.server.entity.CacheClobEntry;
 import com.echothree.model.data.core.server.entity.CacheEntry;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CacheEntryTransferCache
         extends BaseCoreTransferCache<CacheEntry, CacheEntryTransfer> {
@@ -77,23 +72,23 @@ public class CacheEntryTransferCache
     }
     
     public CacheEntryTransfer getCacheEntryTransfer(CacheEntry cacheEntry) {
-        CacheEntryTransfer cacheEntryTransfer = get(cacheEntry);
+        var cacheEntryTransfer = get(cacheEntry);
         
         if(cacheEntryTransfer == null) {
-            String cacheEntryKey = filterCacheEntryKey ? null : cacheEntry.getCacheEntryKey();
-            MimeType mimeType = cacheEntry.getMimeType();
-            MimeTypeTransfer mimeTypeTransfer = filterMimeType ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
-            Long unformattedCreatedTime = cacheEntry.getCreatedTime();
-            String createdTime = filterCreatedTime ? null : formatTypicalDateTime(unformattedCreatedTime);
-            Long unformattedValidUntilTime = cacheEntry.getValidUntilTime();
-            String validUntilTime = filterValidUntilTime ? null : formatTypicalDateTime(unformattedValidUntilTime);
+            var cacheEntryKey = filterCacheEntryKey ? null : cacheEntry.getCacheEntryKey();
+            var mimeType = cacheEntry.getMimeType();
+            var mimeTypeTransfer = filterMimeType ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var unformattedCreatedTime = cacheEntry.getCreatedTime();
+            var createdTime = filterCreatedTime ? null : formatTypicalDateTime(unformattedCreatedTime);
+            var unformattedValidUntilTime = cacheEntry.getValidUntilTime();
+            var validUntilTime = filterValidUntilTime ? null : formatTypicalDateTime(unformattedValidUntilTime);
             String clob = null;
             ByteArray blob = null;
 
-            String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+            var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
                 if(includeClob) {
-                    CacheClobEntry cacheClobEntry = coreControl.getCacheClobEntryByCacheEntry(cacheEntry);
+                    var cacheClobEntry = coreControl.getCacheClobEntryByCacheEntry(cacheEntry);
 
                     if(cacheClobEntry != null) {
                         clob = cacheClobEntry.getClob();
@@ -101,7 +96,7 @@ public class CacheEntryTransferCache
                 }
             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
                 if(includeBlob) {
-                    CacheBlobEntry cacheBlobEntry = coreControl.getCacheBlobEntryByCacheEntry(cacheEntry);
+                    var cacheBlobEntry = coreControl.getCacheBlobEntryByCacheEntry(cacheEntry);
 
                     if(cacheBlobEntry != null) {
                         blob = cacheBlobEntry.getBlob();

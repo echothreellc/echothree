@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employment;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.CreateEmploymentForm;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -60,7 +59,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEmploymentForm commandForm = EmployeeUtil.getHome().getCreateEmploymentForm();
+        var commandForm = EmployeeUtil.getHome().getCreateEmploymentForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setCompanyName(actionForm.getCompanyChoice());

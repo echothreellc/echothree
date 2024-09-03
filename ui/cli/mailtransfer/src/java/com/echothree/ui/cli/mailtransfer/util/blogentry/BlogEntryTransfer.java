@@ -19,23 +19,14 @@ package com.echothree.ui.cli.mailtransfer.util.blogentry;
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.edit.BlogEntryEdit;
-import com.echothree.control.user.forum.common.form.CreateBlogEntryForm;
-import com.echothree.control.user.forum.common.form.CreateForumForumThreadForm;
-import com.echothree.control.user.forum.common.form.CreateForumMessageAttachmentDescriptionForm;
-import com.echothree.control.user.forum.common.form.CreateForumMessageAttachmentForm;
-import com.echothree.control.user.forum.common.form.EditBlogEntryForm;
 import com.echothree.control.user.forum.common.result.CreateBlogEntryResult;
 import com.echothree.control.user.forum.common.result.EditBlogEntryResult;
-import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.ui.cli.mailtransfer.MailTransfer;
 import com.echothree.ui.cli.mailtransfer.util.blogentry.BlogEntryTransfer.CollectedParts.CapturedMessageAttachment;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.cyberneko.HtmlWriter;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.string.StringUtils;
@@ -48,17 +39,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.StringReader;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import javax.activation.DataHandler;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.mail.Address;
@@ -78,7 +65,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.net.pop3.POP3;
-import org.apache.commons.net.pop3.POP3MessageInfo;
 import org.apache.commons.net.pop3.POP3SClient;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
 import org.apache.xerces.xni.parser.XMLInputSource;
@@ -136,14 +122,14 @@ public class BlogEntryTransfer {
 
     String rewriteImageUrls(String cmsServlet, String html, String forumMessageName, Map<String, CapturedMessageAttachment> capturedMessageAttachmentsByCid)
             throws IOException {
-        XMLInputSource source = new XMLInputSource(null, null, null, new StringReader(html), null);
+        var source = new XMLInputSource(null, null, null, new StringReader(html), null);
         XMLParserConfiguration parser = new HTMLConfiguration();
 
-        ImageSourceTransformFilter imageSourceTransformFilter = new ImageSourceTransformFilter(cmsServlet, forumMessageName, capturedMessageAttachmentsByCid);
+        var imageSourceTransformFilter = new ImageSourceTransformFilter(cmsServlet, forumMessageName, capturedMessageAttachmentsByCid);
 
         // write to file with specified encoding
         OutputStream stream = new ByteArrayOutputStream();
-        String encoding = "utf-8";
+        var encoding = "utf-8";
         XMLDocumentFilter writer = new HtmlWriter(stream, encoding);
 
         XMLDocumentFilter[] filters = { imageSourceTransformFilter, writer };
@@ -162,15 +148,15 @@ public class BlogEntryTransfer {
 
     String getBodyContents(String html)
             throws IOException {
-        XMLInputSource source = new XMLInputSource(null, null, null, new StringReader(html), null);
+        var source = new XMLInputSource(null, null, null, new StringReader(html), null);
         XMLParserConfiguration parser = new HTMLConfiguration();
 
-        BodyContentsOnlyFilter bodyContentsOnlyFilter = new BodyContentsOnlyFilter();
+        var bodyContentsOnlyFilter = new BodyContentsOnlyFilter();
         //ImageSourceTransformFilter imageSourceTransformFilter = new ImageSourceTransformFilter();
 
         // write to file with specified encoding
         OutputStream stream = new ByteArrayOutputStream();
-        String encoding = "utf-8";
+        var encoding = "utf-8";
         XMLDocumentFilter writer = new HtmlWriter(stream, encoding);
 
         XMLDocumentFilter[] filters = { bodyContentsOnlyFilter, writer };
@@ -189,14 +175,14 @@ public class BlogEntryTransfer {
 
     String getCmsTranformed(String cmsBaseUrl, String html)
             throws IOException {
-        XMLInputSource source = new XMLInputSource(null, null, null, new StringReader(html), null);
+        var source = new XMLInputSource(null, null, null, new StringReader(html), null);
         XMLParserConfiguration parser = new HTMLConfiguration();
 
-        CmsTransformFilter cmsTransformFilter = new CmsTransformFilter(cmsBaseUrl);
+        var cmsTransformFilter = new CmsTransformFilter(cmsBaseUrl);
 
         // write to file with specified encoding
         OutputStream stream = new ByteArrayOutputStream();
-        String encoding = "utf-8";
+        var encoding = "utf-8";
         XMLDocumentFilter writer = new HtmlWriter(stream, encoding);
 
         XMLDocumentFilter[] filters = { cmsTransformFilter, writer };
@@ -235,7 +221,7 @@ public class BlogEntryTransfer {
         }
 
         String getCapturedHtml() {
-            StringBuilder capturedHtml = new StringBuilder();
+            var capturedHtml = new StringBuilder();
 
             capturedMessageParts.stream().forEach((capturedMessagePart) -> {
                 capturedHtml.append(capturedMessagePart.html);
@@ -245,7 +231,7 @@ public class BlogEntryTransfer {
         }
 
         String addCapturedMessagePart(String cid, MimeType mimeType, ByteArray blob, String description) {
-            CapturedMessageAttachment capturedMessageAttachment = new CapturedMessageAttachment(forumMessageAttachmentSequence++, mimeType, blob, description);
+            var capturedMessageAttachment = new CapturedMessageAttachment(forumMessageAttachmentSequence++, mimeType, blob, description);
             String returnedCid = null;
 
             capturedMessageAttachments.add(capturedMessageAttachment);
@@ -283,7 +269,7 @@ public class BlogEntryTransfer {
 
     String createBlogEntry(String cmsServlet, String username, List<String> forumNames, String title, CollectedParts collectedParts)
             throws NamingException, IOException {
-        CreateBlogEntryForm createBlogEntryForm = ForumUtil.getHome().getCreateBlogEntryForm();
+        var createBlogEntryForm = ForumUtil.getHome().getCreateBlogEntryForm();
         String finalContent;
 
         createBlogEntryForm.setUsername(username);
@@ -294,23 +280,23 @@ public class BlogEntryTransfer {
         createBlogEntryForm.setContentMimeTypeName(MimeTypes.TEXT_HTML.mimeTypeName());
         createBlogEntryForm.setContent("placeholder");
 
-        CommandResult commandResult = ForumUtil.getHome().createBlogEntry(getUserVisit(), createBlogEntryForm);
+        var commandResult = ForumUtil.getHome().createBlogEntry(getUserVisit(), createBlogEntryForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            CreateBlogEntryResult result = (CreateBlogEntryResult)executionResult.getResult();
-            String forumThreadName = result.getForumThreadName();
-            String forumMessageName = result.getForumMessageName();
-            String html = rewriteImageUrls(cmsServlet, collectedParts.getCapturedHtml(), forumMessageName, collectedParts.capturedMessageAttachmentsByCid);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (CreateBlogEntryResult)executionResult.getResult();
+            var forumThreadName = result.getForumThreadName();
+            var forumMessageName = result.getForumMessageName();
+            var html = rewriteImageUrls(cmsServlet, collectedParts.getCapturedHtml(), forumMessageName, collectedParts.capturedMessageAttachmentsByCid);
             
             log.info("Captured HTML: " + html);
             finalContent = wrapInHtmlDocument(html);
             
-            for(CapturedMessageAttachment capturedMessageAttachment : collectedParts.capturedMessageAttachments) {
-                CreateForumMessageAttachmentForm createForumMessageAttachmentForm = ForumUtil.getHome().getCreateForumMessageAttachmentForm();
-                MimeType mimeType = capturedMessageAttachment.mimeType;
-                String mimeTypeName = mimeType.getPrimaryType() + "/" + mimeType.getSubType();
-                String description = capturedMessageAttachment.description;
+            for(var capturedMessageAttachment : collectedParts.capturedMessageAttachments) {
+                var createForumMessageAttachmentForm = ForumUtil.getHome().getCreateForumMessageAttachmentForm();
+                var mimeType = capturedMessageAttachment.mimeType;
+                var mimeTypeName = mimeType.getPrimaryType() + "/" + mimeType.getSubType();
+                var description = capturedMessageAttachment.description;
 
                 if(mimeTypeName.equals("image/jpg")) {
                     mimeTypeName = MimeTypes.IMAGE_JPEG.mimeTypeName();
@@ -326,7 +312,7 @@ public class BlogEntryTransfer {
                 if(commandResult.hasErrors()) {
                     log.error(commandResult);
                 } else if(description != null) {
-                    CreateForumMessageAttachmentDescriptionForm createForumMessageAttachmentDescriptionForm = ForumUtil.getHome().getCreateForumMessageAttachmentDescriptionForm();
+                    var createForumMessageAttachmentDescriptionForm = ForumUtil.getHome().getCreateForumMessageAttachmentDescriptionForm();
 
                     createForumMessageAttachmentDescriptionForm.setForumMessageName(forumMessageName);
                     createForumMessageAttachmentDescriptionForm.setForumMessageAttachmentSequence(capturedMessageAttachment.forumMessageAttachmentSequence.toString());
@@ -344,8 +330,8 @@ public class BlogEntryTransfer {
             }
 
             {
-                EditBlogEntryForm commandForm = ForumUtil.getHome().getEditBlogEntryForm();
-                ForumMessageSpec spec = ForumUtil.getHome().getForumMessageSpec();
+                var commandForm = ForumUtil.getHome().getEditBlogEntryForm();
+                var spec = ForumUtil.getHome().getForumMessageSpec();
 
                 commandForm.setSpec(spec);
                 spec.setForumMessageName(forumMessageName);
@@ -354,10 +340,10 @@ public class BlogEntryTransfer {
 
                 commandResult = ForumUtil.getHome().editBlogEntry(getUserVisit(), commandForm);
                 executionResult = commandResult.getExecutionResult();
-                EditBlogEntryResult editBlogEntryResult = (EditBlogEntryResult)executionResult.getResult();
+                var editBlogEntryResult = (EditBlogEntryResult)executionResult.getResult();
 
                 if(editBlogEntryResult != null) {
-                    BlogEntryEdit edit = editBlogEntryResult.getEdit();
+                    var edit = editBlogEntryResult.getEdit();
 
                     edit.setContent(html);
 
@@ -375,8 +361,8 @@ public class BlogEntryTransfer {
             }
 
             {
-                for(int i = 1 ; i < forumNames.size() ; i++) {
-                    CreateForumForumThreadForm commandForm = ForumUtil.getHome().getCreateForumForumThreadForm();
+                for(var i = 1; i < forumNames.size() ; i++) {
+                    var commandForm = ForumUtil.getHome().getCreateForumForumThreadForm();
 
                     commandForm.setForumName(forumNames.get(i));
                     commandForm.setForumThreadName(forumThreadName);
@@ -404,7 +390,7 @@ public class BlogEntryTransfer {
 
     String captureContent(String cmsServlet, String username, List<String> forumNames, String title, Object content)
             throws MessagingException, MimeTypeParseException, IOException, NamingException {
-        CollectedParts collectedParts = captureContent(2, null, content);
+        var collectedParts = captureContent(2, null, content);
         String finalContent = null;
 
         if(collectedParts != null) {
@@ -418,10 +404,10 @@ public class BlogEntryTransfer {
 
     CollectedParts captureContent(int depth, CollectedParts collectedParts, Object content)
             throws MessagingException, MimeTypeParseException, IOException {
-        String indent = StringUtils.getInstance().repeatingStringFromChar(' ', depth);
+        var indent = StringUtils.getInstance().repeatingStringFromChar(' ', depth);
 
         if(content instanceof String) {
-            String html =  StringUtils.getInstance().convertToHtml((String)content, MimeTypes.TEXT_X_MARKUP.mimeTypeName());
+            var html =  StringUtils.getInstance().convertToHtml((String)content, MimeTypes.TEXT_X_MARKUP.mimeTypeName());
 
             if(collectedParts == null) {
                 collectedParts = new CollectedParts();
@@ -430,10 +416,10 @@ public class BlogEntryTransfer {
 
             log.info(indent + "text/plain");
         } else if(content instanceof MimeMultipart) {
-            MimeMultipart mimeMultipartContent = (MimeMultipart)content;
-            MimeType mimeType = new MimeType(mimeMultipartContent.getContentType());
-            String subType = mimeType.getSubType();
-            String mimeTypeName = mimeType.getPrimaryType() + "/" + subType;
+            var mimeMultipartContent = (MimeMultipart)content;
+            var mimeType = new MimeType(mimeMultipartContent.getContentType());
+            var subType = mimeType.getSubType();
+            var mimeTypeName = mimeType.getPrimaryType() + "/" + subType;
 
             log.info(indent + "MimeMultipart's mimeTypeName: " + mimeTypeName);
 
@@ -442,18 +428,18 @@ public class BlogEntryTransfer {
                 case "related":
                     collectedParts = new CollectedParts();
                     
-                    for (int x = 0; x < mimeMultipartContent.getCount(); x++) {
-                        BodyPart bodyPart = mimeMultipartContent.getBodyPart(x);
+                    for (var x = 0; x < mimeMultipartContent.getCount(); x++) {
+                        var bodyPart = mimeMultipartContent.getBodyPart(x);
                         
                         captureContent(depth + 2, collectedParts, bodyPart);
                     }   break;
                 case "alternative":
-                    int count = mimeMultipartContent.getCount();
+                    var count = mimeMultipartContent.getCount();
                     List<CollectedParts> alternativeCollectedParts = new ArrayList<>(count);
                     
-                    for (int x = 0; x < mimeMultipartContent.getCount(); x++) {
-                        CollectedParts altCollectedParts = new CollectedParts();
-                        BodyPart bodyPart = mimeMultipartContent.getBodyPart(x);
+                    for (var x = 0; x < mimeMultipartContent.getCount(); x++) {
+                        var altCollectedParts = new CollectedParts();
+                        var bodyPart = mimeMultipartContent.getBodyPart(x);
                         
                         captureContent(depth + 2, altCollectedParts, bodyPart);
                         
@@ -463,7 +449,7 @@ public class BlogEntryTransfer {
                     
                     log.info(indent + "alternatives count: " + alternativeCollectedParts.size());
 
-                    for(CollectedParts alternativeCollectedPart : alternativeCollectedParts) {
+                    for(var alternativeCollectedPart : alternativeCollectedParts) {
                         if(alternativeCollectedPart.nativeFancyContent) {
                             collectedParts = alternativeCollectedPart;
                             log.info(indent + "found nativeFancyContent");
@@ -475,48 +461,48 @@ public class BlogEntryTransfer {
                     break;
             }
         } else if(content instanceof MimeBodyPart) {
-            MimeBodyPart mimeBodyPart = (MimeBodyPart)content;
-            MimeType mimeType = new MimeType(mimeBodyPart.getContentType());
+            var mimeBodyPart = (MimeBodyPart)content;
+            var mimeType = new MimeType(mimeBodyPart.getContentType());
 
-            String primaryType = mimeType.getPrimaryType();
-            String mimeTypeName = primaryType + "/" + mimeType.getSubType();
+            var primaryType = mimeType.getPrimaryType();
+            var mimeTypeName = primaryType + "/" + mimeType.getSubType();
             log.info(indent + "MimeBodyPart's mimeTypeName: " + mimeTypeName);
 
             if(primaryType.equals("multipart")) {
-                MimeMultipart mimeMultipartContent = (MimeMultipart)mimeBodyPart.getContent();
+                var mimeMultipartContent = (MimeMultipart)mimeBodyPart.getContent();
 
-                for (int x = 0; x < mimeMultipartContent.getCount(); x++) {
-                    BodyPart bodyPart = mimeMultipartContent.getBodyPart(x);
+                for (var x = 0; x < mimeMultipartContent.getCount(); x++) {
+                    var bodyPart = mimeMultipartContent.getBodyPart(x);
 
                     captureContent(depth + 2, collectedParts, bodyPart);
                 }
             } else {
-                String disposition = mimeBodyPart.getDisposition();
+                var disposition = mimeBodyPart.getDisposition();
                 String html = null;
 
                 if (disposition != null && (disposition.equals(BodyPart.ATTACHMENT) || disposition.equals(BodyPart.INLINE))) {
-                    DataHandler handler = mimeBodyPart.getDataHandler();
-                    String description = handler.getName();
-                    String cid = mimeBodyPart.getContentID();
+                    var handler = mimeBodyPart.getDataHandler();
+                    var description = handler.getName();
+                    var cid = mimeBodyPart.getContentID();
 
                     log.info(indent + "  description: " + handler.getName());
                     log.info(indent + "  disposition: " + disposition);
                     log.info(indent + "  cid: " + cid);
 
-                    String returnedCid = collectedParts.addCapturedMessagePart(cid, mimeType, new ByteArray(IOUtils.toByteArray(handler.getInputStream())), description);
+                    var returnedCid = collectedParts.addCapturedMessagePart(cid, mimeType, new ByteArray(IOUtils.toByteArray(handler.getInputStream())), description);
                     collectedParts.nativeFancyContent = true;
 
                     if(returnedCid != null) {
                         html = "<img src=\"cid:" + returnedCid + "\">";
                     }
                 } else {
-                    boolean alreadyHtml = mimeTypeName.equals("text/html");
+                    var alreadyHtml = mimeTypeName.equals("text/html");
 
                     if(mimeTypeName.equals(MimeTypes.TEXT_PLAIN.mimeTypeName())) {
                         mimeTypeName = MimeTypes.TEXT_X_MARKUP.mimeTypeName();
                     }
 
-                    String mimeBodyPartContent = (String)mimeBodyPart.getContent();
+                    var mimeBodyPartContent = (String)mimeBodyPart.getContent();
                     html = alreadyHtml ? getBodyContents(mimeBodyPartContent) : StringUtils.getInstance().convertToHtml(mimeBodyPartContent, mimeTypeName);
 
                     collectedParts.nativeFancyContent |= alreadyHtml;
@@ -534,7 +520,7 @@ public class BlogEntryTransfer {
     }
 
     private String getTrimmedStringProperty(String property, boolean required) {
-        String value = StringUtils.getInstance().trimToNull(configuration.getString(property));
+        var value = StringUtils.getInstance().trimToNull(configuration.getString(property));
 
         if(required && value == null) {
             log.error(property + " is a required property");
@@ -545,16 +531,16 @@ public class BlogEntryTransfer {
 
     public void sendResponse(String cmsBaseUrl, String smtpServerName, String from, String to, String subject, String body) {
         // Get system properties
-        Properties props = System.getProperties();
+        var props = System.getProperties();
 
         // Setup mail server
         props.put("mail.smtp.host", smtpServerName);
 
         // Get session
-        Session session = Session.getDefaultInstance(props, null);
+        var session = Session.getDefaultInstance(props, null);
 
         // Define message
-        MimeMessage message = new MimeMessage(session);
+        var message = new MimeMessage(session);
         try {
             message.setFrom(new InternetAddress(from));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
@@ -571,8 +557,8 @@ public class BlogEntryTransfer {
 
     private List<Address> getRecipientAddresses(MimeMessage mimeMessage)
             throws MessagingException {
-        Address[] toAddresses = mimeMessage.getRecipients(RecipientType.TO);
-        Address[] ccAddresses = mimeMessage.getRecipients(RecipientType.CC);
+        var toAddresses = mimeMessage.getRecipients(RecipientType.TO);
+        var ccAddresses = mimeMessage.getRecipients(RecipientType.CC);
         List<Address> recipientAddresses = new ArrayList<>((toAddresses == null ? 0 : toAddresses.length) + (ccAddresses == null ? 0 : ccAddresses.length));
 
         if(toAddresses != null) {
@@ -588,15 +574,15 @@ public class BlogEntryTransfer {
 
     public void transfer()
         throws Exception {
-        boolean useTls = configuration.getBoolean("com.echothree.ui.cli.mailtransfer.blogentry.useTls", true);
-        String pop3ServerName = getTrimmedStringProperty("com.echothree.ui.cli.mailtransfer.blogentry.serverName", true);
-        String pop3Username = getTrimmedStringProperty("com.echothree.ui.cli.mailtransfer.blogentry.username", true);
-        String pop3Password = getTrimmedStringProperty("com.echothree.ui.cli.mailtransfer.blogentry.password", true);
-        String responseFrom = configuration.getString("com.echothree.ui.cli.mailtransfer.blogentry.responseFrom");
-        String cmsBaseUrl = configuration.getString("com.echothree.ui.cli.mailtransfer.blogentry.cmsBaseUrl");
-        String cmsServlet = configuration.getString("com.echothree.ui.cli.mailtransfer.blogentry.cmsServlet");
-        String domainName = getTrimmedStringProperty("com.echothree.ui.cli.mailtransfer.blogentry.domainName", true);
-        boolean trimDomainName = configuration.getBoolean("com.echothree.ui.cli.mailtransfer.blogentry.trimDomainName", false);
+        var useTls = configuration.getBoolean("com.echothree.ui.cli.mailtransfer.blogentry.useTls", true);
+        var pop3ServerName = getTrimmedStringProperty("com.echothree.ui.cli.mailtransfer.blogentry.serverName", true);
+        var pop3Username = getTrimmedStringProperty("com.echothree.ui.cli.mailtransfer.blogentry.username", true);
+        var pop3Password = getTrimmedStringProperty("com.echothree.ui.cli.mailtransfer.blogentry.password", true);
+        var responseFrom = configuration.getString("com.echothree.ui.cli.mailtransfer.blogentry.responseFrom");
+        var cmsBaseUrl = configuration.getString("com.echothree.ui.cli.mailtransfer.blogentry.cmsBaseUrl");
+        var cmsServlet = configuration.getString("com.echothree.ui.cli.mailtransfer.blogentry.cmsServlet");
+        var domainName = getTrimmedStringProperty("com.echothree.ui.cli.mailtransfer.blogentry.domainName", true);
+        var trimDomainName = configuration.getBoolean("com.echothree.ui.cli.mailtransfer.blogentry.trimDomainName", false);
 
         if(pop3ServerName != null && pop3Username != null && pop3Password != null && domainName != null) {
             POP3SClient pop3sClient = null;
@@ -609,28 +595,28 @@ public class BlogEntryTransfer {
                     pop3sClient.login(pop3Username, pop3Password);
 
                     if(pop3sClient.getState() == POP3.TRANSACTION_STATE) {
-                        POP3MessageInfo[] pop3MessageInfos = pop3sClient.listMessages();
+                        var pop3MessageInfos = pop3sClient.listMessages();
 
                         log.info("message count: " + pop3MessageInfos.length);
 
                         if(pop3MessageInfos.length > 0) {
-                            int successfulMessages = 0;
+                            var successfulMessages = 0;
 
-                            for(int i = 0; i < pop3MessageInfos.length && successfulMessages < 10; i++) {
-                                POP3MessageInfo pop3MessageInfo = pop3MessageInfos[i];
-                                int messageId = pop3MessageInfo.number;
-                                Reader reader = pop3sClient.retrieveMessage(messageId);
-                                BufferedReader bufferedReader = new BufferedReader(reader);
-                                StringBuilder stringBuilder = new StringBuilder();
+                            for(var i = 0; i < pop3MessageInfos.length && successfulMessages < 10; i++) {
+                                var pop3MessageInfo = pop3MessageInfos[i];
+                                var messageId = pop3MessageInfo.number;
+                                var reader = pop3sClient.retrieveMessage(messageId);
+                                var bufferedReader = new BufferedReader(reader);
+                                var stringBuilder = new StringBuilder();
 
                                 log.info("message " + pop3MessageInfo.number + ", size = " + pop3MessageInfo.size);
 
-                                for(String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
+                                for(var line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
                                     stringBuilder.append(line);
                                     stringBuilder.append('\n');
                                 }
 
-                                ByteArray message = new ByteArray(stringBuilder.toString().getBytes(Charsets.UTF_8));
+                                var message = new ByteArray(stringBuilder.toString().getBytes(Charsets.UTF_8));
 
                                 String description;
                                 String sender = null;
@@ -638,16 +624,16 @@ public class BlogEntryTransfer {
                                 String sentDate = null;
 
                                 try {
-                                    Properties props = System.getProperties();
-                                    javax.mail.Session mailSession = javax.mail.Session.getInstance(props);
-                                    ByteArrayInputStream bais = new ByteArrayInputStream(message.byteArrayValue());
-                                    MimeMessage mimeMessage = new MimeMessage(mailSession, bais);
+                                    var props = System.getProperties();
+                                    var mailSession = javax.mail.Session.getInstance(props);
+                                    var bais = new ByteArrayInputStream(message.byteArrayValue());
+                                    var mimeMessage = new MimeMessage(mailSession, bais);
                                     String finalContent;
 
                                     description = mimeMessage.getSubject();
 
                                     if(description != null) {
-                                        int length = description.length();
+                                        var length = description.length();
 
                                         if(length > 80) {
                                             description = description.substring(0, 80);
@@ -656,9 +642,9 @@ public class BlogEntryTransfer {
                                         }
                                     }
 
-                                    Address[] fromAddresses = mimeMessage.getFrom();
+                                    var fromAddresses = mimeMessage.getFrom();
                                     if(fromAddresses != null && fromAddresses.length > 0) {
-                                        Address address = fromAddresses[0];
+                                        var address = fromAddresses[0];
 
                                         if(address instanceof InternetAddress) {
                                             sender = ((InternetAddress)address).getAddress();
@@ -667,10 +653,10 @@ public class BlogEntryTransfer {
 
                                     if(sender != null) {
                                         if(trimDomainName) {
-                                            String[] senderSplit = Splitter.on('@').trimResults().omitEmptyStrings().splitToList(sender).toArray(new String[0]);
+                                            var senderSplit = Splitter.on('@').trimResults().omitEmptyStrings().splitToList(sender).toArray(new String[0]);
 
                                             if(senderSplit.length == 2) {
-                                                String senderDomainName = senderSplit[1];
+                                                var senderDomainName = senderSplit[1];
 
                                                 if(senderDomainName.equals(domainName)) {
                                                     username = senderSplit[0];
@@ -688,10 +674,10 @@ public class BlogEntryTransfer {
                                     if(username == null) {
                                         log.error("A valid username for posting wasn't found: " + sender);
                                     } else {
-                                        List<Address> recipientAddresses = getRecipientAddresses(mimeMessage);
+                                        var recipientAddresses = getRecipientAddresses(mimeMessage);
                                         List<String> forumNames = new ArrayList<>(recipientAddresses.size());
-                                        
-                                        Date date = mimeMessage.getSentDate();
+
+                                        var date = mimeMessage.getSentDate();
                                         if (date != null) {
                                             sentDate = date.toString();
                                         }
@@ -701,16 +687,16 @@ public class BlogEntryTransfer {
                                         log.info("Date: " + sentDate);
                                         
                                         recipientAddresses.stream().filter((recipientAddress) -> (recipientAddress instanceof InternetAddress)).map((recipientAddress) -> ((InternetAddress)recipientAddress).getAddress()).forEach((recipient) -> {
-                                            String[] recipientSplit = Splitter.on('@').trimResults().omitEmptyStrings().splitToList(recipient).toArray(new String[0]);
+                                            var recipientSplit = Splitter.on('@').trimResults().omitEmptyStrings().splitToList(recipient).toArray(new String[0]);
                                             
                                             if(recipientSplit.length == 2) {
-                                                String foundDomainName = recipientSplit[1];
+                                                var foundDomainName = recipientSplit[1];
                                                 
                                                 if(foundDomainName.equals(domainName)) {
-                                                    String foundForumName = recipientSplit[0];
-                                                    String configurationKey = "com.echothree.ui.cli.mailtransfer.util.blogentry.forumName." + foundForumName;
-                                                    String configurationValue = configuration.getString(configurationKey);
-                                                    String forumName = configurationValue == null ? foundForumName : configurationValue;
+                                                    var foundForumName = recipientSplit[0];
+                                                    var configurationKey = "com.echothree.ui.cli.mailtransfer.util.blogentry.forumName." + foundForumName;
+                                                    var configurationValue = configuration.getString(configurationKey);
+                                                    var forumName = configurationValue == null ? foundForumName : configurationValue;
                                                     
                                                     forumNames.add(forumName);
                                                     log.info("To: " + recipient + ", posting to: " + forumName);

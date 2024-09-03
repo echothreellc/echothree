@@ -27,12 +27,7 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.item.server.entity.ItemUnitPriceLimit;
-import com.echothree.model.data.item.server.value.ItemUnitPriceLimitValue;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -75,7 +70,7 @@ public class EditItemUnitPriceLimitCommand
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = spec.getCurrencyIsoName();
+        var currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
     }
@@ -96,23 +91,23 @@ public class EditItemUnitPriceLimitCommand
     public ItemUnitPriceLimit getEntity(EditItemUnitPriceLimitResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitPriceLimit itemUnitPriceLimit = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryConditionName = spec.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryConditionName = spec.getInventoryConditionName();
+            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                ItemDetail itemDetail = item.getLastDetail();
-                String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
+                var itemDetail = item.getLastDetail();
+                var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
                 if(unitOfMeasureType != null) {
                     var accountingControl = Session.getModelController(AccountingControl.class);
-                    String currencyIsoName = spec.getCurrencyIsoName();
+                    var currencyIsoName = spec.getCurrencyIsoName();
 
                     currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
@@ -171,8 +166,8 @@ public class EditItemUnitPriceLimitCommand
 
     @Override
     public void canUpdate(ItemUnitPriceLimit itemUnitPriceLimit) {
-        String strMinimumUnitPrice = edit.getMinimumUnitPrice();
-        String strMaximumUnitPrice = edit.getMaximumUnitPrice();
+        var strMinimumUnitPrice = edit.getMinimumUnitPrice();
+        var strMaximumUnitPrice = edit.getMaximumUnitPrice();
 
         if(strMinimumUnitPrice != null) {
             minimumUnitPrice = Long.valueOf(strMinimumUnitPrice);
@@ -196,7 +191,7 @@ public class EditItemUnitPriceLimitCommand
     @Override
     public void doUpdate(ItemUnitPriceLimit itemUnitPriceLimit) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemUnitPriceLimitValue itemUnitPriceLimitValue = itemControl.getItemUnitPriceLimitValue(itemUnitPriceLimit);
+        var itemUnitPriceLimitValue = itemControl.getItemUnitPriceLimitValue(itemUnitPriceLimit);
 
         itemUnitPriceLimitValue.setMinimumUnitPrice(minimumUnitPrice);
         itemUnitPriceLimitValue.setMaximumUnitPrice(maximumUnitPrice);

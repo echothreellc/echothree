@@ -30,12 +30,9 @@ import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
-import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -102,11 +99,11 @@ public class CreateChainActionCommand
     
     @Override
     protected ValidationResult validate() {
-        Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validator = new Validator(this);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            String chainActionTypeName = form.getChainActionTypeName();
+            var chainActionTypeName = form.getChainActionTypeName();
             
             if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
                 validationResult = validator.validate(form, letterFormFieldDefinitions);
@@ -122,8 +119,8 @@ public class CreateChainActionCommand
     
     private abstract class BaseChainActionType {
 
-        ChainControl chainControl = null;
-        ChainActionType chainActionType = null;
+        ChainControl chainControl;
+        ChainActionType chainActionType;
 
         public BaseChainActionType(ChainControl chainControl, String chainActionTypeName) {
             this.chainControl = chainControl;
@@ -155,7 +152,7 @@ public class CreateChainActionCommand
             super(chainControl, ChainConstants.ChainActionType_LETTER);
             
             if(!hasExecutionErrors()) {
-                String letterName = form.getLetterName();
+                var letterName = form.getLetterName();
                 
                 letter = letterControl.getLetterByName(chainType, letterName);
                 
@@ -180,17 +177,17 @@ public class CreateChainActionCommand
             super(chainControl, ChainConstants.ChainActionType_CHAIN_ACTION_SET);
             
             if(!hasExecutionErrors()) {
-                String nextChainActionSetName = form.getNextChainActionSetName();
+                var nextChainActionSetName = form.getNextChainActionSetName();
                 
                 nextChainActionSet = chainControl.getChainActionSetByName(chain, nextChainActionSetName);
                 
                 if(nextChainActionSet != null) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                    var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                     if(timeUnitOfMeasureKind != null) {
-                        String delayTimeUnitOfMeasureTypeName = form.getDelayTimeUnitOfMeasureTypeName();
-                        UnitOfMeasureType delayTimeUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind, delayTimeUnitOfMeasureTypeName);
+                        var delayTimeUnitOfMeasureTypeName = form.getDelayTimeUnitOfMeasureTypeName();
+                        var delayTimeUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind, delayTimeUnitOfMeasureTypeName);
 
                         if(delayTimeUnitOfMeasureType != null) {
                             delayTime = new Conversion(uomControl, delayTimeUnitOfMeasureType, Long.valueOf(form.getDelayTime())).convertToLowestUnitOfMeasureType().getQuantity();
@@ -215,28 +212,28 @@ public class CreateChainActionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = form.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = form.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain != null) {
-                    String chainActionSetName = form.getChainActionSetName();
-                    ChainActionSet chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
+                    var chainActionSetName = form.getChainActionSetName();
+                    var chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
 
                     if(chainActionSet != null) {
-                        String chainActionName = form.getChainActionName();
-                        ChainAction chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
+                        var chainActionName = form.getChainActionName();
+                        var chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
                         if(chainAction == null) {
-                            String chainActionTypeName = form.getChainActionTypeName();
-                            ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
+                            var chainActionTypeName = form.getChainActionTypeName();
+                            var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
 
                             if(chainActionType != null) {
                                 BaseChainActionType baseChainActionType = null;

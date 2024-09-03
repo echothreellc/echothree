@@ -17,13 +17,11 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.GetPartyTrainingClassStatusChoicesForm;
-import com.echothree.control.user.training.common.result.GetPartyTrainingClassStatusChoicesResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,13 +65,13 @@ public class GetPartyTrainingClassStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetPartyTrainingClassStatusChoicesResult result = TrainingResultFactory.getGetPartyTrainingClassStatusChoicesResult();
-            String partyTrainingClassName = form.getPartyTrainingClassName();
-            PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+        var result = TrainingResultFactory.getGetPartyTrainingClassStatusChoicesResult();
+        var partyTrainingClassName = form.getPartyTrainingClassName();
+        var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
 
             if(partyTrainingClass != null) {
-                String defaultPartyTrainingClassStatusChoice = form.getDefaultPartyTrainingClassStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultPartyTrainingClassStatusChoice = form.getDefaultPartyTrainingClassStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setPartyTrainingClassStatusChoices(trainingControl.getPartyTrainingClassStatusChoices(defaultPartyTrainingClassStatusChoice,
                         getPreferredLanguage(), allowNullChoice, partyTrainingClass, getPartyPK()));

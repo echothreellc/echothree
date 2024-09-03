@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
@@ -83,9 +82,9 @@ public class GraphQlServlet
         this.configuration = getConfiguration();
 
         this.getHandler = (request, response) -> {
-            String path = request.getPathInfo();
-            GraphQlInvocationInputFactory invocationInputFactory = configuration.getInvocationInputFactory();
-            GraphQlQueryInvoker queryInvoker = configuration.getQueryInvoker();
+            var path = request.getPathInfo();
+            var invocationInputFactory = configuration.getInvocationInputFactory();
+            var queryInvoker = configuration.getQueryInvoker();
 
             if(path == null) {
                 path = request.getServletPath();
@@ -95,11 +94,11 @@ public class GraphQlServlet
                 query(queryInvoker, invocationInputFactory.create(
                         INTROSPECTION_REQUEST), request, response);
             } else {
-                String query = request.getParameter("query");
+                var query = request.getParameter("query");
 
                 if(query != null) {
-                    String variables = request.getParameter("variables");
-                    String operationName = request.getParameter("operationName");
+                    var variables = request.getParameter("variables");
+                    var operationName = request.getParameter("operationName");
 
                     query(queryInvoker, invocationInputFactory.createReadOnly(
                             new GraphQlRequest(query, variables, operationName)), request, response);
@@ -112,18 +111,18 @@ public class GraphQlServlet
 
         this.postHandler = (request, response) -> {
             try {
-                GraphQlInvocationInputFactory invocationInputFactory = configuration.getInvocationInputFactory();
-                GraphQlQueryInvoker queryInvoker = configuration.getQueryInvoker();
-                String contentType = request.getContentType();
-                MediaType mediaType = MediaType.parse(contentType);
+                var invocationInputFactory = configuration.getInvocationInputFactory();
+                var queryInvoker = configuration.getQueryInvoker();
+                var contentType = request.getContentType();
+                var mediaType = MediaType.parse(contentType);
 
                 if(GRAPHQL.equals(mediaType) || GRAPHQL_UTF_8.equals(mediaType)) {
-                    String query = CharStreams.toString(request.getReader());
+                    var query = CharStreams.toString(request.getReader());
 
                     query(queryInvoker, invocationInputFactory.create(
                             new GraphQlRequest(query, null, null)), request, response);
                 } else if(JSON.equals(mediaType) || JSON_UTF_8.equals(mediaType)) {
-                    String json = CharStreams.toString(request.getReader());
+                    var json = CharStreams.toString(request.getReader());
 
                     query(queryInvoker, invocationInputFactory.create(
                             new GraphQlRequest(json)), request, response);
@@ -136,9 +135,9 @@ public class GraphQlServlet
     }
 
     private void doRequestAsync(HttpServletRequest request, HttpServletResponse response, HttpRequestHandler handler) {
-        AsyncContext asyncContext = request.startAsync();
-        HttpServletRequest asyncRequest = (HttpServletRequest) asyncContext.getRequest();
-        HttpServletResponse asyncResponse = (HttpServletResponse) asyncContext.getResponse();
+        var asyncContext = request.startAsync();
+        var asyncRequest = (HttpServletRequest) asyncContext.getRequest();
+        var asyncResponse = (HttpServletResponse) asyncContext.getResponse();
 
         HttpSessionUtils.getInstance().setupUserVisit(request, response, true);
 
@@ -173,8 +172,8 @@ public class GraphQlServlet
 
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response) {
-        String origin = request.getHeader(ORIGIN);
-        String accessControlRequestHeaders = request.getHeader(ACCESS_CONTROL_REQUEST_HEADERS);
+        var origin = request.getHeader(ORIGIN);
+        var accessControlRequestHeaders = request.getHeader(ACCESS_CONTROL_REQUEST_HEADERS);
 
         response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
         response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.TRUE.toString());
@@ -185,7 +184,7 @@ public class GraphQlServlet
     }
 
     public UserVisitPK getUserVisitPK(HttpServletRequest request) {
-        HttpSession httpSession = request.getSession(true);
+        var httpSession = request.getSession(true);
 
         return (UserVisitPK)httpSession.getAttribute(WebConstants.Session_USER_VISIT);
     }
@@ -193,9 +192,9 @@ public class GraphQlServlet
     private void query(GraphQlQueryInvoker queryInvoker, GraphQlInvocationInput invocationInput,
             HttpServletRequest request, HttpServletResponse response)
             throws IOException, NamingException, ExecutionException, InterruptedException {
-        String origin = request.getHeader(ORIGIN);
-        String remoteAddr = request.getRemoteAddr();
-        String result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);
+        var origin = request.getHeader(ORIGIN);
+        var remoteAddr = request.getRemoteAddr();
+        var result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);
 
         response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
         response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.TRUE.toString());

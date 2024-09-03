@@ -18,16 +18,12 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetPartyTypeContactListGroupsForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetPartyTypeContactListGroupsResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -68,18 +64,18 @@ public class GetPartyTypeContactListGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyTypeContactListGroupsResult result = ContactListResultFactory.getGetPartyTypeContactListGroupsResult();
-        String partyTypeName = form.getPartyTypeName();
-        String contactListGroupName = form.getContactListGroupName();
+        var result = ContactListResultFactory.getGetPartyTypeContactListGroupsResult();
+        var partyTypeName = form.getPartyTypeName();
+        var contactListGroupName = form.getContactListGroupName();
         var parameterCount = (partyTypeName != null? 1: 0) + (contactListGroupName != null? 1: 0);
         
         if(parameterCount == 1) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(partyTypeName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                var partyType = partyControl.getPartyTypeByName(partyTypeName);
                 
                 if(partyType != null) {
                     result.setPartyType(partyControl.getPartyTypeTransfer(userVisit, partyType));
@@ -88,7 +84,7 @@ public class GetPartyTypeContactListGroupsCommand
                     addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
                 }
             } else if(contactListGroupName != null) {
-                ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+                var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
                 
                 if(contactListGroup != null) {
                     result.setContactListGroup(contactListControl.getContactListGroupTransfer(userVisit, contactListGroup));

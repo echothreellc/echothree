@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -65,7 +64,7 @@ public abstract class GraphQlTestCase {
 
     protected double getDouble(Object bean, String name)
             throws Exception {
-        Object o = PropertyUtils.getProperty(bean, name);
+        var o = PropertyUtils.getProperty(bean, name);
         double result;
         
         if(o instanceof Double) {
@@ -145,29 +144,29 @@ public abstract class GraphQlTestCase {
 
     protected Map<String, Object> executeUsingGet(String query)
             throws IOException, URISyntaxException {
-        URIBuilder builder = getURIBuilder();
+        var builder = getURIBuilder();
 
         if(query != null) {
             builder.setParameter("query", query);
         }
 
-        HttpGet httpGet = new HttpGet(builder.build());
+        var httpGet = new HttpGet(builder.build());
 
         return doRequest(client.execute(httpGet));
     }
 
     protected Map<String, Object> executeUsingPost(String query)
             throws IOException, URISyntaxException {
-        URIBuilder builder = getURIBuilder();
+        var builder = getURIBuilder();
         Map<String, Object> map = new HashMap<>();
 
         if(query != null) {
             map.put("query", query);
         }
 
-        HttpPost httpPost = new HttpPost(builder.build());
+        var httpPost = new HttpPost(builder.build());
         httpPost.setHeader("Content-type", "application/json");
-        StringEntity requestEntity = new StringEntity(GraphQlUtils.getInstance().toJson(map));
+        var requestEntity = new StringEntity(GraphQlUtils.getInstance().toJson(map));
         httpPost.setEntity(requestEntity);
 
         return doRequest(client.execute(httpPost));
@@ -177,14 +176,14 @@ public abstract class GraphQlTestCase {
             throws IOException {
         Map<String, Object> body = null;
 
-        try(CloseableHttpResponse closeableHttpResponse = execute) {
-            int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+        try(var closeableHttpResponse = execute) {
+            var statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
 
             Assert.assertEquals(200, statusCode);
 
-            HttpEntity responseEntity = closeableHttpResponse.getEntity();
+            var responseEntity = closeableHttpResponse.getEntity();
             if(responseEntity != null) {
-                String text = CharStreams.toString(new InputStreamReader(responseEntity.getContent(), Charsets.UTF_8));
+                var text = CharStreams.toString(new InputStreamReader(responseEntity.getContent(), Charsets.UTF_8));
 
                 body = GraphQlUtils.getInstance().toMap(text);
             }

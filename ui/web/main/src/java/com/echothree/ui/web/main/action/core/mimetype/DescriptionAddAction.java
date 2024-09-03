@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateMimeTypeDescriptionForm;
-import com.echothree.control.user.core.common.form.GetMimeTypeForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetMimeTypeForm commandForm = CoreUtil.getHome().getGetMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getGetMimeTypeForm();
 
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeResult result = (GetMimeTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.MIME_TYPE, result.getMimeType());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateMimeTypeDescriptionForm commandForm = CoreUtil.getHome().getCreateMimeTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateMimeTypeDescriptionForm();
 
         commandForm.setMimeTypeName( actionForm.getMimeTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

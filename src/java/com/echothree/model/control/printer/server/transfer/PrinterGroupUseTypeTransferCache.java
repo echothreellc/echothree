@@ -20,7 +20,6 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,14 +36,14 @@ public class PrinterGroupUseTypeTransferCache
     }
 
     public PrinterGroupUseTypeTransfer getPrinterGroupUseTypeTransfer(PrinterGroupUseType printerGroupUseType) {
-        PrinterGroupUseTypeTransfer printerGroupUseTypeTransfer = get(printerGroupUseType);
+        var printerGroupUseTypeTransfer = get(printerGroupUseType);
 
         if(printerGroupUseTypeTransfer == null) {
-            PrinterGroupUseTypeDetail printerGroupUseTypeDetail = printerGroupUseType.getLastDetail();
-            String printerGroupUseTypeName = printerGroupUseTypeDetail.getPrinterGroupUseTypeName();
-            Boolean isDefault = printerGroupUseTypeDetail.getIsDefault();
-            Integer sortOrder = printerGroupUseTypeDetail.getSortOrder();
-            String description = printerControl.getBestPrinterGroupUseTypeDescription(printerGroupUseType, getLanguage());
+            var printerGroupUseTypeDetail = printerGroupUseType.getLastDetail();
+            var printerGroupUseTypeName = printerGroupUseTypeDetail.getPrinterGroupUseTypeName();
+            var isDefault = printerGroupUseTypeDetail.getIsDefault();
+            var sortOrder = printerGroupUseTypeDetail.getSortOrder();
+            var description = printerControl.getBestPrinterGroupUseTypeDescription(printerGroupUseType, getLanguage());
 
             printerGroupUseTypeTransfer = new PrinterGroupUseTypeTransfer(printerGroupUseTypeName, isDefault, sortOrder, description);
             put(printerGroupUseType, printerGroupUseTypeTransfer);

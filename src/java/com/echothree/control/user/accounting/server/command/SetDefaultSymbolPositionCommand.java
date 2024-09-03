@@ -21,7 +21,6 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.value.SymbolPositionDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultSymbolPositionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String symbolPositionName = form.getSymbolPositionName();
-        SymbolPositionDetailValue symbolPositionDetailValue = accountingControl.getSymbolPositionDetailValueByNameForUpdate(symbolPositionName);
+        var symbolPositionName = form.getSymbolPositionName();
+        var symbolPositionDetailValue = accountingControl.getSymbolPositionDetailValueByNameForUpdate(symbolPositionName);
         
         if(symbolPositionDetailValue != null) {
             symbolPositionDetailValue.setIsDefault(Boolean.TRUE);

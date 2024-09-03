@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.inventory.inventoryconditionuse;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.GetInventoryConditionUsesForm;
 import com.echothree.control.user.inventory.common.result.GetInventoryConditionUsesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String inventoryConditionUseTypeName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_USE_TYPE_NAME);
-            GetInventoryConditionUsesForm commandForm = InventoryUtil.getHome().getGetInventoryConditionUsesForm();
+            var inventoryConditionUseTypeName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_USE_TYPE_NAME);
+            var commandForm = InventoryUtil.getHome().getGetInventoryConditionUsesForm();
             
             commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
-            
-            CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionUses(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetInventoryConditionUsesResult result = (GetInventoryConditionUsesResult)executionResult.getResult();
+
+            var commandResult = InventoryUtil.getHome().getInventoryConditionUses(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryConditionUsesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION_USE_TYPE, result.getInventoryConditionUseType());
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION_USES, result.getInventoryConditionUses());

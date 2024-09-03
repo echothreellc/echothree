@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.searchsortorder;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.DeleteSearchSortOrderForm;
-import com.echothree.control.user.search.common.form.GetSearchSortOrderForm;
 import com.echothree.control.user.search.common.result.GetSearchSortOrderResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,14 +60,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchSortOrderForm commandForm = SearchUtil.getHome().getGetSearchSortOrderForm();
+        var commandForm = SearchUtil.getHome().getGetSearchSortOrderForm();
         
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchSortOrder(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSearchSortOrderResult result = (GetSearchSortOrderResult)executionResult.getResult();
+
+        var commandResult = SearchUtil.getHome().getSearchSortOrder(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSearchSortOrderResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER, result.getSearchSortOrder());
     }
@@ -78,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSearchSortOrderForm commandForm = SearchUtil.getHome().getDeleteSearchSortOrderForm();
+        var commandForm = SearchUtil.getHome().getDeleteSearchSortOrderForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());

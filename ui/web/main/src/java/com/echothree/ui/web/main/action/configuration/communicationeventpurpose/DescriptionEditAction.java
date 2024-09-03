@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.communicationeventpurpose;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.edit.CommunicationEventPurposeDescriptionEdit;
-import com.echothree.control.user.communication.common.form.EditCommunicationEventPurposeDescriptionForm;
 import com.echothree.control.user.communication.common.result.EditCommunicationEventPurposeDescriptionResult;
-import com.echothree.control.user.communication.common.spec.CommunicationEventPurposeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditCommunicationEventPurposeDescriptionForm commandForm = CommunicationUtil.getHome().getEditCommunicationEventPurposeDescriptionForm();
-                CommunicationEventPurposeDescriptionSpec spec = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = CommunicationUtil.getHome().getEditCommunicationEventPurposeDescriptionForm();
+                var spec = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptionSpec();
                 
                 if(communicationEventPurposeName == null)
                     communicationEventPurposeName = actionForm.getCommunicationEventPurposeName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    CommunicationEventPurposeDescriptionEdit edit = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptionEdit();
+                    var edit = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CommunicationUtil.getHome().editCommunicationEventPurposeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CommunicationUtil.getHome().editCommunicationEventPurposeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCommunicationEventPurposeDescriptionResult result = (EditCommunicationEventPurposeDescriptionResult)executionResult.getResult();
+                            var result = (EditCommunicationEventPurposeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CommunicationUtil.getHome().editCommunicationEventPurposeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCommunicationEventPurposeDescriptionResult result = (EditCommunicationEventPurposeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = CommunicationUtil.getHome().editCommunicationEventPurposeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCommunicationEventPurposeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CommunicationEventPurposeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setCommunicationEventPurposeName(communicationEventPurposeName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMMUNICATION_EVENT_PURPOSE_NAME, communicationEventPurposeName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

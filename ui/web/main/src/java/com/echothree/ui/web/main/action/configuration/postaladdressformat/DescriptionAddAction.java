@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.configuration.postaladdressformat;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.CreatePostalAddressFormatDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,14 +54,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+        var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
+                var descriptionAddActionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreatePostalAddressFormatDescriptionForm commandForm = ContactUtil.getHome().getCreatePostalAddressFormatDescriptionForm();
+                    var commandForm = ContactUtil.getHome().getCreatePostalAddressFormatDescriptionForm();
                     
                     if(postalAddressFormatName == null)
                         postalAddressFormatName = descriptionAddActionForm.getPostalAddressFormatName();
@@ -71,8 +69,8 @@ public class DescriptionAddAction
                     commandForm.setPostalAddressFormatName(postalAddressFormatName);
                     commandForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
                     commandForm.setDescription(descriptionAddActionForm.getDescription());
-                    
-                    CommandResult commandResult = ContactUtil.getHome().createPostalAddressFormatDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContactUtil.getHome().createPostalAddressFormatDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +86,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMAT_NAME, postalAddressFormatName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

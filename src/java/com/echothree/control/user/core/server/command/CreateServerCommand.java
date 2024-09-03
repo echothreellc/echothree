@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.CreateServerForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,8 +63,8 @@ public class CreateServerCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serverName = form.getServerName();
-        Server server = coreControl.getServerByName(serverName);
+        var serverName = form.getServerName();
+        var server = coreControl.getServerByName(serverName);
         
         if(server == null) {
             var partyPK = getPartyPK();

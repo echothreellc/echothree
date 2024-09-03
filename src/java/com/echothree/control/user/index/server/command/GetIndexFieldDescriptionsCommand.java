@@ -17,14 +17,11 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.GetIndexFieldDescriptionsForm;
-import com.echothree.control.user.index.common.result.GetIndexFieldDescriptionsResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.index.server.entity.IndexField;
-import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,13 +64,13 @@ public class GetIndexFieldDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexFieldDescriptionsResult result = IndexResultFactory.getGetIndexFieldDescriptionsResult();
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var result = IndexResultFactory.getGetIndexFieldDescriptionsResult();
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
         
         if(indexType != null) {
-            String indexFieldName = form.getIndexFieldName();
-            IndexField indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
+            var indexFieldName = form.getIndexFieldName();
+            var indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
             
             if(indexField != null) {
                 result.setIndexField(indexControl.getIndexFieldTransfer(getUserVisit(), indexField));

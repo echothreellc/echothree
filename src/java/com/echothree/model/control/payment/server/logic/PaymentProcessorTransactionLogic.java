@@ -26,7 +26,6 @@ import com.echothree.model.control.payment.common.exception.UnknownPaymentProces
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
@@ -80,7 +79,7 @@ public class PaymentProcessorTransactionLogic
     public PaymentProcessorTransaction getPaymentProcessorTransactionByName(final ExecutionErrorAccumulator eea, final String paymentProcessorTransactionName,
             final EntityPermission entityPermission) {
         var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-        PaymentProcessorTransaction paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName, entityPermission);
+        var paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName, entityPermission);
 
         if(paymentProcessorTransaction == null) {
             handleExecutionError(UnknownPaymentProcessorTransactionNameException.class, eea, ExecutionErrors.UnknownPaymentProcessorTransactionName.name(), paymentProcessorTransactionName);
@@ -101,7 +100,7 @@ public class PaymentProcessorTransactionLogic
             final PaymentProcessorTransactionUniversalSpec universalSpec, final EntityPermission entityPermission) {
         PaymentProcessorTransaction paymentProcessorTransaction = null;
         var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-        String paymentProcessorTransactionName = universalSpec.getPaymentProcessorTransactionName();
+        var paymentProcessorTransactionName = universalSpec.getPaymentProcessorTransactionName();
         var parameterCount = (paymentProcessorTransactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

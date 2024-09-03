@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected LeaveTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        LeaveTypeDescriptionSpec spec = EmployeeUtil.getHome().getLeaveTypeDescriptionSpec();
+        var spec = EmployeeUtil.getHome().getLeaveTypeDescriptionSpec();
         
         spec.setLeaveTypeName(findParameter(request, ParameterConstants.LEAVE_TYPE_NAME, actionForm.getLeaveTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected LeaveTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        LeaveTypeDescriptionEdit edit = EmployeeUtil.getHome().getLeaveTypeDescriptionEdit();
+        var edit = EmployeeUtil.getHome().getLeaveTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAliasTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityAliasTypeChoicesResult;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -65,7 +64,7 @@ public class GetEntityAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetEntityAliasTypeChoicesResult result = CoreResultFactory.getGetEntityAliasTypeChoicesResult();
+        var result = CoreResultFactory.getGetEntityAliasTypeChoicesResult();
         var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
             
         if(!hasExecutionErrors()) {

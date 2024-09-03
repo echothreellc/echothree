@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.model.data.inventory.server.entity.LotTimeTypeDescription;
-import com.echothree.model.data.inventory.server.value.LotTimeTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -89,13 +87,13 @@ public class EditLotTimeTypeDescriptionCommand
     public LotTimeTypeDescription getEntity(EditLotTimeTypeDescriptionResult result) {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
         LotTimeTypeDescription lotTimeTypeDescription = null;
-        String lotTimeTypeName = spec.getLotTimeTypeName();
-        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
+        var lotTimeTypeName = spec.getLotTimeTypeName();
+        var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditLotTimeTypeDescriptionCommand
     @Override
     public void doUpdate(LotTimeTypeDescription lotTimeTypeDescription) {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        LotTimeTypeDescriptionValue lotTimeTypeDescriptionValue = lotTimeControl.getLotTimeTypeDescriptionValue(lotTimeTypeDescription);
+        var lotTimeTypeDescriptionValue = lotTimeControl.getLotTimeTypeDescriptionValue(lotTimeTypeDescription);
         lotTimeTypeDescriptionValue.setDescription(edit.getDescription());
 
         lotTimeControl.updateLotTimeTypeDescriptionFromValue(lotTimeTypeDescriptionValue, getPartyPK());

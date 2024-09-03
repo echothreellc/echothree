@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.edit.SequenceTypeDescriptionEdit;
-import com.echothree.control.user.sequence.common.form.EditSequenceTypeDescriptionForm;
 import com.echothree.control.user.sequence.common.result.EditSequenceTypeDescriptionResult;
-import com.echothree.control.user.sequence.common.spec.SequenceTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditSequenceTypeDescriptionForm commandForm = SequenceUtil.getHome().getEditSequenceTypeDescriptionForm();
-                SequenceTypeDescriptionSpec spec = SequenceUtil.getHome().getSequenceTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = SequenceUtil.getHome().getEditSequenceTypeDescriptionForm();
+                var spec = SequenceUtil.getHome().getSequenceTypeDescriptionSpec();
                 
                 if(sequenceTypeName == null)
                     sequenceTypeName = actionForm.getSequenceTypeName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    SequenceTypeDescriptionEdit edit = SequenceUtil.getHome().getSequenceTypeDescriptionEdit();
+                    var edit = SequenceUtil.getHome().getSequenceTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = SequenceUtil.getHome().editSequenceTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SequenceUtil.getHome().editSequenceTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditSequenceTypeDescriptionResult result = (EditSequenceTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditSequenceTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = SequenceUtil.getHome().editSequenceTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditSequenceTypeDescriptionResult result = (EditSequenceTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = SequenceUtil.getHome().editSequenceTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditSequenceTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        SequenceTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setSequenceTypeName(sequenceTypeName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SEQUENCE_TYPE_NAME, sequenceTypeName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

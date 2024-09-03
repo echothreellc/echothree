@@ -19,19 +19,14 @@ package com.echothree.model.control.forum.server.transfer;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumGroupTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
-import com.echothree.model.data.forum.server.entity.ForumGroupDetail;
-import com.echothree.model.data.forum.server.entity.ForumGroupForum;
-import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ForumGroupTransferCache
         extends BaseForumTransferCache<ForumGroup, ForumGroupTransfer> {
@@ -54,21 +49,21 @@ public class ForumGroupTransferCache
     }
     
     public ForumGroupTransfer getForumGroupTransfer(ForumGroup forumGroup) {
-        ForumGroupTransfer forumGroupTransfer = get(forumGroup);
+        var forumGroupTransfer = get(forumGroup);
         
         if(forumGroupTransfer == null) {
-            ForumGroupDetail forumGroupDetail = forumGroup.getLastDetail();
-            String forumGroupName = forumGroupDetail.getForumGroupName();
-            Icon icon = forumGroupDetail.getIcon();
-            IconTransfer iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
-            Integer sortOrder = forumGroupDetail.getSortOrder();
-            String description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage());
+            var forumGroupDetail = forumGroup.getLastDetail();
+            var forumGroupName = forumGroupDetail.getForumGroupName();
+            var icon = forumGroupDetail.getIcon();
+            var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
+            var sortOrder = forumGroupDetail.getSortOrder();
+            var description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage());
             
             forumGroupTransfer = new ForumGroupTransfer(forumGroupName, iconTransfer, sortOrder, description);
             put(forumGroup, forumGroupTransfer);
             
             if(includeForums) {
-                List<ForumGroupForum> forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
+                var forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
                 List<Forum> forums = new ArrayList<>(forumGroupForums.size());
                 
                 forumGroupForums.forEach((forumGroupForum) -> {

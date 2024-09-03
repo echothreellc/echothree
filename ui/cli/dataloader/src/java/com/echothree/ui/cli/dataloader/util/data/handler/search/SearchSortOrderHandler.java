@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.search;
 
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.SearchService;
-import com.echothree.control.user.search.common.form.CreateSearchSortOrderDescriptionForm;
 import com.echothree.control.user.search.common.form.SearchFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -52,7 +51,7 @@ public class SearchSortOrderHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchSortOrderDescription")) {
-            CreateSearchSortOrderDescriptionForm commandForm = SearchFormFactory.getCreateSearchSortOrderDescriptionForm();
+            var commandForm = SearchFormFactory.getCreateSearchSortOrderDescriptionForm();
 
             commandForm.setSearchKindName(searchKindName);
             commandForm.setSearchSortOrderName(searchSortOrderName);

@@ -23,7 +23,6 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.BaseEntity;
-import java.util.List;
 
 public abstract class BaseGeoCodeTransferCache<K extends BaseEntity, V extends BaseGeoCodeTransfer>
         extends BaseGeoTransferCache<K, V> {
@@ -34,8 +33,8 @@ public abstract class BaseGeoCodeTransferCache<K extends BaseEntity, V extends B
     }
 
     protected void setupGeoCodeAliasTransfers(GeoCode geoCode, BaseGeoCodeTransfer baseGeoCodeTransfer) {
-        List<GeoCodeAliasTransfer> geoCodeAliasTransfers = geoControl.getGeoCodeAliasTransfersByGeoCode(userVisit, geoCode);
-        MapWrapper<GeoCodeAliasTransfer> geoCodeAliases = new MapWrapper<>(geoCodeAliasTransfers.size());
+        var geoCodeAliasTransfers = geoControl.getGeoCodeAliasTransfersByGeoCode(userVisit, geoCode);
+        var geoCodeAliases = new MapWrapper<GeoCodeAliasTransfer>(geoCodeAliasTransfers.size());
 
         geoCodeAliasTransfers.forEach((geoCodeAliasTransfer) -> {
             geoCodeAliases.put(geoCodeAliasTransfer.getGeoCodeAliasType().getGeoCodeAliasTypeName(), geoCodeAliasTransfer);

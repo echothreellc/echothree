@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.leavereason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.CreateLeaveReasonDescriptionForm;
-import com.echothree.control.user.employee.common.form.GetLeaveReasonForm;
 import com.echothree.control.user.employee.common.result.GetLeaveReasonResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveReasonForm commandForm = EmployeeUtil.getHome().getGetLeaveReasonForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveReasonForm();
 
         commandForm.setLeaveReasonName(actionForm.getLeaveReasonName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveReason(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeaveReason(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveReasonResult result = (GetLeaveReasonResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveReasonResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.LEAVE_REASON, result.getLeaveReason());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateLeaveReasonDescriptionForm commandForm = EmployeeUtil.getHome().getCreateLeaveReasonDescriptionForm();
+        var commandForm = EmployeeUtil.getHome().getCreateLeaveReasonDescriptionForm();
 
         commandForm.setLeaveReasonName( actionForm.getLeaveReasonName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentCatalogDescriptionForm;
-import com.echothree.control.user.content.common.form.CreateContentCategoryForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -52,13 +50,13 @@ public class ContentCatalogHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contentCatalogDescription")) {
-            CreateContentCatalogDescriptionForm commandForm = ContentFormFactory.getCreateContentCatalogDescriptionForm();
+            var commandForm = ContentFormFactory.getCreateContentCatalogDescriptionForm();
             String languageIsoName = null;
             String description = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -74,7 +72,7 @@ public class ContentCatalogHandler
             
             contentService.createContentCatalogDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("contentCategory")) {
-            CreateContentCategoryForm commandForm = ContentFormFactory.getCreateContentCategoryForm();
+            var commandForm = ContentFormFactory.getCreateContentCategoryForm();
             String contentCategoryName = null;
             String parentContentCategoryName = null;
             String defaultOfferName = null;
@@ -83,9 +81,9 @@ public class ContentCatalogHandler
             String isDefault = null;
             String sortOrder = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentCategoryName"))
                     contentCategoryName = attrs.getValue(i);
                 if(attrs.getQName(i).equals("parentContentCategoryName"))

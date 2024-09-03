@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestination;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationResult;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetWorkflowDestinationForm commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationForm();
+        String forwardKey;
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationForm();
 
         commandForm.setWorkflowName(request.getParameter(ParameterConstants.WORKFLOW_NAME));
         commandForm.setWorkflowStepName(request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME));
         commandForm.setWorkflowDestinationName(request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME));
 
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestination(getUserVisitPK(request), commandForm);
+        var commandResult = WorkflowUtil.getHome().getWorkflowDestination(getUserVisitPK(request), commandForm);
         WorkflowDestinationTransfer workflowDestination = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowDestinationResult result = (GetWorkflowDestinationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowDestinationResult)executionResult.getResult();
 
             workflowDestination = result.getWorkflowDestination();
         }

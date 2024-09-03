@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
 import com.echothree.control.user.printer.common.PrinterService;
-import com.echothree.control.user.printer.common.form.CreatePrinterGroupUseTypeForm;
 import com.echothree.control.user.printer.common.form.PrinterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -47,7 +46,7 @@ public class PrinterGroupUseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("printerGroupUseType")) {
-            CreatePrinterGroupUseTypeForm commandForm = PrinterFormFactory.getCreatePrinterGroupUseTypeForm();
+            var commandForm = PrinterFormFactory.getCreatePrinterGroupUseTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

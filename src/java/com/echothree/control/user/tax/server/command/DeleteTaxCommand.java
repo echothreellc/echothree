@@ -18,7 +18,6 @@ package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.DeleteTaxForm;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteTaxCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByNameForUpdate(taxName);
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByNameForUpdate(taxName);
         
         if(tax != null) {
             taxControl.deleteTax(tax, getPartyPK());

@@ -17,10 +17,8 @@
 package com.echothree.model.control.sequence.server.transfer;
 
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SequenceTransferCache
@@ -34,19 +32,19 @@ public class SequenceTransferCache
     }
     
     public SequenceTransfer getSequenceTransfer(Sequence sequence) {
-        SequenceTransfer sequenceTransfer = get(sequence);
+        var sequenceTransfer = get(sequence);
         
         if(sequenceTransfer == null) {
-            SequenceDetail sequenceDetail = sequence.getLastDetail();
-            SequenceTypeTransferCache sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
-            SequenceTypeTransfer sequenceType = sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceDetail.getSequenceType());
-            String sequenceName = sequenceDetail.getSequenceName();
-            String mask = sequenceDetail.getMask();
-            Integer chunkSize = sequenceDetail.getChunkSize();
-            Boolean isDefault = sequenceDetail.getIsDefault();
-            Integer sortOrder = sequenceDetail.getSortOrder();
-            String value = sequenceControl.getSequenceValue(sequence).getValue();
-            String description = sequenceControl.getBestSequenceDescription(sequence, getLanguage());
+            var sequenceDetail = sequence.getLastDetail();
+            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
+            var sequenceType = sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceDetail.getSequenceType());
+            var sequenceName = sequenceDetail.getSequenceName();
+            var mask = sequenceDetail.getMask();
+            var chunkSize = sequenceDetail.getChunkSize();
+            var isDefault = sequenceDetail.getIsDefault();
+            var sortOrder = sequenceDetail.getSortOrder();
+            var value = sequenceControl.getSequenceValue(sequence).getValue();
+            var description = sequenceControl.getBestSequenceDescription(sequence, getLanguage());
             
             sequenceTransfer = new SequenceTransfer(sequenceType, sequenceName, mask, chunkSize, isDefault, sortOrder, value, description);
             put(sequence, sequenceTransfer);

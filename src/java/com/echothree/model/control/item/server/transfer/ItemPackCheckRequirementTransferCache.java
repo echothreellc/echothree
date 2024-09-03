@@ -17,9 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.item.common.transfer.ItemPackCheckRequirementTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemPackCheckRequirement;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -37,15 +35,15 @@ public class ItemPackCheckRequirementTransferCache
     
     @Override
     public ItemPackCheckRequirementTransfer getTransfer(ItemPackCheckRequirement itemPackCheckRequirement) {
-        ItemPackCheckRequirementTransfer itemPackCheckRequirementTransfer = get(itemPackCheckRequirement);
+        var itemPackCheckRequirementTransfer = get(itemPackCheckRequirement);
         
         if(itemPackCheckRequirementTransfer == null) {
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemPackCheckRequirement.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemPackCheckRequirement.getUnitOfMeasureType());
-            Long longMinimumQuantity = itemPackCheckRequirement.getMinimumQuantity();
-            String minimumQuantity = longMinimumQuantity == null ? null : longMinimumQuantity.toString();
-            Long longMaximumQuantity = itemPackCheckRequirement.getMaximumQuantity();
-            String maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
+            var item = itemControl.getItemTransfer(userVisit, itemPackCheckRequirement.getItem());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemPackCheckRequirement.getUnitOfMeasureType());
+            var longMinimumQuantity = itemPackCheckRequirement.getMinimumQuantity();
+            var minimumQuantity = longMinimumQuantity == null ? null : longMinimumQuantity.toString();
+            var longMaximumQuantity = itemPackCheckRequirement.getMaximumQuantity();
+            var maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
             
             itemPackCheckRequirementTransfer = new ItemPackCheckRequirementTransfer(item, unitOfMeasureType, minimumQuantity, maximumQuantity);
             put(itemPackCheckRequirement, itemPackCheckRequirementTransfer);

@@ -18,7 +18,6 @@ package com.echothree.control.user.core.common;
 
 import com.echothree.control.user.core.server.CoreLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class CoreUtil {
@@ -30,7 +29,7 @@ public class CoreUtil {
     public static CoreLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (CoreLocal)ctx.lookup("ejb:echothree/echothree-server/CoreBean!com.echothree.control.user.core.server.CoreLocal");
         }
@@ -42,7 +41,7 @@ public class CoreUtil {
     public static CoreRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (CoreRemote)ctx.lookup("ejb:echothree/echothree-server/CoreBean!com.echothree.control.user.core.common.CoreRemote");
         }

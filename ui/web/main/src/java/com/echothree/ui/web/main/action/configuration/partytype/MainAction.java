@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.partytype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyTypesForm;
 import com.echothree.control.user.party.common.result.GetPartyTypesResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,20 +51,20 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetPartyTypesForm commandForm = PartyUtil.getHome().getGetPartyTypesForm();
+            var commandForm = PartyUtil.getHome().getGetPartyTypesForm();
             
             Set<String> options = new HashSet<>();
             options.add(PartyOptions.PartyTypeIncludeAuditPolicy);
             options.add(PartyOptions.PartyTypeIncludeLockoutPolicy);
             options.add(PartyOptions.PartyTypeIncludePasswordStringPolicy);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPartyTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypesResult result = (GetPartyTypesResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getPartyTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PARTY_TYPES, result.getPartyTypes());
             forwardKey = ForwardConstants.DISPLAY;

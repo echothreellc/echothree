@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasuretype;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureTypesForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypesResult;
 import com.echothree.model.control.uom.common.UomOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,8 +51,8 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetUnitOfMeasureTypesForm commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
         
         commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
         
@@ -63,10 +60,10 @@ public class MainAction
         options.add(UomOptions.UnitOfMeasureTypeIncludeVolume);
         options.add(UomOptions.UnitOfMeasureTypeIncludeWeight);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetUnitOfMeasureTypesResult result = (GetUnitOfMeasureTypesResult)executionResult.getResult();
+
+        var commandResult = UomUtil.getHome().getUnitOfMeasureTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUnitOfMeasureTypesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND, result.getUnitOfMeasureKind());
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPES, result.getUnitOfMeasureTypes());

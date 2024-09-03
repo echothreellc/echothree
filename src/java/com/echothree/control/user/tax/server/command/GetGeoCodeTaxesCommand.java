@@ -17,12 +17,9 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.GetGeoCodeTaxesForm;
-import com.echothree.control.user.tax.common.result.GetGeoCodeTaxesResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,12 +49,12 @@ public class GetGeoCodeTaxesCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        GetGeoCodeTaxesResult result = TaxResultFactory.getGetGeoCodeTaxesResult();
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByName(taxName);
+        var result = TaxResultFactory.getGetGeoCodeTaxesResult();
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setTax(taxControl.getTaxTransfer(userVisit, tax));
             result.setGeoCodeTaxes(taxControl.getGeoCodeTaxTransfersByTax(userVisit, tax));

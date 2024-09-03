@@ -18,8 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCacheEntryForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetCacheEntryResult;
-import com.echothree.model.control.core.common.transfer.CacheEntryTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,9 +47,9 @@ public class GetCacheEntryCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCacheEntryResult result = CoreResultFactory.getGetCacheEntryResult();
-        String cacheEntryKey = form.getCacheEntryKey();
-        CacheEntryTransfer cacheEntryTransfer = coreControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);
+        var result = CoreResultFactory.getGetCacheEntryResult();
+        var cacheEntryKey = form.getCacheEntryKey();
+        var cacheEntryTransfer = coreControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);
 
         if(cacheEntryTransfer != null) {
             result.setCacheEntry(cacheEntryTransfer);

@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumMessageForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumMessageResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
@@ -27,7 +26,6 @@ import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -62,8 +60,8 @@ public class GetForumMessageCommand
     
     @Override
     protected BaseResult execute() {
-        GetForumMessageResult result = ForumResultFactory.getGetForumMessageResult();
-        String forumMessageName = form.getForumMessageName();
+        var result = ForumResultFactory.getGetForumMessageResult();
+        var forumMessageName = form.getForumMessageName();
         var parameterCount = (forumMessageName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

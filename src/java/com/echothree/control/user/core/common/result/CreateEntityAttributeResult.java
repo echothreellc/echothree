@@ -16,9 +16,7 @@
 
 package com.echothree.control.user.core.common.result;
 
-import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.core.common.spec.UlidSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateEntityAttributeResult

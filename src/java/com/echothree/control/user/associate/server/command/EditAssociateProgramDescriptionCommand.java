@@ -20,14 +20,9 @@ import com.echothree.control.user.associate.common.edit.AssociateEditFactory;
 import com.echothree.control.user.associate.common.edit.AssociateProgramDescriptionEdit;
 import com.echothree.control.user.associate.common.form.EditAssociateProgramDescriptionForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
-import com.echothree.control.user.associate.common.result.EditAssociateProgramDescriptionResult;
 import com.echothree.control.user.associate.common.spec.AssociateProgramDescriptionSpec;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.associate.server.entity.AssociateProgram;
-import com.echothree.model.data.associate.server.entity.AssociateProgramDescription;
-import com.echothree.model.data.associate.server.value.AssociateProgramDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,24 +60,24 @@ public class EditAssociateProgramDescriptionCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        EditAssociateProgramDescriptionResult result = AssociateResultFactory.getEditAssociateProgramDescriptionResult();
-        String associateProgramName = spec.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var result = AssociateResultFactory.getEditAssociateProgramDescriptionResult();
+        var associateProgramName = spec.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    AssociateProgramDescription associateProgramDescription = associateControl.getAssociateProgramDescription(associateProgram, language);
+                    var associateProgramDescription = associateControl.getAssociateProgramDescription(associateProgram, language);
                     
                     if(associateProgramDescription != null) {
                         result.setAssociateProgramDescription(associateControl.getAssociateProgramDescriptionTransfer(getUserVisit(), associateProgramDescription));
                         
                         if(lockEntity(associateProgram)) {
-                            AssociateProgramDescriptionEdit edit = AssociateEditFactory.getAssociateProgramDescriptionEdit();
+                            var edit = AssociateEditFactory.getAssociateProgramDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(associateProgramDescription.getDescription());
@@ -95,12 +90,12 @@ public class EditAssociateProgramDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownAssociateProgramDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    AssociateProgramDescriptionValue associateProgramDescriptionValue = associateControl.getAssociateProgramDescriptionValueForUpdate(associateProgram, language);
+                    var associateProgramDescriptionValue = associateControl.getAssociateProgramDescriptionValueForUpdate(associateProgram, language);
                     
                     if(associateProgramDescriptionValue != null) {
                         if(lockEntityForUpdate(associateProgram)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 associateProgramDescriptionValue.setDescription(description);
                                 

@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.common.transfer.PersonTransfer;
-import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Person;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PersonTransferCache
@@ -34,16 +30,16 @@ public class PersonTransferCache
     }
     
     public PersonTransfer getPersonTransfer(Person person) {
-        PersonTransfer personTransfer = get(person);
+        var personTransfer = get(person);
         
         if(personTransfer == null) {
-            PersonalTitle personalTitle = person.getPersonalTitle();
-            PersonalTitleTransfer personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
-            String firstName = person.getFirstName();
-            String middleName = person.getMiddleName();
-            String lastName = person.getLastName();
-            NameSuffix nameSuffix = person.getNameSuffix();
-            NameSuffixTransfer nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
+            var personalTitle = person.getPersonalTitle();
+            var personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
+            var firstName = person.getFirstName();
+            var middleName = person.getMiddleName();
+            var lastName = person.getLastName();
+            var nameSuffix = person.getNameSuffix();
+            var nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
             
             personTransfer = new PersonTransfer(personalTitleTransfer, firstName, middleName, lastName, nameSuffixTransfer);
             put(person, personTransfer);

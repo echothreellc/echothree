@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.SelectorService;
-import com.echothree.control.user.selector.common.form.CreateSelectorDescriptionForm;
-import com.echothree.control.user.selector.common.form.CreateSelectorNodeForm;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -54,7 +52,7 @@ public class SelectorHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("selectorDescription")) {
-            CreateSelectorDescriptionForm commandForm = SelectorFormFactory.getCreateSelectorDescriptionForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorDescriptionForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
@@ -63,7 +61,7 @@ public class SelectorHandler
             
             selectorService.createSelectorDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("selectorNode")) {
-            CreateSelectorNodeForm commandForm = SelectorFormFactory.getCreateSelectorNodeForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorNodeForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);

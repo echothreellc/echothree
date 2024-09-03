@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumMessageTypeForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.ForumMessageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,8 +50,8 @@ public class CreateForumMessageTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageTypeName = form.getForumMessageTypeName();
-        ForumMessageType forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
+        var forumMessageTypeName = form.getForumMessageTypeName();
+        var forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
         
         if(forumMessageType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

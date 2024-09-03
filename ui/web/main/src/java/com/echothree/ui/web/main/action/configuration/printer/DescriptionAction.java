@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPrinterDescriptionsForm;
 import com.echothree.control.user.printer.common.result.GetPrinterDescriptionsResult;
-import com.echothree.model.control.printer.common.transfer.PrinterTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
-            GetPrinterDescriptionsForm commandForm = PrinterUtil.getHome().getGetPrinterDescriptionsForm();
+            var printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
+            var commandForm = PrinterUtil.getHome().getGetPrinterDescriptionsForm();
             
             commandForm.setPrinterName(printerName);
-            
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterDescriptionsResult result = (GetPrinterDescriptionsResult)executionResult.getResult();
-            PrinterTransfer printerTransfer = result.getPrinter();
+
+            var commandResult = PrinterUtil.getHome().getPrinterDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterDescriptionsResult)executionResult.getResult();
+            var printerTransfer = result.getPrinter();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUP, printerTransfer.getPrinterGroup());
             request.setAttribute(AttributeConstants.PRINTER, printerTransfer);

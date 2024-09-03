@@ -26,29 +26,19 @@ import com.echothree.model.control.index.common.transfer.IndexFieldTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTypeDescriptionTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
-import com.echothree.model.control.index.server.transfer.IndexDescriptionTransferCache;
-import com.echothree.model.control.index.server.transfer.IndexFieldTransferCache;
-import com.echothree.model.control.index.server.transfer.IndexTransferCache;
 import com.echothree.model.control.index.server.transfer.IndexTransferCaches;
-import com.echothree.model.control.index.server.transfer.IndexTypeDescriptionTransferCache;
-import com.echothree.model.control.index.server.transfer.IndexTypeTransferCache;
 import com.echothree.model.control.search.server.control.SearchControl;
-import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.index.common.pk.IndexFieldPK;
 import com.echothree.model.data.index.common.pk.IndexPK;
 import com.echothree.model.data.index.common.pk.IndexTypePK;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexDescription;
-import com.echothree.model.data.index.server.entity.IndexDetail;
 import com.echothree.model.data.index.server.entity.IndexField;
 import com.echothree.model.data.index.server.entity.IndexFieldDescription;
-import com.echothree.model.data.index.server.entity.IndexFieldDetail;
 import com.echothree.model.data.index.server.entity.IndexStatus;
 import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.index.server.entity.IndexTypeDescription;
-import com.echothree.model.data.index.server.entity.IndexTypeDetail;
 import com.echothree.model.data.index.server.factory.IndexDescriptionFactory;
 import com.echothree.model.data.index.server.factory.IndexDetailFactory;
 import com.echothree.model.data.index.server.factory.IndexFactory;
@@ -65,7 +55,6 @@ import com.echothree.model.data.index.server.value.IndexFieldDescriptionValue;
 import com.echothree.model.data.index.server.value.IndexFieldDetailValue;
 import com.echothree.model.data.index.server.value.IndexTypeDescriptionValue;
 import com.echothree.model.data.index.server.value.IndexTypeDetailValue;
-import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
@@ -76,7 +65,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -108,11 +96,11 @@ public class IndexControl
     // --------------------------------------------------------------------------------
 
     public IndexType createIndexType(String indexTypeName, EntityType entityType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        IndexType defaultIndexType = getDefaultIndexType();
-        boolean defaultFound = defaultIndexType != null;
+        var defaultIndexType = getDefaultIndexType();
+        var defaultFound = defaultIndexType != null;
 
         if(defaultFound && isDefault) {
-            IndexTypeDetailValue defaultIndexTypeDetailValue = getDefaultIndexTypeDetailValueForUpdate();
+            var defaultIndexTypeDetailValue = getDefaultIndexTypeDetailValueForUpdate();
 
             defaultIndexTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateIndexTypeFromValue(defaultIndexTypeDetailValue, false, createdBy);
@@ -120,8 +108,8 @@ public class IndexControl
             isDefault = Boolean.TRUE;
         }
 
-        IndexType indexType = IndexTypeFactory.getInstance().create();
-        IndexTypeDetail indexTypeDetail = IndexTypeDetailFactory.getInstance().create(indexType, indexTypeName, entityType, isDefault, sortOrder,
+        var indexType = IndexTypeFactory.getInstance().create();
+        var indexTypeDetail = IndexTypeDetailFactory.getInstance().create(indexType, indexTypeName, entityType, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -149,8 +137,8 @@ public class IndexControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexType */
     public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance) {
-        IndexTypePK pk = new IndexTypePK(entityInstance.getEntityUniqueId());
-        IndexType indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new IndexTypePK(entityInstance.getEntityUniqueId());
+        var indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return indexType;
     }
@@ -298,7 +286,7 @@ public class IndexControl
 
     public List<IndexTypeTransfer> getIndexTypeTransfers(UserVisit userVisit, Collection<IndexType> indexTypes) {
         List<IndexTypeTransfer> indexTypeTransfers = new ArrayList<>(indexTypes.size());
-        IndexTypeTransferCache indexTypeTransferCache = getIndexTransferCaches(userVisit).getIndexTypeTransferCache();
+        var indexTypeTransferCache = getIndexTransferCaches(userVisit).getIndexTypeTransferCache();
 
         indexTypes.forEach((indexType) ->
                 indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(indexType))
@@ -316,7 +304,7 @@ public class IndexControl
     }
 
     public IndexTypeChoicesBean getIndexTypeChoices(String defaultIndexTypeChoice, Language language, boolean allowNullChoice) {
-        List<IndexType> indexTypes = getIndexTypes();
+        var indexTypes = getIndexTypes();
         var size = indexTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -332,7 +320,7 @@ public class IndexControl
         }
 
         for(var indexType : indexTypes) {
-            IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
+            var indexTypeDetail = indexType.getLastDetail();
 
             var label = getBestIndexTypeDescription(indexType, language);
             var value = indexTypeDetail.getIndexTypeName();
@@ -351,26 +339,26 @@ public class IndexControl
 
     private void updateIndexTypeFromValue(IndexTypeDetailValue indexTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(indexTypeDetailValue.hasBeenModified()) {
-            IndexType indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      indexTypeDetailValue.getIndexTypePK());
-            IndexTypeDetail indexTypeDetail = indexType.getActiveDetailForUpdate();
+            var indexTypeDetail = indexType.getActiveDetailForUpdate();
 
             indexTypeDetail.setThruTime(session.START_TIME_LONG);
             indexTypeDetail.store();
 
-            IndexTypePK indexTypePK = indexTypeDetail.getIndexTypePK(); // Not updated
-            String indexTypeName = indexTypeDetailValue.getIndexTypeName();
-            EntityTypePK entityTypePK = indexTypeDetailValue.getEntityTypePK();
-            Boolean isDefault = indexTypeDetailValue.getIsDefault();
-            Integer sortOrder = indexTypeDetailValue.getSortOrder();
+            var indexTypePK = indexTypeDetail.getIndexTypePK(); // Not updated
+            var indexTypeName = indexTypeDetailValue.getIndexTypeName();
+            var entityTypePK = indexTypeDetailValue.getEntityTypePK();
+            var isDefault = indexTypeDetailValue.getIsDefault();
+            var sortOrder = indexTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                IndexType defaultIndexType = getDefaultIndexType();
-                boolean defaultFound = defaultIndexType != null && !defaultIndexType.equals(indexType);
+                var defaultIndexType = getDefaultIndexType();
+                var defaultFound = defaultIndexType != null && !defaultIndexType.equals(indexType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    IndexTypeDetailValue defaultIndexTypeDetailValue = getDefaultIndexTypeDetailValueForUpdate();
+                    var defaultIndexTypeDetailValue = getDefaultIndexTypeDetailValueForUpdate();
 
                     defaultIndexTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateIndexTypeFromValue(defaultIndexTypeDetailValue, false, updatedBy);
@@ -395,7 +383,7 @@ public class IndexControl
     }
 
     private void deleteIndexType(IndexType indexType, boolean checkDefault, BasePK deletedBy) {
-        IndexTypeDetail indexTypeDetail = indexType.getLastDetailForUpdate();
+        var indexTypeDetail = indexType.getLastDetailForUpdate();
 
         deleteIndexFieldsByIndexType(indexType, deletedBy);
         deleteIndexesByIndexType(indexType, deletedBy);
@@ -407,17 +395,17 @@ public class IndexControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            IndexType defaultIndexType = getDefaultIndexType();
+            var defaultIndexType = getDefaultIndexType();
 
             if(defaultIndexType == null) {
-                List<IndexType> indexTypes = getIndexTypesForUpdate();
+                var indexTypes = getIndexTypesForUpdate();
 
                 if(!indexTypes.isEmpty()) {
-                    Iterator<IndexType> iter = indexTypes.iterator();
+                    var iter = indexTypes.iterator();
                     if(iter.hasNext()) {
                         defaultIndexType = iter.next();
                     }
-                    IndexTypeDetailValue indexTypeDetailValue = Objects.requireNonNull(defaultIndexType).getLastDetailForUpdate().getIndexTypeDetailValue().clone();
+                    var indexTypeDetailValue = Objects.requireNonNull(defaultIndexType).getLastDetailForUpdate().getIndexTypeDetailValue().clone();
 
                     indexTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateIndexTypeFromValue(indexTypeDetailValue, false, deletedBy);
@@ -449,7 +437,7 @@ public class IndexControl
     // --------------------------------------------------------------------------------
 
     public IndexTypeDescription createIndexTypeDescription(IndexType indexType, Language language, String description, BasePK createdBy) {
-        IndexTypeDescription indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
+        var indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -528,7 +516,7 @@ public class IndexControl
 
     public String getBestIndexTypeDescription(IndexType indexType, Language language) {
         String description;
-        IndexTypeDescription indexTypeDescription = getIndexTypeDescription(indexType, language);
+        var indexTypeDescription = getIndexTypeDescription(indexType, language);
 
         if(indexTypeDescription == null && !language.getIsDefault()) {
             indexTypeDescription = getIndexTypeDescription(indexType, getPartyControl().getDefaultLanguage());
@@ -548,9 +536,9 @@ public class IndexControl
     }
 
     public List<IndexTypeDescriptionTransfer> getIndexTypeDescriptionTransfersByIndexType(UserVisit userVisit, IndexType indexType) {
-        List<IndexTypeDescription> indexTypeDescriptions = getIndexTypeDescriptionsByIndexType(indexType);
+        var indexTypeDescriptions = getIndexTypeDescriptionsByIndexType(indexType);
         List<IndexTypeDescriptionTransfer> indexTypeDescriptionTransfers = new ArrayList<>(indexTypeDescriptions.size());
-        IndexTypeDescriptionTransferCache indexTypeDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexTypeDescriptionTransferCache();
+        var indexTypeDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexTypeDescriptionTransferCache();
 
         indexTypeDescriptions.forEach((indexTypeDescription) ->
                 indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(indexTypeDescription))
@@ -561,15 +549,15 @@ public class IndexControl
 
     public void updateIndexTypeDescriptionFromValue(IndexTypeDescriptionValue indexTypeDescriptionValue, BasePK updatedBy) {
         if(indexTypeDescriptionValue.hasBeenModified()) {
-            IndexTypeDescription indexTypeDescription = IndexTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexTypeDescription = IndexTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     indexTypeDescriptionValue.getPrimaryKey());
 
             indexTypeDescription.setThruTime(session.START_TIME_LONG);
             indexTypeDescription.store();
 
-            IndexType indexType = indexTypeDescription.getIndexType();
-            Language language = indexTypeDescription.getLanguage();
-            String description = indexTypeDescriptionValue.getDescription();
+            var indexType = indexTypeDescription.getIndexType();
+            var language = indexTypeDescription.getLanguage();
+            var description = indexTypeDescriptionValue.getDescription();
 
             indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -586,7 +574,7 @@ public class IndexControl
     }
 
     public void deleteIndexTypeDescriptionsByIndexType(IndexType indexType, BasePK deletedBy) {
-        List<IndexTypeDescription> indexTypeDescriptions = getIndexTypeDescriptionsByIndexTypeForUpdate(indexType);
+        var indexTypeDescriptions = getIndexTypeDescriptionsByIndexTypeForUpdate(indexType);
 
         indexTypeDescriptions.forEach((indexTypeDescription) -> 
                 deleteIndexTypeDescription(indexTypeDescription, deletedBy)
@@ -598,11 +586,11 @@ public class IndexControl
     // --------------------------------------------------------------------------------
 
     public IndexField createIndexField(IndexType indexType, String indexFieldName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        IndexField defaultIndexField = getDefaultIndexField(indexType);
-        boolean defaultFound = defaultIndexField != null;
+        var defaultIndexField = getDefaultIndexField(indexType);
+        var defaultFound = defaultIndexField != null;
 
         if(defaultFound && isDefault) {
-            IndexFieldDetailValue defaultIndexFieldDetailValue = getDefaultIndexFieldDetailValueForUpdate(indexType);
+            var defaultIndexFieldDetailValue = getDefaultIndexFieldDetailValueForUpdate(indexType);
 
             defaultIndexFieldDetailValue.setIsDefault(Boolean.FALSE);
             updateIndexFieldFromValue(defaultIndexFieldDetailValue, false, createdBy);
@@ -610,8 +598,8 @@ public class IndexControl
             isDefault = Boolean.TRUE;
         }
 
-        IndexField indexField = IndexFieldFactory.getInstance().create();
-        IndexFieldDetail indexFieldDetail = IndexFieldDetailFactory.getInstance().create(session, indexField, indexType, indexFieldName, isDefault, sortOrder,
+        var indexField = IndexFieldFactory.getInstance().create();
+        var indexFieldDetail = IndexFieldDetailFactory.getInstance().create(session, indexField, indexType, indexFieldName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -734,7 +722,7 @@ public class IndexControl
     }
 
     public IndexFieldChoicesBean getIndexFieldChoices(String defaultIndexFieldChoice, Language language, boolean allowNullChoice, IndexType indexType) {
-        List<IndexField> indexFields = getIndexFields(indexType);
+        var indexFields = getIndexFields(indexType);
         var size = indexFields.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -750,7 +738,7 @@ public class IndexControl
         }
 
         for(var indexField : indexFields) {
-            IndexFieldDetail indexFieldDetail = indexField.getLastDetail();
+            var indexFieldDetail = indexField.getLastDetail();
             var label = getBestIndexFieldDescription(indexField, language);
             var value = indexFieldDetail.getIndexFieldName();
 
@@ -771,9 +759,9 @@ public class IndexControl
     }
 
     public List<IndexFieldTransfer> getIndexFieldTransfersByIndexType(UserVisit userVisit, IndexType indexType) {
-        List<IndexField> indexFields = getIndexFields(indexType);
+        var indexFields = getIndexFields(indexType);
         List<IndexFieldTransfer> indexFieldTransfers = new ArrayList<>(indexFields.size());
-        IndexFieldTransferCache indexFieldTransferCache = getIndexTransferCaches(userVisit).getIndexFieldTransferCache();
+        var indexFieldTransferCache = getIndexTransferCaches(userVisit).getIndexFieldTransferCache();
 
         indexFields.forEach((indexField) ->
                 indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(indexField))
@@ -785,27 +773,27 @@ public class IndexControl
     private void updateIndexFieldFromValue(IndexFieldDetailValue indexFieldDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(indexFieldDetailValue.hasBeenModified()) {
-            IndexField indexField = IndexFieldFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexField = IndexFieldFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      indexFieldDetailValue.getIndexFieldPK());
-            IndexFieldDetail indexFieldDetail = indexField.getActiveDetailForUpdate();
+            var indexFieldDetail = indexField.getActiveDetailForUpdate();
 
             indexFieldDetail.setThruTime(session.START_TIME_LONG);
             indexFieldDetail.store();
 
-            IndexFieldPK indexFieldPK = indexFieldDetail.getIndexFieldPK();
-            IndexType indexType = indexFieldDetail.getIndexType();
-            IndexTypePK indexTypePK = indexType.getPrimaryKey();
-            String indexFieldName = indexFieldDetailValue.getIndexFieldName();
-            Boolean isDefault = indexFieldDetailValue.getIsDefault();
-            Integer sortOrder = indexFieldDetailValue.getSortOrder();
+            var indexFieldPK = indexFieldDetail.getIndexFieldPK();
+            var indexType = indexFieldDetail.getIndexType();
+            var indexTypePK = indexType.getPrimaryKey();
+            var indexFieldName = indexFieldDetailValue.getIndexFieldName();
+            var isDefault = indexFieldDetailValue.getIsDefault();
+            var sortOrder = indexFieldDetailValue.getSortOrder();
 
             if(checkDefault) {
-                IndexField defaultIndexField = getDefaultIndexField(indexType);
-                boolean defaultFound = defaultIndexField != null && !defaultIndexField.equals(indexField);
+                var defaultIndexField = getDefaultIndexField(indexType);
+                var defaultFound = defaultIndexField != null && !defaultIndexField.equals(indexField);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    IndexFieldDetailValue defaultIndexFieldDetailValue = getDefaultIndexFieldDetailValueForUpdate(indexType);
+                    var defaultIndexFieldDetailValue = getDefaultIndexFieldDetailValueForUpdate(indexType);
 
                     defaultIndexFieldDetailValue.setIsDefault(Boolean.FALSE);
                     updateIndexFieldFromValue(defaultIndexFieldDetailValue, false, updatedBy);
@@ -834,24 +822,24 @@ public class IndexControl
         
         deleteIndexFieldDescriptionsByIndexField(indexField, deletedBy);
         searchControl.deleteCachedSearchIndexFieldsByIndexField(indexField, deletedBy);
-        
-        IndexFieldDetail indexFieldDetail = indexField.getLastDetailForUpdate();
+
+        var indexFieldDetail = indexField.getLastDetailForUpdate();
         indexFieldDetail.setThruTime(session.START_TIME_LONG);
         indexField.setActiveDetail(null);
         indexField.store();
 
         // Check for default, and pick one if necessary
-        IndexType indexType = indexFieldDetail.getIndexType();
-        IndexField defaultIndexField = getDefaultIndexField(indexType);
+        var indexType = indexFieldDetail.getIndexType();
+        var defaultIndexField = getDefaultIndexField(indexType);
         if(defaultIndexField == null) {
-            List<IndexField> indexFields = getIndexFieldsForUpdate(indexType);
+            var indexFields = getIndexFieldsForUpdate(indexType);
 
             if(!indexFields.isEmpty()) {
-                Iterator<IndexField> iter = indexFields.iterator();
+                var iter = indexFields.iterator();
                 if(iter.hasNext()) {
                     defaultIndexField = iter.next();
                 }
-                IndexFieldDetailValue indexFieldDetailValue = Objects.requireNonNull(defaultIndexField).getLastDetailForUpdate().getIndexFieldDetailValue().clone();
+                var indexFieldDetailValue = Objects.requireNonNull(defaultIndexField).getLastDetailForUpdate().getIndexFieldDetailValue().clone();
 
                 indexFieldDetailValue.setIsDefault(Boolean.TRUE);
                 updateIndexFieldFromValue(indexFieldDetailValue, false, deletedBy);
@@ -862,7 +850,7 @@ public class IndexControl
     }
 
     public void deleteIndexFieldsByIndexType(IndexType indexType, BasePK deletedBy) {
-        List<IndexField> indexFields = getIndexFieldsForUpdate(indexType);
+        var indexFields = getIndexFieldsForUpdate(indexType);
 
         indexFields.forEach((indexField) -> 
                 deleteIndexField(indexField, deletedBy)
@@ -875,7 +863,7 @@ public class IndexControl
 
     public IndexFieldDescription createIndexFieldDescription(IndexField indexField, Language language, String description,
             BasePK createdBy) {
-        IndexFieldDescription indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField,
+        var indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -954,7 +942,7 @@ public class IndexControl
 
     public String getBestIndexFieldDescription(IndexField indexField, Language language) {
         String description;
-        IndexFieldDescription indexFieldDescription = getIndexFieldDescription(indexField, language);
+        var indexFieldDescription = getIndexFieldDescription(indexField, language);
 
         if(indexFieldDescription == null && !language.getIsDefault()) {
             indexFieldDescription = getIndexFieldDescription(indexField, getPartyControl().getDefaultLanguage());
@@ -974,7 +962,7 @@ public class IndexControl
     }
 
     public List<IndexFieldDescriptionTransfer> getIndexFieldDescriptionTransfersByIndexField(UserVisit userVisit, IndexField indexField) {
-        List<IndexFieldDescription> indexFieldDescriptions = getIndexFieldDescriptionsByIndexField(indexField);
+        var indexFieldDescriptions = getIndexFieldDescriptionsByIndexField(indexField);
         List<IndexFieldDescriptionTransfer> indexFieldDescriptionTransfers = new ArrayList<>(indexFieldDescriptions.size());
 
         indexFieldDescriptions.forEach((indexFieldDescription) -> {
@@ -986,15 +974,15 @@ public class IndexControl
 
     public void updateIndexFieldDescriptionFromValue(IndexFieldDescriptionValue indexFieldDescriptionValue, BasePK updatedBy) {
         if(indexFieldDescriptionValue.hasBeenModified()) {
-            IndexFieldDescription indexFieldDescription = IndexFieldDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexFieldDescription = IndexFieldDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      indexFieldDescriptionValue.getPrimaryKey());
 
             indexFieldDescription.setThruTime(session.START_TIME_LONG);
             indexFieldDescription.store();
 
-            IndexField indexField = indexFieldDescription.getIndexField();
-            Language language = indexFieldDescription.getLanguage();
-            String description = indexFieldDescriptionValue.getDescription();
+            var indexField = indexFieldDescription.getIndexField();
+            var language = indexFieldDescription.getLanguage();
+            var description = indexFieldDescriptionValue.getDescription();
 
             indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1011,7 +999,7 @@ public class IndexControl
     }
 
     public void deleteIndexFieldDescriptionsByIndexField(IndexField indexField, BasePK deletedBy) {
-        List<IndexFieldDescription> indexFieldDescriptions = getIndexFieldDescriptionsByIndexFieldForUpdate(indexField);
+        var indexFieldDescriptions = getIndexFieldDescriptionsByIndexFieldForUpdate(indexField);
 
         indexFieldDescriptions.forEach((indexFieldDescription) -> 
                 deleteIndexFieldDescription(indexFieldDescription, deletedBy)
@@ -1023,11 +1011,11 @@ public class IndexControl
     // --------------------------------------------------------------------------------
 
     public Index createIndex(String indexName, IndexType indexType, Language language, String directory, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Index defaultIndex = getDefaultIndex();
-        boolean defaultFound = defaultIndex != null;
+        var defaultIndex = getDefaultIndex();
+        var defaultFound = defaultIndex != null;
 
         if(defaultFound && isDefault) {
-            IndexDetailValue defaultIndexDetailValue = getDefaultIndexDetailValueForUpdate();
+            var defaultIndexDetailValue = getDefaultIndexDetailValueForUpdate();
 
             defaultIndexDetailValue.setIsDefault(Boolean.FALSE);
             updateIndexFromValue(defaultIndexDetailValue, false, createdBy);
@@ -1035,8 +1023,8 @@ public class IndexControl
             isDefault = Boolean.TRUE;
         }
 
-        Index index = IndexFactory.getInstance().create();
-        IndexDetail indexDetail = IndexDetailFactory.getInstance().create(index, indexName, indexType, language, directory, isDefault, sortOrder,
+        var index = IndexFactory.getInstance().create();
+        var indexDetail = IndexDetailFactory.getInstance().create(index, indexName, indexType, language, directory, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1054,8 +1042,8 @@ public class IndexControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Index */
     public Index getIndexByEntityInstance(EntityInstance entityInstance) {
-        IndexPK pk = new IndexPK(entityInstance.getEntityUniqueId());
-        Index index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new IndexPK(entityInstance.getEntityUniqueId());
+        var index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return index;
     }
@@ -1276,7 +1264,7 @@ public class IndexControl
     }
 
     public Index getBestIndex(IndexType indexType, Language language) {
-        Index index = getIndex(indexType, language);
+        var index = getIndex(indexType, language);
 
         if(index == null && !language.getIsDefault()) {
             index = getIndex(indexType, getPartyControl().getDefaultLanguage());
@@ -1290,9 +1278,9 @@ public class IndexControl
     }
 
     public List<IndexTransfer> getIndexTransfers(UserVisit userVisit) {
-        List<Index> indexes = getIndexes();
+        var indexes = getIndexes();
         List<IndexTransfer> indexTransfers = new ArrayList<>(indexes.size());
-        IndexTransferCache indexTransferCache = getIndexTransferCaches(userVisit).getIndexTransferCache();
+        var indexTransferCache = getIndexTransferCaches(userVisit).getIndexTransferCache();
 
         indexes.forEach((index) ->
                 indexTransfers.add(indexTransferCache.getIndexTransfer(index))
@@ -1302,7 +1290,7 @@ public class IndexControl
     }
 
     public IndexChoicesBean getIndexChoices(String defaultIndexChoice, Language language, boolean allowNullChoice) {
-        List<Index> indexes = getIndexes();
+        var indexes = getIndexes();
         var size = indexes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1318,7 +1306,7 @@ public class IndexControl
         }
 
         for(var index : indexes) {
-            IndexDetail indexDetail = index.getLastDetail();
+            var indexDetail = index.getLastDetail();
 
             var label = getBestIndexDescription(index, language);
             var value = indexDetail.getIndexName();
@@ -1337,28 +1325,28 @@ public class IndexControl
 
     private void updateIndexFromValue(IndexDetailValue indexDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(indexDetailValue.hasBeenModified()) {
-            Index index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      indexDetailValue.getIndexPK());
-            IndexDetail indexDetail = index.getActiveDetailForUpdate();
+            var indexDetail = index.getActiveDetailForUpdate();
 
             indexDetail.setThruTime(session.START_TIME_LONG);
             indexDetail.store();
 
-            IndexPK indexPK = indexDetail.getIndexPK(); // Not updated
-            String indexName = indexDetailValue.getIndexName();
-            IndexTypePK indexTypePK = indexDetail.getIndexTypePK(); // Not updated
-            LanguagePK languagePK = indexDetail.getLanguagePK(); // Not updated
-            String directory = indexDetailValue.getDirectory();
-            Boolean isDefault = indexDetailValue.getIsDefault();
-            Integer sortOrder = indexDetailValue.getSortOrder();
+            var indexPK = indexDetail.getIndexPK(); // Not updated
+            var indexName = indexDetailValue.getIndexName();
+            var indexTypePK = indexDetail.getIndexTypePK(); // Not updated
+            var languagePK = indexDetail.getLanguagePK(); // Not updated
+            var directory = indexDetailValue.getDirectory();
+            var isDefault = indexDetailValue.getIsDefault();
+            var sortOrder = indexDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Index defaultIndex = getDefaultIndex();
-                boolean defaultFound = defaultIndex != null && !defaultIndex.equals(index);
+                var defaultIndex = getDefaultIndex();
+                var defaultFound = defaultIndex != null && !defaultIndex.equals(index);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    IndexDetailValue defaultIndexDetailValue = getDefaultIndexDetailValueForUpdate();
+                    var defaultIndexDetailValue = getDefaultIndexDetailValueForUpdate();
 
                     defaultIndexDetailValue.setIsDefault(Boolean.FALSE);
                     updateIndexFromValue(defaultIndexDetailValue, false, updatedBy);
@@ -1384,7 +1372,7 @@ public class IndexControl
 
     private void deleteIndex(Index index, boolean checkDefault, BasePK deletedBy) {
         var searchControl = Session.getModelController(SearchControl.class);
-        IndexDetail indexDetail = index.getLastDetailForUpdate();
+        var indexDetail = index.getLastDetailForUpdate();
 
         searchControl.deleteCachedSearchesByIndex(index, deletedBy);
         removeIndexStatusByIndex(index);
@@ -1396,17 +1384,17 @@ public class IndexControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Index defaultIndex = getDefaultIndex();
+            var defaultIndex = getDefaultIndex();
 
             if(defaultIndex == null) {
-                List<Index> indexes = getIndexesForUpdate();
+                var indexes = getIndexesForUpdate();
 
                 if(!indexes.isEmpty()) {
-                    Iterator<Index> iter = indexes.iterator();
+                    var iter = indexes.iterator();
                     if(iter.hasNext()) {
                         defaultIndex = iter.next();
                     }
-                    IndexDetailValue indexDetailValue = Objects.requireNonNull(defaultIndex).getLastDetailForUpdate().getIndexDetailValue().clone();
+                    var indexDetailValue = Objects.requireNonNull(defaultIndex).getLastDetailForUpdate().getIndexDetailValue().clone();
 
                     indexDetailValue.setIsDefault(Boolean.TRUE);
                     updateIndexFromValue(indexDetailValue, false, deletedBy);
@@ -1438,7 +1426,7 @@ public class IndexControl
     // --------------------------------------------------------------------------------
 
     public IndexDescription createIndexDescription(Index index, Language language, String description, BasePK createdBy) {
-        IndexDescription indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
+        var indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1517,7 +1505,7 @@ public class IndexControl
 
     public String getBestIndexDescription(Index index, Language language) {
         String description;
-        IndexDescription indexDescription = getIndexDescription(index, language);
+        var indexDescription = getIndexDescription(index, language);
 
         if(indexDescription == null && !language.getIsDefault()) {
             indexDescription = getIndexDescription(index, getPartyControl().getDefaultLanguage());
@@ -1537,9 +1525,9 @@ public class IndexControl
     }
 
     public List<IndexDescriptionTransfer> getIndexDescriptionTransfersByIndex(UserVisit userVisit, Index index) {
-        List<IndexDescription> indexDescriptions = getIndexDescriptionsByIndex(index);
+        var indexDescriptions = getIndexDescriptionsByIndex(index);
         List<IndexDescriptionTransfer> indexDescriptionTransfers = new ArrayList<>(indexDescriptions.size());
-        IndexDescriptionTransferCache indexDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexDescriptionTransferCache();
+        var indexDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexDescriptionTransferCache();
 
         indexDescriptions.forEach((indexDescription) ->
                 indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(indexDescription))
@@ -1550,15 +1538,15 @@ public class IndexControl
 
     public void updateIndexDescriptionFromValue(IndexDescriptionValue indexDescriptionValue, BasePK updatedBy) {
         if(indexDescriptionValue.hasBeenModified()) {
-            IndexDescription indexDescription = IndexDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexDescription = IndexDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     indexDescriptionValue.getPrimaryKey());
 
             indexDescription.setThruTime(session.START_TIME_LONG);
             indexDescription.store();
 
-            Index index = indexDescription.getIndex();
-            Language language = indexDescription.getLanguage();
-            String description = indexDescriptionValue.getDescription();
+            var index = indexDescription.getIndex();
+            var language = indexDescription.getLanguage();
+            var description = indexDescriptionValue.getDescription();
 
             indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1575,7 +1563,7 @@ public class IndexControl
     }
 
     public void deleteIndexDescriptionsByIndex(Index index, BasePK deletedBy) {
-        List<IndexDescription> indexDescriptions = getIndexDescriptionsByIndexForUpdate(index);
+        var indexDescriptions = getIndexDescriptionsByIndexForUpdate(index);
 
         indexDescriptions.forEach((indexDescription) -> 
                 deleteIndexDescription(indexDescription, deletedBy)
@@ -1621,7 +1609,7 @@ public class IndexControl
     }
     
     public void removeIndexStatusByIndex(Index index) {
-        IndexStatus indexStatus = getIndexStatusForUpdate(index);
+        var indexStatus = getIndexStatusForUpdate(index);
         
         if(indexStatus != null) {
             indexStatus.remove();

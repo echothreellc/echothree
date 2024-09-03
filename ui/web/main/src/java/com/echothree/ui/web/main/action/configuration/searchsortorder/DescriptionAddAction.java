@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.searchsortorder;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.CreateSearchSortOrderDescriptionForm;
-import com.echothree.control.user.search.common.form.GetSearchSortOrderForm;
 import com.echothree.control.user.search.common.result.GetSearchSortOrderResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,15 +54,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchSortOrderForm commandForm = SearchUtil.getHome().getGetSearchSortOrderForm();
+        var commandForm = SearchUtil.getHome().getGetSearchSortOrderForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchSortOrder(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().getSearchSortOrder(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchSortOrderResult result = (GetSearchSortOrderResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchSortOrderResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER, result.getSearchSortOrder());
         }
@@ -74,7 +71,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSearchSortOrderDescriptionForm commandForm = SearchUtil.getHome().getCreateSearchSortOrderDescriptionForm();
+        var commandForm = SearchUtil.getHome().getCreateSearchSortOrderDescriptionForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());

@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerStatusChoicesForm;
 import com.echothree.control.user.customer.common.result.GetCustomerStatusChoicesResult;
 import com.echothree.model.control.customer.common.choice.CustomerStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class CustomerStatusActionForm
     public void setupCustomerStatusChoices()
             throws NamingException {
         if(customerStatusChoices == null) {
-            GetCustomerStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
 
             form.setCustomerName(customerName);
             form.setDefaultCustomerStatusChoice(customerStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerStatusChoicesResult result = (GetCustomerStatusChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerStatusChoicesResult)executionResult.getResult();
             customerStatusChoices = result.getCustomerStatusChoices();
 
             if(customerStatusChoice == null) {

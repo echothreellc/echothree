@@ -18,11 +18,9 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetColorDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetColorDescriptionsResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,9 +61,9 @@ public class GetColorDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetColorDescriptionsResult result = CoreResultFactory.getGetColorDescriptionsResult();
-        String colorName = form.getColorName();
-        Color color = coreControl.getColorByName(colorName);
+        var result = CoreResultFactory.getGetColorDescriptionsResult();
+        var colorName = form.getColorName();
+        var color = coreControl.getColorByName(colorName);
         
         if(color != null) {
             result.setColor(coreControl.getColorTransfer(getUserVisit(), color));

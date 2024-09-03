@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.communicationsource;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.form.GetCommunicationSourceForm;
 import com.echothree.control.user.communication.common.result.GetCommunicationSourceResult;
 import com.echothree.model.control.communication.common.CommunicationOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,21 +52,21 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetCommunicationSourceForm commandForm = CommunicationUtil.getHome().getGetCommunicationSourceForm();
-            String communicationSourceName = request.getParameter(ParameterConstants.COMMUNICATION_SOURCE_NAME);
+            var commandForm = CommunicationUtil.getHome().getGetCommunicationSourceForm();
+            var communicationSourceName = request.getParameter(ParameterConstants.COMMUNICATION_SOURCE_NAME);
             
             commandForm.setCommunicationSourceName(communicationSourceName);
             
             Set<String> options = new HashSet<>();
             options.add(CommunicationOptions.CommunicationSourceIncludeRelated);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationSource(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationSourceResult result = (GetCommunicationSourceResult)executionResult.getResult();
+
+            var commandResult = CommunicationUtil.getHome().getCommunicationSource(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationSourceResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_SOURCE, result.getCommunicationSource());
             forwardKey = ForwardConstants.DISPLAY;

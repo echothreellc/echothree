@@ -28,7 +28,7 @@ public class ItemDescriptionNames {
     public String languageIsoName;
 
     public ItemDescriptionNames(HttpServletRequest request) {
-        String itemNamesParameter = request.getParameter(ParameterConstants.ITEM_NAMES);
+        var itemNamesParameter = request.getParameter(ParameterConstants.ITEM_NAMES);
 
         itemDescriptionTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME);
         itemName = request.getParameter(ParameterConstants.ITEM_NAME);

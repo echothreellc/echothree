@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.offercustomertype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetOfferCustomerTypesForm;
 import com.echothree.control.user.offer.common.result.GetOfferCustomerTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-            GetOfferCustomerTypesForm commandForm = OfferUtil.getHome().getGetOfferCustomerTypesForm();
+            var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+            var commandForm = OfferUtil.getHome().getGetOfferCustomerTypesForm();
             
             commandForm.setOfferName(offerName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getOfferCustomerTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetOfferCustomerTypesResult result = (GetOfferCustomerTypesResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().getOfferCustomerTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetOfferCustomerTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.OFFER, result.getOffer());
             request.setAttribute(AttributeConstants.OFFER_CUSTOMER_TYPES, result.getOfferCustomerTypes());

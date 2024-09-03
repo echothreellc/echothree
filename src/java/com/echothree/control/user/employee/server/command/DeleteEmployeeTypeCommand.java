@@ -21,7 +21,6 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class DeleteEmployeeTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employeeTypeName = form.getEmployeeTypeName();
-        EmployeeType employeeType = employeeControl.getEmployeeTypeByNameForUpdate(employeeTypeName);
+        var employeeTypeName = form.getEmployeeTypeName();
+        var employeeType = employeeControl.getEmployeeTypeByNameForUpdate(employeeTypeName);
         
         if(employeeType != null) {
             employeeControl.deleteEmployeeType(employeeType, getPartyPK());

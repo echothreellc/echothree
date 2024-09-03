@@ -24,13 +24,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.carrier.server.entity.CarrierOption;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -86,23 +80,23 @@ public class CreateCarrierOptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierOptionName = form.getCarrierOptionName();
-            CarrierOption carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+            var carrierParty = carrier.getParty();
+            var carrierOptionName = form.getCarrierOptionName();
+            var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
             
             if(carrierOption == null) {
                 var selectorControl = Session.getModelController(SelectorControl.class);
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
+                var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                 if(selectorKind != null) {
-                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
+                    var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                     if(selectorType != null) {
-                        String recommendedGeoCodeSelectorName = form.getRecommendedGeoCodeSelectorName();
+                        var recommendedGeoCodeSelectorName = form.getRecommendedGeoCodeSelectorName();
                         Selector recommendedGeoCodeSelector = null;
 
                         if(recommendedGeoCodeSelectorName != null) {
@@ -110,7 +104,7 @@ public class CreateCarrierOptionCommand
                         }
 
                         if(recommendedGeoCodeSelectorName == null || recommendedGeoCodeSelector != null) {
-                            String requiredGeoCodeSelectorName = form.getRequiredGeoCodeSelectorName();
+                            var requiredGeoCodeSelectorName = form.getRequiredGeoCodeSelectorName();
                             Selector requiredGeoCodeSelector = null;
 
                             if(requiredGeoCodeSelectorName != null) {
@@ -124,7 +118,7 @@ public class CreateCarrierOptionCommand
                                     selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                                     if(selectorType != null) {
-                                        String recommendedItemSelectorName = form.getRecommendedItemSelectorName();
+                                        var recommendedItemSelectorName = form.getRecommendedItemSelectorName();
                                         Selector recommendedItemSelector = null;
 
                                         if(recommendedItemSelectorName != null) {
@@ -132,7 +126,7 @@ public class CreateCarrierOptionCommand
                                         }
 
                                         if(recommendedItemSelectorName == null || recommendedItemSelector != null) {
-                                            String requiredItemSelectorName = form.getRequiredItemSelectorName();
+                                            var requiredItemSelectorName = form.getRequiredItemSelectorName();
                                             Selector requiredItemSelector = null;
 
                                             if(requiredItemSelectorName != null) {
@@ -146,7 +140,7 @@ public class CreateCarrierOptionCommand
                                                     selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                                                     if(selectorType != null) {
-                                                        String recommendedOrderSelectorName = form.getRecommendedOrderSelectorName();
+                                                        var recommendedOrderSelectorName = form.getRecommendedOrderSelectorName();
                                                         Selector recommendedOrderSelector = null;
 
                                                         if(recommendedOrderSelectorName != null) {
@@ -154,7 +148,7 @@ public class CreateCarrierOptionCommand
                                                         }
 
                                                         if(recommendedOrderSelectorName == null || recommendedOrderSelector != null) {
-                                                            String requiredOrderSelectorName = form.getRequiredOrderSelectorName();
+                                                            var requiredOrderSelectorName = form.getRequiredOrderSelectorName();
                                                             Selector requiredOrderSelector = null;
 
                                                             if(requiredOrderSelectorName != null) {
@@ -168,7 +162,7 @@ public class CreateCarrierOptionCommand
                                                                     selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                                                                     if(selectorType != null) {
-                                                                        String recommendedShipmentSelectorName = form.getRecommendedShipmentSelectorName();
+                                                                        var recommendedShipmentSelectorName = form.getRecommendedShipmentSelectorName();
                                                                         Selector recommendedShipmentSelector = null;
 
                                                                         if(recommendedShipmentSelectorName != null) {
@@ -176,7 +170,7 @@ public class CreateCarrierOptionCommand
                                                                         }
 
                                                                         if(recommendedShipmentSelectorName == null || recommendedShipmentSelector != null) {
-                                                                            String requiredShipmentSelectorName = form.getRequiredShipmentSelectorName();
+                                                                            var requiredShipmentSelectorName = form.getRequiredShipmentSelectorName();
                                                                             Selector requiredShipmentSelector = null;
 
                                                                             if(requiredShipmentSelectorName != null) {
@@ -184,9 +178,9 @@ public class CreateCarrierOptionCommand
                                                                             }
 
                                                                             if(requiredShipmentSelectorName == null || requiredShipmentSelector != null) {
-                                                                                PartyPK createdBy = getPartyPK();
-                                                                                Boolean isRecommended = Boolean.valueOf(form.getIsRecommended());
-                                                                                Boolean isRequired = Boolean.valueOf(form.getIsRequired());
+                                                                                var createdBy = getPartyPK();
+                                                                                var isRecommended = Boolean.valueOf(form.getIsRecommended());
+                                                                                var isRequired = Boolean.valueOf(form.getIsRequired());
                                                                                 var isDefault = Boolean.valueOf(form.getIsDefault());
                                                                                 var sortOrder = Integer.valueOf(form.getSortOrder());
                                                                                 var description = form.getDescription();

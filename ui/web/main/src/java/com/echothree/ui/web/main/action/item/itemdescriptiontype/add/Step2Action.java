@@ -17,16 +17,13 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypeForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeUsageTypeResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeForm;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,14 +60,14 @@ public class Step2Action
     @Override
     public void setupTransfer(Step2ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetMimeTypeUsageTypeForm commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypeForm();
+        var commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypeForm();
 
         commandForm.setMimeTypeUsageTypeName(actionForm.getMimeTypeUsageTypeName());
 
-        CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsageType(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getMimeTypeUsageType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeUsageTypeResult result = (GetMimeTypeUsageTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeUsageTypeResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.MIME_TYPE_USAGE_TYPE, result.getMimeTypeUsageType());
         }
@@ -79,8 +76,8 @@ public class Step2Action
     @Override
     public CommandResult doAdd(Step2ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateItemDescriptionTypeForm commandForm = ItemUtil.getHome().getCreateItemDescriptionTypeForm();
-        String mimeTypeUsageTypeName = actionForm.getMimeTypeUsageTypeName();
+        var commandForm = ItemUtil.getHome().getCreateItemDescriptionTypeForm();
+        var mimeTypeUsageTypeName = actionForm.getMimeTypeUsageTypeName();
 
         commandForm.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
         commandForm.setParentItemDescriptionTypeName(actionForm.getParentItemDescriptionTypeChoice());

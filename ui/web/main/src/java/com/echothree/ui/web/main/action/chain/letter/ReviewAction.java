@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.GetLetterForm;
 import com.echothree.control.user.letter.common.result.GetLetterResult;
-import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,20 +48,20 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetLetterForm commandForm = LetterUtil.getHome().getGetLetterForm();
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        String forwardKey;
+        var commandForm = LetterUtil.getHome().getGetLetterForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
         
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(chainTypeName);
         commandForm.setLetterName(letterName);
-        
-        CommandResult commandResult = LetterUtil.getHome().getLetter(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLetterResult result = (GetLetterResult)executionResult.getResult();
-        LetterTransfer letter = result.getLetter();
+
+        var commandResult = LetterUtil.getHome().getLetter(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLetterResult)executionResult.getResult();
+        var letter = result.getLetter();
         
         if(letter == null) {
             forwardKey = ForwardConstants.ERROR_404;

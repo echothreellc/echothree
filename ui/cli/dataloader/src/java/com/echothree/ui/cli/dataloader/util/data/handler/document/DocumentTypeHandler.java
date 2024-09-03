@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.document;
 
 import com.echothree.control.user.document.common.DocumentUtil;
 import com.echothree.control.user.document.common.DocumentService;
-import com.echothree.control.user.document.common.form.CreateDocumentTypeDescriptionForm;
-import com.echothree.control.user.document.common.form.CreateDocumentTypeUsageForm;
 import com.echothree.control.user.document.common.form.DocumentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,14 +49,14 @@ public class DocumentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("documentTypeDescription")) {
-            CreateDocumentTypeDescriptionForm commandForm = DocumentFormFactory.getCreateDocumentTypeDescriptionForm();
+            var commandForm = DocumentFormFactory.getCreateDocumentTypeDescriptionForm();
 
             commandForm.setDocumentTypeName(documentTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             checkCommandResult(documentService.createDocumentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("documentTypeUsage")) {
-            CreateDocumentTypeUsageForm commandForm = DocumentFormFactory.getCreateDocumentTypeUsageForm();
+            var commandForm = DocumentFormFactory.getCreateDocumentTypeUsageForm();
 
             commandForm.setDocumentTypeName(documentTypeName);
             commandForm.set(getAttrsMap(attrs));

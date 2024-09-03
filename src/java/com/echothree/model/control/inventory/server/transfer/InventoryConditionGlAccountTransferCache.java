@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
-import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionGlAccountTransfer;
-import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionGlAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -41,21 +37,21 @@ public class InventoryConditionGlAccountTransferCache
     
     @Override
     public InventoryConditionGlAccountTransfer getTransfer(InventoryConditionGlAccount inventoryConditionGlAccount) {
-        InventoryConditionGlAccountTransfer inventoryConditionGlAccountTransfer = get(inventoryConditionGlAccount);
+        var inventoryConditionGlAccountTransfer = get(inventoryConditionGlAccount);
         
         if(inventoryConditionGlAccountTransfer == null) {
-            InventoryConditionTransfer inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, inventoryConditionGlAccount.getInventoryCondition());
-            ItemAccountingCategoryTransfer itemAccountingCategoryTransfer = accountingControl.getItemAccountingCategoryTransfer(userVisit, inventoryConditionGlAccount.getItemAccountingCategory());
-            GlAccount inventoryGlAccount = inventoryConditionGlAccount.getInventoryGlAccount();
-            GlAccountTransfer inventoryGlAccountTransfer = inventoryGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, inventoryGlAccount);
-            GlAccount salesGlAccount = inventoryConditionGlAccount.getSalesGlAccount();
-            GlAccountTransfer salesGlAccountTransfer = salesGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, salesGlAccount);
-            GlAccount returnsGlAccount = inventoryConditionGlAccount.getReturnsGlAccount();
-            GlAccountTransfer returnsGlAccountTransfer = returnsGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, returnsGlAccount);
-            GlAccount cogsGlAccount = inventoryConditionGlAccount.getCogsGlAccount();
-            GlAccountTransfer cogsGlAccountTransfer = cogsGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, cogsGlAccount);
-            GlAccount returnsCogsGlAccount = inventoryConditionGlAccount.getReturnsCogsGlAccount();
-            GlAccountTransfer returnsCogsGlAccountTransfer = returnsCogsGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, returnsCogsGlAccount);
+            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, inventoryConditionGlAccount.getInventoryCondition());
+            var itemAccountingCategoryTransfer = accountingControl.getItemAccountingCategoryTransfer(userVisit, inventoryConditionGlAccount.getItemAccountingCategory());
+            var inventoryGlAccount = inventoryConditionGlAccount.getInventoryGlAccount();
+            var inventoryGlAccountTransfer = inventoryGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, inventoryGlAccount);
+            var salesGlAccount = inventoryConditionGlAccount.getSalesGlAccount();
+            var salesGlAccountTransfer = salesGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, salesGlAccount);
+            var returnsGlAccount = inventoryConditionGlAccount.getReturnsGlAccount();
+            var returnsGlAccountTransfer = returnsGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, returnsGlAccount);
+            var cogsGlAccount = inventoryConditionGlAccount.getCogsGlAccount();
+            var cogsGlAccountTransfer = cogsGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, cogsGlAccount);
+            var returnsCogsGlAccount = inventoryConditionGlAccount.getReturnsCogsGlAccount();
+            var returnsCogsGlAccountTransfer = returnsCogsGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, returnsCogsGlAccount);
             
             inventoryConditionGlAccountTransfer = new InventoryConditionGlAccountTransfer(inventoryConditionTransfer,
                     itemAccountingCategoryTransfer, inventoryGlAccountTransfer, salesGlAccountTransfer, returnsGlAccountTransfer,

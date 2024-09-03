@@ -37,7 +37,7 @@ public class PercentUtils {
         
         if(percent != null) {
             int rawPercent = percent;
-            StringBuilder sbPercent = new StringBuilder().append(rawPercent / 1000).append('.');
+            var sbPercent = new StringBuilder().append(rawPercent / 1000).append('.');
             
             new Formatter(sbPercent).format("%03d%%", rawPercent % 1000);
             

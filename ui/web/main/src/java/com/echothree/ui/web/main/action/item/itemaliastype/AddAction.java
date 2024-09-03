@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemaliastype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateItemAliasTypeForm commandForm = ItemUtil.getHome().getCreateItemAliasTypeForm();
+        var commandForm = ItemUtil.getHome().getCreateItemAliasTypeForm();
 
         commandForm.setItemAliasTypeName(actionForm.getItemAliasTypeName());
         commandForm.setValidationPattern(actionForm.getValidationPattern());

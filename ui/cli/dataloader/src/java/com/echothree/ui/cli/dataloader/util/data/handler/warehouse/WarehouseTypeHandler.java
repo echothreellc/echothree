@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseService;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.CreateWarehouseTypeDescriptionForm;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,7 +49,7 @@ public class WarehouseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("warehouseTypeDescription")) {
-            CreateWarehouseTypeDescriptionForm commandForm = WarehouseFormFactory.getCreateWarehouseTypeDescriptionForm();
+            var commandForm = WarehouseFormFactory.getCreateWarehouseTypeDescriptionForm();
 
             commandForm.setWarehouseTypeName(warehouseTypeName);
             commandForm.set(getAttrsMap(attrs));

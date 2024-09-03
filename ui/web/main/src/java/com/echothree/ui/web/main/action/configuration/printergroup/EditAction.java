@@ -49,8 +49,8 @@ public class EditAction
     @Override
     protected PrinterGroupSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PrinterGroupSpec spec = PrinterUtil.getHome().getPrinterGroupSpec();
-        String originalPrinterGroupName = request.getParameter(ParameterConstants.ORIGINAL_PRINTER_GROUP_NAME);
+        var spec = PrinterUtil.getHome().getPrinterGroupSpec();
+        var originalPrinterGroupName = request.getParameter(ParameterConstants.ORIGINAL_PRINTER_GROUP_NAME);
 
         if(originalPrinterGroupName == null) {
             originalPrinterGroupName = actionForm.getOriginalPrinterGroupName();
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected PrinterGroupEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PrinterGroupEdit edit = PrinterUtil.getHome().getPrinterGroupEdit();
+        var edit = PrinterUtil.getHome().getPrinterGroupEdit();
 
         edit.setPrinterGroupName(actionForm.getPrinterGroupName());
         edit.setKeepPrintedJobsTime(actionForm.getKeepPrintedJobsTime());

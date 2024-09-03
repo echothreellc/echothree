@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.message;
 
 import com.echothree.control.user.message.common.MessageUtil;
 import com.echothree.control.user.message.common.MessageService;
-import com.echothree.control.user.message.common.form.CreateMessageForm;
-import com.echothree.control.user.message.common.form.CreateMessageTypeDescriptionForm;
 import com.echothree.control.user.message.common.form.MessageFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -66,9 +64,9 @@ public class MessageTypeHandler
         if(localName.equals("messageTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -76,7 +74,7 @@ public class MessageTypeHandler
             }
             
             try {
-                CreateMessageTypeDescriptionForm commandForm = MessageFormFactory.getCreateMessageTypeDescriptionForm();
+                var commandForm = MessageFormFactory.getCreateMessageTypeDescriptionForm();
                 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
@@ -89,8 +87,8 @@ public class MessageTypeHandler
                 throw new SAXException(e);
             }
         } else if(localName.equals("message")) {
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("messageName"))
                     messageName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("includeByDefault"))
@@ -113,8 +111,8 @@ public class MessageTypeHandler
     public void characters(char ch[], int start, int length)
             throws SAXException {
         if(inMessage) {
-            int oldLength = clobMessage != null? clobMessage.length: 0;
-            char []newClob = new char[oldLength + length];
+            var oldLength = clobMessage != null? clobMessage.length: 0;
+            var newClob = new char[oldLength + length];
             
             if(clobMessage != null)
                 System.arraycopy(clobMessage, 0, newClob, 0, clobMessage.length);
@@ -127,7 +125,7 @@ public class MessageTypeHandler
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         if(localName.equals("message")) {
-            CreateMessageForm commandForm = MessageFormFactory.getCreateMessageForm();
+            var commandForm = MessageFormFactory.getCreateMessageForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);

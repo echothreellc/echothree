@@ -17,12 +17,8 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTransactionTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTransactionTypeTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.data.financial.server.entity.FinancialAccount;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTransaction;
-import com.echothree.model.data.financial.server.entity.FinancialAccountTransactionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.string.AmountUtils;
 
@@ -37,17 +33,17 @@ public class FinancialAccountTransactionTransferCache
     }
     
     public FinancialAccountTransactionTransfer getFinancialAccountTransactionTransfer(FinancialAccountTransaction financialAccountTransaction) {
-        FinancialAccountTransactionTransfer financialAccountTransactionTransfer = get(financialAccountTransaction);
+        var financialAccountTransactionTransfer = get(financialAccountTransaction);
         
         if(financialAccountTransactionTransfer == null) {
-            FinancialAccountTransactionDetail financialAccountTransactionDetail = financialAccountTransaction.getLastDetail();
-            String financialAccountTransactionName = financialAccountTransactionDetail.getFinancialAccountTransactionName();
-            FinancialAccount financialAccount = financialAccountTransactionDetail.getFinancialAccount();
-            FinancialAccountTransfer financialAccountTransfer = financialControl.getFinancialAccountTransfer(userVisit, financialAccount);
-            FinancialAccountTransactionTypeTransfer financialAccountTransactionTypeTransfer = financialControl.getFinancialAccountTransactionTypeTransfer(userVisit, financialAccountTransactionDetail.getFinancialAccountTransactionType());
-            Long unformattedAmount = financialAccountTransactionDetail.getAmount();
-            String amount = AmountUtils.getInstance().formatPriceLine(financialAccount.getLastDetail().getCurrency(), unformattedAmount);
-            String comment = financialAccountTransactionDetail.getComment();
+            var financialAccountTransactionDetail = financialAccountTransaction.getLastDetail();
+            var financialAccountTransactionName = financialAccountTransactionDetail.getFinancialAccountTransactionName();
+            var financialAccount = financialAccountTransactionDetail.getFinancialAccount();
+            var financialAccountTransfer = financialControl.getFinancialAccountTransfer(userVisit, financialAccount);
+            var financialAccountTransactionTypeTransfer = financialControl.getFinancialAccountTransactionTypeTransfer(userVisit, financialAccountTransactionDetail.getFinancialAccountTransactionType());
+            var unformattedAmount = financialAccountTransactionDetail.getAmount();
+            var amount = AmountUtils.getInstance().formatPriceLine(financialAccount.getLastDetail().getCurrency(), unformattedAmount);
+            var comment = financialAccountTransactionDetail.getComment();
             
             financialAccountTransactionTransfer = new FinancialAccountTransactionTransfer(financialAccountTransactionName, financialAccountTransfer,
                     financialAccountTransactionTypeTransfer, unformattedAmount, amount, comment);

@@ -22,13 +22,13 @@ import org.apache.commons.logging.LogFactory;
 
 public final class DatabaseUtilitiesFactory {
 
-    private static String BASE = "com.echothree.ui.cli.database.db.";
-    private static String DEFAULT = "default";
+    private static final String BASE = "com.echothree.ui.cli.database.db.";
+    private static final String DEFAULT = "default";
     
-    private static String DB_ECHO_THREE = "echothree";
-    private static String DB_REPORTING = "reporting";
+    private static final String DB_ECHO_THREE = "echothree";
+    private static final String DB_REPORTING = "reporting";
     
-    private static Log log = LogFactory.getLog(DatabaseUtilitiesFactory.class);
+    private static final Log log = LogFactory.getLog(DatabaseUtilitiesFactory.class);
     
     private DatabaseUtilitiesFactory() {
         super();
@@ -52,7 +52,7 @@ public final class DatabaseUtilitiesFactory {
         if(string != null) {
             result = string.trim();
 
-            if(result.length() == 0) {
+            if(result.isEmpty()) {
                 result = null;
             }
         }
@@ -61,11 +61,11 @@ public final class DatabaseUtilitiesFactory {
     }
     
     private String getProperty(Configuration configuration, String database, String databaseProperty, boolean required) {
-        String defaultProperty = BASE + DEFAULT + "." + databaseProperty;
-        String specificProperty = BASE + database + "." + databaseProperty;
-        String defaultValue = trimToNull(configuration.getString(defaultProperty));
-        String specificValue = trimToNull(configuration.getString(specificProperty));
-        String value = specificValue == null ? defaultValue : specificValue;
+        var defaultProperty = BASE + DEFAULT + "." + databaseProperty;
+        var specificProperty = BASE + database + "." + databaseProperty;
+        var defaultValue = trimToNull(configuration.getString(defaultProperty));
+        var specificValue = trimToNull(configuration.getString(specificProperty));
+        var value = specificValue == null ? defaultValue : specificValue;
         
         if(value == null && required) {
             log.fatal(defaultProperty + " is a required property");
@@ -76,13 +76,13 @@ public final class DatabaseUtilitiesFactory {
     
     public DatabaseUtilities getDatabaseUtilities(Configuration configuration, boolean verbose, Database database)
             throws Exception {
-        DatabaseUtilities result = null;
-        String connectionClass = getProperty(configuration, DB_ECHO_THREE, "class", true);
-        String connectionUrl  = getProperty(configuration, DB_ECHO_THREE, "url", true);
-        String connectionUser = getProperty(configuration, DB_ECHO_THREE, "user", true);
-        String connectionPassword = getProperty(configuration, DB_ECHO_THREE, "password", true);
-        String connectionCharacterSet = getProperty(configuration, DB_ECHO_THREE, "characterSet", true);
-        String connectionCollation = getProperty(configuration, DB_ECHO_THREE, "collation", true);
+        DatabaseUtilities result;
+        var connectionClass = getProperty(configuration, DB_ECHO_THREE, "class", true);
+        var connectionUrl  = getProperty(configuration, DB_ECHO_THREE, "url", true);
+        var connectionUser = getProperty(configuration, DB_ECHO_THREE, "user", true);
+        var connectionPassword = getProperty(configuration, DB_ECHO_THREE, "password", true);
+        var connectionCharacterSet = getProperty(configuration, DB_ECHO_THREE, "characterSet", true);
+        var connectionCollation = getProperty(configuration, DB_ECHO_THREE, "collation", true);
         
         if(connectionClass.equals("com.mysql.cj.jdbc.Driver")) {
             result = new DatabaseUtilitiesForMySQL(verbose, database, connectionClass, connectionUrl, connectionUser,
@@ -94,18 +94,16 @@ public final class DatabaseUtilitiesFactory {
         return result;
     }
 
-    public DatabaseViewUtilities getDatabaseViewUtilities(Configuration configuration, boolean verbose, Database database)
-            throws Exception {
-        String connectionClass = getProperty(configuration, DB_REPORTING, "class", true);
-        String connectionUrl  = getProperty(configuration, DB_REPORTING, "url", true);
-        String connectionUser = getProperty(configuration, DB_REPORTING, "user", true);
-        String connectionPassword = getProperty(configuration, DB_REPORTING, "password", true);
+    public DatabaseViewUtilities getDatabaseViewUtilities(Configuration configuration, boolean verbose, Database database) {
+        var connectionClass = getProperty(configuration, DB_REPORTING, "class", true);
+        var connectionUrl  = getProperty(configuration, DB_REPORTING, "url", true);
+        var connectionUser = getProperty(configuration, DB_REPORTING, "user", true);
+        var connectionPassword = getProperty(configuration, DB_REPORTING, "password", true);
         
         return new DatabaseViewUtilities(verbose, database, connectionClass, connectionUrl, connectionUser, connectionPassword);
     }
 
-    public DatabaseUtilitiesForJava getJavaUtilities(boolean verbose, Database theDatabase)
-            throws Exception {
+    public DatabaseUtilitiesForJava getJavaUtilities(boolean verbose, Database theDatabase) {
         return new DatabaseUtilitiesForJava(verbose, theDatabase);
     }
 

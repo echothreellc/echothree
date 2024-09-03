@@ -21,7 +21,6 @@ import com.echothree.model.control.inventory.server.logic.InventoryConditionLogi
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -60,8 +59,8 @@ public class DeleteInventoryConditionCommand
     
     @Override
     protected BaseResult execute() {
-        String inventoryConditionName = form.getInventoryConditionName();
-        InventoryCondition inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByNameForUpdate(this, inventoryConditionName);
+        var inventoryConditionName = form.getInventoryConditionName();
+        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByNameForUpdate(this, inventoryConditionName);
         
         if(!hasExecutionErrors()) {
             InventoryConditionLogic.getInstance().deleteInventoryCondition(this, inventoryCondition, getPartyPK());

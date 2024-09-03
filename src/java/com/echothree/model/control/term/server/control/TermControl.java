@@ -26,17 +26,10 @@ import com.echothree.model.control.term.common.transfer.PartyTermTransfer;
 import com.echothree.model.control.term.common.transfer.TermDescriptionTransfer;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
-import com.echothree.model.control.term.server.transfer.CustomerTypeCreditLimitTransferCache;
-import com.echothree.model.control.term.server.transfer.PartyCreditLimitTransferCache;
-import com.echothree.model.control.term.server.transfer.TermTransferCache;
 import com.echothree.model.control.term.server.transfer.TermTransferCaches;
-import com.echothree.model.control.term.server.transfer.TermTypeTransferCache;
-import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.customer.common.pk.CustomerTypePK;
 import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.term.common.pk.TermPK;
@@ -48,7 +41,6 @@ import com.echothree.model.data.term.server.entity.PartyTerm;
 import com.echothree.model.data.term.server.entity.StandardTerm;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermDescription;
-import com.echothree.model.data.term.server.entity.TermDetail;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.term.server.entity.TermTypeDescription;
 import com.echothree.model.data.term.server.factory.CustomerTypeCreditLimitFactory;
@@ -74,13 +66,11 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -233,7 +223,7 @@ public class TermControl
 
     public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit, Collection<TermType> termTypes) {
         List<TermTypeTransfer> termTypeTransfers = new ArrayList<>(termTypes.size());
-        TermTypeTransferCache termTypeTransferCache = getTermTransferCaches(userVisit).getTermTypeTransferCache();
+        var termTypeTransferCache = getTermTransferCaches(userVisit).getTermTypeTransferCache();
 
         termTypes.forEach((termType) ->
                 termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(termType))
@@ -248,7 +238,7 @@ public class TermControl
 
     public TermTypeChoicesBean getTermTypeChoices(String defaultTermTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<TermType> termTypes = getTermTypes();
+        var termTypes = getTermTypes();
         var size = termTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -296,7 +286,7 @@ public class TermControl
         TermTypeDescription termTypeDescription;
 
         try {
-            PreparedStatement ps = TermTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = TermTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM termtypedescriptions " +
                     "WHERE trmtypd_trmtyp_termtypeid = ? AND trmtypd_lang_languageid = ?");
@@ -314,7 +304,7 @@ public class TermControl
 
     public String getBestTermTypeDescription(TermType termType, Language language) {
         String description;
-        TermTypeDescription termTypeDescription = getTermTypeDescription(termType, language);
+        var termTypeDescription = getTermTypeDescription(termType, language);
 
         if(termTypeDescription == null && !language.getIsDefault()) {
             termTypeDescription = getTermTypeDescription(termType, getPartyControl().getDefaultLanguage());
@@ -334,20 +324,20 @@ public class TermControl
     // --------------------------------------------------------------------------------
     
     public Term createTerm(String termName, TermType termType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Term defaultTerm = getDefaultTerm();
-        boolean defaultFound = defaultTerm != null;
+        var defaultTerm = getDefaultTerm();
+        var defaultFound = defaultTerm != null;
         
         if(defaultFound && isDefault) {
-            TermDetailValue defaultTermDetailValue = getDefaultTermDetailValueForUpdate();
+            var defaultTermDetailValue = getDefaultTermDetailValueForUpdate();
             
             defaultTermDetailValue.setIsDefault(Boolean.FALSE);
             updateTermFromValue(defaultTermDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Term term = TermFactory.getInstance().create();
-        TermDetail termDetail = TermDetailFactory.getInstance().create(term, termName, termType, isDefault, sortOrder,
+
+        var term = TermFactory.getInstance().create();
+        var termDetail = TermDetailFactory.getInstance().create(term, termName, termType, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -400,8 +390,8 @@ public class TermControl
                         "WHERE trm_activedetailid = trmdt_termdetailid AND trmdt_termname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TermFactory.getInstance().prepareStatement(query);
+
+            var ps = TermFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, termName);
             
@@ -438,8 +428,8 @@ public class TermControl
                     "WHERE trm_activedetailid = trmdt_termdetailid AND trmdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TermFactory.getInstance().prepareStatement(query);
+
+        var ps = TermFactory.getInstance().prepareStatement(query);
         
         return TermFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -471,8 +461,8 @@ public class TermControl
                     "WHERE trm_activedetailid = trmdt_termdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TermFactory.getInstance().prepareStatement(query);
+
+        var ps = TermFactory.getInstance().prepareStatement(query);
         
         return TermFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -486,7 +476,7 @@ public class TermControl
     }
     
     public TermChoicesBean getTermChoices(String defaultTermChoice, Language language, boolean allowNullChoice) {
-        List<Term> terms = getTerms();
+        var terms = getTerms();
         var size = terms.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -502,7 +492,7 @@ public class TermControl
         }
         
         for(var term : terms) {
-            TermDetail termDetail = term.getLastDetail();
+            var termDetail = term.getLastDetail();
             
             var label = getBestTermDescription(term, language);
             var value = termDetail.getTermName();
@@ -525,7 +515,7 @@ public class TermControl
 
     public List<TermTransfer> getTermTransfers(UserVisit userVisit, Collection<Term> terms) {
         List<TermTransfer> termTransfers = new ArrayList<>(terms.size());
-        TermTransferCache termTransferCache = getTermTransferCaches(userVisit).getTermTransferCache();
+        var termTransferCache = getTermTransferCaches(userVisit).getTermTransferCache();
 
         terms.forEach((term) ->
                 termTransfers.add(termTransferCache.getTermTransfer(term))
@@ -539,26 +529,26 @@ public class TermControl
     }
 
     private void updateTermFromValue(TermDetailValue termDetailValue, boolean checkDefault, BasePK updatedBy) {
-        Term term = TermFactory.getInstance().getEntityFromPK(session,
+        var term = TermFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, termDetailValue.getTermPK());
-        TermDetail termDetail = term.getActiveDetailForUpdate();
+        var termDetail = term.getActiveDetailForUpdate();
         
         termDetail.setThruTime(session.START_TIME_LONG);
         termDetail.store();
-        
-        TermPK termPK = termDetail.getTermPK();
-        String termName = termDetailValue.getTermName();
-        TermTypePK termTypePK = termDetail.getTermTypePK(); // Not updated
-        Boolean isDefault = termDetailValue.getIsDefault();
-        Integer sortOrder = termDetailValue.getSortOrder();
+
+        var termPK = termDetail.getTermPK();
+        var termName = termDetailValue.getTermName();
+        var termTypePK = termDetail.getTermTypePK(); // Not updated
+        var isDefault = termDetailValue.getIsDefault();
+        var sortOrder = termDetailValue.getSortOrder();
         
         if(checkDefault) {
-            Term defaultTerm = getDefaultTerm();
-            boolean defaultFound = defaultTerm != null && !defaultTerm.equals(term);
+            var defaultTerm = getDefaultTerm();
+            var defaultFound = defaultTerm != null && !defaultTerm.equals(term);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                TermDetailValue defaultTermDetailValue = getDefaultTermDetailValueForUpdate();
+                var defaultTermDetailValue = getDefaultTermDetailValueForUpdate();
                 
                 defaultTermDetailValue.setIsDefault(Boolean.FALSE);
                 updateTermFromValue(defaultTermDetailValue, false, updatedBy);
@@ -585,13 +575,13 @@ public class TermControl
     public void deleteTerm(Term term, BasePK deletedBy) {
         deletePartyTermsByTerm(term, deletedBy);
         deleteTermDescriptionsByTerm(term, deletedBy);
-        
-        TermDetail termDetail = term.getLastDetailForUpdate();
+
+        var termDetail = term.getLastDetailForUpdate();
         termDetail.setThruTime(session.START_TIME_LONG);
         term.setActiveDetail(null);
         term.store();
-        
-        String termTypeName = termDetail.getTermType().getTermTypeName();
+
+        var termTypeName = termDetail.getTermType().getTermTypeName();
         if(termTypeName.equals(TermTypes.STANDARD.name())) {
             deleteStandardTermByTerm(term, deletedBy);
         } else if(termTypeName.equals(TermTypes.DATE_DRIVEN.name())) {
@@ -599,16 +589,16 @@ public class TermControl
         }
         
         // Check for default, and pick one if necessary
-        Term defaultTerm = getDefaultTerm();
+        var defaultTerm = getDefaultTerm();
         if(defaultTerm == null) {
-            List<Term> terms = getTermsForUpdate();
+            var terms = getTermsForUpdate();
             
             if(!terms.isEmpty()) {
-                Iterator<Term> iter = terms.iterator();
+                var iter = terms.iterator();
                 if(iter.hasNext()) {
                     defaultTerm = iter.next();
                 }
-                TermDetailValue termDetailValue = Objects.requireNonNull(defaultTerm).getLastDetailForUpdate().getTermDetailValue().clone();
+                var termDetailValue = Objects.requireNonNull(defaultTerm).getLastDetailForUpdate().getTermDetailValue().clone();
                 
                 termDetailValue.setIsDefault(Boolean.TRUE);
                 updateTermFromValue(termDetailValue, false, deletedBy);
@@ -623,7 +613,7 @@ public class TermControl
     // --------------------------------------------------------------------------------
     
     public TermDescription createTermDescription(Term term, Language language, String description, BasePK createdBy) {
-        TermDescription termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
+        var termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -647,8 +637,8 @@ public class TermControl
                         "WHERE trmd_trm_termid = ? AND trmd_lang_languageid = ? AND trmd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TermDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TermDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -695,8 +685,8 @@ public class TermControl
                         "WHERE trmd_trm_termid = ? AND trmd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TermDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TermDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -719,7 +709,7 @@ public class TermControl
     
     public String getBestTermDescription(Term term, Language language) {
         String description;
-        TermDescription termDescription = getTermDescription(term, language);
+        var termDescription = getTermDescription(term, language);
         
         if(termDescription == null && !language.getIsDefault()) {
             termDescription = getTermDescription(term, getPartyControl().getDefaultLanguage());
@@ -739,7 +729,7 @@ public class TermControl
     }
     
     public List<TermDescriptionTransfer> getTermDescriptionTransfersByTerm(UserVisit userVisit, Term term) {
-        List<TermDescription> termDescriptions = getTermDescriptionsByTerm(term);
+        var termDescriptions = getTermDescriptionsByTerm(term);
         List<TermDescriptionTransfer> termDescriptionTransfers = new ArrayList<>(termDescriptions.size());
         
         termDescriptions.forEach((termDescription) -> {
@@ -751,14 +741,14 @@ public class TermControl
     
     public void updateTermDescriptionFromValue(TermDescriptionValue termDescriptionValue, BasePK updatedBy) {
         if(termDescriptionValue.hasBeenModified()) {
-            TermDescription termDescription = TermDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, termDescriptionValue.getPrimaryKey());
+            var termDescription = TermDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, termDescriptionValue.getPrimaryKey());
             
             termDescription.setThruTime(session.START_TIME_LONG);
             termDescription.store();
-            
-            Term term = termDescription.getTerm();
-            Language language = termDescription.getLanguage();
-            String description = termDescriptionValue.getDescription();
+
+            var term = termDescription.getTerm();
+            var language = termDescription.getLanguage();
+            var description = termDescriptionValue.getDescription();
             
             termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -775,7 +765,7 @@ public class TermControl
     }
     
     public void deleteTermDescriptionsByTerm(Term term, BasePK deletedBy) {
-        List<TermDescription> termDescriptions = getTermDescriptionsByTermForUpdate(term);
+        var termDescriptions = getTermDescriptionsByTermForUpdate(term);
         
         termDescriptions.forEach((termDescription) -> 
                 deleteTermDescription(termDescription, deletedBy)
@@ -788,7 +778,7 @@ public class TermControl
     
     public StandardTerm createStandardTerm(Term term, Integer netDueDays, Integer discountPercentage, Integer discountDays,
             BasePK createdBy) {
-        StandardTerm standardTerm = StandardTermFactory.getInstance().create(term, netDueDays, discountPercentage,
+        var standardTerm = StandardTermFactory.getInstance().create(term, netDueDays, discountPercentage,
                 discountDays, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -812,8 +802,8 @@ public class TermControl
                         "WHERE stdtrm_trm_termid = ? AND stdtrm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = StandardTermFactory.getInstance().prepareStatement(query);
+
+            var ps = StandardTermFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -844,16 +834,16 @@ public class TermControl
     
     public void updateStandardTermFromValue(StandardTermValue standardTermValue, BasePK updatedBy) {
         if(standardTermValue.hasBeenModified()) {
-            StandardTerm standardTerm = StandardTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var standardTerm = StandardTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     standardTermValue.getPrimaryKey());
             
             standardTerm.setThruTime(session.START_TIME_LONG);
             standardTerm.store();
-            
-            TermPK termPK = standardTerm.getTermPK(); // Not updated
-            Integer netDueDays = standardTermValue.getNetDueDays();
-            Integer discountPercentage = standardTermValue.getDiscountPercentage();
-            Integer discountDays = standardTermValue.getDiscountDays();
+
+            var termPK = standardTerm.getTermPK(); // Not updated
+            var netDueDays = standardTermValue.getNetDueDays();
+            var discountPercentage = standardTermValue.getDiscountPercentage();
+            var discountDays = standardTermValue.getDiscountDays();
             
             standardTerm = StandardTermFactory.getInstance().create(termPK, netDueDays, discountPercentage, discountDays,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -869,7 +859,7 @@ public class TermControl
     }
     
     public void deleteStandardTermByTerm(Term term, BasePK deletedBy) {
-        StandardTerm standardTerm = getStandardTermForUpdate(term);
+        var standardTerm = getStandardTermForUpdate(term);
         
         if(standardTerm != null) {
             deleteStandardTerm(standardTerm, deletedBy);
@@ -882,7 +872,7 @@ public class TermControl
     
     public DateDrivenTerm createDateDrivenTerm(Term term, Integer netDueDayOfMonth, Integer dueNextMonthDays,
             Integer discountPercentage, Integer discountBeforeDayOfMonth, BasePK createdBy) {
-        DateDrivenTerm dateDrivenTerm = DateDrivenTermFactory.getInstance().create(term, netDueDayOfMonth,
+        var dateDrivenTerm = DateDrivenTermFactory.getInstance().create(term, netDueDayOfMonth,
                 dueNextMonthDays, discountPercentage, discountBeforeDayOfMonth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -906,8 +896,8 @@ public class TermControl
                         "WHERE ddtrm_trm_termid = ? AND ddtrm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = DateDrivenTermFactory.getInstance().prepareStatement(query);
+
+            var ps = DateDrivenTermFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -938,17 +928,17 @@ public class TermControl
     
     public void updateDateDrivenTermFromValue(DateDrivenTermValue dateDrivenTermValue, BasePK updatedBy) {
         if(dateDrivenTermValue.hasBeenModified()) {
-            DateDrivenTerm dateDrivenTerm = DateDrivenTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var dateDrivenTerm = DateDrivenTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     dateDrivenTermValue.getPrimaryKey());
             
             dateDrivenTerm.setThruTime(session.START_TIME_LONG);
             dateDrivenTerm.store();
-            
-            TermPK termPK = dateDrivenTerm.getTermPK(); // Not updated
-            Integer netDueDayOfMonth = dateDrivenTermValue.getNetDueDayOfMonth();
-            Integer dueNextMonthDays = dateDrivenTermValue.getDueNextMonthDays();
-            Integer discountPercentage = dateDrivenTermValue.getDiscountPercentage();
-            Integer discountBeforeDayOfMonth = dateDrivenTermValue.getDiscountBeforeDayOfMonth();
+
+            var termPK = dateDrivenTerm.getTermPK(); // Not updated
+            var netDueDayOfMonth = dateDrivenTermValue.getNetDueDayOfMonth();
+            var dueNextMonthDays = dateDrivenTermValue.getDueNextMonthDays();
+            var discountPercentage = dateDrivenTermValue.getDiscountPercentage();
+            var discountBeforeDayOfMonth = dateDrivenTermValue.getDiscountBeforeDayOfMonth();
             
             dateDrivenTerm = DateDrivenTermFactory.getInstance().create(termPK, netDueDayOfMonth, dueNextMonthDays,
                     discountPercentage, discountBeforeDayOfMonth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -964,7 +954,7 @@ public class TermControl
     }
     
     public void deleteDateDrivenTermByTerm(Term term, BasePK deletedBy) {
-        DateDrivenTerm dateDrivenTerm = getDateDrivenTermForUpdate(term);
+        var dateDrivenTerm = getDateDrivenTermForUpdate(term);
         
         if(dateDrivenTerm != null) {
             deleteDateDrivenTerm(dateDrivenTerm, deletedBy);
@@ -977,7 +967,7 @@ public class TermControl
     
     public CustomerTypeCreditLimit createCustomerTypeCreditLimit(CustomerType customerType, Currency currency, Long creditLimit,
             Long potentialCreditLimit, BasePK createdBy) {
-        CustomerTypeCreditLimit customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerType,
+        var customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerType,
                 currency, creditLimit, potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1001,8 +991,8 @@ public class TermControl
                         "WHERE cutyclim_cuty_customertypeid = ? AND cutyclim_cur_currencyid = ? AND cutyclim_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CustomerTypeCreditLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = CustomerTypeCreditLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
@@ -1051,8 +1041,8 @@ public class TermControl
                         "WHERE cutyclim_cuty_customertypeid = ? AND cutyclim_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CustomerTypeCreditLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = CustomerTypeCreditLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1078,9 +1068,9 @@ public class TermControl
     }
     
     public List<CustomerTypeCreditLimitTransfer> getCustomerTypeCreditLimitTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
-        List<CustomerTypeCreditLimit> customerTypeCreditLimits = getCustomerTypeCreditLimitsByCustomerType(customerType);
+        var customerTypeCreditLimits = getCustomerTypeCreditLimitsByCustomerType(customerType);
         List<CustomerTypeCreditLimitTransfer> customerTypeCreditLimitTransfers = new ArrayList<>(customerTypeCreditLimits.size());
-        CustomerTypeCreditLimitTransferCache customerTypeCreditLimitTransferCache = getTermTransferCaches(userVisit).getCustomerTypeCreditLimitTransferCache();
+        var customerTypeCreditLimitTransferCache = getTermTransferCaches(userVisit).getCustomerTypeCreditLimitTransferCache();
         
         customerTypeCreditLimits.forEach((customerTypeCreditLimit) ->
                 customerTypeCreditLimitTransfers.add(customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(customerTypeCreditLimit))
@@ -1091,16 +1081,16 @@ public class TermControl
     
     public void updateCustomerTypeCreditLimitFromValue(CustomerTypeCreditLimitValue customerTypeCreditLimitValue, BasePK updatedBy) {
         if(customerTypeCreditLimitValue.hasBeenModified()) {
-            CustomerTypeCreditLimit customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeCreditLimitValue.getPrimaryKey());
             
             customerTypeCreditLimit.setThruTime(session.START_TIME_LONG);
             customerTypeCreditLimit.store();
-            
-            CustomerTypePK customerTypePK = customerTypeCreditLimit.getCustomerTypePK(); // Not updated
-            CurrencyPK currencyPK = customerTypeCreditLimit.getCurrencyPK(); // Not updated
-            Long creditLimit = customerTypeCreditLimitValue.getCreditLimit();
-            Long potentialCreditLimit = customerTypeCreditLimitValue.getPotentialCreditLimit();
+
+            var customerTypePK = customerTypeCreditLimit.getCustomerTypePK(); // Not updated
+            var currencyPK = customerTypeCreditLimit.getCurrencyPK(); // Not updated
+            var creditLimit = customerTypeCreditLimitValue.getCreditLimit();
+            var potentialCreditLimit = customerTypeCreditLimitValue.getPotentialCreditLimit();
             
             customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerTypePK, currencyPK, creditLimit,
                     potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1116,7 +1106,7 @@ public class TermControl
     }
     
     public void deleteCustomerTypeCreditLimitsByCustomerType(CustomerType customerType, BasePK deletedBy) {
-        List<CustomerTypeCreditLimit> customerTypeCreditLimits = getCustomerTypeCreditLimitsByCustomerTypeForUpdate(customerType);
+        var customerTypeCreditLimits = getCustomerTypeCreditLimitsByCustomerTypeForUpdate(customerType);
         
         customerTypeCreditLimits.forEach((customerTypeCreditLimit) -> 
                 deleteCustomerTypeCreditLimit(customerTypeCreditLimit, deletedBy)
@@ -1129,7 +1119,7 @@ public class TermControl
     
     public PartyCreditLimit createPartyCreditLimit(Party party, Currency currency, Long creditLimit, Long potentialCreditLimit,
             BasePK createdBy) {
-        PartyCreditLimit partyCreditLimit = PartyCreditLimitFactory.getInstance().create(party, currency, creditLimit,
+        var partyCreditLimit = PartyCreditLimitFactory.getInstance().create(party, currency, creditLimit,
                 potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1153,8 +1143,8 @@ public class TermControl
                         "WHERE pclim_par_partyid = ? AND pclim_cur_currencyid = ? AND pclim_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCreditLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCreditLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
@@ -1202,8 +1192,8 @@ public class TermControl
                         "WHERE pclim_par_partyid = ? AND pclim_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCreditLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCreditLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1229,9 +1219,9 @@ public class TermControl
     }
     
     public List<PartyCreditLimitTransfer> getPartyCreditLimitTransfersByParty(UserVisit userVisit, Party party) {
-        List<PartyCreditLimit> partyCreditLimits = getPartyCreditLimitsByParty(party);
+        var partyCreditLimits = getPartyCreditLimitsByParty(party);
         List<PartyCreditLimitTransfer> partyCreditLimitTransfers = new ArrayList<>(partyCreditLimits.size());
-        PartyCreditLimitTransferCache partyCreditLimitTransferCache = getTermTransferCaches(userVisit).getPartyCreditLimitTransferCache();
+        var partyCreditLimitTransferCache = getTermTransferCaches(userVisit).getPartyCreditLimitTransferCache();
         
         partyCreditLimits.forEach((partyCreditLimit) ->
                 partyCreditLimitTransfers.add(partyCreditLimitTransferCache.getPartyCreditLimitTransfer(partyCreditLimit))
@@ -1242,16 +1232,16 @@ public class TermControl
     
     public void updatePartyCreditLimitFromValue(PartyCreditLimitValue partyCreditLimitValue, BasePK updatedBy) {
         if(partyCreditLimitValue.hasBeenModified()) {
-            PartyCreditLimit partyCreditLimit = PartyCreditLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyCreditLimit = PartyCreditLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyCreditLimitValue.getPrimaryKey());
             
             partyCreditLimit.setThruTime(session.START_TIME_LONG);
             partyCreditLimit.store();
-            
-            PartyPK partyPK = partyCreditLimit.getPartyPK(); // Not updated
-            CurrencyPK currencyPK = partyCreditLimit.getCurrencyPK(); // Not updated
-            Long creditLimit = partyCreditLimitValue.getCreditLimit();
-            Long potentialCreditLimit = partyCreditLimitValue.getPotentialCreditLimit();
+
+            var partyPK = partyCreditLimit.getPartyPK(); // Not updated
+            var currencyPK = partyCreditLimit.getCurrencyPK(); // Not updated
+            var creditLimit = partyCreditLimitValue.getCreditLimit();
+            var potentialCreditLimit = partyCreditLimitValue.getPotentialCreditLimit();
             
             partyCreditLimit = PartyCreditLimitFactory.getInstance().create(partyPK, currencyPK, creditLimit,
                     potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1267,7 +1257,7 @@ public class TermControl
     }
     
     public void deletePartyCreditLimitsByParty(Party party, BasePK deletedBy) {
-        List<PartyCreditLimit> partyCreditLimits = getPartyCreditLimitsByPartyForUpdate(party);
+        var partyCreditLimits = getPartyCreditLimitsByPartyForUpdate(party);
         
         partyCreditLimits.forEach((partyCreditLimit) -> 
                 deletePartyCreditLimit(partyCreditLimit, deletedBy)
@@ -1279,7 +1269,7 @@ public class TermControl
     // --------------------------------------------------------------------------------
     
     public PartyTerm createPartyTerm(Party party, Term term, Boolean taxable, BasePK createdBy) {
-        PartyTerm partyTerm = PartyTermFactory.getInstance().create(party, term, taxable, session.START_TIME_LONG,
+        var partyTerm = PartyTermFactory.getInstance().create(party, term, taxable, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1303,8 +1293,8 @@ public class TermControl
                         "WHERE ptrm_par_partyid = ? AND ptrm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyTermFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyTermFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1351,8 +1341,8 @@ public class TermControl
                         "WHERE ptrm_trm_termid = ? AND ptrm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyTermFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyTermFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1374,7 +1364,7 @@ public class TermControl
     }
     
     public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, Party party) {
-        PartyTerm partyTerm = getPartyTerm(party);
+        var partyTerm = getPartyTerm(party);
         
         return partyTerm == null? null: getTermTransferCaches(userVisit).getPartyTermTransferCache().getPartyTermTransfer(partyTerm);
     }
@@ -1385,15 +1375,15 @@ public class TermControl
     
     public void updatePartyTermFromValue(PartyTermValue partyTermValue, BasePK updatedBy) {
         if(partyTermValue.hasBeenModified()) {
-            PartyTerm partyTerm = PartyTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTerm = PartyTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyTermValue.getPrimaryKey());
             
             partyTerm.setThruTime(session.START_TIME_LONG);
             partyTerm.store();
-            
-            PartyPK partyPK = partyTerm.getPartyPK(); // Not updated
-            TermPK termPK = partyTermValue.getTermPK();
-            Boolean taxable = partyTermValue.getTaxable();
+
+            var partyPK = partyTerm.getPartyPK(); // Not updated
+            var termPK = partyTermValue.getTermPK();
+            var taxable = partyTermValue.getTaxable();
             
             partyTerm = PartyTermFactory.getInstance().create(partyPK, termPK, taxable, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -1409,7 +1399,7 @@ public class TermControl
     }
     
     public void deletePartyTermByParty(Party party, BasePK deletedBy) {
-        PartyTerm partyTerm = getPartyTermForUpdate(party);
+        var partyTerm = getPartyTermForUpdate(party);
         
         if(partyTerm != null) {
             deletePartyTerm(partyTerm, deletedBy);
@@ -1417,7 +1407,7 @@ public class TermControl
     }
     
     public void deletePartyTermsByTerm(Term term, BasePK deletedBy) {
-        List<PartyTerm> partyTerms = getPartyTermsByTermForUpdate(term);
+        var partyTerms = getPartyTermsByTermForUpdate(term);
         
         partyTerms.forEach((partyTerm) -> 
                 deletePartyTerm(partyTerm, deletedBy)

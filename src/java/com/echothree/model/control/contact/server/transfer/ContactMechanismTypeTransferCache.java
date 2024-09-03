@@ -30,15 +30,15 @@ public class ContactMechanismTypeTransferCache
     }
     
     public ContactMechanismTypeTransfer getContactMechanismTypeTransfer(ContactMechanismType contactMechanismType) {
-        ContactMechanismTypeTransfer contactMechanismTypeTransfer = get(contactMechanismType);
+        var contactMechanismTypeTransfer = get(contactMechanismType);
         
         if(contactMechanismTypeTransfer == null) {
-            String contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
-            ContactMechanismType parentContactMechanismType = contactMechanismType.getParentContactMechanismType();
-            ContactMechanismTypeTransfer parentContactMechanismTypeTransfer = parentContactMechanismType == null? null: getContactMechanismTypeTransfer(parentContactMechanismType);
-            Boolean isDefault = contactMechanismType.getIsDefault();
-            Integer sortOrder = contactMechanismType.getSortOrder();
-            String description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage());
+            var contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
+            var parentContactMechanismType = contactMechanismType.getParentContactMechanismType();
+            var parentContactMechanismTypeTransfer = parentContactMechanismType == null? null: getContactMechanismTypeTransfer(parentContactMechanismType);
+            var isDefault = contactMechanismType.getIsDefault();
+            var sortOrder = contactMechanismType.getSortOrder();
+            var description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage());
             
             contactMechanismTypeTransfer = new ContactMechanismTypeTransfer(contactMechanismTypeName,
                     parentContactMechanismTypeTransfer, isDefault, sortOrder, description);

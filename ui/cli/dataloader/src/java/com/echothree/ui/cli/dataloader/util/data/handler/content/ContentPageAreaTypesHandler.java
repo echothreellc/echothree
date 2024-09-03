@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentPageAreaTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -46,15 +45,15 @@ public class ContentPageAreaTypesHandler
     throws SAXException {
         if(localName.equals("contentPageAreaType")) {
             String contentPageAreaTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentPageAreaTypeName"))
                     contentPageAreaTypeName = attrs.getValue(i);
             }
             
             try {
-                CreateContentPageAreaTypeForm createContentPageAreaTypeForm = ContentFormFactory.getCreateContentPageAreaTypeForm();
+                var createContentPageAreaTypeForm = ContentFormFactory.getCreateContentPageAreaTypeForm();
                 
                 createContentPageAreaTypeForm.setContentPageAreaTypeName(contentPageAreaTypeName);
                 

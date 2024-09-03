@@ -17,7 +17,6 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetLotTimeTypesForm;
-import com.echothree.control.user.inventory.common.result.GetLotTimeTypesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -61,7 +60,7 @@ public class GetLotTimeTypesCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        GetLotTimeTypesResult result = InventoryResultFactory.getGetLotTimeTypesResult();
+        var result = InventoryResultFactory.getGetLotTimeTypesResult();
 
         result.setLotTimeTypes(lotTimeControl.getLotTimeTypeTransfers(getUserVisit()));
 

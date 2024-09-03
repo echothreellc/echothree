@@ -17,7 +17,6 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorBooleanTypeChoicesForm;
-import com.echothree.control.user.selector.common.result.GetSelectorBooleanTypeChoicesResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -50,9 +49,9 @@ public class GetSelectorBooleanTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorBooleanTypeChoicesResult result = SelectorResultFactory.getGetSelectorBooleanTypeChoicesResult();
-        String defaultSelectorBooleanTypeChoice = form.getDefaultSelectorBooleanTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SelectorResultFactory.getGetSelectorBooleanTypeChoicesResult();
+        var defaultSelectorBooleanTypeChoice = form.getDefaultSelectorBooleanTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSelectorBooleanTypeChoices(selectorControl.getSelectorBooleanTypeChoices(defaultSelectorBooleanTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

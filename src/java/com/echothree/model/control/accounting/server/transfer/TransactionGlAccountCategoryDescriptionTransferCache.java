@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionGlAccountCategoryDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.TransactionGlAccountCategoryTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class TransactionGlAccountCategoryDescriptionTransferCache
     
     @Override
     public TransactionGlAccountCategoryDescriptionTransfer getTransfer(TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription) {
-        TransactionGlAccountCategoryDescriptionTransfer transactionGlAccountCategoryDescriptionTransfer = get(transactionGlAccountCategoryDescription);
+        var transactionGlAccountCategoryDescriptionTransfer = get(transactionGlAccountCategoryDescription);
         
         if(transactionGlAccountCategoryDescriptionTransfer == null) {
-            TransactionGlAccountCategoryTransferCache transactionGlAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
-            TransactionGlAccountCategoryTransfer transactionGlAccountCategoryTransfer = transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionGlAccountCategoryDescription.getLanguage());
+            var transactionGlAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
+            var transactionGlAccountCategoryTransfer = transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionGlAccountCategoryDescription.getLanguage());
             
             transactionGlAccountCategoryDescriptionTransfer = new TransactionGlAccountCategoryDescriptionTransfer(languageTransfer, transactionGlAccountCategoryTransfer, transactionGlAccountCategoryDescription.getDescription());
             put(transactionGlAccountCategoryDescription, transactionGlAccountCategoryDescriptionTransfer);

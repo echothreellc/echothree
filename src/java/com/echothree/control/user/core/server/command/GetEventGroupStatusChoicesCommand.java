@@ -18,8 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEventGroupStatusChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEventGroupStatusChoicesResult;
-import com.echothree.model.data.core.server.entity.EventGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,13 +49,13 @@ public class GetEventGroupStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEventGroupStatusChoicesResult result = CoreResultFactory.getGetEventGroupStatusChoicesResult();
-        String eventGroupName = form.getEventGroupName();
-        EventGroup eventGroup = coreControl.getEventGroupByName(eventGroupName);
+        var result = CoreResultFactory.getGetEventGroupStatusChoicesResult();
+        var eventGroupName = form.getEventGroupName();
+        var eventGroup = coreControl.getEventGroupByName(eventGroupName);
         
         if(eventGroupName == null || eventGroup != null) {
-            String defaultEventGroupStatusChoice = form.getDefaultEventGroupStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultEventGroupStatusChoice = form.getDefaultEventGroupStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setEventGroupStatusChoices(coreControl.getEventGroupStatusChoices(defaultEventGroupStatusChoice,
                     getPreferredLanguage(), allowNullChoice, eventGroup, getPartyPK()));

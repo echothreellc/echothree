@@ -17,9 +17,7 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderTypeDescriptionTransfer;
-import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class OrderTypeDescriptionTransferCache
     }
     
     public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(OrderTypeDescription orderTypeDescription) {
-        OrderTypeDescriptionTransfer orderTypeDescriptionTransfer = get(orderTypeDescription);
+        var orderTypeDescriptionTransfer = get(orderTypeDescription);
         
         if(orderTypeDescriptionTransfer == null) {
-            OrderTypeTransfer orderTypeTransfer = orderTypeControl.getOrderTypeTransfer(userVisit, orderTypeDescription.getOrderType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderTypeDescription.getLanguage());
+            var orderTypeTransfer = orderTypeControl.getOrderTypeTransfer(userVisit, orderTypeDescription.getOrderType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderTypeDescription.getLanguage());
             
             orderTypeDescriptionTransfer = new OrderTypeDescriptionTransfer(languageTransfer, orderTypeTransfer, orderTypeDescription.getDescription());
             put(orderTypeDescription, orderTypeDescriptionTransfer);

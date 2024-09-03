@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationPartyTypeTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationSecurityRoleTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,11 +36,11 @@ public class WorkflowDestinationSecurityRoleTransferCache
     }
     
     public WorkflowDestinationSecurityRoleTransfer getWorkflowDestinationSecurityRoleTransfer(WorkflowDestinationSecurityRole workflowDestinationSecurityRole) {
-        WorkflowDestinationSecurityRoleTransfer workflowDestinationSecurityRoleTransfer = get(workflowDestinationSecurityRole);
+        var workflowDestinationSecurityRoleTransfer = get(workflowDestinationSecurityRole);
         
         if(workflowDestinationSecurityRoleTransfer == null) {
-            WorkflowDestinationPartyTypeTransfer workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyTypeTransfer(userVisit, workflowDestinationSecurityRole.getWorkflowDestinationPartyType());
-            SecurityRoleTransfer securityRole = securityControl.getSecurityRoleTransfer(userVisit, workflowDestinationSecurityRole.getSecurityRole());
+            var workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyTypeTransfer(userVisit, workflowDestinationSecurityRole.getWorkflowDestinationPartyType());
+            var securityRole = securityControl.getSecurityRoleTransfer(userVisit, workflowDestinationSecurityRole.getSecurityRole());
             
             workflowDestinationSecurityRoleTransfer = new WorkflowDestinationSecurityRoleTransfer(workflowDestinationPartyType, securityRole);
             put(workflowDestinationSecurityRole, workflowDestinationSecurityRoleTransfer);

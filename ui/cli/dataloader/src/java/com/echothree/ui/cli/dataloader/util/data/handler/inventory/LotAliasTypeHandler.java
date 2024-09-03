@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
-import com.echothree.control.user.inventory.common.form.CreateLotAliasTypeDescriptionForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,7 +49,7 @@ public class LotAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("lotAliasTypeDescription")) {
-            CreateLotAliasTypeDescriptionForm commandForm = InventoryFormFactory.getCreateLotAliasTypeDescriptionForm();
+            var commandForm = InventoryFormFactory.getCreateLotAliasTypeDescriptionForm();
 
             commandForm.setLotAliasTypeName(lotAliasTypeName);
             commandForm.set(getAttrsMap(attrs));

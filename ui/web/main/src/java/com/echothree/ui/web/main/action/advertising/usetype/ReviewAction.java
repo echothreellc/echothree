@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.usetype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseTypeForm;
 import com.echothree.control.user.offer.common.result.GetUseTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetUseTypeForm commandForm = OfferUtil.getHome().getGetUseTypeForm();
-            String useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
+            var commandForm = OfferUtil.getHome().getGetUseTypeForm();
+            var useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
             
             commandForm.setUseTypeName(useTypeName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUseType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUseTypeResult result = (GetUseTypeResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().getUseType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.USE_TYPE, result.getUseType());
             forwardKey = ForwardConstants.DISPLAY;

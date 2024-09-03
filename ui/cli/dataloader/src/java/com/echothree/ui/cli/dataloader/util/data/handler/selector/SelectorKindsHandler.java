@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.SelectorService;
-import com.echothree.control.user.selector.common.form.CreateSelectorKindForm;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,7 +45,7 @@ public class SelectorKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorKind")) {
-            CreateSelectorKindForm commandForm = SelectorFormFactory.getCreateSelectorKindForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorKindForm();
 
             commandForm.set(getAttrsMap(attrs));
 

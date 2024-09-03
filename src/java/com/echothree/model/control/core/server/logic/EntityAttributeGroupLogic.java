@@ -16,23 +16,18 @@
 
 package com.echothree.model.control.core.server.logic;
 
-import com.echothree.control.user.core.common.spec.AppearanceUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeGroupNameException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.common.exception.UnknownAppearanceNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -61,12 +56,12 @@ public class EntityAttributeGroupLogic
         
         if(entityAttributeGroupName == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE_GROUP.name());
+            var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE_GROUP.name());
             
             entityAttributeGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
-        
-        EntityAttributeGroup entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+
+        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         
         if(entityAttributeGroup == null) {
             entityAttributeGroup = coreControl.createEntityAttributeGroup(entityAttributeGroupName, isDefault, sortOrder, createdBy);

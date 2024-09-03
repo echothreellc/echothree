@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityAttributeTypeResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
@@ -51,7 +50,7 @@ public class GetEntityAttributeTypeCommand
     
     @Override
     protected EntityAttributeType getEntity() {
-        String entityAttributeTypeName = form.getEntityAttributeTypeName();
+        var entityAttributeTypeName = form.getEntityAttributeTypeName();
         
         return EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, entityAttributeTypeName);
     }
@@ -59,7 +58,7 @@ public class GetEntityAttributeTypeCommand
     @Override
     protected BaseResult getResult(EntityAttributeType entityAttributeType) {
         var coreControl = getCoreControl();
-        GetEntityAttributeTypeResult result = CoreResultFactory.getGetEntityAttributeTypeResult();
+        var result = CoreResultFactory.getGetEntityAttributeTypeResult();
 
         if(entityAttributeType != null) {
             sendEvent(entityAttributeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

@@ -37,20 +37,8 @@ import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCategory;
-import com.echothree.model.data.content.server.entity.ContentCategoryDescription;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.value.ContentCategoryDescriptionValue;
-import com.echothree.model.data.content.server.value.ContentCategoryDetailValue;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyDepartment;
-import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -120,16 +108,16 @@ public class EditContentCategoryCommand
     public ContentCategory getEntity(EditContentCategoryResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentCategory contentCategory = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = spec.getContentCatalogName();
+            var contentCatalogName = spec.getContentCatalogName();
             
             contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
             if(contentCatalog != null) {
-                String contentCategoryName = spec.getContentCategoryName();
+                var contentCategoryName = spec.getContentCategoryName();
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
@@ -198,11 +186,11 @@ public class EditContentCategoryCommand
     @Override
     public void canUpdate(ContentCategory contentCategory) {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCategoryName = edit.getContentCategoryName();
-        ContentCategory duplicateContentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+        var contentCategoryName = edit.getContentCategoryName();
+        var duplicateContentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
 
         if(duplicateContentCategory == null || contentCategory.equals(duplicateContentCategory)) {
-            String parentContentCategoryName = edit.getParentContentCategoryName();
+            var parentContentCategoryName = edit.getParentContentCategoryName();
             
             parentContentCategory = contentControl.getContentCategoryByName(contentCatalog, parentContentCategoryName == null ?
                     ContentCategories.ROOT.toString() : parentContentCategoryName);
@@ -210,17 +198,17 @@ public class EditContentCategoryCommand
             if(parentContentCategory != null) {
                 if(contentControl.isParentContentCategorySafe(contentCategory, parentContentCategory)) {
                     var offerControl = Session.getModelController(OfferControl.class);
-                    String defaultOfferName = edit.getDefaultOfferName();
-                    String defaultUseName = edit.getDefaultUseName();
-                    String defaultSourceName = edit.getDefaultSourceName();
-                    boolean invalidDefaultOfferOrSourceSpecification = false;
+                    var defaultOfferName = edit.getDefaultOfferName();
+                    var defaultUseName = edit.getDefaultUseName();
+                    var defaultSourceName = edit.getDefaultSourceName();
+                    var invalidDefaultOfferOrSourceSpecification = false;
 
                     if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
-                        Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
+                        var defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                         if(defaultOffer != null) {
                             var useControl = Session.getModelController(UseControl.class);
-                            Use defaultUse = useControl.getUseByName(defaultUseName);
+                            var defaultUse = useControl.getUseByName(defaultUseName);
 
                             if(defaultUse != null) {
                                 var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -237,7 +225,7 @@ public class EditContentCategoryCommand
                         }
                     } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
                         var sourceControl = Session.getModelController(SourceControl.class);
-                        Source source = sourceControl.getSourceByName(defaultSourceName);
+                        var source = sourceControl.getSourceByName(defaultSourceName);
 
                         if(source != null) {
                             defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -252,19 +240,19 @@ public class EditContentCategoryCommand
                     }
 
                     if(!invalidDefaultOfferOrSourceSpecification) {
-                        boolean invalidOfferCompany = false;
+                        var invalidOfferCompany = false;
 
                         if(defaultOfferUse != null) {
                             var partyControl = Session.getModelController(PartyControl.class);
-                            Offer defaultOffer = defaultOfferUse.getLastDetail().getOffer();
-                            PartyDepartment defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
-                            PartyDivision defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
-                            PartyCompany defaultPartyCompany = partyControl.getPartyCompany(defaultPartyDivision.getCompanyParty());
+                            var defaultOffer = defaultOfferUse.getLastDetail().getOffer();
+                            var defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
+                            var defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
+                            var defaultPartyCompany = partyControl.getPartyCompany(defaultPartyDivision.getCompanyParty());
 
-                            Offer catalogOffer = contentCatalog.getLastDetail().getDefaultOfferUse().getLastDetail().getOffer();
-                            PartyDepartment catalogPartyDepartment = partyControl.getPartyDepartment(catalogOffer.getLastDetail().getDepartmentParty());
-                            PartyDivision catalogPartyDivision = partyControl.getPartyDivision(catalogPartyDepartment.getDivisionParty());
-                            PartyCompany catalogPartyCompany = partyControl.getPartyCompany(catalogPartyDivision.getCompanyParty());
+                            var catalogOffer = contentCatalog.getLastDetail().getDefaultOfferUse().getLastDetail().getOffer();
+                            var catalogPartyDepartment = partyControl.getPartyDepartment(catalogOffer.getLastDetail().getDepartmentParty());
+                            var catalogPartyDivision = partyControl.getPartyDivision(catalogPartyDepartment.getDivisionParty());
+                            var catalogPartyCompany = partyControl.getPartyCompany(catalogPartyDivision.getCompanyParty());
 
                             if(!defaultPartyCompany.equals(catalogPartyCompany)) {
                                 invalidOfferCompany = true;
@@ -272,14 +260,14 @@ public class EditContentCategoryCommand
                         }
 
                         if(!invalidOfferCompany) {
-                            String contentCategoryItemSelectorName = edit.getContentCategoryItemSelectorName();
+                            var contentCategoryItemSelectorName = edit.getContentCategoryItemSelectorName();
 
                             if(contentCategoryItemSelectorName != null) {
                                 var selectorControl = Session.getModelController(SelectorControl.class);
-                                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                                var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                                 if(selectorKind != null) {
-                                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CONTENT_CATEGORY.name());
+                                    var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CONTENT_CATEGORY.name());
 
                                     if(selectorType != null) {
                                         contentCategoryItemSelector = selectorControl.getSelectorByName(selectorType, contentCategoryItemSelectorName);
@@ -313,9 +301,9 @@ public class EditContentCategoryCommand
     public void doUpdate(ContentCategory contentCategory) {
         var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
-        ContentCategoryDetailValue contentCategoryDetailValue = contentControl.getContentCategoryDetailValueForUpdate(contentCategory);
-        ContentCategoryDescription contentCategoryDescription = contentControl.getContentCategoryDescriptionForUpdate(contentCategory, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contentCategoryDetailValue = contentControl.getContentCategoryDetailValueForUpdate(contentCategory);
+        var contentCategoryDescription = contentControl.getContentCategoryDescriptionForUpdate(contentCategory, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contentCategoryDetailValue.setContentCategoryName(edit.getContentCategoryName());
         contentCategoryDetailValue.setParentContentCategoryPK(parentContentCategory == null ? null : parentContentCategory.getPrimaryKey());
@@ -331,7 +319,7 @@ public class EditContentCategoryCommand
         } else if(contentCategoryDescription != null && description == null) {
             contentControl.deleteContentCategoryDescription(contentCategoryDescription, partyPK);
         } else if(contentCategoryDescription != null && description != null) {
-            ContentCategoryDescriptionValue contentCategoryDescriptionValue = contentControl.getContentCategoryDescriptionValue(contentCategoryDescription);
+            var contentCategoryDescriptionValue = contentControl.getContentCategoryDescriptionValue(contentCategoryDescription);
 
             contentCategoryDescriptionValue.setDescription(description);
             contentControl.updateContentCategoryDescriptionFromValue(contentCategoryDescriptionValue, partyPK);

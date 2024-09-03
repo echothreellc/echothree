@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemStatusChoicesForm;
 import com.echothree.control.user.item.common.result.GetItemStatusChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class StatusActionForm
     public void setupItemStatusChoices() {
         if(itemStatusChoices == null) {
             try {
-                GetItemStatusChoicesForm form = ItemUtil.getHome().getGetItemStatusChoicesForm();
+                var form = ItemUtil.getHome().getGetItemStatusChoicesForm();
                 
                 form.setItemName(itemName);
                 form.setDefaultItemStatusChoice(itemStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemStatusChoicesResult result = (GetItemStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemStatusChoicesResult)executionResult.getResult();
                 itemStatusChoices = result.getItemStatusChoices();
                 
                 if(itemStatusChoice == null)

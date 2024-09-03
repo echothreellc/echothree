@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.wishlist;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.WishlistService;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityDescriptionForm;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -53,9 +52,9 @@ public class WishlistPriorityHandler
         if(localName.equals("wishlistPriorityDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +62,7 @@ public class WishlistPriorityHandler
             }
             
             try {
-                CreateWishlistPriorityDescriptionForm form = WishlistFormFactory.getCreateWishlistPriorityDescriptionForm();
+                var form = WishlistFormFactory.getCreateWishlistPriorityDescriptionForm();
                 
                 form.setWishlistTypeName(wishlistTypeName);
                 form.setWishlistPriorityName(wishlistPriorityName);

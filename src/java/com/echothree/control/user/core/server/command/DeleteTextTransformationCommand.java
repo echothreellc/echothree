@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.DeleteTextTransformationForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,8 +60,8 @@ public class DeleteTextTransformationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textTransformationName = form.getTextTransformationName();
-        TextTransformation textTransformation = coreControl.getTextTransformationByNameForUpdate(textTransformationName);
+        var textTransformationName = form.getTextTransformationName();
+        var textTransformation = coreControl.getTextTransformationByNameForUpdate(textTransformationName);
         
         if(textTransformation != null) {
             coreControl.deleteTextTransformation(textTransformation, getPartyPK());

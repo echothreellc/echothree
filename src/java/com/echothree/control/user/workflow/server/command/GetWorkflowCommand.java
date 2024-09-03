@@ -19,7 +19,6 @@ package com.echothree.control.user.workflow.server.command;
 import com.echothree.control.user.workflow.common.form.GetWorkflowForm;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

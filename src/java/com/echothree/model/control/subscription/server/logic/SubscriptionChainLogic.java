@@ -22,15 +22,10 @@ import com.echothree.model.control.chain.server.logic.BaseChainLogic;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.subscription.server.entity.Subscription;
-import com.echothree.model.data.subscription.server.entity.SubscriptionType;
-import com.echothree.model.data.subscription.server.entity.SubscriptionTypeChain;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
 
 public class SubscriptionChainLogic
         extends BaseChainLogic {
@@ -60,12 +55,12 @@ public class SubscriptionChainLogic
     protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName,
             final Subscription subscription, final BasePK createdBy) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        SubscriptionType subscriptionType = subscription.getLastDetail().getSubscriptionType();
-        ChainType chainType = getChainTypeByName(eea, chainKindName, chainTypeName);
-        Party party = subscription.getLastDetail().getParty();
-        List<SubscriptionTypeChain> subscriptionTypeChains = chainTypeName.equals(ChainConstants.ChainType_RENEWAL) ? null
+        var subscriptionType = subscription.getLastDetail().getSubscriptionType();
+        var chainType = getChainTypeByName(eea, chainKindName, chainTypeName);
+        var party = subscription.getLastDetail().getParty();
+        var subscriptionTypeChains = chainTypeName.equals(ChainConstants.ChainType_RENEWAL) ? null
                 : subscriptionControl.getSubscriptionTypeChainsBySubscriptionTypeAndChainType(subscriptionType, chainType);
-        Chain chain = null;
+        Chain chain;
         ChainInstance chainInstance = null;
         
         if(subscriptionTypeChains == null || subscriptionTypeChains.isEmpty()) {
@@ -83,11 +78,11 @@ public class SubscriptionChainLogic
     
     protected ChainInstance createSubscriptionChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName, final Subscription subscription,
             final BasePK createdBy) {
-        ChainInstance chainInstance = createChainInstance(eea, ChainConstants.ChainKind_SUBSCRIPTION, chainTypeName, subscription, createdBy);
+        var chainInstance = createChainInstance(eea, ChainConstants.ChainKind_SUBSCRIPTION, chainTypeName, subscription, createdBy);
         
         if(chainInstance != null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            ChainType chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
+            var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
         
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,
                     ChainConstants.ChainEntityRoleType_SUBSCRIPTION), subscription.getPrimaryKey(), createdBy);

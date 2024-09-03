@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.DeleteOfferForm;
-import com.echothree.control.user.offer.common.form.GetOfferForm;
 import com.echothree.control.user.offer.common.result.GetOfferResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetOfferForm commandForm = OfferUtil.getHome().getGetOfferForm();
+        var commandForm = OfferUtil.getHome().getGetOfferForm();
 
         commandForm.setOfferName(actionForm.getOfferName());
 
-        CommandResult commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetOfferResult result = (GetOfferResult)executionResult.getResult();
+        var commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetOfferResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.OFFER, result.getOffer());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteOfferForm commandForm = OfferUtil.getHome().getDeleteOfferForm();
+        var commandForm = OfferUtil.getHome().getDeleteOfferForm();
 
         commandForm.setOfferName(actionForm.getOfferName());
 

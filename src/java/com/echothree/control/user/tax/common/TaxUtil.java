@@ -18,7 +18,6 @@ package com.echothree.control.user.tax.common;
 
 import com.echothree.control.user.tax.server.TaxLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class TaxUtil {
@@ -30,7 +29,7 @@ public class TaxUtil {
     public static TaxLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (TaxLocal)ctx.lookup("ejb:echothree/echothree-server/TaxBean!com.echothree.control.user.tax.server.TaxLocal");
         }
@@ -42,7 +41,7 @@ public class TaxUtil {
     public static TaxRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (TaxRemote)ctx.lookup("ejb:echothree/echothree-server/TaxBean!com.echothree.control.user.tax.common.TaxRemote");
         }

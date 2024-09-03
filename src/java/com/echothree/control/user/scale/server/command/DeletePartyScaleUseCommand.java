@@ -23,8 +23,6 @@ import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.scale.server.entity.PartyScaleUse;
-import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,8 +64,8 @@ public class DeletePartyScaleUseCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
-        Party party = null;
+        var partyName = form.getPartyName();
+        Party party;
 
         if(partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -82,11 +80,11 @@ public class DeletePartyScaleUseCommand
 
         if(!hasExecutionErrors()) {
             var scaleControl = Session.getModelController(ScaleControl.class);
-            String scaleUseTypeName = form.getScaleUseTypeName();
-            ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+            var scaleUseTypeName = form.getScaleUseTypeName();
+            var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
             if(scaleUseType != null) {
-                PartyScaleUse partyScaleUse = scaleControl.getPartyScaleUseForUpdate(party, scaleUseType);
+                var partyScaleUse = scaleControl.getPartyScaleUseForUpdate(party, scaleUseType);
 
                 if(partyScaleUse != null) {
                     scaleControl.deletePartyScaleUse(partyScaleUse, getPartyPK());

@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.item.itemalias;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemAliasForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -55,12 +53,12 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        String forwardKey;
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         try {
-            AddActionForm actionForm = (AddActionForm)form;
-            CreateItemAliasForm commandForm = ItemUtil.getHome().getCreateItemAliasForm();
+            var actionForm = (AddActionForm)form;
+            var commandForm = ItemUtil.getHome().getCreateItemAliasForm();
             
             if(itemName == null)
                 itemName = actionForm.getItemName();
@@ -70,8 +68,8 @@ public class AddAction
                 commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeChoice());
                 commandForm.setItemAliasTypeName(actionForm.getItemAliasTypeChoice());
                 commandForm.setAlias(actionForm.getAlias());
-                
-                CommandResult commandResult = ItemUtil.getHome().createItemAlias(getUserVisitPK(request), commandForm);
+
+                var commandResult = ItemUtil.getHome().createItemAlias(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -87,8 +85,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.ITEM_NAME, itemName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

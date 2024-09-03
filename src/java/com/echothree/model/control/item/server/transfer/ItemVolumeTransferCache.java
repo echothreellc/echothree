@@ -16,14 +16,11 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.common.transfer.ItemVolumeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemVolume;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,16 +36,16 @@ public class ItemVolumeTransferCache
     
     @Override
     public ItemVolumeTransfer getTransfer(ItemVolume itemVolume) {
-        ItemVolumeTransfer itemVolumeTransfer = get(itemVolume);
+        var itemVolumeTransfer = get(itemVolume);
         
         if(itemVolumeTransfer == null) {
-            ItemTransfer itemTransfer = itemControl.getItemTransfer(userVisit, itemVolume.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
+            var itemTransfer = itemControl.getItemTransfer(userVisit, itemVolume.getItem());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
                     itemVolume.getUnitOfMeasureType());
-            UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            String height = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getHeight());
-            String width = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getWidth());
-            String depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getDepth());
+            var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getHeight());
+            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getWidth());
+            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getDepth());
             
             itemVolumeTransfer = new ItemVolumeTransfer(itemTransfer, unitOfMeasureTypeTransfer, height, width, depth);
             put(itemVolume, itemVolumeTransfer);

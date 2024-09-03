@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected WorkEffortScopeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkEffortScopeSpec spec = WorkEffortUtil.getHome().getWorkEffortScopeSpec();
+        var spec = WorkEffortUtil.getHome().getWorkEffortScopeSpec();
         
         spec.setWorkEffortTypeName(findParameter(request, ParameterConstants.WORK_EFFORT_TYPE_NAME, actionForm.getWorkEffortTypeName()));
         spec.setWorkEffortScopeName(findParameter(request, ParameterConstants.ORIGINAL_WORK_EFFORT_SCOPE_NAME, actionForm.getOriginalWorkEffortScopeName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected WorkEffortScopeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkEffortScopeEdit edit = WorkEffortUtil.getHome().getWorkEffortScopeEdit();
+        var edit = WorkEffortUtil.getHome().getWorkEffortScopeEdit();
 
         edit.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());
         edit.setScheduledTime(actionForm.getScheduledTime());

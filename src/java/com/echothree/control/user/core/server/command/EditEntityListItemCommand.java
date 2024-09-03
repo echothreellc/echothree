@@ -21,25 +21,16 @@ import com.echothree.control.user.core.common.edit.EntityListItemEdit;
 import com.echothree.control.user.core.common.form.EditEntityListItemForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityListItemResult;
-import com.echothree.control.user.core.common.spec.EntityListItemSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityListItemDescription;
-import com.echothree.model.data.core.server.entity.EntityListItemDetail;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.value.EntityListItemDescriptionValue;
-import com.echothree.model.data.core.server.value.EntityListItemDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -122,8 +113,8 @@ public class EditEntityListItemCommand
     @Override
     public void doLock(EntityListItemEdit edit, EntityListItem entityListItem) {
         var coreControl = getCoreControl();
-        EntityListItemDescription entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, getPreferredLanguage());
-        EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
+        var entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, getPreferredLanguage());
+        var entityListItemDetail = entityListItem.getLastDetail();
 
         edit.setEntityListItemName(entityListItemDetail.getEntityListItemName());
         edit.setIsDefault(entityListItemDetail.getIsDefault().toString());
@@ -150,9 +141,9 @@ public class EditEntityListItemCommand
     public void doUpdate(EntityListItem entityListItem) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        EntityListItemDetailValue entityListItemDetailValue = coreControl.getEntityListItemDetailValueForUpdate(entityListItem);
-        EntityListItemDescription entityListItemDescription = coreControl.getEntityListItemDescriptionForUpdate(entityListItem, getPreferredLanguage());
-        String description = edit.getDescription();
+        var entityListItemDetailValue = coreControl.getEntityListItemDetailValueForUpdate(entityListItem);
+        var entityListItemDescription = coreControl.getEntityListItemDescriptionForUpdate(entityListItem, getPreferredLanguage());
+        var description = edit.getDescription();
 
         entityListItemDetailValue.setEntityListItemName(edit.getEntityListItemName());
         entityListItemDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -167,7 +158,7 @@ public class EditEntityListItemCommand
                 coreControl.deleteEntityListItemDescription(entityListItemDescription, partyPK);
             } else {
                 if(entityListItemDescription != null && description != null) {
-                    EntityListItemDescriptionValue entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
+                    var entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
 
                     entityListItemDescriptionValue.setDescription(description);
                     coreControl.updateEntityListItemDescriptionFromValue(entityListItemDescriptionValue, partyPK);

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.tag;
 
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.common.TagService;
-import com.echothree.control.user.tag.common.form.CreateEntityTagForm;
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,7 +47,7 @@ public class EntityTagsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("entityTag")) {
-            CreateEntityTagForm commandForm = TagFormFactory.getCreateEntityTagForm();
+            var commandForm = TagFormFactory.getCreateEntityTagForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));

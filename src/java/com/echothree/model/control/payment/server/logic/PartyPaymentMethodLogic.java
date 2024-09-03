@@ -25,17 +25,11 @@ import com.echothree.model.control.payment.common.exception.UnknownPartyPaymentM
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
-import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -45,7 +39,6 @@ import com.echothree.util.server.persistence.Session;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PartyPaymentMethodLogic
@@ -64,10 +57,10 @@ public class PartyPaymentMethodLogic
     }
 
     private String getDigitsOnly(String s) {
-        StringBuilder digitsOnly = new StringBuilder();
+        var digitsOnly = new StringBuilder();
 
-        for(int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
+        for(var i = 0; i < s.length(); i++) {
+            var c = s.charAt(i);
 
             if(Character.isDigit(c)) {
                 digitsOnly.append(c);
@@ -78,12 +71,12 @@ public class PartyPaymentMethodLogic
     }
 
     private boolean isValid(String number) {
-        String digitsOnly = getDigitsOnly(number);
-        int sum = 0;
-        boolean timesTwo = false;
+        var digitsOnly = getDigitsOnly(number);
+        var sum = 0;
+        var timesTwo = false;
 
-        for(int i = digitsOnly.length() - 1; i >= 0; i--) {
-            int digit = Integer.parseInt(digitsOnly.substring(i, i + 1));
+        for(var i = digitsOnly.length() - 1; i >= 0; i--) {
+            var digit = Integer.parseInt(digitsOnly.substring(i, i + 1));
             int addend;
 
             if(timesTwo) {
@@ -100,13 +93,13 @@ public class PartyPaymentMethodLogic
             timesTwo = !timesTwo;
         }
 
-        int modulus = sum % 10;
+        var modulus = sum % 10;
 
         return modulus == 0;
     }
 
     public void checkPartyType(final ExecutionErrorAccumulator ema, final Party party) {
-        String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
         if(!partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
             ema.addExecutionError(ExecutionErrors.InvalidPartyType.name(), partyTypeName);
@@ -115,12 +108,12 @@ public class PartyPaymentMethodLogic
 
     public void checkNameOnCard(final ExecutionErrorAccumulator ema, final PartyPaymentMethodEdit ppme, final PaymentMethodCreditCard paymentMethodCreditCard) {
         var partyControl = Session.getModelController(PartyControl.class);
-        String personalTitleId = ppme.getPersonalTitleId();
-        PersonalTitle personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
+        var personalTitleId = ppme.getPersonalTitleId();
+        var personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
 
         if(personalTitleId == null || personalTitle != null) {
-            String nameSuffixId = ppme.getNameSuffixId();
-            NameSuffix nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
+            var nameSuffixId = ppme.getNameSuffixId();
+            var nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
 
             if(nameSuffixId == null || nameSuffix != null) {
                 if(paymentMethodCreditCard.getRequireNameOnCard()) {
@@ -137,14 +130,14 @@ public class PartyPaymentMethodLogic
     }
 
     public void checkNumber(final ExecutionErrorAccumulator ema, final PartyPaymentMethodEdit ppme, final PaymentMethodCreditCard paymentMethodCreditCard) {
-        String number = ppme.getNumber();
+        var number = ppme.getNumber();
 
         if(number != null) {
-            String cardNumberValidationPattern = paymentMethodCreditCard.getCardNumberValidationPattern();
-            boolean validCardNumber = true;
+            var cardNumberValidationPattern = paymentMethodCreditCard.getCardNumberValidationPattern();
+            var validCardNumber = true;
 
             if(cardNumberValidationPattern != null) {
-                Matcher m = Pattern.compile(cardNumberValidationPattern).matcher(number);
+                var m = Pattern.compile(cardNumberValidationPattern).matcher(number);
 
                 if(!m.matches()) {
                     validCardNumber = false;
@@ -161,18 +154,18 @@ public class PartyPaymentMethodLogic
 
     public void checkExpirationDate(final Session session, final ExecutionErrorAccumulator ema, final Party party, final PartyPaymentMethodEdit ppme,
             final PaymentMethodCreditCard paymentMethodCreditCard) {
-        String strExpirationMonth = ppme.getExpirationMonth();
-        String strExpirationYear = ppme.getExpirationYear();
+        var strExpirationMonth = ppme.getExpirationMonth();
+        var strExpirationYear = ppme.getExpirationYear();
 
         if(strExpirationMonth != null && strExpirationYear != null) {
             if(paymentMethodCreditCard.getCheckExpirationDate()) {
                 var userControl = Session.getModelController(UserControl.class);
-                TimeZone timeZone = userControl.getPreferredTimeZoneFromParty(party);
+                var timeZone = userControl.getPreferredTimeZoneFromParty(party);
                 int expirationMonth = Integer.valueOf(strExpirationMonth);
                 int expirationYear = Integer.valueOf(strExpirationYear);
-                ZonedDateTime dt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(session.START_TIME), ZoneId.of(timeZone.getLastDetail().getJavaTimeZoneName()));
-                boolean validExpirationDate = true;
-                int thisYear = dt.getYear();
+                var dt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(session.START_TIME), ZoneId.of(timeZone.getLastDetail().getJavaTimeZoneName()));
+                var validExpirationDate = true;
+                var thisYear = dt.getYear();
 
                 if(!(expirationYear < thisYear)) {
                     if(expirationYear == thisYear && expirationMonth < dt.getMonthValue()) {
@@ -198,14 +191,14 @@ public class PartyPaymentMethodLogic
     }
 
     public void checkSecurityCode(final ExecutionErrorAccumulator ema, final PartyPaymentMethodEdit ppme, final PaymentMethodCreditCard paymentMethodCreditCard) {
-        String securityCode = ppme.getSecurityCode();
+        var securityCode = ppme.getSecurityCode();
 
         if(securityCode != null) {
-            String securityCodeValidationPattern = paymentMethodCreditCard.getSecurityCodeValidationPattern();
-            boolean validSecurityCode = true;
+            var securityCodeValidationPattern = paymentMethodCreditCard.getSecurityCodeValidationPattern();
+            var validSecurityCode = true;
 
             if(securityCodeValidationPattern != null) {
-                Matcher m = Pattern.compile(securityCodeValidationPattern).matcher(securityCode);
+                var m = Pattern.compile(securityCodeValidationPattern).matcher(securityCode);
 
                 if(!m.matches()) {
                     validSecurityCode = false;
@@ -223,11 +216,11 @@ public class PartyPaymentMethodLogic
     public void checkBillingContactMechanism(final ExecutionErrorAccumulator ema, final Party party, final PartyPaymentMethodEdit ppme,
             final PaymentMethodCreditCard paymentMethodCreditCard) {
         var contactControl = Session.getModelController(ContactControl.class);
-        String billingContactMechanismName = ppme.getBillingContactMechanismName();
-        ContactMechanism billingContactMechanism = billingContactMechanismName == null? null: contactControl.getContactMechanismByName(billingContactMechanismName);
+        var billingContactMechanismName = ppme.getBillingContactMechanismName();
+        var billingContactMechanism = billingContactMechanismName == null? null: contactControl.getContactMechanismByName(billingContactMechanismName);
 
         if(billingContactMechanism != null) {
-            PartyContactMechanism billingPartyContactMechanism = billingContactMechanism == null? null: contactControl.getPartyContactMechanism(party, billingContactMechanism);
+            var billingPartyContactMechanism = billingContactMechanism == null? null: contactControl.getPartyContactMechanism(party, billingContactMechanism);
 
             if(billingPartyContactMechanism == null) {
                  ema.addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name(), party.getLastDetail().getPartyName(), billingContactMechanismName);
@@ -244,12 +237,12 @@ public class PartyPaymentMethodLogic
     public void checkIssuer(final ExecutionErrorAccumulator ema, final Party party, final PartyPaymentMethodEdit ppme,
             final PaymentMethodCreditCard paymentMethodCreditCard) {
         var contactControl = Session.getModelController(ContactControl.class);
-        String issuerName = ppme.getIssuerName();
-        String issuerContactMechanismName = ppme.getIssuerContactMechanismName();
-        ContactMechanism issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
+        var issuerName = ppme.getIssuerName();
+        var issuerContactMechanismName = ppme.getIssuerContactMechanismName();
+        var issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
 
         if(issuerName != null && issuerContactMechanism != null) {
-            PartyContactMechanism issuerPartyContactMechanism = issuerContactMechanism == null ? null : contactControl.getPartyContactMechanism(party, issuerContactMechanism);
+            var issuerPartyContactMechanism = issuerContactMechanism == null ? null : contactControl.getPartyContactMechanism(party, issuerContactMechanism);
 
             if(issuerPartyContactMechanism == null) {
                 ema.addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name(), party.getLastDetail().getPartyName(), issuerContactMechanismName);
@@ -276,7 +269,7 @@ public class PartyPaymentMethodLogic
     public void checkCreditCard(final Session session, final ExecutionErrorAccumulator ema, final Party party, final PaymentMethod paymentMethod,
             final PartyPaymentMethodEdit ppme) {
         var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-        PaymentMethodCreditCard paymentMethodCreditCard = paymentMethodControl.getPaymentMethodCreditCard(paymentMethod);
+        var paymentMethodCreditCard = paymentMethodControl.getPaymentMethodCreditCard(paymentMethod);
 
         if(paymentMethodCreditCard.getRequestNameOnCard()) {
             checkNameOnCard(ema, ppme, paymentMethodCreditCard);
@@ -322,8 +315,8 @@ public class PartyPaymentMethodLogic
 
     public void checkPaymentMethodType(final Session session, final ExecutionErrorAccumulator ema, final Party party, final PaymentMethod paymentMethod,
             final PartyPaymentMethodEdit ppme) {
-        PaymentMethodType paymentMethodType = paymentMethod.getLastDetail().getPaymentMethodType();
-        String paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
+        var paymentMethodType = paymentMethod.getLastDetail().getPaymentMethodType();
+        var paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
 
         if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
             checkCreditCard(session, ema, party, paymentMethod, ppme);

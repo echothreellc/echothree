@@ -17,17 +17,13 @@
 package com.echothree.model.control.shipping.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.shipping.common.ShippingOptions;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
-import com.echothree.model.data.shipping.server.entity.ShippingMethodDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ShippingMethodTransferCache
         extends BaseShippingTransferCache<ShippingMethod, ShippingMethodTransfer> {
@@ -52,17 +48,17 @@ public class ShippingMethodTransferCache
     }
     
     public ShippingMethodTransfer getShippingMethodTransfer(ShippingMethod shippingMethod) {
-        ShippingMethodTransfer shippingMethodTransfer = get(shippingMethod);
+        var shippingMethodTransfer = get(shippingMethod);
 
         if(shippingMethodTransfer == null) {
-            ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
-            String shippingMethodName = shippingMethodDetail.getShippingMethodName();
-            Selector geoCodeSelector = shippingMethodDetail.getGeoCodeSelector();
-            SelectorTransfer geoCodeSelectorTransfer = geoCodeSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
-            Selector itemSelector = shippingMethodDetail.getItemSelector();
-            SelectorTransfer itemSelectorTransfer = itemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, itemSelector);
-            Integer sortOrder = shippingMethodDetail.getSortOrder();
-            String description = shippingControl.getBestShippingMethodDescription(shippingMethod, getLanguage());
+            var shippingMethodDetail = shippingMethod.getLastDetail();
+            var shippingMethodName = shippingMethodDetail.getShippingMethodName();
+            var geoCodeSelector = shippingMethodDetail.getGeoCodeSelector();
+            var geoCodeSelectorTransfer = geoCodeSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
+            var itemSelector = shippingMethodDetail.getItemSelector();
+            var itemSelectorTransfer = itemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, itemSelector);
+            var sortOrder = shippingMethodDetail.getSortOrder();
+            var description = shippingControl.getBestShippingMethodDescription(shippingMethod, getLanguage());
 
             shippingMethodTransfer = new ShippingMethodTransfer(shippingMethodName, geoCodeSelectorTransfer, itemSelectorTransfer, sortOrder, description);
             put(shippingMethod, shippingMethodTransfer);

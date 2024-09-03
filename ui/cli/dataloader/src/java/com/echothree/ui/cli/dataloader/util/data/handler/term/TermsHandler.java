@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.term;
 
 import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.TermService;
-import com.echothree.control.user.term.common.form.CreateTermForm;
 import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -55,9 +54,9 @@ public class TermsHandler
             String netDueDayOfMonth = null;
             String dueNextMonthDays = null;
             String discountBeforeDayOfMonth = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("termName"))
                     termName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("termTypeName"))
@@ -81,7 +80,7 @@ public class TermsHandler
             }
             
             try {
-                CreateTermForm commandForm = TermFormFactory.getCreateTermForm();
+                var commandForm = TermFormFactory.getCreateTermForm();
                 
                 commandForm.setTermName(termName);
                 commandForm.setTermTypeName(termTypeName);

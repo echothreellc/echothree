@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -60,7 +59,7 @@ public class DeleteSalesOrderBatchCommand
     
     @Override
     protected BaseResult execute() {
-        Batch batch = SalesOrderBatchLogic.getInstance().getBatchByNameForUpdate(this, form.getBatchName());
+        var batch = SalesOrderBatchLogic.getInstance().getBatchByNameForUpdate(this, form.getBatchName());
 
         if(batch != null) {
             SalesOrderBatchLogic.getInstance().deleteBatch(this, batch, getPartyPK());

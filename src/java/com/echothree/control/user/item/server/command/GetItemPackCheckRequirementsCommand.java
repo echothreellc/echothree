@@ -17,12 +17,9 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemPackCheckRequirementsForm;
-import com.echothree.control.user.item.common.result.GetItemPackCheckRequirementsResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,12 +49,12 @@ public class GetItemPackCheckRequirementsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemPackCheckRequirementsResult result = ItemResultFactory.getGetItemPackCheckRequirementsResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemPackCheckRequirementsResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setItem(itemControl.getItemTransfer(userVisit, item));
             result.setItemPackCheckRequirements(itemControl.getItemPackCheckRequirementTransfersByItem(userVisit, item));

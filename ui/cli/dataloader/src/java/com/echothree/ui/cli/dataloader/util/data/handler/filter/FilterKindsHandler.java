@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.FilterService;
-import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -47,7 +46,7 @@ public class FilterKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("filterKind")) {
-            CreateFilterKindForm commandForm = FilterFormFactory.getCreateFilterKindForm();
+            var commandForm = FilterFormFactory.getCreateFilterKindForm();
 
             commandForm.set(getAttrsMap(attrs));
 

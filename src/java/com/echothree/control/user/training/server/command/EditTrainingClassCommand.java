@@ -34,13 +34,8 @@ import com.echothree.model.control.workeffort.common.workeffort.TrainingConstant
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
-import com.echothree.model.data.training.server.value.TrainingClassDetailValue;
-import com.echothree.model.data.training.server.value.TrainingClassTranslationValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -122,8 +117,8 @@ public class EditTrainingClassCommand
     @Override
     public TrainingClass getEntity(EditTrainingClassResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClass trainingClass = null;
-        String trainingClassName = spec.getTrainingClassName();
+        TrainingClass trainingClass;
+        var trainingClassName = spec.getTrainingClassName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -158,11 +153,11 @@ public class EditTrainingClassCommand
     @Override
     public void doLock(TrainingClassEdit edit, TrainingClass trainingClass) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-        TrainingClassTranslation trainingClassTranslation = trainingControl.getTrainingClassTranslation(trainingClass, getPreferredLanguage());
-        TrainingClassDetail trainingClassDetail = trainingClass.getLastDetail();
-        WorkEffortScope workEffortScope = trainingClassDetail.getWorkEffortScope();
-        Integer overallQuestionCount = trainingClassDetail.getOverallQuestionCount();
+        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+        var trainingClassTranslation = trainingControl.getTrainingClassTranslation(trainingClass, getPreferredLanguage());
+        var trainingClassDetail = trainingClass.getLastDetail();
+        var workEffortScope = trainingClassDetail.getWorkEffortScope();
+        var overallQuestionCount = trainingClassDetail.getOverallQuestionCount();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
 
         edit.setTrainingClassName(trainingClassDetail.getTrainingClassName());
@@ -218,30 +213,30 @@ public class EditTrainingClassCommand
     @Override
     public void canUpdate(TrainingClass trainingClass) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = edit.getTrainingClassName();
-        TrainingClass duplicateTrainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = edit.getTrainingClassName();
+        var duplicateTrainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(duplicateTrainingClass != null && !trainingClass.equals(duplicateTrainingClass)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassName.name(), trainingClassName);
         } else {
-            MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-            String overviewMimeTypeName = edit.getOverviewMimeTypeName();
-            String overview = edit.getOverview();
+            var mimeTypeLogic = MimeTypeLogic.getInstance();
+            var overviewMimeTypeName = edit.getOverviewMimeTypeName();
+            var overview = edit.getOverview();
 
             overviewMimeType = mimeTypeLogic.checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                     ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
 
             if(!hasExecutionErrors()) {
-                String introductionMimeTypeName = edit.getIntroductionMimeTypeName();
-                String introduction = edit.getIntroduction();
+                var introductionMimeTypeName = edit.getIntroductionMimeTypeName();
+                var introduction = edit.getIntroduction();
 
                 introductionMimeType = mimeTypeLogic.checkMimeType(this, introductionMimeTypeName, introduction, MimeTypeUsageTypes.TEXT.name(),
                         ExecutionErrors.MissingRequiredIntroductionMimeTypeName.name(), ExecutionErrors.MissingRequiredIntroduction.name(),
                         ExecutionErrors.UnknownIntroductionMimeTypeName.name(), ExecutionErrors.UnknownIntroductionMimeTypeUsage.name());
 
                 if(!hasExecutionErrors()) {
-                    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+                    var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
 
                     estimatedReadingTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                             edit.getEstimatedReadingTime(), edit.getEstimatedReadingTimeUnitOfMeasureTypeName(),
@@ -273,11 +268,11 @@ public class EditTrainingClassCommand
                                             null, ExecutionErrors.UnknownRequiredCompletionTimeUnitOfMeasureTypeName.name());
 
                                     if(!hasExecutionErrors()) {
-                                        String workEffortScopeName = edit.getWorkEffortScopeName();
+                                        var workEffortScopeName = edit.getWorkEffortScopeName();
 
                                         if(workEffortScopeName != null) {
                                             var workEffortControl = Session.getModelController(WorkEffortControl.class);
-                                            WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(TrainingConstants.WorkEffortType_TRAINING);
+                                            var workEffortType = workEffortControl.getWorkEffortTypeByName(TrainingConstants.WorkEffortType_TRAINING);
 
                                             if(workEffortType != null) {
                                                 workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
@@ -318,13 +313,13 @@ public class EditTrainingClassCommand
     public void doUpdate(TrainingClass trainingClass) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
-        TrainingClassDetailValue trainingClassDetailValue = trainingControl.getTrainingClassDetailValueForUpdate(trainingClass);
-        TrainingClassTranslation trainingClassTranslation = trainingControl.getTrainingClassTranslationForUpdate(trainingClass, getPreferredLanguage());
-        String defaultPercentageToPass = edit.getDefaultPercentageToPass();
-        String overallQuestionCount = edit.getOverallQuestionCount();
-        String description = edit.getDescription();
-        String overview = edit.getOverview();
-        String introduction = edit.getIntroduction();
+        var trainingClassDetailValue = trainingControl.getTrainingClassDetailValueForUpdate(trainingClass);
+        var trainingClassTranslation = trainingControl.getTrainingClassTranslationForUpdate(trainingClass, getPreferredLanguage());
+        var defaultPercentageToPass = edit.getDefaultPercentageToPass();
+        var overallQuestionCount = edit.getOverallQuestionCount();
+        var description = edit.getDescription();
+        var overview = edit.getOverview();
+        var introduction = edit.getIntroduction();
 
         trainingClassDetailValue.setTrainingClassName(edit.getTrainingClassName());
         trainingClassDetailValue.setEstimatedReadingTime(estimatedReadingTime);
@@ -349,7 +344,7 @@ public class EditTrainingClassCommand
         } else if(trainingClassTranslation != null && (description == null && overview == null && introduction == null)) {
             trainingControl.deleteTrainingClassTranslation(trainingClassTranslation, partyPK);
         } else if(trainingClassTranslation != null && (description != null || overview != null || introduction != null)) {
-            TrainingClassTranslationValue trainingClassTranslationValue = trainingControl.getTrainingClassTranslationValue(trainingClassTranslation);
+            var trainingClassTranslationValue = trainingControl.getTrainingClassTranslationValue(trainingClassTranslation);
 
             trainingClassTranslationValue.setDescription(description);
             trainingClassTranslationValue.setOverviewMimeTypePK(overviewMimeType == null? null: overviewMimeType.getPrimaryKey());

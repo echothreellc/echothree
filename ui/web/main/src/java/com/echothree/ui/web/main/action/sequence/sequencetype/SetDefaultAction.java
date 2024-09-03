@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.SetDefaultSequenceTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-            SetDefaultSequenceTypeForm commandForm = SequenceUtil.getHome().getSetDefaultSequenceTypeForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var commandForm = SequenceUtil.getHome().getSetDefaultSequenceTypeForm();
             
             commandForm.setSequenceTypeName(sequenceTypeName);
             

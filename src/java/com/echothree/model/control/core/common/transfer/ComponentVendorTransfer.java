@@ -49,7 +49,7 @@ public final class ComponentVendorTransfer
         if(o == null || getClass() != o.getClass()) {
             return false;
         }
-        ComponentVendorTransfer that = (ComponentVendorTransfer) o;
+        var that = (ComponentVendorTransfer) o;
         return componentVendorName.equals(that.componentVendorName);
     }
 

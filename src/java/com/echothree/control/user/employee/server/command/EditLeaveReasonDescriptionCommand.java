@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
 import com.echothree.model.data.employee.server.entity.LeaveReasonDescription;
-import com.echothree.model.data.employee.server.value.LeaveReasonDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditLeaveReasonDescriptionCommand
     public LeaveReasonDescription getEntity(EditLeaveReasonDescriptionResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveReasonDescription leaveReasonDescription = null;
-        String leaveReasonName = spec.getLeaveReasonName();
-        LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
+        var leaveReasonName = spec.getLeaveReasonName();
+        var leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
         if(leaveReason != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditLeaveReasonDescriptionCommand
     @Override
     public void doUpdate(LeaveReasonDescription leaveReasonDescription) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveReasonDescriptionValue leaveReasonDescriptionValue = employeeControl.getLeaveReasonDescriptionValue(leaveReasonDescription);
+        var leaveReasonDescriptionValue = employeeControl.getLeaveReasonDescriptionValue(leaveReasonDescription);
 
         leaveReasonDescriptionValue.setDescription(edit.getDescription());
 

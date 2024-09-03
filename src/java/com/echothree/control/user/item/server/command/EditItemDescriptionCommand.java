@@ -31,25 +31,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeDetail;
-import com.echothree.model.data.core.server.entity.MimeTypeUsage;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemBlobDescription;
-import com.echothree.model.data.item.server.entity.ItemClobDescription;
 import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemImageType;
-import com.echothree.model.data.item.server.entity.ItemStringDescription;
-import com.echothree.model.data.item.server.value.ItemBlobDescriptionValue;
-import com.echothree.model.data.item.server.value.ItemClobDescriptionValue;
-import com.echothree.model.data.item.server.value.ItemDescriptionDetailValue;
-import com.echothree.model.data.item.server.value.ItemImageDescriptionValue;
-import com.echothree.model.data.item.server.value.ItemStringDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -117,19 +103,19 @@ public class EditItemDescriptionCommand
     public ItemDescription getEntity(EditItemDescriptionResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemDescription itemDescription = null;
-        String itemDescriptionTypeName = spec.getItemDescriptionTypeName();
+        var itemDescriptionTypeName = spec.getItemDescriptionTypeName();
 
         itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
         if(itemDescriptionType != null) {
-            String itemName = spec.getItemName();
+            var itemName = spec.getItemName();
 
             item = itemControl.getItemByName(itemName);
 
             if(item != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -177,17 +163,17 @@ public class EditItemDescriptionCommand
         edit.setMimeTypeName(mimeType == null? null: mimeType.getLastDetail().getMimeTypeName());
 
         if(mimeType == null) {
-            ItemStringDescription itemStringDescription = itemControl.getItemStringDescription(itemDescription);
+            var itemStringDescription = itemControl.getItemStringDescription(itemDescription);
 
             if(itemStringDescription != null) {
                 edit.setStringDescription(itemStringDescription.getStringDescription());
             }
         } else {
-            String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+            var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
             // EntityAttributeTypes.BLOB.name() does not return anything in edit
             if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                ItemClobDescription itemClobDescription = itemControl.getItemClobDescription(itemDescription);
+                var itemClobDescription = itemControl.getItemClobDescription(itemDescription);
 
                 if(itemClobDescription != null) {
                     edit.setClobDescription(itemClobDescription.getClobDescription());
@@ -201,11 +187,11 @@ public class EditItemDescriptionCommand
 
     @Override
     public void canUpdate(ItemDescription itemDescription) {
-        String mimeTypeName = edit.getMimeTypeName();
+        var mimeTypeName = edit.getMimeTypeName();
 
         if(mimeTypeName == null) {
             if(itemDescriptionType.getLastDetail().getMimeTypeUsageType() == null) {
-                String stringDescription = edit.getStringDescription();
+                var stringDescription = edit.getStringDescription();
 
                 if(stringDescription == null) {
                     addExecutionError(ExecutionErrors.MissingStringDescription.name());
@@ -220,26 +206,26 @@ public class EditItemDescriptionCommand
             mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
-                MimeTypeUsageType mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
+                var mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
 
                 if(mimeTypeUsageType != null) {
-                    MimeTypeUsage mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                    var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
                     if(mimeTypeUsage != null) {
-                        MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
-                        EntityAttributeType entityAttributeType = mimeTypeDetail.getEntityAttributeType();
-                        String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                        var mimeTypeDetail = mimeType.getLastDetail();
+                        var entityAttributeType = mimeTypeDetail.getEntityAttributeType();
+                        var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
                         if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                            ByteArray blobDescription = edit.getBlobDescription();
+                            var blobDescription = edit.getBlobDescription();
 
                             if(blobDescription == null) {
                                 addExecutionError(ExecutionErrors.MissingBlobDescription.name());
                             } else {
-                                String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+                                var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
                                 if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
-                                    String itemImageTypeName = edit.getItemImageTypeName();
+                                    var itemImageTypeName = edit.getItemImageTypeName();
 
                                     if(itemImageTypeName != null) {
                                         var itemControl = Session.getModelController(ItemControl.class);
@@ -252,15 +238,15 @@ public class EditItemDescriptionCommand
                                             if(imageDimensions == null) {
                                                 addExecutionError(ExecutionErrors.InvalidImage.name());
                                             } else {
-                                                ItemImageDescriptionType itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
+                                                var itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
 
                                                 if(itemImageDescriptionType != null) {
-                                                    Integer minimumHeight = itemImageDescriptionType.getMinimumHeight();
-                                                    Integer minimumWidth = itemImageDescriptionType.getMinimumWidth();
-                                                    Integer maximumHeight = itemImageDescriptionType.getMaximumHeight();
-                                                    Integer maximumWidth = itemImageDescriptionType.getMaximumWidth();
-                                                    Integer imageHeight = imageDimensions.getHeight();
-                                                    Integer imageWidth = imageDimensions.getWidth();
+                                                    var minimumHeight = itemImageDescriptionType.getMinimumHeight();
+                                                    var minimumWidth = itemImageDescriptionType.getMinimumWidth();
+                                                    var maximumHeight = itemImageDescriptionType.getMaximumHeight();
+                                                    var maximumWidth = itemImageDescriptionType.getMaximumWidth();
+                                                    var imageHeight = imageDimensions.getHeight();
+                                                    var imageWidth = imageDimensions.getWidth();
 
                                                     if(minimumHeight != null && imageHeight < minimumHeight) {
                                                         addExecutionError(ExecutionErrors.ImageHeightLessThanMinimum.name(), imageHeight.toString(), minimumHeight.toString());
@@ -288,7 +274,7 @@ public class EditItemDescriptionCommand
                                 }
                             }
                         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                            String clobDescription = edit.getClobDescription();
+                            var clobDescription = edit.getClobDescription();
 
                             if(clobDescription == null) {
                                 addExecutionError(ExecutionErrors.MissingClobDescription.name());
@@ -316,20 +302,20 @@ public class EditItemDescriptionCommand
         var partyPK = getPartyPK();
 
         if(mimeType == null) {
-            String stringDescription = edit.getStringDescription();
+            var stringDescription = edit.getStringDescription();
 
             updateItemDescription(itemControl, item, null, partyPK, itemDescription, null, null, stringDescription);
         } else {
-            EntityAttributeType entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
-            String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+            var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
+            var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
             if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                ByteArray blobDescription = edit.getBlobDescription();
+                var blobDescription = edit.getBlobDescription();
 
                 updateItemDescription(itemControl, item, mimeType, partyPK, itemDescription, blobDescription, null, null);
             } else {
                 if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                    String clobDescription = edit.getClobDescription();
+                    var clobDescription = edit.getClobDescription();
 
                     updateItemDescription(itemControl, item, mimeType, partyPK, itemDescription, null, clobDescription, null);
                 }
@@ -339,20 +325,20 @@ public class EditItemDescriptionCommand
 
     protected void updateItemDescription(ItemControl itemControl, Item item, MimeType mimeType, BasePK updatedBy,
             ItemDescription itemDescription, ByteArray blobDescription, String clobDescription, String stringDescription) {
-        ItemDescriptionDetailValue itemDescriptionDetailValue = itemControl.getItemDescriptionDetailValueForUpdate(itemDescription);
+        var itemDescriptionDetailValue = itemControl.getItemDescriptionDetailValueForUpdate(itemDescription);
 
         itemDescriptionDetailValue.setMimeTypePK(mimeType == null? null: mimeType.getPrimaryKey());
         itemControl.updateItemDescriptionFromValue(itemDescriptionDetailValue, updatedBy);
 
-        ItemBlobDescription itemBlobDescription = itemControl.getItemBlobDescriptionForUpdate(itemDescription);
+        var itemBlobDescription = itemControl.getItemBlobDescriptionForUpdate(itemDescription);
 
         if(itemBlobDescription != null) {
             if(blobDescription == null) {
                 itemControl.deleteItemBlobDescription(itemBlobDescription, updatedBy);
                 itemControl.deleteItemImageDescriptionByItemDescription(itemDescription, updatedBy);
             } else {
-                ItemBlobDescriptionValue itemBlobDescriptionValue = itemControl.getItemBlobDescriptionValue(itemBlobDescription);
-                ItemImageDescriptionValue itemImageDescriptionValue = itemControl.getItemImageDescriptionValueForUpdate(itemDescription);
+                var itemBlobDescriptionValue = itemControl.getItemBlobDescriptionValue(itemBlobDescription);
+                var itemImageDescriptionValue = itemControl.getItemImageDescriptionValueForUpdate(itemDescription);
 
                 itemBlobDescriptionValue.setBlobDescription(blobDescription);
                 itemControl.updateItemBlobDescriptionFromValue(itemBlobDescriptionValue, updatedBy);
@@ -380,13 +366,13 @@ public class EditItemDescriptionCommand
             ItemDescriptionLogic.getInstance().deleteItemImageDescriptionChildren(itemDescription, updatedBy);
         }
 
-        ItemClobDescription itemClobDescription = itemControl.getItemClobDescriptionForUpdate(itemDescription);
+        var itemClobDescription = itemControl.getItemClobDescriptionForUpdate(itemDescription);
 
         if(itemClobDescription != null) {
             if(clobDescription == null) {
                 itemControl.deleteItemClobDescription(itemClobDescription, updatedBy);
             } else {
-                ItemClobDescriptionValue itemClobDescriptionValue = itemControl.getItemClobDescriptionValue(itemClobDescription);
+                var itemClobDescriptionValue = itemControl.getItemClobDescriptionValue(itemClobDescription);
 
                 itemClobDescriptionValue.setClobDescription(clobDescription);
                 itemControl.updateItemClobDescriptionFromValue(itemClobDescriptionValue, updatedBy);
@@ -395,13 +381,13 @@ public class EditItemDescriptionCommand
             itemControl.createItemClobDescription(itemDescription, clobDescription, updatedBy);
         }
 
-        ItemStringDescription itemStringDescription = itemControl.getItemStringDescriptionForUpdate(itemDescription);
+        var itemStringDescription = itemControl.getItemStringDescriptionForUpdate(itemDescription);
 
         if(itemStringDescription != null) {
             if(stringDescription == null) {
                 itemControl.deleteItemStringDescription(itemStringDescription, updatedBy);
             } else {
-                ItemStringDescriptionValue itemStringDescriptionValue = itemControl.getItemStringDescriptionValue(itemStringDescription);
+                var itemStringDescriptionValue = itemControl.getItemStringDescriptionValue(itemStringDescription);
 
                 itemStringDescriptionValue.setStringDescription(stringDescription);
                 itemControl.updateItemStringDescriptionFromValue(itemStringDescriptionValue, updatedBy);

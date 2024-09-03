@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnpolicyreason;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.edit.ReturnPolicyReasonEdit;
-import com.echothree.control.user.returnpolicy.common.form.EditReturnPolicyReasonForm;
 import com.echothree.control.user.returnpolicy.common.result.EditReturnPolicyReasonResult;
-import com.echothree.control.user.returnpolicy.common.spec.ReturnPolicyReasonSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-        String returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditReturnPolicyReasonForm commandForm = ReturnPolicyUtil.getHome().getEditReturnPolicyReasonForm();
-                ReturnPolicyReasonSpec spec = ReturnPolicyUtil.getHome().getReturnPolicyReasonSpec();
-                String returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
+                var actionForm = (EditActionForm)form;
+                var commandForm = ReturnPolicyUtil.getHome().getEditReturnPolicyReasonForm();
+                var spec = ReturnPolicyUtil.getHome().getReturnPolicyReasonSpec();
+                var returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
                 
                 if(returnKindName == null)
                     returnKindName = actionForm.getReturnKindName();
@@ -84,21 +79,21 @@ public class EditAction
                 spec.setReturnReasonName(returnReasonName);
                 
                 if(wasPost(request)) {
-                    ReturnPolicyReasonEdit edit = ReturnPolicyUtil.getHome().getReturnPolicyReasonEdit();
+                    var edit = ReturnPolicyUtil.getHome().getReturnPolicyReasonEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnPolicyReason(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnPolicyReason(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditReturnPolicyReasonResult result = (EditReturnPolicyReasonResult)executionResult.getResult();
+                            var result = (EditReturnPolicyReasonResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -111,13 +106,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnPolicyReason(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditReturnPolicyReasonResult result = (EditReturnPolicyReasonResult)executionResult.getResult();
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnPolicyReason(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditReturnPolicyReasonResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ReturnPolicyReasonEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setReturnKindName(returnKindName);
@@ -138,8 +133,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindName);
             request.setAttribute(AttributeConstants.RETURN_POLICY_NAME, returnPolicyName);

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasuretype;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.edit.UnitOfMeasureTypeDescriptionEdit;
-import com.echothree.control.user.uom.common.form.EditUnitOfMeasureTypeDescriptionForm;
 import com.echothree.control.user.uom.common.result.EditUnitOfMeasureTypeDescriptionResult;
-import com.echothree.control.user.uom.common.spec.UnitOfMeasureTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditUnitOfMeasureTypeDescriptionForm commandForm = UomUtil.getHome().getEditUnitOfMeasureTypeDescriptionForm();
-                UnitOfMeasureTypeDescriptionSpec spec = UomUtil.getHome().getUnitOfMeasureTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = UomUtil.getHome().getEditUnitOfMeasureTypeDescriptionForm();
+                var spec = UomUtil.getHome().getUnitOfMeasureTypeDescriptionSpec();
                 
                 if(unitOfMeasureKindName == null)
                     unitOfMeasureKindName = actionForm.getUnitOfMeasureKindName();
@@ -84,21 +79,21 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    UnitOfMeasureTypeDescriptionEdit edit = UomUtil.getHome().getUnitOfMeasureTypeDescriptionEdit();
+                    var edit = UomUtil.getHome().getUnitOfMeasureTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setSingularDescription(actionForm.getSingularDescription());
                     edit.setPluralDescription(actionForm.getPluralDescription());
                     edit.setSymbol(actionForm.getSymbol());
-                    
-                    CommandResult commandResult = UomUtil.getHome().editUnitOfMeasureTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UomUtil.getHome().editUnitOfMeasureTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditUnitOfMeasureTypeDescriptionResult result = (EditUnitOfMeasureTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditUnitOfMeasureTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -111,13 +106,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = UomUtil.getHome().editUnitOfMeasureTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditUnitOfMeasureTypeDescriptionResult result = (EditUnitOfMeasureTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = UomUtil.getHome().editUnitOfMeasureTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditUnitOfMeasureTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        UnitOfMeasureTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
@@ -139,8 +134,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND_NAME, unitOfMeasureKindName);
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE_NAME, unitOfMeasureTypeName);

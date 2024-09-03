@@ -148,7 +148,7 @@ public class OrderLineLogic
     public Long getOrderLineTotalWithAdjustments(final OrderLine orderLine) {
         var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         var orderLineDetail = orderLine.getLastDetail();
-        long total = orderLineDetail.getQuantity() * orderLineDetail.getUnitAmount();
+        var total = orderLineDetail.getQuantity() * orderLineDetail.getUnitAmount();
         var orderLineAdjustments = orderLineAdjustmentControl.getOrderLineAdjustmentsByOrderLine(orderLine);
 
         total = orderLineAdjustments.stream().map((orderLineAdjustment) -> orderLineAdjustment.getLastDetail().getAmount()).reduce(total, (accumulator, _item) -> accumulator + _item);

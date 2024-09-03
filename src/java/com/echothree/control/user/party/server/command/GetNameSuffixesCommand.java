@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetNameSuffixesForm;
-import com.echothree.control.user.party.common.result.GetNameSuffixesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.NameSuffix;
@@ -56,7 +55,7 @@ public class GetNameSuffixesCommand
     
     @Override
     protected BaseResult getResult(Collection<NameSuffix> entities) {
-        GetNameSuffixesResult result = PartyResultFactory.getGetNameSuffixesResult();
+        var result = PartyResultFactory.getGetNameSuffixesResult();
         var partyControl = Session.getModelController(PartyControl.class);
         
         result.setNameSuffixes(partyControl.getNameSuffixTransfers(getUserVisit(), entities));

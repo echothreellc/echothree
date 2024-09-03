@@ -18,7 +18,6 @@ package com.echothree.cucumber.user;
 
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredLanguageForm;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
@@ -29,7 +28,7 @@ public class PreferredLanguageSteps implements En {
         When("^the user sets their preferred language to \"([^\"]*)\"$",
                 (String languageIsoName) -> {
                     UserService userService = UserUtil.getHome();
-                    SetUserVisitPreferredLanguageForm userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
+                    var userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
                     var persona = CurrentPersona.persona;
 
                     userVisitPreferredLanguageForm.setLanguageIsoName(languageIsoName);

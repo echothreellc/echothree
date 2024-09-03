@@ -18,7 +18,6 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.GetCampaignContentsForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.GetCampaignContentsResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +60,7 @@ public class GetCampaignContentsCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignContentsResult result = CampaignResultFactory.getGetCampaignContentsResult();
+        var result = CampaignResultFactory.getGetCampaignContentsResult();
         
         result.setCampaignContents(campaignControl.getCampaignContentTransfers(getUserVisit()));
         

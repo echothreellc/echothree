@@ -18,7 +18,6 @@ package com.echothree.control.user.comment.common;
 
 import com.echothree.control.user.comment.server.CommentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class CommentUtil {
@@ -30,7 +29,7 @@ public class CommentUtil {
     public static CommentLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (CommentLocal)ctx.lookup("ejb:echothree/echothree-server/CommentBean!com.echothree.control.user.comment.server.CommentLocal");
         }
@@ -42,7 +41,7 @@ public class CommentUtil {
     public static CommentRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (CommentRemote)ctx.lookup("ejb:echothree/echothree-server/CommentBean!com.echothree.control.user.comment.common.CommentRemote");
         }

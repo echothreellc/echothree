@@ -20,23 +20,18 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityAppearanceEdit;
 import com.echothree.control.user.core.common.form.EditEntityAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditEntityAppearanceResult;
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.value.EntityAppearanceValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -78,13 +73,13 @@ public class EditEntityAppearanceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditEntityAppearanceResult result = CoreResultFactory.getEditEntityAppearanceResult();
-        String entityRef = spec.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var result = CoreResultFactory.getEditEntityAppearanceResult();
+        var entityRef = spec.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
             EntityAppearance entityAppearance = null;
-            BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityAppearance = coreControl.getEntityAppearance(entityInstance);
@@ -94,7 +89,7 @@ public class EditEntityAppearanceCommand
                         result.setEntityAppearance(coreControl.getEntityAppearanceTransfer(getUserVisit(), entityAppearance));
 
                         if(lockEntity(basePK)) {
-                            EntityAppearanceEdit edit = CoreEditFactory.getEntityAppearanceEdit();
+                            var edit = CoreEditFactory.getEntityAppearanceEdit();
 
                             result.setEdit(edit);
                             edit.setAppearanceName(entityAppearance.getAppearance().getLastDetail().getAppearanceName());
@@ -110,8 +105,8 @@ public class EditEntityAppearanceCommand
                 }
             } else {
                 if(editMode.equals(EditMode.UPDATE)) {
-                    String appearanceName = edit.getAppearanceName();
-                    Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+                    var appearanceName = edit.getAppearanceName();
+                    var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
 
                     if(!hasExecutionErrors()) {
                         entityAppearance = coreControl.getEntityAppearanceForUpdate(entityInstance);
@@ -119,7 +114,7 @@ public class EditEntityAppearanceCommand
                         if(entityAppearance != null) {
                             if(lockEntityForUpdate(basePK)) {
                                 try {
-                                    EntityAppearanceValue entityAppearanceValue = coreControl.getEntityAppearanceValue(entityAppearance);
+                                    var entityAppearanceValue = coreControl.getEntityAppearanceValue(entityAppearance);
 
                                     entityAppearanceValue.setAppearancePK(appearance.getPrimaryKey());
 

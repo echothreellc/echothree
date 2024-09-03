@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.sequence.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceDescriptionsForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceDescriptionsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,16 +51,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-            String sequenceName = request.getParameter(ParameterConstants.SEQUENCE_NAME);
-            GetSequenceDescriptionsForm commandForm = SequenceUtil.getHome().getGetSequenceDescriptionsForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var sequenceName = request.getParameter(ParameterConstants.SEQUENCE_NAME);
+            var commandForm = SequenceUtil.getHome().getGetSequenceDescriptionsForm();
             
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);
-            
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceDescriptionsResult getSequenceDescriptionsResult = (GetSequenceDescriptionsResult)executionResult.getResult();
+
+            var commandResult = SequenceUtil.getHome().getSequenceDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequenceDescriptionsResult = (GetSequenceDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("sequenceType", getSequenceDescriptionsResult.getSequenceType());
             request.setAttribute("sequence", getSequenceDescriptionsResult.getSequence());

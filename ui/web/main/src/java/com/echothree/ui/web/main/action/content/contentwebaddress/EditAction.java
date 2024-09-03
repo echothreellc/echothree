@@ -49,8 +49,8 @@ public class EditAction
     @Override
     protected ContentWebAddressSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentWebAddressSpec spec = ContentUtil.getHome().getContentWebAddressSpec();
-        String originalContentWebAddressName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_WEB_ADDRESS_NAME);
+        var spec = ContentUtil.getHome().getContentWebAddressSpec();
+        var originalContentWebAddressName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_WEB_ADDRESS_NAME);
 
         if(originalContentWebAddressName == null) {
             originalContentWebAddressName = actionForm.getOriginalContentWebAddressName();
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected ContentWebAddressEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentWebAddressEdit edit = ContentUtil.getHome().getContentWebAddressEdit();
+        var edit = ContentUtil.getHome().getContentWebAddressEdit();
 
         edit.setContentWebAddressName(actionForm.getContentWebAddressName());
         edit.setContentCollectionName(actionForm.getContentCollectionChoice());

@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.ContactMechanismPurposeTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.common.transfer.ContactListContactMechanismPurposeTransfer;
-import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
-import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurposeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,14 +34,14 @@ public class ContactListContactMechanismPurposeTransferCache
     }
     
     public ContactListContactMechanismPurposeTransfer getContactListContactMechanismPurposeTransfer(final ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
-        ContactListContactMechanismPurposeTransfer contactListContactMechanismPurposeTransfer = get(contactListContactMechanismPurpose);
+        var contactListContactMechanismPurposeTransfer = get(contactListContactMechanismPurpose);
         
         if(contactListContactMechanismPurposeTransfer == null) {
-            ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
-            ContactListTransfer contactList = contactListControl.getContactListTransfer(userVisit, contactListContactMechanismPurposeDetail.getContactList());
-            ContactMechanismPurposeTransfer contactMechanismPurpose = contactControl.getContactMechanismPurposeTransfer(userVisit, contactListContactMechanismPurposeDetail.getContactMechanismPurpose());
-            Boolean isDefault = contactListContactMechanismPurposeDetail.getIsDefault();
-            Integer sortOrder = contactListContactMechanismPurposeDetail.getSortOrder();
+            var contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
+            var contactList = contactListControl.getContactListTransfer(userVisit, contactListContactMechanismPurposeDetail.getContactList());
+            var contactMechanismPurpose = contactControl.getContactMechanismPurposeTransfer(userVisit, contactListContactMechanismPurposeDetail.getContactMechanismPurpose());
+            var isDefault = contactListContactMechanismPurposeDetail.getIsDefault();
+            var sortOrder = contactListContactMechanismPurposeDetail.getSortOrder();
             
             contactListContactMechanismPurposeTransfer = new ContactListContactMechanismPurposeTransfer(contactList, contactMechanismPurpose, isDefault, sortOrder);
             put(contactListContactMechanismPurpose, contactListContactMechanismPurposeTransfer);

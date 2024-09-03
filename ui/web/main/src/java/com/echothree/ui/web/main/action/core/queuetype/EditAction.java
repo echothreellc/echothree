@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected QueueTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        QueueTypeSpec spec = QueueUtil.getHome().getQueueTypeSpec();
+        var spec = QueueUtil.getHome().getQueueTypeSpec();
         
         spec.setQueueTypeName(findParameter(request, ParameterConstants.ORIGINAL_QUEUE_TYPE_NAME, actionForm.getOriginalQueueTypeName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected QueueTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        QueueTypeEdit edit = QueueUtil.getHome().getQueueTypeEdit();
+        var edit = QueueUtil.getHome().getQueueTypeEdit();
 
         edit.setQueueTypeName(actionForm.getQueueTypeName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

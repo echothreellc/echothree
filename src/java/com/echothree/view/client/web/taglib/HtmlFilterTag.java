@@ -56,7 +56,7 @@ public class HtmlFilterTag
     @Override
     public int doStartTag()
             throws JspException {
-        HtmlFilterHolder htmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
+        var htmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
 
         pageContext.setAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, new HtmlFilterHolder(htmlFilterHolder), PageContext.REQUEST_SCOPE);
 
@@ -66,7 +66,7 @@ public class HtmlFilterTag
     @Override
     public int doEndTag()
             throws JspException {
-        HtmlFilterHolder currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
+        var currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
 
         pageContext.setAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, currentHtmlFilterHolder.getPreviousHtmlFilterHolder(), PageContext.REQUEST_SCOPE);
         pageContext.setAttribute(var, currentHtmlFilterHolder.getElementRemover(), scope);

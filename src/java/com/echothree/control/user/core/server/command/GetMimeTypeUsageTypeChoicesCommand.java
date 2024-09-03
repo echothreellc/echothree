@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetMimeTypeUsageTypeChoicesResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -48,9 +47,9 @@ public class GetMimeTypeUsageTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetMimeTypeUsageTypeChoicesResult result = CoreResultFactory.getGetMimeTypeUsageTypeChoicesResult();
-        String defaultMimeTypeUsageTypeChoice = form.getDefaultMimeTypeUsageTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetMimeTypeUsageTypeChoicesResult();
+        var defaultMimeTypeUsageTypeChoice = form.getDefaultMimeTypeUsageTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setMimeTypeUsageTypeChoices(coreControl.getMimeTypeUsageTypeChoices(defaultMimeTypeUsageTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

@@ -21,11 +21,6 @@ import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
-import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,22 +64,22 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
     
     @Override
     protected BaseResult execute() {
-        EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            EntityAttributeGroup entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
+            var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
+                var entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
 
                 if(entityAttributeEntityAttributeGroup == null) {
                     var sortOrder = Integer.valueOf(form.getSortOrder());
 
                     coreControl.createEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup, sortOrder, getPartyPK());
                 } else {
-                    EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-                    EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                    var entityAttributeDetail = entityAttribute.getLastDetail();
+                    var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
                     
                     addExecutionError(ExecutionErrors.DuplicateEntityAttributeEntityAttributeGroup.name(),
                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),

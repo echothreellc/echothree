@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.payment;
 
 import com.echothree.control.user.payment.common.PaymentService;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.CreatePaymentProcessorForm;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.control.user.payment.common.result.CreatePaymentProcessorResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -45,16 +42,16 @@ public class PaymentProcessorsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException, NamingException {
         if(localName.equals("paymentProcessor")) {
-            CreatePaymentProcessorForm commandForm = PaymentFormFactory.getCreatePaymentProcessorForm();
+            var commandForm = PaymentFormFactory.getCreatePaymentProcessorForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = paymentService.createPaymentProcessor(initialDataParser.getUserVisit(), commandForm);
+
+            var commandResult = paymentService.createPaymentProcessor(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreatePaymentProcessorResult result = (CreatePaymentProcessorResult)executionResult.getResult();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreatePaymentProcessorResult)executionResult.getResult();
+                var entityRef = result.getEntityRef();
 
                 initialDataParser.pushHandler(new PaymentProcessorHandler(initialDataParser, this, commandForm.getPaymentProcessorName(), entityRef));
             }

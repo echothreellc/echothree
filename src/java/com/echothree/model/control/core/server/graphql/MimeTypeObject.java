@@ -22,8 +22,6 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDetail;
-import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
-import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -102,7 +100,7 @@ public class MimeTypeObject
         
         if(CoreSecurityUtils.getHasMimeTypeUsagesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            List<MimeTypeUsage> entities = coreControl.getMimeTypeUsagesByMimeType(mimeType);
+            var entities = coreControl.getMimeTypeUsagesByMimeType(mimeType);
             List<MimeTypeUsageObject> objects = new ArrayList<>(entities.size());
 
             entities.forEach((entity) -> {
@@ -123,7 +121,7 @@ public class MimeTypeObject
         
         if(CoreSecurityUtils.getHasMimeTypeFileExtensionsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            List<MimeTypeFileExtension> entities = coreControl.getMimeTypeFileExtensionsByMimeType(mimeType);
+            var entities = coreControl.getMimeTypeFileExtensionsByMimeType(mimeType);
             List<MimeTypeFileExtensionObject> objects = new ArrayList<>(entities.size());
 
             entities.forEach((entity) -> {

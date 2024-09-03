@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected CommandMessageTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        CommandMessageTypeSpec spec = CoreUtil.getHome().getCommandMessageTypeSpec();
+        var spec = CoreUtil.getHome().getCommandMessageTypeSpec();
         
         spec.setCommandMessageTypeName(findParameter(request, ParameterConstants.ORIGINAL_COMMAND_MESSAGE_TYPE_NAME, actionForm.getOriginalCommandMessageTypeName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected CommandMessageTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        CommandMessageTypeEdit edit = CoreUtil.getHome().getCommandMessageTypeEdit();
+        var edit = CoreUtil.getHome().getCommandMessageTypeEdit();
 
         edit.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

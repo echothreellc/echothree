@@ -36,7 +36,7 @@ public class PartyFreeOnBoardTransferCache
     
     @Override
     public PartyFreeOnBoardTransfer getTransfer(PartyFreeOnBoard partyFreeOnBoard) {
-        PartyFreeOnBoardTransfer partyFreeOnBoardTransfer = get(partyFreeOnBoard);
+        var partyFreeOnBoardTransfer = get(partyFreeOnBoard);
         
         if(partyFreeOnBoardTransfer == null) {
             var partyTransfer = partyControl.getPartyTransfer(userVisit, partyFreeOnBoard.getParty());

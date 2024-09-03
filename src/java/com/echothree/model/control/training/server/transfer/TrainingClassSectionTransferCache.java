@@ -18,15 +18,11 @@ package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassSection;
-import com.echothree.model.data.training.server.entity.TrainingClassSectionDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassSectionTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.string.PercentUtils;
-import java.util.Set;
 
 public class TrainingClassSectionTransferCache
         extends BaseTrainingTransferCache<TrainingClassSection, TrainingClassSectionTransfer> {
@@ -48,18 +44,18 @@ public class TrainingClassSectionTransferCache
     }
     
     public TrainingClassSectionTransfer getTrainingClassSectionTransfer(TrainingClassSection trainingClassSection) {
-        TrainingClassSectionTransfer trainingClassSectionTransfer = get(trainingClassSection);
+        var trainingClassSectionTransfer = get(trainingClassSection);
         
         if(trainingClassSectionTransfer == null) {
-            TrainingClassSectionDetail trainingClassSectionDetail = trainingClassSection.getLastDetail();
-            TrainingClassTransfer trainingClass = trainingControl.getTrainingClassTransfer(userVisit, trainingClassSectionDetail.getTrainingClass());
-            String trainingClassSectionName = trainingClassSectionDetail.getTrainingClassSectionName();
-            Integer unformattedPercentageToPass = trainingClassSectionDetail.getPercentageToPass();
-            String percentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedPercentageToPass);
-            Integer questionCount = trainingClassSectionDetail.getQuestionCount();
-            Integer sortOrder = trainingClassSectionDetail.getSortOrder();
-            TrainingClassSectionTranslation trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage());
-            String description = trainingClassSectionTranslation == null ? trainingClassSectionName : trainingClassSectionTranslation.getDescription();
+            var trainingClassSectionDetail = trainingClassSection.getLastDetail();
+            var trainingClass = trainingControl.getTrainingClassTransfer(userVisit, trainingClassSectionDetail.getTrainingClass());
+            var trainingClassSectionName = trainingClassSectionDetail.getTrainingClassSectionName();
+            var unformattedPercentageToPass = trainingClassSectionDetail.getPercentageToPass();
+            var percentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedPercentageToPass);
+            var questionCount = trainingClassSectionDetail.getQuestionCount();
+            var sortOrder = trainingClassSectionDetail.getSortOrder();
+            var trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage());
+            var description = trainingClassSectionTranslation == null ? trainingClassSectionName : trainingClassSectionTranslation.getDescription();
             
             trainingClassSectionTransfer = new TrainingClassSectionTransfer(trainingClass, trainingClassSectionName, unformattedPercentageToPass,
                     percentageToPass, questionCount, sortOrder, description);

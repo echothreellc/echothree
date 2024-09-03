@@ -69,10 +69,10 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                         String factoryName = null;
                         String pkName = null;
 
-                        for(int i = 0 ; i < nameComponents.length ; i++) {
+                        for(var i = 0; i < nameComponents.length ; i++) {
                             if(nameComponents[i].equals("server")) {
-                                int j = i;
-                                String baseClassName = nameComponents[i + 2];
+                                var j = i;
+                                var baseClassName = nameComponents[i + 2];
 
                                 nameComponents[++i] = "factory";
                                 nameComponents[++i] = baseClassName + "Factory";
@@ -121,7 +121,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                 final var rsmd = rs.getMetaData();
 
                 databaseResultMethods = new ArrayList<>();
-                for(int columnIndex = 1; columnIndex <= rsmd.getColumnCount(); columnIndex++) {
+                for(var columnIndex = 1; columnIndex <= rsmd.getColumnCount(); columnIndex++) {
                     databaseResultMethods.add(getDatabaseResultMethod(rsmd.getColumnLabel(columnIndex)));
                 }
             } catch(SQLException se) {
@@ -144,12 +144,12 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
             
             try(final var rs = ps.getResultSet()) {
                 while(rs.next()) {
-                    int columnIndex = 0;
+                    var columnIndex = 0;
 
                     try {
                         final var baseDatabaseResult = baseDatabaseResultClass.getDeclaredConstructor().newInstance();
 
-                        for(DatabaseResultMethod databaseResultMethod : getDatabaseResultMethods(rs)) {
+                        for(var databaseResultMethod : getDatabaseResultMethods(rs)) {
                             final var type = databaseResultMethod.type;
                             Object param = null;
 
@@ -167,7 +167,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                                     if(superclass.equals(BasePK.class)) {
                                         param = databaseResultMethod.pkConstructor.newInstance(rs.getLong(columnIndex));
                                     } else if(superclass.equals(BaseEntity.class)) {
-                                        Object pk = databaseResultMethod.pkConstructor.newInstance(rs.getLong(columnIndex));
+                                        var pk = databaseResultMethod.pkConstructor.newInstance(rs.getLong(columnIndex));
 
                                         param = databaseResultMethod.getEntityFromPkMethod.invoke(databaseResultMethod.factoryInstance, session, entityPermission, pk);
                                     }

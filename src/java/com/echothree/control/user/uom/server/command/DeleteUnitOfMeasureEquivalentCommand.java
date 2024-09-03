@@ -18,9 +18,6 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.DeleteUnitOfMeasureEquivalentForm;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,22 +50,22 @@ public class DeleteUnitOfMeasureEquivalentCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String fromUnitOfMeasureTypeName = form.getFromUnitOfMeasureTypeName();
-            UnitOfMeasureType fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, fromUnitOfMeasureTypeName);
+            var fromUnitOfMeasureTypeName = form.getFromUnitOfMeasureTypeName();
+            var fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, fromUnitOfMeasureTypeName);
             
             if(fromUnitOfMeasureType != null) {
-                String toUnitOfMeasureTypeName = form.getToUnitOfMeasureTypeName();
-                UnitOfMeasureType toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, toUnitOfMeasureTypeName);
+                var toUnitOfMeasureTypeName = form.getToUnitOfMeasureTypeName();
+                var toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, toUnitOfMeasureTypeName);
                 
                 if(toUnitOfMeasureType != null) {
-                    UnitOfMeasureEquivalent unitOfMeasureEquivalent = uomControl.getUnitOfMeasureEquivalentForUpdate(fromUnitOfMeasureType, toUnitOfMeasureType);
+                    var unitOfMeasureEquivalent = uomControl.getUnitOfMeasureEquivalentForUpdate(fromUnitOfMeasureType, toUnitOfMeasureType);
                     
                     if(unitOfMeasureEquivalent != null) {
-                        boolean inUseError = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind) != 0;
+                        var inUseError = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind) != 0;
                         
                         if(!inUseError) {
                             uomControl.deleteUnitOfMeasureEquivalent(unitOfMeasureEquivalent, getPartyPK());

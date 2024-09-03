@@ -24,10 +24,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.index.server.entity.Index;
-import com.echothree.model.data.index.server.entity.IndexType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -75,27 +71,27 @@ public class CreateIndexCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexName = form.getIndexName();
-        Index index = indexControl.getIndexByName(indexName);
+        var indexName = form.getIndexName();
+        var index = indexControl.getIndexByName(indexName);
         
         if(index == null) {
-            String directory = form.getDirectory();
+            var directory = form.getDirectory();
             
             index = indexControl.getIndexByDirectory(directory);
             
             if(index == null) {
-                String indexTypeName = form.getIndexTypeName();
-                IndexType indexType = IndexTypeLogic.getInstance().getIndexTypeByName(this, indexTypeName);
+                var indexTypeName = form.getIndexTypeName();
+                var indexType = IndexTypeLogic.getInstance().getIndexTypeByName(this, indexTypeName);
 
                 if(!hasExecutionErrors()) {
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                     if(!hasExecutionErrors()) {
                         index = language == null ? null : indexControl.getIndex(indexType, language);
 
                         if(index == null) {
-                            EntityType entityType = indexType.getLastDetail().getEntityType();
+                            var entityType = indexType.getLastDetail().getEntityType();
                             var partyPK = getPartyPK();
                             var isDefault = Boolean.valueOf(form.getIsDefault());
                             var sortOrder = Integer.valueOf(form.getSortOrder());

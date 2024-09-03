@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.configuration.securityrolepartytype.add;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyTypesForm;
 import com.echothree.control.user.party.common.result.GetPartyTypesResult;
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetSecurityRoleForm;
 import com.echothree.control.user.security.common.result.GetSecurityRoleResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,15 +50,15 @@ public class Step1Action
 
     public void setupTransfer(HttpServletRequest request)
             throws NamingException {
-        GetSecurityRoleForm commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
 
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
         commandForm.setSecurityRoleName(request.getParameter(ParameterConstants.SECURITY_ROLE_NAME));
-        
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRole(getUserVisitPK(request), commandForm);
+
+        var commandResult = SecurityUtil.getHome().getSecurityRole(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRoleResult result = (GetSecurityRoleResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRoleResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SECURITY_ROLE, result.getSecurityRole());
         }
@@ -71,10 +67,10 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPartyTypesForm commandForm = PartyUtil.getHome().getGetPartyTypesForm();
-        CommandResult commandResult = PartyUtil.getHome().getPartyTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTypesResult result = (GetPartyTypesResult)executionResult.getResult();
+        var commandForm = PartyUtil.getHome().getGetPartyTypesForm();
+        var commandResult = PartyUtil.getHome().getPartyTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_TYPES, result.getPartyTypes());
 

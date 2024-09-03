@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
@@ -24,29 +23,14 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.common.transfer.PartyGroupTransfer;
 import com.echothree.model.control.party.common.transfer.PartyRelationshipTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
-import com.echothree.model.control.party.common.transfer.PersonTransfer;
-import com.echothree.model.control.party.common.transfer.ProfileTransfer;
-import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyDetail;
-import com.echothree.model.data.party.server.entity.PartyGroup;
-import com.echothree.model.data.party.server.entity.Person;
-import com.echothree.model.data.party.server.entity.Profile;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
@@ -121,26 +105,26 @@ public class PartyTransferCache
     }
     
     public PartyTransfer getTransfer(Party party) {
-        PartyTransfer partyTransfer = get(party);
+        var partyTransfer = get(party);
         
         if(partyTransfer == null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            String partyName = partyDetail.getPartyName();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
-            Language preferredLanguage = partyDetail.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null? null: partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null? null: accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null? null: partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null? null: partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            Person person = partyControl.getPerson(party);
-            PersonTransfer personTransfer = person == null? null: partyControl.getPersonTransfer(userVisit, person);
-            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-            PartyGroupTransfer partyGroupTransfer = partyGroup == null? null: partyControl.getPartyGroupTransfer(userVisit, partyGroup);
-            Profile profile = partyControl.getProfile(party);
-            ProfileTransfer profileTransfer = profile == null? null: partyControl.getProfileTransfer(userVisit, profile);
+            var partyDetail = party.getLastDetail();
+            var partyName = partyDetail.getPartyName();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
+            var preferredLanguage = partyDetail.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null? null: partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = partyDetail.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null? null: accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null? null: partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null? null: partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var person = partyControl.getPerson(party);
+            var personTransfer = person == null? null: partyControl.getPersonTransfer(userVisit, person);
+            var partyGroup = partyControl.getPartyGroup(party);
+            var partyGroupTransfer = partyGroup == null? null: partyControl.getPartyGroupTransfer(userVisit, partyGroup);
+            var profile = partyControl.getProfile(party);
+            var profileTransfer = profile == null? null: partyControl.getProfileTransfer(userVisit, profile);
             
             partyTransfer = new PartyTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, profileTransfer);

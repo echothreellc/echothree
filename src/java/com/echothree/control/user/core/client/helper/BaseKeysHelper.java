@@ -65,14 +65,14 @@ public class BaseKeysHelper {
         keyProperties.setProperty("iv", baseEncoding.encode(baseKey.getIv()));
         keyProperties.setProperty("which", which);
 
-            String hostName = InetAddress.getLocalHost().getHostName();
-            StringBuilder propertiesPath = new StringBuilder(System.getProperty("user.home"))
+        var hostName = InetAddress.getLocalHost().getHostName();
+        var propertiesPath = new StringBuilder(System.getProperty("user.home"))
                     .append(File.separator).append("keys/media").append(which)
                     .append(File.separator).append(hostName)
                     .append(File.separator).append(baseEncryptionKeyName);
 
             if(new File(propertiesPath.toString()).mkdirs()) {
-                String fileName = propertiesPath.append(File.separator).append("key.xml").toString();
+                var fileName = propertiesPath.append(File.separator).append("key.xml").toString();
 
                 keyProperties.storeToXML(new FileOutputStream(propertiesPath.toString()), null);
                 log.info("Key #" + which + " stored to " + fileName);
@@ -122,16 +122,16 @@ public class BaseKeysHelper {
         var baseEncoding = BaseEncoding.base64();
         var keyProperties = new Properties();
         var hostName = InetAddress.getLocalHost().getHostName();
-        var propertiesPath = new StringBuilder(System.getProperty("user.home"))
-                .append(File.separator).append("keys/media").append(whichMedia)
-                .append(File.separator).append(hostName)
-                .append(File.separator).append(baseEncryptionKeyName);
-        var fileName = propertiesPath.append(File.separator).append("key.xml").toString();
+        var fileName = System.getProperty("user.home") +
+                File.separator + "keys/media" + whichMedia +
+                File.separator + hostName +
+                File.separator + baseEncryptionKeyName +
+                File.separator + "key.xml";
 
         keyProperties.loadFromXML(new FileInputStream(fileName));
 
         var secretKey1 = new SecretKeySpec(baseEncoding.decode(keyProperties.getProperty("key")), EncryptionConstants.algorithm);
-        byte[] iv1 = baseEncoding.decode(keyProperties.getProperty("iv"));
+        var iv1 = baseEncoding.decode(keyProperties.getProperty("iv"));
 
         var baseKey = new BaseKey(secretKey1, iv1);
         var which = keyProperties.getProperty("which");

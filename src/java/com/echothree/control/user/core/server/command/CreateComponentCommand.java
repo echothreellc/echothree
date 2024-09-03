@@ -17,8 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateComponentForm;
-import com.echothree.model.data.core.server.entity.Component;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,12 +48,12 @@ public class CreateComponentCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String componentName = form.getComponentName();
-            Component component = coreControl.getComponentByName(componentVendor, componentName);
+            var componentName = form.getComponentName();
+            var component = coreControl.getComponentByName(componentVendor, componentName);
             
             if(component == null) {
                 var description = form.getDescription();

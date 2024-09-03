@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteEntityTypeForm;
-import com.echothree.control.user.core.common.form.GetEntityTypeForm;
 import com.echothree.control.user.core.common.result.GetEntityTypeResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,14 +60,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityTypeForm commandForm = CoreUtil.getHome().getGetEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityTypeForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityTypeResult result = (GetEntityTypeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ENTITY_TYPE, result.getEntityType());
     }
@@ -78,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityTypeForm commandForm = CoreUtil.getHome().getDeleteEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityTypeForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

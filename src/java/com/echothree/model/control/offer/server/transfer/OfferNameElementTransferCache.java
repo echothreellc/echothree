@@ -17,10 +17,8 @@
 package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
-import com.echothree.model.data.offer.server.entity.OfferNameElementDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,15 +35,15 @@ public class OfferNameElementTransferCache
     }
     
     public OfferNameElementTransfer getOfferNameElementTransfer(OfferNameElement offerNameElement) {
-        OfferNameElementTransfer offerNameElementTransfer = get(offerNameElement);
+        var offerNameElementTransfer = get(offerNameElement);
         
         if(offerNameElementTransfer == null) {
-            OfferNameElementDetail offerNameElementDetail = offerNameElement.getLastDetail();
-            String offerNameElementName = offerNameElementDetail.getOfferNameElementName();
-            Integer offset = offerNameElementDetail.getOffset();
-            Integer length = offerNameElementDetail.getLength();
-            String validationPattern = offerNameElementDetail.getValidationPattern();
-            String description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
+            var offerNameElementDetail = offerNameElement.getLastDetail();
+            var offerNameElementName = offerNameElementDetail.getOfferNameElementName();
+            var offset = offerNameElementDetail.getOffset();
+            var length = offerNameElementDetail.getLength();
+            var validationPattern = offerNameElementDetail.getValidationPattern();
+            var description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
             
             offerNameElementTransfer = new OfferNameElementTransfer(offerNameElementName, offset, length, validationPattern,
                     description);

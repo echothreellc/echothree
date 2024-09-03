@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateMimeTypeUsageTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,9 +49,9 @@ public class MimeTypeUsageTypeHandler
         if(localName.equals("mimeTypeUsageTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class MimeTypeUsageTypeHandler
             }
             
             try {
-                CreateMimeTypeUsageTypeDescriptionForm createMimeTypeUsageTypeDescriptionForm = CoreFormFactory.getCreateMimeTypeUsageTypeDescriptionForm();
+                var createMimeTypeUsageTypeDescriptionForm = CoreFormFactory.getCreateMimeTypeUsageTypeDescriptionForm();
                 
                 createMimeTypeUsageTypeDescriptionForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
                 createMimeTypeUsageTypeDescriptionForm.setLanguageIsoName(languageIsoName);

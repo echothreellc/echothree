@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateEntityAppearanceForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,10 +52,10 @@ public class EntityAppearanceAddAction
     public ActionForward executeAction(ActionMapping mapping, EntityAppearanceAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+        var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
 
         if(wasPost(request)) {
-            CreateEntityAppearanceForm commandForm = CoreUtil.getHome().getCreateEntityAppearanceForm();
+            var commandForm = CoreUtil.getHome().getCreateEntityAppearanceForm();
 
             if(entityRef == null)
                 entityRef = actionForm.getEntityRef();
@@ -65,7 +63,7 @@ public class EntityAppearanceAddAction
             commandForm.setEntityRef(entityRef);
             commandForm.setAppearanceName(actionForm.getAppearanceChoice());
 
-            CommandResult commandResult = CoreUtil.getHome().createEntityAppearance(getUserVisitPK(request), commandForm);
+            var commandResult = CoreUtil.getHome().createEntityAppearance(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -77,8 +75,8 @@ public class EntityAppearanceAddAction
             actionForm.setEntityRef(entityRef);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.ENTITY_REF, entityRef);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

@@ -18,16 +18,11 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
-import com.echothree.control.user.item.common.form.CreateItemForm;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.GetItemResult;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -56,9 +51,9 @@ public class ItemsHandler
             String itemName = null;
             String companyName = null;
             String commandAction = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 switch (attrs.getQName(i)) {
                     case "itemName":
                         itemName = attrs.getValue(i);
@@ -73,27 +68,27 @@ public class ItemsHandler
             }
             
             if(commandAction == null || commandAction.equals("create")) {
-                CreateItemForm commandForm = ItemFormFactory.getCreateItemForm();
+                var commandForm = ItemFormFactory.getCreateItemForm();
                 
                 commandForm.set(getAttrsMap(attrs));
-                
-                CommandResult commandResult = itemService.createItem(initialDataParser.getUserVisit(), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateItemResult result = (CreateItemResult)executionResult.getResult();
+
+                var commandResult = itemService.createItem(initialDataParser.getUserVisit(), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateItemResult)executionResult.getResult();
                 
                 itemName = result.getItemName();
                 entityRef = result.getEntityRef();
             } else if(commandAction.equals("none")) {
-                GetItemForm commandForm = ItemFormFactory.getGetItemForm();
+                var commandForm = ItemFormFactory.getGetItemForm();
                 
                 commandForm.setItemName(itemName);
-                
-                CommandResult commandResult = itemService.getItem(initialDataParser.getUserVisit(), commandForm);
+
+                var commandResult = itemService.getItem(initialDataParser.getUserVisit(), commandForm);
                 
                 if(!commandResult.hasErrors()) {
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    GetItemResult result = (GetItemResult)executionResult.getResult();
-                    ItemTransfer item = result.getItem();
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (GetItemResult)executionResult.getResult();
+                    var item = result.getItem();
                     
                     companyName = item.getCompany().getCompanyName();
                     entityRef = item.getEntityInstance().getEntityRef();

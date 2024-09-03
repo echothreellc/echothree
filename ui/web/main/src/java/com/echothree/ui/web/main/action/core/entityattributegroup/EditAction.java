@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected EntityAttributeGroupSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EntityAttributeGroupSpec spec = CoreUtil.getHome().getEntityAttributeGroupSpec();
+        var spec = CoreUtil.getHome().getEntityAttributeGroupSpec();
         
         spec.setEntityAttributeGroupName(findParameter(request, ParameterConstants.ORIGINAL_ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getOriginalEntityAttributeGroupName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected EntityAttributeGroupEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EntityAttributeGroupEdit edit = CoreUtil.getHome().getEntityAttributeGroupEdit();
+        var edit = CoreUtil.getHome().getEntityAttributeGroupEdit();
 
         edit.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

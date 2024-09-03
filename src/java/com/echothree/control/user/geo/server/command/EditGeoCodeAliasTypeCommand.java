@@ -27,11 +27,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDescription;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDetail;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
-import com.echothree.model.data.geo.server.value.GeoCodeAliasTypeDescriptionValue;
-import com.echothree.model.data.geo.server.value.GeoCodeAliasTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -97,12 +93,12 @@ public class EditGeoCodeAliasTypeCommand
     public GeoCodeAliasType getEntity(EditGeoCodeAliasTypeResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAliasType geoAliasType = null;
-        String geoCodeTypeName = spec.getGeoCodeTypeName();
+        var geoCodeTypeName = spec.getGeoCodeTypeName();
 
         geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
-            String geoAliasTypeName = spec.getGeoCodeAliasTypeName();
+            var geoAliasTypeName = spec.getGeoCodeAliasTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
@@ -137,8 +133,8 @@ public class EditGeoCodeAliasTypeCommand
     @Override
     public void doLock(GeoCodeAliasTypeEdit edit, GeoCodeAliasType geoAliasType) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeAliasTypeDescription geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescription(geoAliasType, getPreferredLanguage());
-        GeoCodeAliasTypeDetail geoAliasTypeDetail = geoAliasType.getLastDetail();
+        var geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescription(geoAliasType, getPreferredLanguage());
+        var geoAliasTypeDetail = geoAliasType.getLastDetail();
 
         edit.setGeoCodeAliasTypeName(geoAliasTypeDetail.getGeoCodeAliasTypeName());
         edit.setValidationPattern(geoAliasTypeDetail.getValidationPattern());
@@ -154,8 +150,8 @@ public class EditGeoCodeAliasTypeCommand
     @Override
     public void canUpdate(GeoCodeAliasType geoAliasType) {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoAliasTypeName = edit.getGeoCodeAliasTypeName();
-        GeoCodeAliasType duplicateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
+        var geoAliasTypeName = edit.getGeoCodeAliasTypeName();
+        var duplicateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
         if(duplicateGeoCodeAliasType != null && !geoAliasType.equals(duplicateGeoCodeAliasType)) {
             addExecutionError(ExecutionErrors.DuplicateGeoCodeAliasTypeName.name(), spec.getGeoCodeTypeName(), geoAliasTypeName);
@@ -166,9 +162,9 @@ public class EditGeoCodeAliasTypeCommand
     public void doUpdate(GeoCodeAliasType geoAliasType) {
         var geoControl = Session.getModelController(GeoControl.class);
         var partyPK = getPartyPK();
-        GeoCodeAliasTypeDetailValue geoAliasTypeDetailValue = geoControl.getGeoCodeAliasTypeDetailValueForUpdate(geoAliasType);
-        GeoCodeAliasTypeDescription geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescriptionForUpdate(geoAliasType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var geoAliasTypeDetailValue = geoControl.getGeoCodeAliasTypeDetailValueForUpdate(geoAliasType);
+        var geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescriptionForUpdate(geoAliasType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         geoAliasTypeDetailValue.setGeoCodeAliasTypeName(edit.getGeoCodeAliasTypeName());
         geoAliasTypeDetailValue.setValidationPattern(edit.getValidationPattern());
@@ -183,7 +179,7 @@ public class EditGeoCodeAliasTypeCommand
         } else if(geoAliasTypeDescription != null && description == null) {
             geoControl.deleteGeoCodeAliasTypeDescription(geoAliasTypeDescription, partyPK);
         } else if(geoAliasTypeDescription != null && description != null) {
-            GeoCodeAliasTypeDescriptionValue geoAliasTypeDescriptionValue = geoControl.getGeoCodeAliasTypeDescriptionValue(geoAliasTypeDescription);
+            var geoAliasTypeDescriptionValue = geoControl.getGeoCodeAliasTypeDescriptionValue(geoAliasTypeDescription);
 
             geoAliasTypeDescriptionValue.setDescription(description);
             geoControl.updateGeoCodeAliasTypeDescriptionFromValue(geoAliasTypeDescriptionValue, partyPK);

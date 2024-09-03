@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemcategory;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemCategoryDescriptionForm;
-import com.echothree.control.user.item.common.form.GetItemCategoryForm;
 import com.echothree.control.user.item.common.result.GetItemCategoryResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemCategoryForm commandForm = ItemUtil.getHome().getGetItemCategoryForm();
+        var commandForm = ItemUtil.getHome().getGetItemCategoryForm();
 
         commandForm.setItemCategoryName(actionForm.getItemCategoryName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemCategory(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemCategory(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemCategoryResult result = (GetItemCategoryResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemCategoryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_CATEGORY, result.getItemCategory());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateItemCategoryDescriptionForm commandForm = ItemUtil.getHome().getCreateItemCategoryDescriptionForm();
+        var commandForm = ItemUtil.getHome().getCreateItemCategoryDescriptionForm();
 
         commandForm.setItemCategoryName( actionForm.getItemCategoryName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

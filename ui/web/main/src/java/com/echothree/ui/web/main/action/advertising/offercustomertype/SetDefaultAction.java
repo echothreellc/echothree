@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offercustomertype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.SetDefaultOfferCustomerTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,15 +49,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-        SetDefaultOfferCustomerTypeForm commandForm = OfferUtil.getHome().getSetDefaultOfferCustomerTypeForm();
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var commandForm = OfferUtil.getHome().getSetDefaultOfferCustomerTypeForm();
 
         commandForm.setOfferName(offerName);
         commandForm.setCustomerTypeName(request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME));
 
         OfferUtil.getHome().setDefaultOfferCustomerType(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(2);
 
         parameters.put(ParameterConstants.OFFER_NAME, offerName);

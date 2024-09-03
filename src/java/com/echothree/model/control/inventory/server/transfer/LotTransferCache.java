@@ -32,7 +32,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
-import java.util.Set;
 
 public class LotTransferCache
         extends BaseInventoryTransferCache<Lot, LotTransfer> {

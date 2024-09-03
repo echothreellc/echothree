@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.DeleteLetterDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,11 +49,11 @@ public class DescriptionDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-        DeleteLetterDescriptionForm deleteLetterDescriptionForm = LetterUtil.getHome().getDeleteLetterDescriptionForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var deleteLetterDescriptionForm = LetterUtil.getHome().getDeleteLetterDescriptionForm();
         
         deleteLetterDescriptionForm.setChainKindName(chainKindName);
         deleteLetterDescriptionForm.setChainTypeName(chainTypeName);
@@ -62,8 +61,8 @@ public class DescriptionDeleteAction
         deleteLetterDescriptionForm.setLanguageIsoName(languageIsoName);
         
         LetterUtil.getHome().deleteLetterDescription(getUserVisitPK(request), deleteLetterDescriptionForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(3);
         
         parameters.put(ParameterConstants.CHAIN_KIND_NAME, chainKindName);

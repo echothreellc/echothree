@@ -21,8 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.value.PartyAliasTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,12 +62,12 @@ public class SetDefaultPartyAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            String partyAliasTypeName = form.getPartyAliasTypeName();
-            PartyAliasTypeDetailValue partyAliasTypeDetailValue = partyControl.getPartyAliasTypeDetailValueByNameForUpdate(partyType, partyAliasTypeName);
+            var partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasTypeDetailValue = partyControl.getPartyAliasTypeDetailValueByNameForUpdate(partyType, partyAliasTypeName);
 
             if(partyAliasTypeDetailValue != null) {
                 partyAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

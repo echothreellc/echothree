@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.SetCustomerCreditStatusForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,11 +54,11 @@ public class CustomerCreditStatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         
         try {
-            CustomerCreditStatusActionForm actionForm = (CustomerCreditStatusActionForm)form;
-            SetCustomerCreditStatusForm commandForm = CustomerUtil.getHome().getSetCustomerCreditStatusForm();
+            var actionForm = (CustomerCreditStatusActionForm)form;
+            var commandForm = CustomerUtil.getHome().getSetCustomerCreditStatusForm();
             
             if(customerName == null)
                 customerName = actionForm.getCustomerName();
@@ -68,8 +66,8 @@ public class CustomerCreditStatusAction
             if(wasPost(request)) {
                 commandForm.setCustomerName(customerName);
                 commandForm.setCustomerCreditStatusChoice(actionForm.getCustomerCreditStatusChoice());
-                
-                CommandResult commandResult = CustomerUtil.getHome().setCustomerCreditStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = CustomerUtil.getHome().setCustomerCreditStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -85,8 +83,8 @@ public class CustomerCreditStatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

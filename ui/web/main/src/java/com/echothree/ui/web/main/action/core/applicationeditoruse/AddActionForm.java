@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.applicationeditoruse;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetApplicationEditorChoicesForm;
 import com.echothree.control.user.core.common.result.GetApplicationEditorChoicesResult;
 import com.echothree.model.control.core.common.choice.ApplicationEditorChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -48,15 +45,15 @@ public class AddActionForm
     private void setupDefaultApplicationEditorChoices()
             throws NamingException {
         if(defaultApplicationEditorChoices == null) {
-            GetApplicationEditorChoicesForm commandForm = CoreUtil.getHome().getGetApplicationEditorChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetApplicationEditorChoicesForm();
 
             commandForm.setApplicationName(applicationName);
             commandForm.setDefaultEditorChoice(defaultEditorChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getApplicationEditorChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationEditorChoicesResult getApplicationEditorChoicesResult = (GetApplicationEditorChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getApplicationEditorChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getApplicationEditorChoicesResult = (GetApplicationEditorChoicesResult)executionResult.getResult();
             defaultApplicationEditorChoices = getApplicationEditorChoicesResult.getApplicationEditorChoices();
 
             if(defaultEditorChoice == null) {

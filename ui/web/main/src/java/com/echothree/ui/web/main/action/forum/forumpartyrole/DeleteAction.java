@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumpartyrole;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.DeleteForumPartyRoleForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,16 +49,16 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        DeleteForumPartyRoleForm commandForm = ForumUtil.getHome().getDeleteForumPartyRoleForm();
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var commandForm = ForumUtil.getHome().getDeleteForumPartyRoleForm();
         
         commandForm.setForumName(forumName);
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
         commandForm.setForumRoleTypeName(request.getParameter(ParameterConstants.FORUM_ROLE_TYPE_NAME));
         
         ForumUtil.getHome().deleteForumPartyRole(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.FORUM_NAME, forumName);

@@ -18,11 +18,8 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetTransactionsForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetTransactionsResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,12 +49,12 @@ public class GetTransactionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionsResult result = AccountingResultFactory.getGetTransactionsResult();
-        String transactionGroupName = form.getTransactionGroupName();
-        TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
+        var result = AccountingResultFactory.getGetTransactionsResult();
+        var transactionGroupName = form.getTransactionGroupName();
+        var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
         
         if(transactionGroup != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setTransactionGroup(accountingControl.getTransactionGroupTransfer(userVisit, transactionGroup));
             result.setTransactions(accountingControl.getTransactionTransfersByTransactionGroup(userVisit, transactionGroup));

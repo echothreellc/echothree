@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentCollectionChoicesForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentCollectionChoicesResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,8 +62,8 @@ public class GetContentCollectionChoicesCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentCollectionChoicesResult result = ContentResultFactory.getGetContentCollectionChoicesResult();
-        String defaultContentCollectionChoice = form.getDefaultContentCollectionChoice();
+        var result = ContentResultFactory.getGetContentCollectionChoicesResult();
+        var defaultContentCollectionChoice = form.getDefaultContentCollectionChoice();
         
         result.setContentCollectionChoices(contentControl.getContentCollectionChoices(defaultContentCollectionChoice, getPreferredLanguage()));
         

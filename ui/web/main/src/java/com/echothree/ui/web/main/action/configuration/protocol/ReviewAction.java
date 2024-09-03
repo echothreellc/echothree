@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.protocol;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetProtocolForm;
 import com.echothree.control.user.core.common.result.GetProtocolResult;
 import com.echothree.model.control.core.common.transfer.ProtocolTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetProtocolForm commandForm = CoreUtil.getHome().getGetProtocolForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetProtocolForm();
 
         commandForm.setProtocolName(request.getParameter(ParameterConstants.PROTOCOL_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getProtocol(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getProtocol(getUserVisitPK(request), commandForm);
         ProtocolTransfer protocol = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetProtocolResult result = (GetProtocolResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetProtocolResult)executionResult.getResult();
             
             protocol = result.getProtocol();
         }

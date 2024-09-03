@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.search.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorDescriptionTransfer;
-import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class SearchDefaultOperatorDescriptionTransferCache
     }
     
     public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
-        SearchDefaultOperatorDescriptionTransfer searchDefaultOperatorDescriptionTransfer = get(searchDefaultOperatorDescription);
+        var searchDefaultOperatorDescriptionTransfer = get(searchDefaultOperatorDescription);
         
         if(searchDefaultOperatorDescriptionTransfer == null) {
-            SearchDefaultOperatorTransfer searchDefaultOperatorTransfer = searchControl.getSearchDefaultOperatorTransfer(userVisit, searchDefaultOperatorDescription.getSearchDefaultOperator());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchDefaultOperatorDescription.getLanguage());
+            var searchDefaultOperatorTransfer = searchControl.getSearchDefaultOperatorTransfer(userVisit, searchDefaultOperatorDescription.getSearchDefaultOperator());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchDefaultOperatorDescription.getLanguage());
             
             searchDefaultOperatorDescriptionTransfer = new SearchDefaultOperatorDescriptionTransfer(languageTransfer, searchDefaultOperatorTransfer, searchDefaultOperatorDescription.getDescription());
             put(searchDefaultOperatorDescription, searchDefaultOperatorDescriptionTransfer);

@@ -33,11 +33,11 @@ public class EventTypeTransferCache
     }
     
     public EventTypeTransfer getEventTypeTransfer(EventType eventType) {
-        EventTypeTransfer eventTypeTransfer = get(eventType);
+        var eventTypeTransfer = get(eventType);
         
         if(eventTypeTransfer == null) {
-            String eventTypeName = eventType.getEventTypeName();
-            String description = coreControl.getBestEventTypeDescription(eventType, getLanguage());
+            var eventTypeName = eventType.getEventTypeName();
+            var description = coreControl.getBestEventTypeDescription(eventType, getLanguage());
             
             eventTypeTransfer = new EventTypeTransfer(eventTypeName, description);
             put(eventType, eventTypeTransfer);

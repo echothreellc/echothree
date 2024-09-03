@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.shipping.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodDescriptionTransfer;
-import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,12 +30,12 @@ public class ShippingMethodDescriptionTransferCache
     }
     
     public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(ShippingMethodDescription shippingMethodDescription) {
-        ShippingMethodDescriptionTransfer shippingMethodDescriptionTransfer = get(shippingMethodDescription);
+        var shippingMethodDescriptionTransfer = get(shippingMethodDescription);
         
         if(shippingMethodDescriptionTransfer == null) {
-            ShippingMethodTransfer shippingMethodTransfer = shippingControl.getShippingMethodTransfer(userVisit, shippingMethodDescription.getShippingMethod());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, shippingMethodDescription.getLanguage());
-            String description = shippingMethodDescription.getDescription();
+            var shippingMethodTransfer = shippingControl.getShippingMethodTransfer(userVisit, shippingMethodDescription.getShippingMethod());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, shippingMethodDescription.getLanguage());
+            var description = shippingMethodDescription.getDescription();
             
             shippingMethodDescriptionTransfer = new ShippingMethodDescriptionTransfer(languageTransfer, shippingMethodTransfer,
                     description);

@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.geocodetype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeTypeChoicesForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeTypeChoicesResult;
 import com.echothree.model.control.geo.common.choice.GeoCodeTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +42,14 @@ public class AddActionForm
     private void setupParentGeoCodeTypeChoices() {
         if(parentGeoCodeTypeChoices == null) {
             try {
-                GetGeoCodeTypeChoicesForm form = GeoUtil.getHome().getGetGeoCodeTypeChoicesForm();
+                var form = GeoUtil.getHome().getGetGeoCodeTypeChoicesForm();
 
                 form.setDefaultGeoCodeTypeChoice(parentGeoCodeTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getGeoCodeTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGeoCodeTypeChoicesResult getGeoCodeTypeChoicesResult = (GetGeoCodeTypeChoicesResult)executionResult.getResult();
+                var commandResult = GeoUtil.getHome().getGeoCodeTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGeoCodeTypeChoicesResult = (GetGeoCodeTypeChoicesResult)executionResult.getResult();
                 parentGeoCodeTypeChoices = getGeoCodeTypeChoicesResult.getGeoCodeTypeChoices();
 
                 if(parentGeoCodeTypeChoice == null) {

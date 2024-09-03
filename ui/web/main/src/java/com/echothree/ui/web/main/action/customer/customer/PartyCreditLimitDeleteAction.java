@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.DeletePartyCreditLimitForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,12 +51,12 @@ public class PartyCreditLimitDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         
         try {
-            String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
-            DeletePartyCreditLimitForm commandForm = TermUtil.getHome().getDeletePartyCreditLimitForm();
+            var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var commandForm = TermUtil.getHome().getDeletePartyCreditLimitForm();
             
             commandForm.setPartyName(partyName);
             commandForm.setCurrencyIsoName(currencyIsoName);
@@ -68,8 +67,8 @@ public class PartyCreditLimitDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

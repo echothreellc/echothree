@@ -29,9 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.batch.server.entity.BatchAliasTypeDescription;
-import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.batch.server.value.BatchAliasTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,17 +88,17 @@ public class EditBatchAliasTypeDescriptionCommand
     public BatchAliasTypeDescription getEntity(EditBatchAliasTypeDescriptionResult result) {
         var batchControl = Session.getModelController(BatchControl.class);
         BatchAliasTypeDescription batchAliasTypeDescription = null;
-        String batchTypeName = spec.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchTypeName = spec.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String batchAliasTypeName = spec.getBatchAliasTypeName();
-            BatchAliasType batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
+            var batchAliasTypeName = spec.getBatchAliasTypeName();
+            var batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
             if(batchAliasType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -146,7 +143,7 @@ public class EditBatchAliasTypeDescriptionCommand
     @Override
     public void doUpdate(BatchAliasTypeDescription batchAliasTypeDescription) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchAliasTypeDescriptionValue batchAliasTypeDescriptionValue = batchControl.getBatchAliasTypeDescriptionValue(batchAliasTypeDescription);
+        var batchAliasTypeDescriptionValue = batchControl.getBatchAliasTypeDescriptionValue(batchAliasTypeDescription);
 
         batchAliasTypeDescriptionValue.setDescription(edit.getDescription());
 

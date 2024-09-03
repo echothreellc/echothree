@@ -81,7 +81,7 @@ public class TagScopeTransfer
 
     @Override
     public TagScopeTransfer copy() {
-        TagScopeTransfer tagScope = new TagScopeTransfer(tagScopeName, isDefault, sortOrder,  description);
+        var tagScope = new TagScopeTransfer(tagScopeName, isDefault, sortOrder,  description);
 
         tagScope.setTags(tags);
 

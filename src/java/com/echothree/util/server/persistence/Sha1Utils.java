@@ -37,7 +37,7 @@ public class Sha1Utils {
     }
     
     public String generateSalt() {
-        byte[] salt = new byte[8];
+        var salt = new byte[8];
         
         EncryptionUtils.getInstance().getRandom().nextBytes(salt);
         
@@ -48,13 +48,13 @@ public class Sha1Utils {
         byte[] input;
         
         try {
-            MessageDigest sha1Encoder = MessageDigest.getInstance("SHA-1");
+            var sha1Encoder = MessageDigest.getInstance("SHA-1");
             
             sha1Encoder.reset();
             sha1Encoder.update(BaseEncoding.base64().decode(salt));
             input = sha1Encoder.digest(password.getBytes(Charsets.UTF_8));
             
-            for(int i = 0; i < 1000; i++) {
+            for(var i = 0; i < 1000; i++) {
                 sha1Encoder.reset();
                 input = sha1Encoder.digest(input);
             }
@@ -69,7 +69,7 @@ public class Sha1Utils {
         byte[] input;
         
         try {
-            MessageDigest sha1Encoder = MessageDigest.getInstance("SHA-1");
+            var sha1Encoder = MessageDigest.getInstance("SHA-1");
             
             sha1Encoder.reset();
             sha1Encoder.update(baseKey1.getKey().getEncoded());
@@ -92,7 +92,7 @@ public class Sha1Utils {
         byte[] input;
 
         try {
-            MessageDigest sha1Encoder = MessageDigest.getInstance("SHA-1");
+            var sha1Encoder = MessageDigest.getInstance("SHA-1");
             
             sha1Encoder.reset();
             sha1Encoder.update(bytes);

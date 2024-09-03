@@ -17,9 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.RemoveEmployeeFromCompanyForm;
-import com.echothree.control.user.party.common.form.RemoveEmployeeFromDepartmentForm;
-import com.echothree.control.user.party.common.form.RemoveEmployeeFromDivisionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,13 +49,13 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-        String divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
-        String departmentName = request.getParameter(ParameterConstants.DEPARTMENT_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
+        var departmentName = request.getParameter(ParameterConstants.DEPARTMENT_NAME);
 
         if(departmentName != null) {
-            RemoveEmployeeFromDepartmentForm commandForm = PartyUtil.getHome().getRemoveEmployeeFromDepartmentForm();
+            var commandForm = PartyUtil.getHome().getRemoveEmployeeFromDepartmentForm();
 
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
@@ -67,7 +64,7 @@ public class DeleteAction
 
             PartyUtil.getHome().removeEmployeeFromDepartment(getUserVisitPK(request), commandForm);
         } else if(divisionName != null) {
-            RemoveEmployeeFromDivisionForm commandForm = PartyUtil.getHome().getRemoveEmployeeFromDivisionForm();
+            var commandForm = PartyUtil.getHome().getRemoveEmployeeFromDivisionForm();
 
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
@@ -75,7 +72,7 @@ public class DeleteAction
 
             PartyUtil.getHome().removeEmployeeFromDivision(getUserVisitPK(request), commandForm);
         } else {
-            RemoveEmployeeFromCompanyForm commandForm = PartyUtil.getHome().getRemoveEmployeeFromCompanyForm();
+            var commandForm = PartyUtil.getHome().getRemoveEmployeeFromCompanyForm();
 
             commandForm.setCompanyName(companyName);
             commandForm.setPartyName(partyName);
@@ -83,7 +80,7 @@ public class DeleteAction
             PartyUtil.getHome().removeEmployeeFromCompany(getUserVisitPK(request), commandForm);
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.PARTY_NAME, partyName);

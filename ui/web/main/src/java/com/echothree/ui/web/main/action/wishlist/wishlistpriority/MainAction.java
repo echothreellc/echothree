@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.GetWishlistPrioritiesForm;
 import com.echothree.control.user.wishlist.common.result.GetWishlistPrioritiesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetWishlistPrioritiesForm commandForm = WishlistUtil.getHome().getGetWishlistPrioritiesForm();
-            String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+            var commandForm = WishlistUtil.getHome().getGetWishlistPrioritiesForm();
+            var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
             
             commandForm.setWishlistTypeName(wishlistTypeName);
 
-            CommandResult commandResult = WishlistUtil.getHome().getWishlistPriorities(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWishlistPrioritiesResult result = (GetWishlistPrioritiesResult)executionResult.getResult();
+            var commandResult = WishlistUtil.getHome().getWishlistPriorities(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWishlistPrioritiesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WISHLIST_TYPE, result.getWishlistType());
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITIES, result.getWishlistPriorities());

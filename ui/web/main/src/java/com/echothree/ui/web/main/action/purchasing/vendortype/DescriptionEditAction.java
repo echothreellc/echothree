@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.purchasing.vendortype;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.edit.VendorTypeDescriptionEdit;
-import com.echothree.control.user.vendor.common.form.EditVendorTypeDescriptionForm;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeDescriptionResult;
-import com.echothree.control.user.vendor.common.spec.VendorTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditVendorTypeDescriptionForm commandForm = VendorUtil.getHome().getEditVendorTypeDescriptionForm();
-                VendorTypeDescriptionSpec spec = VendorUtil.getHome().getVendorTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = VendorUtil.getHome().getEditVendorTypeDescriptionForm();
+                var spec = VendorUtil.getHome().getVendorTypeDescriptionSpec();
                 
                 if(vendorTypeName == null)
                     vendorTypeName = actionForm.getVendorTypeName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    VendorTypeDescriptionEdit edit = VendorUtil.getHome().getVendorTypeDescriptionEdit();
+                    var edit = VendorUtil.getHome().getVendorTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = VendorUtil.getHome().editVendorTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = VendorUtil.getHome().editVendorTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditVendorTypeDescriptionResult result = (EditVendorTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditVendorTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = VendorUtil.getHome().editVendorTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditVendorTypeDescriptionResult result = (EditVendorTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = VendorUtil.getHome().editVendorTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditVendorTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        VendorTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setVendorTypeName(vendorTypeName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.VENDOR_TYPE_NAME, vendorTypeName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

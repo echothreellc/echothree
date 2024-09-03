@@ -17,17 +17,11 @@
 package com.echothree.ui.web.main.action.core.ratingtypelistitem;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.form.GetRatingTypeListItemsForm;
 import com.echothree.control.user.rating.common.result.GetRatingTypeListItemsResult;
-import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
-import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,24 +49,24 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
-            GetRatingTypeListItemsForm commandForm = RatingUtil.getHome().getGetRatingTypeListItemsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
+            var commandForm = RatingUtil.getHome().getGetRatingTypeListItemsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setRatingTypeName(ratingTypeName);
-            
-            CommandResult commandResult = RatingUtil.getHome().getRatingTypeListItems(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRatingTypeListItemsResult result = (GetRatingTypeListItemsResult)executionResult.getResult();
-            ComponentVendorTransfer componentVendorTransfer = result.getComponentVendor();
-            EntityTypeTransfer entityTypeTransfer = result.getEntityType();
-            RatingTypeTransfer ratingTypeTransfer = result.getRatingType();
+
+            var commandResult = RatingUtil.getHome().getRatingTypeListItems(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRatingTypeListItemsResult)executionResult.getResult();
+            var componentVendorTransfer = result.getComponentVendor();
+            var entityTypeTransfer = result.getEntityType();
+            var ratingTypeTransfer = result.getRatingType();
             
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, componentVendorTransfer);
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorTransfer.getComponentVendorName());

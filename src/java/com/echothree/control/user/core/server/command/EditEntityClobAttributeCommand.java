@@ -28,14 +28,10 @@ import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.value.EntityClobAttributeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
@@ -92,7 +88,7 @@ public class EditEntityClobAttributeCommand
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
             EntityClobAttribute entityClobAttribute = null;
-            BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language);
@@ -102,7 +98,7 @@ public class EditEntityClobAttributeCommand
                         result.setEntityClobAttribute(coreControl.getEntityClobAttributeTransfer(getUserVisit(), entityClobAttribute, entityInstance));
 
                         if(lockEntity(basePK)) {
-                            EntityClobAttributeEdit edit = CoreEditFactory.getEntityClobAttributeEdit();
+                            var edit = CoreEditFactory.getEntityClobAttributeEdit();
 
                             result.setEdit(edit);
                             edit.setClobAttribute(entityClobAttribute.getClobAttribute());
@@ -115,7 +111,7 @@ public class EditEntityClobAttributeCommand
                         basePK = null;
                     }
                 } else {
-                    EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                    var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                     addExecutionError(ExecutionErrors.UnknownEntityClobAttribute.name(), basePK.getEntityRef(),
                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -126,13 +122,13 @@ public class EditEntityClobAttributeCommand
                 entityClobAttribute = coreControl.getEntityClobAttributeForUpdate(entityAttribute, entityInstance, language);
 
                 if(entityClobAttribute != null) {
-                    MimeType mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, edit.getMimeTypeName());
+                    var mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, edit.getMimeTypeName());
 
                     if(!hasExecutionErrors()) {
                         if(mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.CLOB.name())) {
                             if(lockEntityForUpdate(basePK)) {
                                 try {
-                                    EntityClobAttributeValue entityClobAttributeValue = coreControl.getEntityClobAttributeValueForUpdate(entityClobAttribute);
+                                    var entityClobAttributeValue = coreControl.getEntityClobAttributeValueForUpdate(entityClobAttribute);
 
                                     entityClobAttributeValue.setClobAttribute(edit.getClobAttribute());
                                     entityClobAttributeValue.setMimeTypePK(mimeType.getPrimaryKey());
@@ -150,7 +146,7 @@ public class EditEntityClobAttributeCommand
                         }
                     }
                 } else {
-                    EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                    var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                     addExecutionError(ExecutionErrors.UnknownEntityClobAttribute.name(), basePK.getEntityRef(),
                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),

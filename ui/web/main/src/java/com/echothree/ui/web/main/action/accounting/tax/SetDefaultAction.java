@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.form.SetDefaultTaxForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -47,8 +46,8 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultTaxForm commandForm = TaxUtil.getHome().getSetDefaultTaxForm();
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var commandForm = TaxUtil.getHome().getSetDefaultTaxForm();
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         
         commandForm.setTaxName(taxName);
         

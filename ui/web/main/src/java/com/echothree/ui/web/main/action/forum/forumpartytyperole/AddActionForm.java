@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.forum.forumpartytyperole;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumRoleTypeChoicesForm;
 import com.echothree.control.user.forum.common.result.GetForumRoleTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyTypeChoicesForm;
 import com.echothree.control.user.party.common.result.GetPartyTypeChoicesResult;
 import com.echothree.model.control.forum.common.choice.ForumRoleTypeChoicesBean;
 import com.echothree.model.control.party.common.choice.PartyTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -46,14 +42,14 @@ public class AddActionForm
     private void setupPartyTypeChoices()
             throws NamingException {
         if(partyTypeChoices == null) {
-            GetPartyTypeChoicesForm form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
+            var form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
 
             form.setDefaultPartyTypeChoice(partyTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypeChoicesResult getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
             partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
 
             if(partyTypeChoice == null) {
@@ -65,14 +61,14 @@ public class AddActionForm
     private void setupForumRoleTypeChoices()
             throws NamingException {
         if(forumRoleTypeChoices == null) {
-            GetForumRoleTypeChoicesForm form = ForumUtil.getHome().getGetForumRoleTypeChoicesForm();
+            var form = ForumUtil.getHome().getGetForumRoleTypeChoicesForm();
 
             form.setDefaultForumRoleTypeChoice(forumRoleTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ForumUtil.getHome().getForumRoleTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumRoleTypeChoicesResult getForumRoleTypeChoicesResult = (GetForumRoleTypeChoicesResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumRoleTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getForumRoleTypeChoicesResult = (GetForumRoleTypeChoicesResult)executionResult.getResult();
             forumRoleTypeChoices = getForumRoleTypeChoicesResult.getForumRoleTypeChoices();
 
             if(forumRoleTypeChoice == null) {

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.geocodetax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.form.GetGeoCodeTaxesForm;
 import com.echothree.control.user.tax.common.result.GetGeoCodeTaxesResult;
-import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String taxName = request.getParameter(ParameterConstants.TAX_NAME);
-            GetGeoCodeTaxesForm commandForm = TaxUtil.getHome().getGetGeoCodeTaxesForm();
+            var taxName = request.getParameter(ParameterConstants.TAX_NAME);
+            var commandForm = TaxUtil.getHome().getGetGeoCodeTaxesForm();
             
             commandForm.setTaxName(taxName);
-            
-            CommandResult commandResult = TaxUtil.getHome().getGeoCodeTaxes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeTaxesResult result = (GetGeoCodeTaxesResult)executionResult.getResult();
-            TaxTransfer taxTransfer = result.getTax();
+
+            var commandResult = TaxUtil.getHome().getGeoCodeTaxes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeTaxesResult)executionResult.getResult();
+            var taxTransfer = result.getTax();
             
             request.setAttribute(AttributeConstants.TAX, taxTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_TAXES, result.getGeoCodeTaxes());

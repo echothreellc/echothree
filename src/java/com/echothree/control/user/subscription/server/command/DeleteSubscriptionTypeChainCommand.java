@@ -20,12 +20,6 @@ import com.echothree.control.user.subscription.common.form.DeleteSubscriptionTyp
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.chain.server.entity.Chain;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
-import com.echothree.model.data.subscription.server.entity.SubscriptionType;
-import com.echothree.model.data.subscription.server.entity.SubscriptionTypeChain;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -59,25 +53,25 @@ public class DeleteSubscriptionTypeChainCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            String subscriptionTypeName = form.getSubscriptionTypeName();
-            SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+            var subscriptionTypeName = form.getSubscriptionTypeName();
+            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
                 var chainControl = Session.getModelController(ChainControl.class);
-                ChainKind chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_SUBSCRIPTION);
-                String chainTypeName = form.getChainTypeName();
-                ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+                var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_SUBSCRIPTION);
+                var chainTypeName = form.getChainTypeName();
+                var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
                 
                 if(chainType != null) {
-                    String chainName = form.getChainName();
-                    Chain chain = chainControl.getChainByName(chainType, chainName);
+                    var chainName = form.getChainName();
+                    var chain = chainControl.getChainByName(chainType, chainName);
                     
                     if(chain != null) {
-                        SubscriptionTypeChain subscriptionTypeChain = subscriptionControl.getSubscriptionTypeChainForUpdate(subscriptionType,
+                        var subscriptionTypeChain = subscriptionControl.getSubscriptionTypeChainForUpdate(subscriptionType,
                                 chain);
                         
                         if(subscriptionTypeChain != null) {

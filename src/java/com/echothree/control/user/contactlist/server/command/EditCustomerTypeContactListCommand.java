@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactList;
-import com.echothree.model.data.contactlist.server.value.CustomerTypeContactListValue;
-import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditCustomerTypeContactListCommand
     public CustomerTypeContactList getEntity(EditCustomerTypeContactListResult result) {
         var customerControl = Session.getModelController(CustomerControl.class);
         CustomerTypeContactList customerTypeContactList = null;
-        String customerTypeName = spec.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = spec.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListName = spec.getContactListName();
-            ContactList contactList = contactListControl.getContactListByName(contactListName);
+            var contactListName = spec.getContactListName();
+            var contactList = contactListControl.getContactListByName(contactListName);
 
             if(contactList != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditCustomerTypeContactListCommand
     @Override
     public void doUpdate(CustomerTypeContactList customerTypeContactList) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        CustomerTypeContactListValue customerTypeContactListValue = contactListControl.getCustomerTypeContactListValue(customerTypeContactList);
+        var customerTypeContactListValue = contactListControl.getCustomerTypeContactListValue(customerTypeContactList);
 
         customerTypeContactListValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));
 

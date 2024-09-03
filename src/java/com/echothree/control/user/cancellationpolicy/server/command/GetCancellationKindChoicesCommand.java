@@ -18,7 +18,6 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationKindChoicesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationKindChoicesResult;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetCancellationKindChoicesCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        GetCancellationKindChoicesResult result = CancellationPolicyResultFactory.getGetCancellationKindChoicesResult();
-        String defaultCancellationKindChoice = form.getDefaultCancellationKindChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CancellationPolicyResultFactory.getGetCancellationKindChoicesResult();
+        var defaultCancellationKindChoice = form.getDefaultCancellationKindChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCancellationKindChoices(cancellationPolicyControl.getCancellationKindChoices(defaultCancellationKindChoice, getPreferredLanguage(),
                 allowNullChoice));

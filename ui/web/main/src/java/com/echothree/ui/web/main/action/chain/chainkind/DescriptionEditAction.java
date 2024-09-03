@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected ChainKindDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ChainKindDescriptionSpec spec = ChainUtil.getHome().getChainKindDescriptionSpec();
+        var spec = ChainUtil.getHome().getChainKindDescriptionSpec();
         
         spec.setChainKindName(findParameter(request, ParameterConstants.CHAIN_KIND_NAME, actionForm.getChainKindName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected ChainKindDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ChainKindDescriptionEdit edit = ChainUtil.getHome().getChainKindDescriptionEdit();
+        var edit = ChainUtil.getHome().getChainKindDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

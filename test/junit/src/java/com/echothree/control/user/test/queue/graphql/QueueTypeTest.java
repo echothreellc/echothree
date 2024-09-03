@@ -163,7 +163,7 @@ public class QueueTypeTest
         var queueTypes = getList(queueTypesBody, "data.queueTypes");
         assertThat(queueTypes.size() > 0).isTrue();
 
-        boolean foundIndexing = false;
+        var foundIndexing = false;
         for(var queueType : queueTypes) {
             if(getString(queueType, "queueTypeName").equals(QueueTypes.INDEXING.name())) {
                 foundIndexing = true;

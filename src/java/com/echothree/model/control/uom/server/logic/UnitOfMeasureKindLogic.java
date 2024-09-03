@@ -21,7 +21,6 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKindNameException;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -47,7 +46,7 @@ public class UnitOfMeasureKindLogic
 
     public UnitOfMeasureKind getUnitOfMeasureKindByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName) {
         var uomControl = Session.getModelController(UomControl.class);
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
 
         if(unitOfMeasureKind == null) {
             handleExecutionError(UnknownUnitOfMeasureKindNameException.class, eea, ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);

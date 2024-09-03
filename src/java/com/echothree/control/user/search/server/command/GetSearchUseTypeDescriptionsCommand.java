@@ -17,13 +17,11 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchUseTypeDescriptionsForm;
-import com.echothree.control.user.search.common.result.GetSearchUseTypeDescriptionsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetSearchUseTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchUseTypeDescriptionsResult result = SearchResultFactory.getGetSearchUseTypeDescriptionsResult();
-        String searchUseTypeName = form.getSearchUseTypeName();
-        SearchUseType searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
+        var result = SearchResultFactory.getGetSearchUseTypeDescriptionsResult();
+        var searchUseTypeName = form.getSearchUseTypeName();
+        var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
         
         if(searchUseType != null) {
             result.setSearchUseType(searchControl.getSearchUseTypeTransfer(getUserVisit(), searchUseType));

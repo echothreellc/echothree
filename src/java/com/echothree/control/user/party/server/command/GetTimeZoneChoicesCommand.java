@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetTimeZoneChoicesForm;
-import com.echothree.control.user.party.common.result.GetTimeZoneChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -51,9 +50,9 @@ public class GetTimeZoneChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetTimeZoneChoicesResult result = PartyResultFactory.getGetTimeZoneChoicesResult();
-        String defaultTimeZoneChoice = form.getDefaultTimeZoneChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PartyResultFactory.getGetTimeZoneChoicesResult();
+        var defaultTimeZoneChoice = form.getDefaultTimeZoneChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTimeZoneChoices(partyControl.getTimeZoneChoices(defaultTimeZoneChoice, getPreferredLanguage(), allowNullChoice));
         

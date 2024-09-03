@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypeChoicesForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemDescriptionTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -64,14 +60,14 @@ public class Step2ActionForm
     private void setupParentItemDescriptionTypeChoices() {
         if(parentItemDescriptionTypeChoices == null) {
             try {
-                GetItemDescriptionTypeChoicesForm form = ItemUtil.getHome().getGetItemDescriptionTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemDescriptionTypeChoicesForm();
 
                 form.setDefaultItemDescriptionTypeChoice(parentItemDescriptionTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemDescriptionTypeChoicesResult getItemDescriptionTypeChoicesResult = (GetItemDescriptionTypeChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemDescriptionTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemDescriptionTypeChoicesResult = (GetItemDescriptionTypeChoicesResult)executionResult.getResult();
                 parentItemDescriptionTypeChoices = getItemDescriptionTypeChoicesResult.getItemDescriptionTypeChoices();
 
                 if(parentItemDescriptionTypeChoice == null) {
@@ -87,15 +83,15 @@ public class Step2ActionForm
     public void setupPreferredMimeTypeChoices() {
         if(preferredMimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 form.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
                 form.setDefaultMimeTypeChoice(preferredMimeTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 preferredMimeTypeChoices = result.getMimeTypeChoices();
 
                 if(preferredMimeTypeChoice == null) {

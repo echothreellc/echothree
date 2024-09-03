@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetContentCategoryResultsFacetForm;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
@@ -49,7 +48,7 @@ public class GetContentCategoryResultsFacetAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetContentCategoryResultsFacetForm commandForm = SearchUtil.getHome().getGetContentCategoryResultsFacetForm();
+        var commandForm = SearchUtil.getHome().getGetContentCategoryResultsFacetForm();
 
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));

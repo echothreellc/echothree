@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.commandmessage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetCommandMessageForm;
 import com.echothree.control.user.core.common.result.GetCommandMessageResult;
 import com.echothree.model.control.core.common.transfer.CommandMessageTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetCommandMessageForm commandForm = CoreUtil.getHome().getGetCommandMessageForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetCommandMessageForm();
 
         commandForm.setCommandMessageTypeName(request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME));
         commandForm.setCommandMessageKey(request.getParameter(ParameterConstants.COMMAND_MESSAGE_KEY));
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessage(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getCommandMessage(getUserVisitPK(request), commandForm);
         CommandMessageTransfer commandMessage = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageResult result = (GetCommandMessageResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageResult)executionResult.getResult();
             
             commandMessage = result.getCommandMessage();
         }

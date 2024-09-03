@@ -20,10 +20,8 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.ApplicationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Application;
-import com.echothree.model.data.core.server.entity.ApplicationDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ApplicationTransferCache
         extends BaseCoreTransferCache<Application, ApplicationTransfer> {
@@ -44,14 +42,14 @@ public class ApplicationTransferCache
     }
 
     public ApplicationTransfer getApplicationTransfer(Application application) {
-        ApplicationTransfer applicationTransfer = get(application);
+        var applicationTransfer = get(application);
 
         if(applicationTransfer == null) {
-            ApplicationDetail applicationDetail = application.getLastDetail();
-            String applicationName = applicationDetail.getApplicationName();
-            Boolean isDefault = applicationDetail.getIsDefault();
-            Integer sortOrder = applicationDetail.getSortOrder();
-            String description = coreControl.getBestApplicationDescription(application, getLanguage());
+            var applicationDetail = application.getLastDetail();
+            var applicationName = applicationDetail.getApplicationName();
+            var isDefault = applicationDetail.getIsDefault();
+            var sortOrder = applicationDetail.getSortOrder();
+            var description = coreControl.getBestApplicationDescription(application, getLanguage());
 
             applicationTransfer = new ApplicationTransfer(applicationName, isDefault, sortOrder, description);
             put(application, applicationTransfer);

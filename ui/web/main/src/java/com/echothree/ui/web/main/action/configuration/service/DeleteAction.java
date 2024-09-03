@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.service;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteServiceForm;
-import com.echothree.control.user.core.common.form.GetServiceForm;
 import com.echothree.control.user.core.common.result.GetServiceResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetServiceForm commandForm = CoreUtil.getHome().getGetServiceForm();
+        var commandForm = CoreUtil.getHome().getGetServiceForm();
         
         commandForm.setServiceName(actionForm.getServiceName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getService(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetServiceResult result = (GetServiceResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getService(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetServiceResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SERVICE, result.getService());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteServiceForm commandForm = CoreUtil.getHome().getDeleteServiceForm();
+        var commandForm = CoreUtil.getHome().getDeleteServiceForm();
 
         commandForm.setServiceName(actionForm.getServiceName());
 

@@ -17,18 +17,14 @@
 package com.echothree.ui.web.main.action.accounting.divisioncontactmechanism;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDivisionForm;
 import com.echothree.control.user.party.common.result.GetDivisionResult;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.party.common.transfer.DivisionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,10 +54,10 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetDivisionForm commandForm = PartyUtil.getHome().getGetDivisionForm();
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-        String divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = PartyUtil.getHome().getGetDivisionForm();
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setCompanyName(companyName);
         commandForm.setDivisionName(divisionName);
@@ -72,11 +68,11 @@ public class MainAction
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = PartyUtil.getHome().getDivision(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetDivisionResult result = (GetDivisionResult)executionResult.getResult();
-        DivisionTransfer division = result.getDivision();
+
+        var commandResult = PartyUtil.getHome().getDivision(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetDivisionResult)executionResult.getResult();
+        var division = result.getDivision();
         
         if(division == null) {
             forwardKey = ForwardConstants.ERROR_404;

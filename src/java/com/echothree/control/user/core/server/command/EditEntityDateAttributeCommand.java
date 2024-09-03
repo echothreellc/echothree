@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityDateAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityDateAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditEntityDateAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityDateAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
@@ -75,7 +74,7 @@ public class EditEntityDateAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        EditEntityDateAttributeResult result = CoreResultFactory.getEditEntityDateAttributeResult();
+        var result = CoreResultFactory.getEditEntityDateAttributeResult();
         var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {

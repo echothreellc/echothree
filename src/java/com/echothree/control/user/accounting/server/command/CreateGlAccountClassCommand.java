@@ -67,11 +67,11 @@ public class CreateGlAccountClassCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountClassName = form.getGlAccountClassName();
-        GlAccountClass glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
+        var glAccountClassName = form.getGlAccountClassName();
+        var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
         
         if(glAccountClass == null) {
-            String parentGlAccountClassName = form.getParentGlAccountClassName();
+            var parentGlAccountClassName = form.getParentGlAccountClassName();
             GlAccountClass parentGlAccountClass = null;
             
             if(parentGlAccountClassName != null) {

@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumRoleTypeForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.ForumRoleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,8 +50,8 @@ public class CreateForumRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumRoleTypeName = form.getForumRoleTypeName();
-        ForumRoleType forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
+        var forumRoleTypeName = form.getForumRoleTypeName();
+        var forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
         
         if(forumRoleType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

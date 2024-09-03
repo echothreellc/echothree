@@ -26,10 +26,6 @@ import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -67,7 +63,7 @@ public class UserVisitObject
     @GraphQLField
     @GraphQLDescription("preferred language")
     public LanguageObject getPreferredLanguage(final DataFetchingEnvironment env) {
-        Language preferredLanguage = userVisit.getPreferredLanguage();
+        var preferredLanguage = userVisit.getPreferredLanguage();
 
         return preferredLanguage != null && PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
     }
@@ -75,7 +71,7 @@ public class UserVisitObject
     @GraphQLField
     @GraphQLDescription("preferred language")
     public CurrencyObject getPreferredCurrency(final DataFetchingEnvironment env) {
-        Currency preferredCurrency = userVisit.getPreferredCurrency();
+        var preferredCurrency = userVisit.getPreferredCurrency();
 
         return preferredCurrency != null && AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
     }
@@ -83,7 +79,7 @@ public class UserVisitObject
     @GraphQLField
     @GraphQLDescription("preferred time zone")
     public TimeZoneObject getPreferredTimeZone(final DataFetchingEnvironment env) {
-        TimeZone preferredTimeZone = userVisit.getPreferredTimeZone();
+        var preferredTimeZone = userVisit.getPreferredTimeZone();
 
         return preferredTimeZone != null && PartySecurityUtils.getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
     }
@@ -91,7 +87,7 @@ public class UserVisitObject
     @GraphQLField
     @GraphQLDescription("preferred date time format")
     public DateTimeFormatObject getPreferredDateTimeFormat(final DataFetchingEnvironment env) {
-        DateTimeFormat preferredDateTimeFormat = userVisit.getPreferredDateTimeFormat();
+        var preferredDateTimeFormat = userVisit.getPreferredDateTimeFormat();
 
         return preferredDateTimeFormat != null && PartySecurityUtils.getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
     }

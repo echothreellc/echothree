@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.warehouse.locationcapacity;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.GetLocationCapacitiesForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationCapacitiesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,16 +48,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetLocationCapacitiesForm commandForm = WarehouseUtil.getHome().getGetLocationCapacitiesForm();
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        var commandForm = WarehouseUtil.getHome().getGetLocationCapacitiesForm();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setLocationName(locationName);
-        
-        CommandResult commandResult = WarehouseUtil.getHome().getLocationCapacities(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLocationCapacitiesResult result = (GetLocationCapacitiesResult)executionResult.getResult();
+
+        var commandResult = WarehouseUtil.getHome().getLocationCapacities(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLocationCapacitiesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LOCATION, result.getLocation());
         request.setAttribute(AttributeConstants.LOCATION_CAPACITIES, result.getLocationCapacities());

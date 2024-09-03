@@ -17,16 +17,13 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.SetEmployeeAvailabilityForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,13 +51,13 @@ public class AvailabilityAction
 
     public void setupEmployee(HttpServletRequest request, String employeeName)
             throws NamingException {
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
 
         commandForm.setEmployeeName(employeeName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, result.getEmployee());
     }
@@ -69,8 +66,8 @@ public class AvailabilityAction
     public ActionForward executeAction(ActionMapping mapping, AvailabilityActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
 
         if(returnUrl == null) {
             returnUrl = actionForm.getReturnUrl();
@@ -83,7 +80,7 @@ public class AvailabilityAction
             CommandResult commandResult = null;
 
             if(!wasCanceled(request)) {
-                SetEmployeeAvailabilityForm commandForm = PartyUtil.getHome().getSetEmployeeAvailabilityForm();
+                var commandForm = PartyUtil.getHome().getSetEmployeeAvailabilityForm();
 
                 commandForm.setEmployeeName(employeeName);
                 commandForm.setEmployeeAvailabilityChoice(actionForm.getEmployeeAvailabilityChoice());

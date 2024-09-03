@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.companydocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.DeletePartyDocumentForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -66,7 +65,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyDocumentForm commandForm = DocumentUtil.getHome().getDeletePartyDocumentForm();
+        var commandForm = DocumentUtil.getHome().getDeletePartyDocumentForm();
         
         commandForm.setDocumentName(actionForm.getDocumentName());
 

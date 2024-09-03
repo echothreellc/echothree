@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeescaleuse;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.CreatePartyScaleUseForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -58,7 +57,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyScaleUseForm commandForm = ScaleUtil.getHome().getCreatePartyScaleUseForm();
+        var commandForm = ScaleUtil.getHome().getCreatePartyScaleUseForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setScaleUseTypeName(actionForm.getScaleUseTypeChoice());

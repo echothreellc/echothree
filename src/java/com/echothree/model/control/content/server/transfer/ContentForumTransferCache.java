@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.content.server.transfer;
 
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.common.transfer.ContentForumTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.content.server.entity.ContentForum;
-import com.echothree.model.data.content.server.entity.ContentForumDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,13 +36,13 @@ public class ContentForumTransferCache
     }
 
     public ContentForumTransfer getContentForumTransfer(ContentForum contentForum) {
-        ContentForumTransfer contentForumTransfer = get(contentForum);
+        var contentForumTransfer = get(contentForum);
         
         if(contentForumTransfer == null) {
-            ContentForumDetail contentForumDetail = contentForum.getLastDetail();
-            ContentCollectionTransfer contentCollection = contentControl.getContentCollectionTransfer(userVisit, contentForumDetail.getContentCollection());
-            ForumTransfer forum = forumControl.getForumTransfer(userVisit, contentForumDetail.getForum());
-            Boolean isDefault = contentForumDetail.getIsDefault();
+            var contentForumDetail = contentForum.getLastDetail();
+            var contentCollection = contentControl.getContentCollectionTransfer(userVisit, contentForumDetail.getContentCollection());
+            var forum = forumControl.getForumTransfer(userVisit, contentForumDetail.getForum());
+            var isDefault = contentForumDetail.getIsDefault();
             
             contentForumTransfer = new ContentForumTransfer(contentCollection, forum, isDefault);
             put(contentForum, contentForumTransfer);

@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentCollectionDescription;
-import com.echothree.model.data.content.server.value.ContentCollectionDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditContentCollectionDescriptionCommand
     public ContentCollectionDescription getEntity(EditContentCollectionDescriptionResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentCollectionDescription contentCollectionDescription = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));
 
@@ -139,7 +137,7 @@ public class EditContentCollectionDescriptionCommand
     @Override
     public void doUpdate(ContentCollectionDescription contentCollectionDescription) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentCollectionDescriptionValue contentCollectionDescriptionValue = contentControl.getContentCollectionDescriptionValue(contentCollectionDescription);
+        var contentCollectionDescriptionValue = contentControl.getContentCollectionDescriptionValue(contentCollectionDescription);
         contentCollectionDescriptionValue.setDescription(edit.getDescription());
 
         contentControl.updateContentCollectionDescriptionFromValue(contentCollectionDescriptionValue, getPartyPK());

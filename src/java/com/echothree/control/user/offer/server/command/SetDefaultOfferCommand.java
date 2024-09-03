@@ -22,7 +22,6 @@ import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.value.OfferDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,8 +63,8 @@ public class SetDefaultOfferCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        OfferDetailValue offerDetailValue = offerControl.getOfferDetailValueByNameForUpdate(offerName);
+        var offerName = form.getOfferName();
+        var offerDetailValue = offerControl.getOfferDetailValueByNameForUpdate(offerName);
         
         if(offerDetailValue != null) {
             offerDetailValue.setIsDefault(Boolean.TRUE);

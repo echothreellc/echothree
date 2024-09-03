@@ -18,22 +18,15 @@ package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
-import com.echothree.model.control.content.common.transfer.ContentCatalogTransfer;
 import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;
-import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
-import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
-import java.util.Set;
 
 public class ContentCategoryTransferCache
         extends BaseContentTransferCache<ContentCategory, ContentCategoryTransfer> {
@@ -88,21 +81,21 @@ public class ContentCategoryTransferCache
     }
     
     public ContentCategoryTransfer getContentCategoryTransfer(ContentCategory contentCategory) {
-        ContentCategoryTransfer contentCategoryTransfer = get(contentCategory);
+        var contentCategoryTransfer = get(contentCategory);
         
         if(contentCategoryTransfer == null) {
-            ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
-            ContentCatalogTransfer contentCatalogTransfer = filterContentCatalog ? null : contentControl.getContentCatalogTransfer(userVisit, contentCategoryDetail.getContentCatalog());
-            String contentCategoryName = filterContentCategoryName ? null : contentCategoryDetail.getContentCategoryName();
-            ContentCategory parentContentCategory = filterParentContentCategory ? null : contentCategoryDetail.getParentContentCategory();
-            ContentCategoryTransfer parentContentCategoryTransfer = parentContentCategory == null ? null : contentControl.getContentCategoryTransfer(userVisit, parentContentCategory);
-            OfferUse defaultOfferUse = filterDefaultOfferUse ? null : contentCategoryDetail.getDefaultOfferUse();
-            OfferUseTransfer defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
-            Selector contentCategoryItemSelector = filterContentCategoryItemSelector ? null : contentCategoryDetail.getContentCategoryItemSelector();
-            SelectorTransfer contentCategoryItemSelectorTransfer = contentCategoryItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, contentCategoryItemSelector);
-            Boolean isDefault = filterIsDefault ? null : contentCategoryDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : contentCategoryDetail.getSortOrder();
-            String description = filterDescription ? null : contentControl.getBestContentCategoryDescription(contentCategory, getLanguage());
+            var contentCategoryDetail = contentCategory.getLastDetail();
+            var contentCatalogTransfer = filterContentCatalog ? null : contentControl.getContentCatalogTransfer(userVisit, contentCategoryDetail.getContentCatalog());
+            var contentCategoryName = filterContentCategoryName ? null : contentCategoryDetail.getContentCategoryName();
+            var parentContentCategory = filterParentContentCategory ? null : contentCategoryDetail.getParentContentCategory();
+            var parentContentCategoryTransfer = parentContentCategory == null ? null : contentControl.getContentCategoryTransfer(userVisit, parentContentCategory);
+            var defaultOfferUse = filterDefaultOfferUse ? null : contentCategoryDetail.getDefaultOfferUse();
+            var defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
+            var contentCategoryItemSelector = filterContentCategoryItemSelector ? null : contentCategoryDetail.getContentCategoryItemSelector();
+            var contentCategoryItemSelectorTransfer = contentCategoryItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, contentCategoryItemSelector);
+            var isDefault = filterIsDefault ? null : contentCategoryDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : contentCategoryDetail.getSortOrder();
+            var description = filterDescription ? null : contentControl.getBestContentCategoryDescription(contentCategory, getLanguage());
             
             contentCategoryTransfer = new ContentCategoryTransfer(contentCatalogTransfer, contentCategoryName, parentContentCategoryTransfer,
                     defaultOfferUseTransfer, contentCategoryItemSelectorTransfer, isDefault, sortOrder, description);

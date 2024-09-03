@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.chain.chain;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainDescriptionsForm;
 import com.echothree.control.user.chain.common.result.GetChainDescriptionsResult;
-import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,17 +49,17 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetChainDescriptionsForm commandForm = ChainUtil.getHome().getGetChainDescriptionsForm();
+        var commandForm = ChainUtil.getHome().getGetChainDescriptionsForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
         commandForm.setChainName(request.getParameter(ParameterConstants.CHAIN_NAME));
 
-        CommandResult commandResult = ChainUtil.getHome().getChainDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ChainUtil.getHome().getChainDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainDescriptionsResult result = (GetChainDescriptionsResult) executionResult.getResult();
-            ChainTransfer chainTransfer = result.getChain();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainDescriptionsResult) executionResult.getResult();
+            var chainTransfer = result.getChain();
 
             request.setAttribute(AttributeConstants.CHAIN, chainTransfer);
             request.setAttribute(AttributeConstants.CHAIN_DESCRIPTIONS, result.getChainDescriptions());

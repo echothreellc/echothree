@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPersonalTitlesForm;
-import com.echothree.control.user.party.common.result.GetPersonalTitlesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
@@ -56,7 +55,7 @@ public class GetPersonalTitlesCommand
     
     @Override
     protected BaseResult getResult(Collection<PersonalTitle> entities) {
-        GetPersonalTitlesResult result = PartyResultFactory.getGetPersonalTitlesResult();
+        var result = PartyResultFactory.getGetPersonalTitlesResult();
         var partyControl = Session.getModelController(PartyControl.class);
         
         result.setPersonalTitles(partyControl.getPersonalTitleTransfers(getUserVisit(), entities));

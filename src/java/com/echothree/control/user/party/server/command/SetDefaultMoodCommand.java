@@ -18,7 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.SetDefaultMoodForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.value.MoodDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultMoodCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String moodName = form.getMoodName();
-        MoodDetailValue moodDetailValue = partyControl.getMoodDetailValueByNameForUpdate(moodName);
+        var moodName = form.getMoodName();
+        var moodDetailValue = partyControl.getMoodDetailValueByNameForUpdate(moodName);
         
         if(moodDetailValue != null) {
             moodDetailValue.setIsDefault(Boolean.TRUE);

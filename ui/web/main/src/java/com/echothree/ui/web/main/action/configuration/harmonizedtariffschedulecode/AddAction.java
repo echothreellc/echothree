@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.harmonizedtariffschedulecode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,14 +60,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCountryForm commandForm = GeoUtil.getHome().getGetCountryForm();
+        var commandForm = GeoUtil.getHome().getGetCountryForm();
 
         commandForm.setGeoCodeName(actionForm.getCountryName());
-        
-        CommandResult commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCountryResult result = (GetCountryResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCountryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
         }
@@ -79,7 +76,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateHarmonizedTariffScheduleCodeForm commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeForm();
+        var commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeForm();
 
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setHarmonizedTariffScheduleCodeName(actionForm.getHarmonizedTariffScheduleCodeName());

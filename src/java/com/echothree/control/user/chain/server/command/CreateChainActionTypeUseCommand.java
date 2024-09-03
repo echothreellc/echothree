@@ -20,9 +20,6 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.control.user.chain.common.form.CreateChainActionTypeUseForm;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.chain.server.entity.ChainActionType;
-import com.echothree.model.data.chain.server.entity.ChainActionTypeUse;
-import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,15 +59,15 @@ public class CreateChainActionTypeUseCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainActionTypeName = form.getChainActionTypeName();
-            ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
+            var chainActionTypeName = form.getChainActionTypeName();
+            var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
             
             if(chainActionType != null) {
-                ChainActionTypeUse chainActionTypeUse = chainControl.getChainActionTypeUse(chainKind, chainActionType);
+                var chainActionTypeUse = chainControl.getChainActionTypeUse(chainKind, chainActionType);
                 
                 if(chainActionTypeUse == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

@@ -23,10 +23,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -77,32 +73,32 @@ public class CreateTrainingClassSectionCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection == null) {
-                MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-                String overview = form.getOverview();
-                MimeType overviewMimeType = mimeTypeLogic.checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
+                var mimeTypeLogic = MimeTypeLogic.getInstance();
+                var overview = form.getOverview();
+                var overviewMimeType = mimeTypeLogic.checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
                         ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                         ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
 
                 if(!hasExecutionErrors()) {
-                    String introduction = form.getIntroduction();
-                    MimeType introductionMimeType = mimeTypeLogic.checkMimeType(this, form.getIntroductionMimeTypeName(), introduction, MimeTypeUsageTypes.TEXT.name(),
+                    var introduction = form.getIntroduction();
+                    var introductionMimeType = mimeTypeLogic.checkMimeType(this, form.getIntroductionMimeTypeName(), introduction, MimeTypeUsageTypes.TEXT.name(),
                             ExecutionErrors.MissingRequiredIntroductionMimeTypeName.name(), ExecutionErrors.MissingRequiredIntroduction.name(),
                             ExecutionErrors.UnknownIntroductionMimeTypeName.name(), ExecutionErrors.UnknownIntroductionMimeTypeUsage.name());
 
                     if(!hasExecutionErrors()) {
-                        PartyPK createdBy = getPartyPK();
-                        String strPercentageToPass = form.getPercentageToPass();
-                        Integer percentageToPass = strPercentageToPass == null ? null : Integer.valueOf(strPercentageToPass);
-                        String strQuestionCount = form.getQuestionCount();
-                        Integer questionCount = strQuestionCount == null ? null : Integer.valueOf(strQuestionCount);
+                        var createdBy = getPartyPK();
+                        var strPercentageToPass = form.getPercentageToPass();
+                        var percentageToPass = strPercentageToPass == null ? null : Integer.valueOf(strPercentageToPass);
+                        var strQuestionCount = form.getQuestionCount();
+                        var questionCount = strQuestionCount == null ? null : Integer.valueOf(strQuestionCount);
                         var sortOrder = Integer.valueOf(form.getSortOrder());
                         var description = form.getDescription();
 

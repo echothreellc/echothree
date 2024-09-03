@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.item.harmonizedtariffschedulecodeunit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeUnitDescriptionForm;
-import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUnitForm;
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUnitResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeUnitForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnit(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnit(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUnitResult result = (GetHarmonizedTariffScheduleCodeUnitResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUnitResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT, result.getHarmonizedTariffScheduleCodeUnit());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateHarmonizedTariffScheduleCodeUnitDescriptionForm commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeUnitDescriptionForm();
+        var commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeUnitDescriptionForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName( actionForm.getHarmonizedTariffScheduleCodeUnitName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

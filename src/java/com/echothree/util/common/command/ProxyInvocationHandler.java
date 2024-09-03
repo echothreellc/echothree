@@ -35,8 +35,8 @@ public class ProxyInvocationHandler
     
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        String name = method.getName();
-        int length = name.length();
+        var name = method.getName();
+        var length = name.length();
         
         if(name.startsWith("get")) {
             if(length == 3) {
@@ -56,7 +56,7 @@ public class ProxyInvocationHandler
             }
         } else if(name.startsWith("set")) {
             if(length == 3) {
-                Object arg0 = args[0];
+                var arg0 = args[0];
 
                 if(arg0 instanceof String) {
                     return map.put((String)args[0], args[1]);
@@ -69,7 +69,7 @@ public class ProxyInvocationHandler
         } else if(name.equals("reset")) {
             map.clear();
         } else if(name.equals("toString")) {
-            return new StringBuilder().append("{ map = ").append(map).append(" }").toString();
+            return "{ map = " + map + " }";
         } else if(name.equals("hashCode")) {
             return map.hashCode();
         } else if(name.equals("equals")) {

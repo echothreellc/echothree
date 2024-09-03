@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTypeTransfer;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismAliasTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -39,15 +36,15 @@ public class PartyContactMechanismAliasTransferCache
     }
     
     public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(PartyContactMechanismAlias partyContactMechanismAlias) {
-        PartyContactMechanismAliasTransfer partyContactMechanismAliasTransfer = get(partyContactMechanismAlias);
+        var partyContactMechanismAliasTransfer = get(partyContactMechanismAlias);
         
         if(partyContactMechanismAliasTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyContactMechanismAlias.getParty());
-            ContactMechanismTransfer contactMechanism = contactControl.getContactMechanismTransfer(userVisit,
+            var party = partyControl.getPartyTransfer(userVisit, partyContactMechanismAlias.getParty());
+            var contactMechanism = contactControl.getContactMechanismTransfer(userVisit,
                     partyContactMechanismAlias.getContactMechanism());
-            ContactMechanismAliasTypeTransfer contactMechanismAliasType = contactControl.getContactMechanismAliasTypeTransfer(userVisit,
+            var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeTransfer(userVisit,
                     partyContactMechanismAlias.getContactMechanismAliasType());
-            String alias = partyContactMechanismAlias.getAlias();
+            var alias = partyContactMechanismAlias.getAlias();
             
             partyContactMechanismAliasTransfer = new PartyContactMechanismAliasTransfer(party, contactMechanism,
                     contactMechanismAliasType, alias);

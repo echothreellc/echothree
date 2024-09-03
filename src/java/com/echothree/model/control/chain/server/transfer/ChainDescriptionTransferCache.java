@@ -17,9 +17,7 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainDescriptionTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.chain.server.entity.ChainDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ChainDescriptionTransferCache
     }
     
     public ChainDescriptionTransfer getChainDescriptionTransfer(ChainDescription chainDescription) {
-        ChainDescriptionTransfer chainDescriptionTransfer = get(chainDescription);
+        var chainDescriptionTransfer = get(chainDescription);
         
         if(chainDescriptionTransfer == null) {
-            ChainTransfer chainTransfer = chainControl.getChainTransfer(userVisit, chainDescription.getChain());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, chainDescription.getLanguage());
+            var chainTransfer = chainControl.getChainTransfer(userVisit, chainDescription.getChain());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainDescription.getLanguage());
             
             chainDescriptionTransfer = new ChainDescriptionTransfer(languageTransfer, chainTransfer, chainDescription.getDescription());
             put(chainDescription, chainDescriptionTransfer);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.usetype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.SetDefaultUseTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultUseTypeForm commandForm = OfferUtil.getHome().getSetDefaultUseTypeForm();
-            String useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
+            var commandForm = OfferUtil.getHome().getSetDefaultUseTypeForm();
+            var useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
             
             commandForm.setUseTypeName(useTypeName);
             

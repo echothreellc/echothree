@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumGroupsForm;
 import com.echothree.control.user.forum.common.result.GetForumGroupsResult;
 import com.echothree.model.data.forum.common.ForumGroupConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -109,7 +106,7 @@ public class ForumGroupsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetForumGroupsForm commandForm = ForumUtil.getHome().getGetForumGroupsForm();
+            var commandForm = ForumUtil.getHome().getGetForumGroupsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             setOptions(options, null, commandForm);
@@ -120,8 +117,8 @@ public class ForumGroupsTag
                 limits.put(ForumGroupConstants.ENTITY_TYPE_NAME, new Limit(forumGroupCount, forumGroupOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = ForumUtil.getHome().getForumGroups(getUserVisitPK(), commandForm);
+
+            var commandResult = ForumUtil.getHome().getForumGroups(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -129,8 +126,8 @@ public class ForumGroupsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumGroupsResult result = (GetForumGroupsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetForumGroupsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getForumGroups()), scope);
 

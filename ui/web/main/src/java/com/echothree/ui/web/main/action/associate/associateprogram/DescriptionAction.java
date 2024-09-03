@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.form.GetAssociateProgramDescriptionsForm;
 import com.echothree.control.user.associate.common.result.GetAssociateProgramDescriptionsResult;
-import com.echothree.model.control.associate.common.transfer.AssociateProgramTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            GetAssociateProgramDescriptionsForm commandForm = AssociateUtil.getHome().getGetAssociateProgramDescriptionsForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociateProgramDescriptionsForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociateProgramDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateProgramDescriptionsResult result = (GetAssociateProgramDescriptionsResult)executionResult.getResult();
-            AssociateProgramTransfer associateProgramTransfer = result.getAssociateProgram();
+
+            var commandResult = AssociateUtil.getHome().getAssociateProgramDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateProgramDescriptionsResult)executionResult.getResult();
+            var associateProgramTransfer = result.getAssociateProgram();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAM, associateProgramTransfer);
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAM_NAME, associateProgramTransfer.getAssociateProgramName());

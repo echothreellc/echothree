@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUseTypeChoicesForm;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUseTypeChoicesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetHarmonizedTariffScheduleCodeUseTypeChoicesResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUseTypeChoicesResult();
-        String defaultHarmonizedTariffScheduleCodeUseTypeChoice = form.getDefaultHarmonizedTariffScheduleCodeUseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUseTypeChoicesResult();
+        var defaultHarmonizedTariffScheduleCodeUseTypeChoice = form.getDefaultHarmonizedTariffScheduleCodeUseTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setHarmonizedTariffScheduleCodeUseTypeChoices(itemControl.getHarmonizedTariffScheduleCodeUseTypeChoices(defaultHarmonizedTariffScheduleCodeUseTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetItemAccountingCategoryChoicesForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetItemAccountingCategoryChoicesResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetItemAccountingCategoryChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetItemAccountingCategoryChoicesResult result = AccountingResultFactory.getGetItemAccountingCategoryChoicesResult();
-        String defaultItemAccountingCategoryChoice = form.getDefaultItemAccountingCategoryChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AccountingResultFactory.getGetItemAccountingCategoryChoicesResult();
+        var defaultItemAccountingCategoryChoice = form.getDefaultItemAccountingCategoryChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setItemAccountingCategoryChoices(accountingControl.getItemAccountingCategoryChoices(defaultItemAccountingCategoryChoice,
                 getPreferredLanguage(), allowNullChoice));

@@ -18,7 +18,6 @@ package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.GetClubItemTypeChoicesForm;
 import com.echothree.control.user.club.common.result.ClubResultFactory;
-import com.echothree.control.user.club.common.result.GetClubItemTypeChoicesResult;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,9 +49,9 @@ public class GetClubItemTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        GetClubItemTypeChoicesResult result = ClubResultFactory.getGetClubItemTypeChoicesResult();
-        String defaultClubItemTypeChoice = form.getDefaultClubItemTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ClubResultFactory.getGetClubItemTypeChoicesResult();
+        var defaultClubItemTypeChoice = form.getDefaultClubItemTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setClubItemTypeChoices(clubControl.getClubItemTypeChoices(defaultClubItemTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

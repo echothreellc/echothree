@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.customer.customertypeshippingmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.CreateCustomerTypeShippingMethodForm;
-import com.echothree.control.user.customer.common.form.GetCustomerTypeForm;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerTypeForm commandForm = CustomerUtil.getHome().getGetCustomerTypeForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerTypeForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomerType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CustomerUtil.getHome().getCustomerType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeResult result = (GetCustomerTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE, result.getCustomerType());
         }
@@ -79,7 +76,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCustomerTypeShippingMethodForm commandForm = CustomerUtil.getHome().getCreateCustomerTypeShippingMethodForm();
+        var commandForm = CustomerUtil.getHome().getCreateCustomerTypeShippingMethodForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
         commandForm.setShippingMethodName(actionForm.getShippingMethodChoice());

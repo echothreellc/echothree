@@ -31,35 +31,20 @@ import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTyp
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.model.control.document.common.transfer.PartyTypeDocumentTypeUsageTypeTransfer;
 import com.echothree.model.control.document.server.transfer.DocumentTransferCaches;
-import com.echothree.model.control.document.server.transfer.DocumentTypeDescriptionTransferCache;
-import com.echothree.model.control.document.server.transfer.DocumentTypeTransferCache;
-import com.echothree.model.control.document.server.transfer.DocumentTypeUsageTransferCache;
-import com.echothree.model.control.document.server.transfer.DocumentTypeUsageTypeDescriptionTransferCache;
-import com.echothree.model.control.document.server.transfer.DocumentTypeUsageTypeTransferCache;
-import com.echothree.model.control.document.server.transfer.PartyDocumentTransferCache;
-import com.echothree.model.control.document.server.transfer.PartyTypeDocumentTypeUsageTypeTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.core.common.pk.MimeTypePK;
-import com.echothree.model.data.core.common.pk.MimeTypeUsageTypePK;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
-import com.echothree.model.data.document.common.pk.DocumentPK;
-import com.echothree.model.data.document.common.pk.DocumentTypePK;
-import com.echothree.model.data.document.common.pk.DocumentTypeUsageTypePK;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentBlob;
 import com.echothree.model.data.document.server.entity.DocumentClob;
 import com.echothree.model.data.document.server.entity.DocumentDescription;
-import com.echothree.model.data.document.server.entity.DocumentDetail;
 import com.echothree.model.data.document.server.entity.DocumentType;
 import com.echothree.model.data.document.server.entity.DocumentTypeDescription;
-import com.echothree.model.data.document.server.entity.DocumentTypeDetail;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsage;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageTypeDescription;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsageTypeDetail;
 import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.document.server.entity.PartyTypeDocumentTypeUsageType;
 import com.echothree.model.data.document.server.factory.DocumentBlobFactory;
@@ -87,12 +72,9 @@ import com.echothree.model.data.document.server.value.DocumentTypeUsageTypeDetai
 import com.echothree.model.data.document.server.value.DocumentTypeUsageValue;
 import com.echothree.model.data.document.server.value.PartyDocumentValue;
 import com.echothree.model.data.document.server.value.PartyTypeDocumentTypeUsageTypeValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.common.pk.PartyTypePK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -100,14 +82,12 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -141,20 +121,20 @@ public class DocumentControl
     
     public DocumentType createDocumentType(String documentTypeName, DocumentType parentDocumentType, MimeTypeUsageType mimeTypeUsageType, Integer maximumPages,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        DocumentType defaultDocumentType = getDefaultDocumentType();
-        boolean defaultFound = defaultDocumentType != null;
+        var defaultDocumentType = getDefaultDocumentType();
+        var defaultFound = defaultDocumentType != null;
         
         if(defaultFound && isDefault) {
-            DocumentTypeDetailValue defaultDocumentTypeDetailValue = getDefaultDocumentTypeDetailValueForUpdate();
+            var defaultDocumentTypeDetailValue = getDefaultDocumentTypeDetailValueForUpdate();
             
             defaultDocumentTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateDocumentTypeFromValue(defaultDocumentTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        DocumentType documentType = DocumentTypeFactory.getInstance().create();
-        DocumentTypeDetail documentTypeDetail = DocumentTypeDetailFactory.getInstance().create(documentType, documentTypeName, parentDocumentType,
+
+        var documentType = DocumentTypeFactory.getInstance().create();
+        var documentTypeDetail = DocumentTypeDetailFactory.getInstance().create(documentType, documentTypeName, parentDocumentType,
                 mimeTypeUsageType, maximumPages, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -312,9 +292,9 @@ public class DocumentControl
     }
     
     public List<DocumentTypeTransfer> getDocumentTypeTransfers(UserVisit userVisit) {
-        List<DocumentType> documentTypes = getDocumentTypes();
+        var documentTypes = getDocumentTypes();
         List<DocumentTypeTransfer> documentTypeTransfers = new ArrayList<>(documentTypes.size());
-        DocumentTypeTransferCache documentTypeTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeTransferCache();
+        var documentTypeTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeTransferCache();
         
         documentTypes.forEach((documentType) ->
                 documentTypeTransfers.add(documentTypeTransferCache.getDocumentTypeTransfer(documentType))
@@ -324,7 +304,7 @@ public class DocumentControl
     }
     
     public DocumentTypeChoicesBean getDocumentTypeChoices(String defaultDocumentTypeChoice, Language language, boolean allowNullChoice) {
-        List<DocumentType> documentTypes = getDocumentTypes();
+        var documentTypes = getDocumentTypes();
         var size = documentTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -340,7 +320,7 @@ public class DocumentControl
         }
         
         for(var documentType : documentTypes) {
-            DocumentTypeDetail documentTypeDetail = documentType.getLastDetail();
+            var documentTypeDetail = documentType.getLastDetail();
             
             var label = getBestDocumentTypeDescription(documentType, language);
             var value = documentTypeDetail.getDocumentTypeName();
@@ -359,7 +339,7 @@ public class DocumentControl
     
     public boolean isParentDocumentTypeSafe(DocumentType documentType,
             DocumentType parentDocumentType) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentDocumentType != null) {
             Set<DocumentType> parentDocumentTypes = new HashSet<>();
@@ -381,28 +361,28 @@ public class DocumentControl
     
     private void updateDocumentTypeFromValue(DocumentTypeDetailValue documentTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(documentTypeDetailValue.hasBeenModified()) {
-            DocumentType documentType = DocumentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentType = DocumentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      documentTypeDetailValue.getDocumentTypePK());
-            DocumentTypeDetail documentTypeDetail = documentType.getActiveDetailForUpdate();
+            var documentTypeDetail = documentType.getActiveDetailForUpdate();
             
             documentTypeDetail.setThruTime(session.START_TIME_LONG);
             documentTypeDetail.store();
-            
-            DocumentTypePK documentTypePK = documentTypeDetail.getDocumentTypePK(); // Not updated
-            String documentTypeName = documentTypeDetailValue.getDocumentTypeName();
-            DocumentTypePK parentDocumentTypePK = documentTypeDetailValue.getParentDocumentTypePK();
-            MimeTypeUsageTypePK mimeTypeUsageTypePK = documentTypeDetailValue.getMimeTypeUsageTypePK();
-            Integer maximumPages = documentTypeDetailValue.getMaximumPages();
-            Boolean isDefault = documentTypeDetailValue.getIsDefault();
-            Integer sortOrder = documentTypeDetailValue.getSortOrder();
+
+            var documentTypePK = documentTypeDetail.getDocumentTypePK(); // Not updated
+            var documentTypeName = documentTypeDetailValue.getDocumentTypeName();
+            var parentDocumentTypePK = documentTypeDetailValue.getParentDocumentTypePK();
+            var mimeTypeUsageTypePK = documentTypeDetailValue.getMimeTypeUsageTypePK();
+            var maximumPages = documentTypeDetailValue.getMaximumPages();
+            var isDefault = documentTypeDetailValue.getIsDefault();
+            var sortOrder = documentTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                DocumentType defaultDocumentType = getDefaultDocumentType();
-                boolean defaultFound = defaultDocumentType != null && !defaultDocumentType.equals(documentType);
+                var defaultDocumentType = getDefaultDocumentType();
+                var defaultFound = defaultDocumentType != null && !defaultDocumentType.equals(documentType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    DocumentTypeDetailValue defaultDocumentTypeDetailValue = getDefaultDocumentTypeDetailValueForUpdate();
+                    var defaultDocumentTypeDetailValue = getDefaultDocumentTypeDetailValueForUpdate();
                     
                     defaultDocumentTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateDocumentTypeFromValue(defaultDocumentTypeDetailValue, false, updatedBy);
@@ -427,7 +407,7 @@ public class DocumentControl
     }
     
     private void deleteDocumentType(DocumentType documentType, boolean checkDefault, BasePK deletedBy) {
-        DocumentTypeDetail documentTypeDetail = documentType.getLastDetailForUpdate();
+        var documentTypeDetail = documentType.getLastDetailForUpdate();
 
         deleteDocumentTypesByParentDocumentType(documentType, deletedBy);
         deleteDocumentTypeDescriptionsByDocumentType(documentType, deletedBy);
@@ -440,17 +420,17 @@ public class DocumentControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            DocumentType defaultDocumentType = getDefaultDocumentType();
+            var defaultDocumentType = getDefaultDocumentType();
 
             if(defaultDocumentType == null) {
-                List<DocumentType> documentTypes = getDocumentTypesForUpdate();
+                var documentTypes = getDocumentTypesForUpdate();
 
                 if(!documentTypes.isEmpty()) {
-                    Iterator<DocumentType> iter = documentTypes.iterator();
+                    var iter = documentTypes.iterator();
                     if(iter.hasNext()) {
                         defaultDocumentType = iter.next();
                     }
-                    DocumentTypeDetailValue documentTypeDetailValue = Objects.requireNonNull(defaultDocumentType).getLastDetailForUpdate().getDocumentTypeDetailValue().clone();
+                    var documentTypeDetailValue = Objects.requireNonNull(defaultDocumentType).getLastDetailForUpdate().getDocumentTypeDetailValue().clone();
 
                     documentTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateDocumentTypeFromValue(documentTypeDetailValue, false, deletedBy);
@@ -482,7 +462,7 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
     
     public DocumentTypeDescription createDocumentTypeDescription(DocumentType documentType, Language language, String description, BasePK createdBy) {
-        DocumentTypeDescription documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
+        var documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(documentType.getPrimaryKey(), EventTypes.MODIFY, documentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -562,7 +542,7 @@ public class DocumentControl
     
     public String getBestDocumentTypeDescription(DocumentType documentType, Language language) {
         String description;
-        DocumentTypeDescription documentTypeDescription = getDocumentTypeDescription(documentType, language);
+        var documentTypeDescription = getDocumentTypeDescription(documentType, language);
         
         if(documentTypeDescription == null && !language.getIsDefault()) {
             documentTypeDescription = getDocumentTypeDescription(documentType, getPartyControl().getDefaultLanguage());
@@ -582,9 +562,9 @@ public class DocumentControl
     }
     
     public List<DocumentTypeDescriptionTransfer> getDocumentTypeDescriptionTransfersByDocumentType(UserVisit userVisit, DocumentType documentType) {
-        List<DocumentTypeDescription> documentTypeDescriptions = getDocumentTypeDescriptionsByDocumentType(documentType);
+        var documentTypeDescriptions = getDocumentTypeDescriptionsByDocumentType(documentType);
         List<DocumentTypeDescriptionTransfer> documentTypeDescriptionTransfers = new ArrayList<>(documentTypeDescriptions.size());
-        DocumentTypeDescriptionTransferCache documentTypeDescriptionTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeDescriptionTransferCache();
+        var documentTypeDescriptionTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeDescriptionTransferCache();
         
         documentTypeDescriptions.forEach((documentTypeDescription) ->
                 documentTypeDescriptionTransfers.add(documentTypeDescriptionTransferCache.getDocumentTypeDescriptionTransfer(documentTypeDescription))
@@ -595,15 +575,15 @@ public class DocumentControl
     
     public void updateDocumentTypeDescriptionFromValue(DocumentTypeDescriptionValue documentTypeDescriptionValue, BasePK updatedBy) {
         if(documentTypeDescriptionValue.hasBeenModified()) {
-            DocumentTypeDescription documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     documentTypeDescriptionValue.getPrimaryKey());
             
             documentTypeDescription.setThruTime(session.START_TIME_LONG);
             documentTypeDescription.store();
-            
-            DocumentType documentType = documentTypeDescription.getDocumentType();
-            Language language = documentTypeDescription.getLanguage();
-            String description = documentTypeDescriptionValue.getDescription();
+
+            var documentType = documentTypeDescription.getDocumentType();
+            var language = documentTypeDescription.getLanguage();
+            var description = documentTypeDescriptionValue.getDescription();
             
             documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -620,7 +600,7 @@ public class DocumentControl
     }
     
     public void deleteDocumentTypeDescriptionsByDocumentType(DocumentType documentType, BasePK deletedBy) {
-        List<DocumentTypeDescription> documentTypeDescriptions = getDocumentTypeDescriptionsByDocumentTypeForUpdate(documentType);
+        var documentTypeDescriptions = getDocumentTypeDescriptionsByDocumentTypeForUpdate(documentType);
         
         documentTypeDescriptions.forEach((documentTypeDescription) -> 
                 deleteDocumentTypeDescription(documentTypeDescription, deletedBy)
@@ -632,11 +612,11 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
 
     public DocumentTypeUsageType createDocumentTypeUsageType(String documentTypeUsageTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        DocumentTypeUsageType defaultDocumentTypeUsageType = getDefaultDocumentTypeUsageType();
-        boolean defaultFound = defaultDocumentTypeUsageType != null;
+        var defaultDocumentTypeUsageType = getDefaultDocumentTypeUsageType();
+        var defaultFound = defaultDocumentTypeUsageType != null;
 
         if(defaultFound && isDefault) {
-            DocumentTypeUsageTypeDetailValue defaultDocumentTypeUsageTypeDetailValue = getDefaultDocumentTypeUsageTypeDetailValueForUpdate();
+            var defaultDocumentTypeUsageTypeDetailValue = getDefaultDocumentTypeUsageTypeDetailValueForUpdate();
 
             defaultDocumentTypeUsageTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateDocumentTypeUsageTypeFromValue(defaultDocumentTypeUsageTypeDetailValue, false, createdBy);
@@ -644,8 +624,8 @@ public class DocumentControl
             isDefault = Boolean.TRUE;
         }
 
-        DocumentTypeUsageType documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().create();
-        DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = DocumentTypeUsageTypeDetailFactory.getInstance().create(documentTypeUsageType,
+        var documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().create();
+        var documentTypeUsageTypeDetail = DocumentTypeUsageTypeDetailFactory.getInstance().create(documentTypeUsageType,
                 documentTypeUsageTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -770,9 +750,9 @@ public class DocumentControl
     }
 
     public List<DocumentTypeUsageTypeTransfer> getDocumentTypeUsageTypeTransfers(UserVisit userVisit) {
-        List<DocumentTypeUsageType> documentTypeUsageTypes = getDocumentTypeUsageTypes();
+        var documentTypeUsageTypes = getDocumentTypeUsageTypes();
         List<DocumentTypeUsageTypeTransfer> documentTypeUsageTypeTransfers = new ArrayList<>(documentTypeUsageTypes.size());
-        DocumentTypeUsageTypeTransferCache documentTypeUsageTypeTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTypeTransferCache();
+        var documentTypeUsageTypeTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTypeTransferCache();
 
         documentTypeUsageTypes.forEach((documentTypeUsageType) ->
                 documentTypeUsageTypeTransfers.add(documentTypeUsageTypeTransferCache.getDocumentTypeUsageTypeTransfer(documentTypeUsageType))
@@ -782,7 +762,7 @@ public class DocumentControl
     }
 
     public DocumentTypeUsageTypeChoicesBean getDocumentTypeUsageTypeChoices(String defaultDocumentTypeUsageTypeChoice, Language language, boolean allowNullChoice) {
-        List<DocumentTypeUsageType> documentTypeUsageTypes = getDocumentTypeUsageTypes();
+        var documentTypeUsageTypes = getDocumentTypeUsageTypes();
         var size = documentTypeUsageTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -798,7 +778,7 @@ public class DocumentControl
         }
 
         for(var documentTypeUsageType : documentTypeUsageTypes) {
-            DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
+            var documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
 
             var label = getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
             var value = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
@@ -817,25 +797,25 @@ public class DocumentControl
 
     private void updateDocumentTypeUsageTypeFromValue(DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(documentTypeUsageTypeDetailValue.hasBeenModified()) {
-            DocumentTypeUsageType documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      documentTypeUsageTypeDetailValue.getDocumentTypeUsageTypePK());
-            DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getActiveDetailForUpdate();
+            var documentTypeUsageTypeDetail = documentTypeUsageType.getActiveDetailForUpdate();
 
             documentTypeUsageTypeDetail.setThruTime(session.START_TIME_LONG);
             documentTypeUsageTypeDetail.store();
 
-            DocumentTypeUsageTypePK documentTypeUsageTypePK = documentTypeUsageTypeDetail.getDocumentTypeUsageTypePK(); // Not updated
-            String documentTypeUsageTypeName = documentTypeUsageTypeDetailValue.getDocumentTypeUsageTypeName();
-            Boolean isDefault = documentTypeUsageTypeDetailValue.getIsDefault();
-            Integer sortOrder = documentTypeUsageTypeDetailValue.getSortOrder();
+            var documentTypeUsageTypePK = documentTypeUsageTypeDetail.getDocumentTypeUsageTypePK(); // Not updated
+            var documentTypeUsageTypeName = documentTypeUsageTypeDetailValue.getDocumentTypeUsageTypeName();
+            var isDefault = documentTypeUsageTypeDetailValue.getIsDefault();
+            var sortOrder = documentTypeUsageTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                DocumentTypeUsageType defaultDocumentTypeUsageType = getDefaultDocumentTypeUsageType();
-                boolean defaultFound = defaultDocumentTypeUsageType != null && !defaultDocumentTypeUsageType.equals(documentTypeUsageType);
+                var defaultDocumentTypeUsageType = getDefaultDocumentTypeUsageType();
+                var defaultFound = defaultDocumentTypeUsageType != null && !defaultDocumentTypeUsageType.equals(documentTypeUsageType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    DocumentTypeUsageTypeDetailValue defaultDocumentTypeUsageTypeDetailValue = getDefaultDocumentTypeUsageTypeDetailValueForUpdate();
+                    var defaultDocumentTypeUsageTypeDetailValue = getDefaultDocumentTypeUsageTypeDetailValueForUpdate();
 
                     defaultDocumentTypeUsageTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateDocumentTypeUsageTypeFromValue(defaultDocumentTypeUsageTypeDetailValue, false, updatedBy);
@@ -860,7 +840,7 @@ public class DocumentControl
     }
 
     private void deleteDocumentTypeUsageType(DocumentTypeUsageType documentTypeUsageType, boolean checkDefault, BasePK deletedBy) {
-        DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetailForUpdate();
+        var documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetailForUpdate();
 
         deleteDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageType(documentTypeUsageType, deletedBy);
         deleteDocumentTypeUsagesByDocumentTypeUsageType(documentTypeUsageType, deletedBy);
@@ -872,17 +852,17 @@ public class DocumentControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            DocumentTypeUsageType defaultDocumentTypeUsageType = getDefaultDocumentTypeUsageType();
+            var defaultDocumentTypeUsageType = getDefaultDocumentTypeUsageType();
 
             if(defaultDocumentTypeUsageType == null) {
-                List<DocumentTypeUsageType> documentTypeUsageTypes = getDocumentTypeUsageTypesForUpdate();
+                var documentTypeUsageTypes = getDocumentTypeUsageTypesForUpdate();
 
                 if(!documentTypeUsageTypes.isEmpty()) {
-                    Iterator<DocumentTypeUsageType> iter = documentTypeUsageTypes.iterator();
+                    var iter = documentTypeUsageTypes.iterator();
                     if(iter.hasNext()) {
                         defaultDocumentTypeUsageType = iter.next();
                     }
-                    DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = Objects.requireNonNull(defaultDocumentTypeUsageType).getLastDetailForUpdate().getDocumentTypeUsageTypeDetailValue().clone();
+                    var documentTypeUsageTypeDetailValue = Objects.requireNonNull(defaultDocumentTypeUsageType).getLastDetailForUpdate().getDocumentTypeUsageTypeDetailValue().clone();
 
                     documentTypeUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateDocumentTypeUsageTypeFromValue(documentTypeUsageTypeDetailValue, false, deletedBy);
@@ -910,7 +890,7 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
 
     public DocumentTypeUsageTypeDescription createDocumentTypeUsageTypeDescription(DocumentTypeUsageType documentTypeUsageType, Language language, String description, BasePK createdBy) {
-        DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
+        var documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -990,7 +970,7 @@ public class DocumentControl
 
     public String getBestDocumentTypeUsageTypeDescription(DocumentTypeUsageType documentTypeUsageType, Language language) {
         String description;
-        DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = getDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
+        var documentTypeUsageTypeDescription = getDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
 
         if(documentTypeUsageTypeDescription == null && !language.getIsDefault()) {
             documentTypeUsageTypeDescription = getDocumentTypeUsageTypeDescription(documentTypeUsageType, getPartyControl().getDefaultLanguage());
@@ -1010,9 +990,9 @@ public class DocumentControl
     }
 
     public List<DocumentTypeUsageTypeDescriptionTransfer> getDocumentTypeUsageTypeDescriptionTransfersByDocumentTypeUsageType(UserVisit userVisit, DocumentTypeUsageType documentTypeUsageType) {
-        List<DocumentTypeUsageTypeDescription> documentTypeUsageTypeDescriptions = getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageType(documentTypeUsageType);
+        var documentTypeUsageTypeDescriptions = getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageType(documentTypeUsageType);
         List<DocumentTypeUsageTypeDescriptionTransfer> documentTypeUsageTypeDescriptionTransfers = new ArrayList<>(documentTypeUsageTypeDescriptions.size());
-        DocumentTypeUsageTypeDescriptionTransferCache documentTypeUsageTypeDescriptionTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTypeDescriptionTransferCache();
+        var documentTypeUsageTypeDescriptionTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTypeDescriptionTransferCache();
 
         documentTypeUsageTypeDescriptions.forEach((documentTypeUsageTypeDescription) ->
                 documentTypeUsageTypeDescriptionTransfers.add(documentTypeUsageTypeDescriptionTransferCache.getDocumentTypeUsageTypeDescriptionTransfer(documentTypeUsageTypeDescription))
@@ -1023,15 +1003,15 @@ public class DocumentControl
 
     public void updateDocumentTypeUsageTypeDescriptionFromValue(DocumentTypeUsageTypeDescriptionValue documentTypeUsageTypeDescriptionValue, BasePK updatedBy) {
         if(documentTypeUsageTypeDescriptionValue.hasBeenModified()) {
-            DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     documentTypeUsageTypeDescriptionValue.getPrimaryKey());
 
             documentTypeUsageTypeDescription.setThruTime(session.START_TIME_LONG);
             documentTypeUsageTypeDescription.store();
 
-            DocumentTypeUsageType documentTypeUsageType = documentTypeUsageTypeDescription.getDocumentTypeUsageType();
-            Language language = documentTypeUsageTypeDescription.getLanguage();
-            String description = documentTypeUsageTypeDescriptionValue.getDescription();
+            var documentTypeUsageType = documentTypeUsageTypeDescription.getDocumentTypeUsageType();
+            var language = documentTypeUsageTypeDescription.getLanguage();
+            var description = documentTypeUsageTypeDescriptionValue.getDescription();
 
             documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1048,7 +1028,7 @@ public class DocumentControl
     }
 
     public void deleteDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageType(DocumentTypeUsageType documentTypeUsageType, BasePK deletedBy) {
-        List<DocumentTypeUsageTypeDescription> documentTypeUsageTypeDescriptions = getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageTypeForUpdate(documentTypeUsageType);
+        var documentTypeUsageTypeDescriptions = getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageTypeForUpdate(documentTypeUsageType);
 
         documentTypeUsageTypeDescriptions.forEach((documentTypeUsageTypeDescription) -> 
                 deleteDocumentTypeUsageTypeDescription(documentTypeUsageTypeDescription, deletedBy)
@@ -1061,11 +1041,11 @@ public class DocumentControl
 
     public DocumentTypeUsage createDocumentTypeUsage(DocumentTypeUsageType documentTypeUsageType, DocumentType documentType, Boolean isDefault,
             Integer sortOrder, Integer maximumInstances, BasePK createdBy) {
-        DocumentTypeUsage defaultDocumentTypeUsage = getDefaultDocumentTypeUsage(documentTypeUsageType);
-        boolean defaultFound = defaultDocumentTypeUsage != null;
+        var defaultDocumentTypeUsage = getDefaultDocumentTypeUsage(documentTypeUsageType);
+        var defaultFound = defaultDocumentTypeUsage != null;
 
         if(defaultFound && isDefault) {
-            DocumentTypeUsageValue defaultDocumentTypeUsageValue = getDefaultDocumentTypeUsageValueForUpdate(documentTypeUsageType);
+            var defaultDocumentTypeUsageValue = getDefaultDocumentTypeUsageValueForUpdate(documentTypeUsageType);
 
             defaultDocumentTypeUsageValue.setIsDefault(Boolean.FALSE);
             updateDocumentTypeUsageFromValue(defaultDocumentTypeUsageValue, false, createdBy);
@@ -1073,7 +1053,7 @@ public class DocumentControl
             isDefault = Boolean.TRUE;
         }
 
-        DocumentTypeUsage documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageType, documentType, isDefault, sortOrder,
+        var documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageType, documentType, isDefault, sortOrder,
                 maximumInstances, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1225,7 +1205,7 @@ public class DocumentControl
 
     public List<DocumentTypeUsageTransfer> getDocumentTypeUsageTransfers(UserVisit userVisit, Collection<DocumentTypeUsage> documentTypeUsages) {
         List<DocumentTypeUsageTransfer> documentTypeUsageTransfers = new ArrayList<>(documentTypeUsages.size());
-        DocumentTypeUsageTransferCache documentTypeUsageTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTransferCache();
+        var documentTypeUsageTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTransferCache();
 
         documentTypeUsages.forEach((documentTypeUsage) ->
                 documentTypeUsageTransfers.add(documentTypeUsageTransferCache.getDocumentTypeUsageTransfer(documentTypeUsage))
@@ -1244,26 +1224,26 @@ public class DocumentControl
 
     private void updateDocumentTypeUsageFromValue(DocumentTypeUsageValue documentTypeUsageValue, boolean checkDefault, BasePK updatedBy) {
         if(documentTypeUsageValue.hasBeenModified()) {
-            DocumentTypeUsage documentTypeUsage = DocumentTypeUsageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentTypeUsage = DocumentTypeUsageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      documentTypeUsageValue.getPrimaryKey());
 
             documentTypeUsage.setThruTime(session.START_TIME_LONG);
             documentTypeUsage.store();
 
-            DocumentTypeUsageType documentTypeUsageType = documentTypeUsage.getDocumentTypeUsageType();
-            DocumentTypeUsageTypePK documentTypeUsageTypePK = documentTypeUsageType.getPrimaryKey(); // Not updated
-            DocumentTypePK documentTypePK = documentTypeUsage.getDocumentTypePK(); // Not updated
-            Boolean isDefault = documentTypeUsageValue.getIsDefault();
-            Integer sortOrder = documentTypeUsageValue.getSortOrder();
-            Integer maximumInstances = documentTypeUsageValue.getMaximumInstances();
+            var documentTypeUsageType = documentTypeUsage.getDocumentTypeUsageType();
+            var documentTypeUsageTypePK = documentTypeUsageType.getPrimaryKey(); // Not updated
+            var documentTypePK = documentTypeUsage.getDocumentTypePK(); // Not updated
+            var isDefault = documentTypeUsageValue.getIsDefault();
+            var sortOrder = documentTypeUsageValue.getSortOrder();
+            var maximumInstances = documentTypeUsageValue.getMaximumInstances();
 
             if(checkDefault) {
-                DocumentTypeUsage defaultDocumentTypeUsage = getDefaultDocumentTypeUsage(documentTypeUsageType);
-                boolean defaultFound = defaultDocumentTypeUsage != null && !defaultDocumentTypeUsage.equals(documentTypeUsage);
+                var defaultDocumentTypeUsage = getDefaultDocumentTypeUsage(documentTypeUsageType);
+                var defaultFound = defaultDocumentTypeUsage != null && !defaultDocumentTypeUsage.equals(documentTypeUsage);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    DocumentTypeUsageValue defaultDocumentTypeUsageValue = getDefaultDocumentTypeUsageValueForUpdate(documentTypeUsageType);
+                    var defaultDocumentTypeUsageValue = getDefaultDocumentTypeUsageValueForUpdate(documentTypeUsageType);
 
                     defaultDocumentTypeUsageValue.setIsDefault(Boolean.FALSE);
                     updateDocumentTypeUsageFromValue(defaultDocumentTypeUsageValue, false, updatedBy);
@@ -1285,24 +1265,24 @@ public class DocumentControl
     }
 
     private void deleteDocumentTypeUsage(DocumentTypeUsage documentTypeUsage, boolean checkDefault, BasePK deletedBy) {
-        DocumentTypeUsageType documentTypeUsageType = documentTypeUsage.getDocumentTypeUsageType();
+        var documentTypeUsageType = documentTypeUsage.getDocumentTypeUsageType();
 
         documentTypeUsage.setThruTime(session.START_TIME_LONG);
         documentTypeUsage.store();
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            DocumentTypeUsage defaultDocumentTypeUsage = getDefaultDocumentTypeUsage(documentTypeUsageType);
+            var defaultDocumentTypeUsage = getDefaultDocumentTypeUsage(documentTypeUsageType);
 
             if(defaultDocumentTypeUsage == null) {
-                List<DocumentTypeUsage> documentTypeUsages = getDocumentTypeUsagesByDocumentTypeUsageTypeForUpdate(documentTypeUsageType);
+                var documentTypeUsages = getDocumentTypeUsagesByDocumentTypeUsageTypeForUpdate(documentTypeUsageType);
 
                 if(!documentTypeUsages.isEmpty()) {
-                    Iterator<DocumentTypeUsage> iter = documentTypeUsages.iterator();
+                    var iter = documentTypeUsages.iterator();
                     if(iter.hasNext()) {
                         defaultDocumentTypeUsage = iter.next();
                     }
-                    DocumentTypeUsageValue documentTypeUsageDetailValue = defaultDocumentTypeUsage.getDocumentTypeUsageValue().clone();
+                    var documentTypeUsageDetailValue = defaultDocumentTypeUsage.getDocumentTypeUsageValue().clone();
 
                     documentTypeUsageDetailValue.setIsDefault(Boolean.TRUE);
                     updateDocumentTypeUsageFromValue(documentTypeUsageDetailValue, false, deletedBy);
@@ -1339,15 +1319,15 @@ public class DocumentControl
     
     public Document createDocument(DocumentType documentType, MimeType mimeType, Integer pages, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.DOCUMENT.name()));
-        String documentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.DOCUMENT.name()));
+        var documentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createDocument(documentName, documentType, mimeType, pages, createdBy);
     }
     
     public Document createDocument(String documentName, DocumentType documentType, MimeType mimeType, Integer pages, BasePK createdBy) {
-        Document document = DocumentFactory.getInstance().create();
-        DocumentDetail documentDetail = DocumentDetailFactory.getInstance().create(document, documentName, documentType, mimeType, pages,
+        var document = DocumentFactory.getInstance().create();
+        var documentDetail = DocumentDetailFactory.getInstance().create(document, documentName, documentType, mimeType, pages,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1385,8 +1365,8 @@ public class DocumentControl
                         "WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = DocumentFactory.getInstance().prepareStatement(query);
+
+            var ps = DocumentFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, documentName);
             
@@ -1454,18 +1434,18 @@ public class DocumentControl
     
     public void updateDocumentFromValue(DocumentDetailValue documentDetailValue, BasePK updatedBy) {
         if(documentDetailValue.hasBeenModified()) {
-            Document document = DocumentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var document = DocumentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      documentDetailValue.getDocumentPK());
-            DocumentDetail documentDetail = document.getActiveDetailForUpdate();
+            var documentDetail = document.getActiveDetailForUpdate();
 
             documentDetail.setThruTime(session.START_TIME_LONG);
             documentDetail.store();
 
-            DocumentPK documentPK = documentDetail.getDocumentPK(); // Not updated
-            String documentName = documentDetail.getDocumentName(); // Not updated
-            DocumentTypePK documentTypePK = documentDetail.getDocumentTypePK(); // Not updated
-            MimeTypePK mimeTypePK = documentDetailValue.getMimeTypePK();
-            Integer pages = documentDetailValue.getPages();
+            var documentPK = documentDetail.getDocumentPK(); // Not updated
+            var documentName = documentDetail.getDocumentName(); // Not updated
+            var documentTypePK = documentDetail.getDocumentTypePK(); // Not updated
+            var mimeTypePK = documentDetailValue.getMimeTypePK();
+            var pages = documentDetailValue.getPages();
 
             documentDetail = DocumentDetailFactory.getInstance().create(documentPK, documentName, documentTypePK, mimeTypePK, pages, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -1479,13 +1459,13 @@ public class DocumentControl
 
     public void deleteDocument(Document document, BasePK deletedBy) {
         deleteDocumentDescriptionsByDocument(document, deletedBy);
-        
-        DocumentDetail documentDetail = document.getLastDetailForUpdate();
+
+        var documentDetail = document.getLastDetailForUpdate();
         documentDetail.setThruTime(session.START_TIME_LONG);
         documentDetail.store();
         document.setActiveDetail(null);
-        
-        String entityAttributeTypeName = documentDetail.getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+
+        var entityAttributeTypeName = documentDetail.getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
             deleteDocumentBlobByDocument(document, deletedBy);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
@@ -1515,7 +1495,7 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
 
     private void verifyDocumentMimeType(Document document, String entityAttributeTypeName) {
-        String documentEntityAttributeTypeName = document.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var documentEntityAttributeTypeName = document.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
         if(!documentEntityAttributeTypeName.equals(entityAttributeTypeName)) {
             throw new IllegalArgumentException("Document entityAttributeTypeName is " + documentEntityAttributeTypeName + ", expected " + entityAttributeTypeName);
@@ -1529,7 +1509,7 @@ public class DocumentControl
     public DocumentBlob createDocumentBlob(Document document, ByteArray blob, BasePK createdBy) {
         verifyDocumentMimeType(document, EntityAttributeTypes.BLOB.name());
 
-        DocumentBlob documentBlob = DocumentBlobFactory.getInstance().create(document, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var documentBlob = DocumentBlobFactory.getInstance().create(document, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentBlob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
@@ -1552,8 +1532,8 @@ public class DocumentControl
                         "WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = DocumentBlobFactory.getInstance().prepareStatement(query);
+
+            var ps = DocumentBlobFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, document.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1585,14 +1565,14 @@ public class DocumentControl
     
     public void updateDocumentBlobFromValue(DocumentBlobValue documentBlobValue, BasePK updatedBy) {
         if(documentBlobValue.hasBeenModified()) {
-            DocumentBlob documentBlob = DocumentBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentBlob = DocumentBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     documentBlobValue.getPrimaryKey());
             
             documentBlob.setThruTime(session.START_TIME_LONG);
             documentBlob.store();
-            
-            DocumentPK documentPK = documentBlob.getDocumentPK(); // Not updated
-            ByteArray blob = documentBlobValue.getBlob();
+
+            var documentPK = documentBlob.getDocumentPK(); // Not updated
+            var blob = documentBlobValue.getBlob();
             
             documentBlob = DocumentBlobFactory.getInstance().create(documentPK, blob, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -1608,7 +1588,7 @@ public class DocumentControl
     }
     
     public void deleteDocumentBlobByDocument(Document document, BasePK deletedBy) {
-        DocumentBlob documentBlob = getDocumentBlobForUpdate(document);
+        var documentBlob = getDocumentBlobForUpdate(document);
         
         if(documentBlob != null) {
             deleteDocumentBlob(documentBlob, deletedBy);
@@ -1622,7 +1602,7 @@ public class DocumentControl
     public DocumentClob createDocumentClob(Document document, String clob, BasePK createdBy) {
         verifyDocumentMimeType(document, EntityAttributeTypes.CLOB.name());
 
-        DocumentClob documentClob = DocumentClobFactory.getInstance().create(document, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var documentClob = DocumentClobFactory.getInstance().create(document, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentClob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
@@ -1645,8 +1625,8 @@ public class DocumentControl
                         "WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = DocumentClobFactory.getInstance().prepareStatement(query);
+
+            var ps = DocumentClobFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, document.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1677,14 +1657,14 @@ public class DocumentControl
     
     public void updateDocumentClobFromValue(DocumentClobValue documentClobValue, BasePK updatedBy) {
         if(documentClobValue.hasBeenModified()) {
-            DocumentClob documentClob = DocumentClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentClob = DocumentClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     documentClobValue.getPrimaryKey());
             
             documentClob.setThruTime(session.START_TIME_LONG);
             documentClob.store();
-            
-            DocumentPK documentPK = documentClob.getDocumentPK(); // Not updated
-            String clob = documentClobValue.getClob();
+
+            var documentPK = documentClob.getDocumentPK(); // Not updated
+            var clob = documentClobValue.getClob();
             
             documentClob = DocumentClobFactory.getInstance().create(documentPK, clob, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -1700,7 +1680,7 @@ public class DocumentControl
     }
     
     public void deleteDocumentClobByDocument(Document document, BasePK deletedBy) {
-        DocumentClob documentClob = getDocumentClobForUpdate(document);
+        var documentClob = getDocumentClobForUpdate(document);
         
         if(documentClob != null) {
             deleteDocumentClob(documentClob, deletedBy);
@@ -1712,7 +1692,7 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
     
     public DocumentDescription createDocumentDescription(Document document, Language language, String description, BasePK createdBy) {
-        DocumentDescription documentDescription = DocumentDescriptionFactory.getInstance().create(document, language,
+        var documentDescription = DocumentDescriptionFactory.getInstance().create(document, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1736,8 +1716,8 @@ public class DocumentControl
                         "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = DocumentDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = DocumentDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, document.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1784,8 +1764,8 @@ public class DocumentControl
                         "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = DocumentDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = DocumentDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, document.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1808,7 +1788,7 @@ public class DocumentControl
     
     public String getBestDocumentDescription(Document document, Language language) {
         String description;
-        DocumentDescription documentDescription = getDocumentDescription(document, language);
+        var documentDescription = getDocumentDescription(document, language);
         
         if(documentDescription == null && !language.getIsDefault()) {
             documentDescription = getDocumentDescription(document, getPartyControl().getDefaultLanguage());
@@ -1828,7 +1808,7 @@ public class DocumentControl
     }
     
     public List<DocumentDescriptionTransfer> getDocumentDescriptionTransfersByDocument(UserVisit userVisit, Document document) {
-        List<DocumentDescription> documentDescriptions = getDocumentDescriptionsByDocument(document);
+        var documentDescriptions = getDocumentDescriptionsByDocument(document);
         List<DocumentDescriptionTransfer> documentDescriptionTransfers = null;
         
         if(documentDescriptions != null) {
@@ -1844,14 +1824,14 @@ public class DocumentControl
     
     public void updateDocumentDescriptionFromValue(DocumentDescriptionValue documentDescriptionValue, BasePK updatedBy) {
         if(documentDescriptionValue.hasBeenModified()) {
-            DocumentDescription documentDescription = DocumentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, documentDescriptionValue.getPrimaryKey());
+            var documentDescription = DocumentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, documentDescriptionValue.getPrimaryKey());
             
             documentDescription.setThruTime(session.START_TIME_LONG);
             documentDescription.store();
-            
-            Document document = documentDescription.getDocument();
-            Language language = documentDescription.getLanguage();
-            String description = documentDescriptionValue.getDescription();
+
+            var document = documentDescription.getDocument();
+            var language = documentDescription.getLanguage();
+            var description = documentDescriptionValue.getDescription();
             
             documentDescription = DocumentDescriptionFactory.getInstance().create(document, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1868,7 +1848,7 @@ public class DocumentControl
     }
     
     public void deleteDocumentDescriptionsByDocument(Document document, BasePK deletedBy) {
-        List<DocumentDescription> documentDescriptions = getDocumentDescriptionsByDocumentForUpdate(document);
+        var documentDescriptions = getDocumentDescriptionsByDocumentForUpdate(document);
         
         documentDescriptions.forEach((documentDescription) -> 
                 deleteDocumentDescription(documentDescription, deletedBy)
@@ -1881,11 +1861,11 @@ public class DocumentControl
 
     public PartyTypeDocumentTypeUsageType createPartyTypeDocumentTypeUsageType(PartyType partyType, DocumentTypeUsageType documentTypeUsageType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PartyTypeDocumentTypeUsageType defaultPartyTypeDocumentTypeUsageType = getDefaultPartyTypeDocumentTypeUsageType(partyType);
-        boolean defaultFound = defaultPartyTypeDocumentTypeUsageType != null;
+        var defaultPartyTypeDocumentTypeUsageType = getDefaultPartyTypeDocumentTypeUsageType(partyType);
+        var defaultFound = defaultPartyTypeDocumentTypeUsageType != null;
 
         if(defaultFound && isDefault) {
-            PartyTypeDocumentTypeUsageTypeValue defaultPartyTypeDocumentTypeUsageTypeValue = getDefaultPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType);
+            var defaultPartyTypeDocumentTypeUsageTypeValue = getDefaultPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType);
 
             defaultPartyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.FALSE);
             updatePartyTypeDocumentTypeUsageTypeFromValue(defaultPartyTypeDocumentTypeUsageTypeValue, false, createdBy);
@@ -1893,7 +1873,7 @@ public class DocumentControl
             isDefault = Boolean.TRUE;
         }
 
-        PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyType,
+        var partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyType,
                 documentTypeUsageType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2045,7 +2025,7 @@ public class DocumentControl
 
     public List<PartyTypeDocumentTypeUsageTypeTransfer> getPartyTypeDocumentTypeUsageTypeTransfers(UserVisit userVisit, Collection<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes) {
         List<PartyTypeDocumentTypeUsageTypeTransfer> partyTypeDocumentTypeUsageTypeTransfers = new ArrayList<>(partyTypeDocumentTypeUsageTypes.size());
-        PartyTypeDocumentTypeUsageTypeTransferCache partyTypeDocumentTypeUsageTypeTransferCache = getDocumentTransferCaches(userVisit).getPartyTypeDocumentTypeUsageTypeTransferCache();
+        var partyTypeDocumentTypeUsageTypeTransferCache = getDocumentTransferCaches(userVisit).getPartyTypeDocumentTypeUsageTypeTransferCache();
 
         partyTypeDocumentTypeUsageTypes.forEach((partyTypeDocumentTypeUsageType) ->
                 partyTypeDocumentTypeUsageTypeTransfers.add(partyTypeDocumentTypeUsageTypeTransferCache.getPartyTypeDocumentTypeUsageTypeTransfer(partyTypeDocumentTypeUsageType))
@@ -2064,25 +2044,25 @@ public class DocumentControl
 
     private void updatePartyTypeDocumentTypeUsageTypeFromValue(PartyTypeDocumentTypeUsageTypeValue partyTypeDocumentTypeUsageTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(partyTypeDocumentTypeUsageTypeValue.hasBeenModified()) {
-            PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypeDocumentTypeUsageTypeValue.getPrimaryKey());
 
             partyTypeDocumentTypeUsageType.setThruTime(session.START_TIME_LONG);
             partyTypeDocumentTypeUsageType.store();
 
-            PartyType partyType = partyTypeDocumentTypeUsageType.getPartyType();
-            PartyTypePK partyTypePK = partyType.getPrimaryKey(); // Not updated
-            DocumentTypeUsageTypePK documentTypeUsageTypePK = partyTypeDocumentTypeUsageType.getDocumentTypeUsageTypePK(); // Not updated
-            Boolean isDefault = partyTypeDocumentTypeUsageTypeValue.getIsDefault();
-            Integer sortOrder = partyTypeDocumentTypeUsageTypeValue.getSortOrder();
+            var partyType = partyTypeDocumentTypeUsageType.getPartyType();
+            var partyTypePK = partyType.getPrimaryKey(); // Not updated
+            var documentTypeUsageTypePK = partyTypeDocumentTypeUsageType.getDocumentTypeUsageTypePK(); // Not updated
+            var isDefault = partyTypeDocumentTypeUsageTypeValue.getIsDefault();
+            var sortOrder = partyTypeDocumentTypeUsageTypeValue.getSortOrder();
 
             if(checkDefault) {
-                PartyTypeDocumentTypeUsageType defaultPartyTypeDocumentTypeUsageType = getDefaultPartyTypeDocumentTypeUsageType(partyType);
-                boolean defaultFound = defaultPartyTypeDocumentTypeUsageType != null && !defaultPartyTypeDocumentTypeUsageType.equals(partyTypeDocumentTypeUsageType);
+                var defaultPartyTypeDocumentTypeUsageType = getDefaultPartyTypeDocumentTypeUsageType(partyType);
+                var defaultFound = defaultPartyTypeDocumentTypeUsageType != null && !defaultPartyTypeDocumentTypeUsageType.equals(partyTypeDocumentTypeUsageType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyTypeDocumentTypeUsageTypeValue defaultPartyTypeDocumentTypeUsageTypeValue = getDefaultPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType);
+                    var defaultPartyTypeDocumentTypeUsageTypeValue = getDefaultPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType);
 
                     defaultPartyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.FALSE);
                     updatePartyTypeDocumentTypeUsageTypeFromValue(defaultPartyTypeDocumentTypeUsageTypeValue, false, updatedBy);
@@ -2104,24 +2084,24 @@ public class DocumentControl
     }
 
     private void deletePartyTypeDocumentTypeUsageType(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType, boolean checkDefault, BasePK deletedBy) {
-        PartyType partyType = partyTypeDocumentTypeUsageType.getPartyType();
+        var partyType = partyTypeDocumentTypeUsageType.getPartyType();
 
         partyTypeDocumentTypeUsageType.setThruTime(session.START_TIME_LONG);
         partyTypeDocumentTypeUsageType.store();
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            PartyTypeDocumentTypeUsageType defaultPartyTypeDocumentTypeUsageType = getDefaultPartyTypeDocumentTypeUsageType(partyType);
+            var defaultPartyTypeDocumentTypeUsageType = getDefaultPartyTypeDocumentTypeUsageType(partyType);
 
             if(defaultPartyTypeDocumentTypeUsageType == null) {
-                List<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes = getPartyTypeDocumentTypeUsageTypesByPartyTypeForUpdate(partyType);
+                var partyTypeDocumentTypeUsageTypes = getPartyTypeDocumentTypeUsageTypesByPartyTypeForUpdate(partyType);
 
                 if(!partyTypeDocumentTypeUsageTypes.isEmpty()) {
-                    Iterator<PartyTypeDocumentTypeUsageType> iter = partyTypeDocumentTypeUsageTypes.iterator();
+                    var iter = partyTypeDocumentTypeUsageTypes.iterator();
                     if(iter.hasNext()) {
                         defaultPartyTypeDocumentTypeUsageType = iter.next();
                     }
-                    PartyTypeDocumentTypeUsageTypeValue partyTypeDocumentTypeUsageTypeDetailValue = defaultPartyTypeDocumentTypeUsageType.getPartyTypeDocumentTypeUsageTypeValue().clone();
+                    var partyTypeDocumentTypeUsageTypeDetailValue = defaultPartyTypeDocumentTypeUsageType.getPartyTypeDocumentTypeUsageTypeValue().clone();
 
                     partyTypeDocumentTypeUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updatePartyTypeDocumentTypeUsageTypeFromValue(partyTypeDocumentTypeUsageTypeDetailValue, false, deletedBy);
@@ -2157,12 +2137,12 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
 
     public PartyDocument createPartyDocument(Party party, Document document, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        DocumentType documentType = document.getLastDetail().getDocumentType();
-        PartyDocument defaultPartyDocument = getDefaultPartyDocument(party, documentType);
-        boolean defaultFound = defaultPartyDocument != null;
+        var documentType = document.getLastDetail().getDocumentType();
+        var defaultPartyDocument = getDefaultPartyDocument(party, documentType);
+        var defaultFound = defaultPartyDocument != null;
 
         if(defaultFound && isDefault) {
-            PartyDocumentValue defaultPartyDocumentValue = getDefaultPartyDocumentValueForUpdate(party, documentType);
+            var defaultPartyDocumentValue = getDefaultPartyDocumentValueForUpdate(party, documentType);
 
             defaultPartyDocumentValue.setIsDefault(Boolean.FALSE);
             updatePartyDocumentFromValue(defaultPartyDocumentValue, false, createdBy);
@@ -2170,7 +2150,7 @@ public class DocumentControl
             isDefault = Boolean.TRUE;
         }
 
-        PartyDocument partyDocument = PartyDocumentFactory.getInstance().create(party, document, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyDocument = PartyDocumentFactory.getInstance().create(party, document, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDocument.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2369,7 +2349,7 @@ public class DocumentControl
 
     public List<PartyDocumentTransfer> getPartyDocumentTransfers(UserVisit userVisit, Collection<PartyDocument> partyDocuments) {
         List<PartyDocumentTransfer> partyDocumentTransfers = new ArrayList<>(partyDocuments.size());
-        PartyDocumentTransferCache partyDocumentTransferCache = getDocumentTransferCaches(userVisit).getPartyDocumentTransferCache();
+        var partyDocumentTransferCache = getDocumentTransferCaches(userVisit).getPartyDocumentTransferCache();
 
         partyDocuments.forEach((partyDocument) ->
                 partyDocumentTransfers.add(partyDocumentTransferCache.getPartyDocumentTransfer(partyDocument))
@@ -2384,7 +2364,7 @@ public class DocumentControl
 
     public DocumentChoicesBean getPartyDocumentChoices(String defaultDocumentChoice, Language language, boolean allowNullChoice, Party party,
             DocumentType documentType) {
-        List<PartyDocument> partyDocuments = getPartyDocumentsByPartyAndDocumentType(party, documentType);
+        var partyDocuments = getPartyDocumentsByPartyAndDocumentType(party, documentType);
         var size = partyDocuments.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2400,8 +2380,8 @@ public class DocumentControl
         }
 
         for(var partyDocument : partyDocuments) {
-            Document document = partyDocument.getDocument();
-            DocumentDetail documentDetail = document.getLastDetail();
+            var document = partyDocument.getDocument();
+            var documentDetail = document.getLastDetail();
 
             var label = getBestDocumentDescription(document, language);
             var value = documentDetail.getDocumentName();
@@ -2420,26 +2400,26 @@ public class DocumentControl
 
     private void updatePartyDocumentFromValue(PartyDocumentValue partyDocumentValue, boolean checkDefault, BasePK updatedBy) {
         if(partyDocumentValue.hasBeenModified()) {
-            PartyDocument partyDocument = PartyDocumentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyDocumentValue.getPrimaryKey());
+            var partyDocument = PartyDocumentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyDocumentValue.getPrimaryKey());
 
             partyDocument.setThruTime(session.START_TIME_LONG);
             partyDocument.store();
 
-            Party party = partyDocument.getParty();
-            PartyPK partyPK = party.getPrimaryKey(); // Not updated
-            Document document = partyDocument.getDocument();
-            DocumentPK documentPK = document.getPrimaryKey(); // Not updated
-            Boolean isDefault = partyDocumentValue.getIsDefault();
-            Integer sortOrder = partyDocumentValue.getSortOrder();
+            var party = partyDocument.getParty();
+            var partyPK = party.getPrimaryKey(); // Not updated
+            var document = partyDocument.getDocument();
+            var documentPK = document.getPrimaryKey(); // Not updated
+            var isDefault = partyDocumentValue.getIsDefault();
+            var sortOrder = partyDocumentValue.getSortOrder();
 
             if(checkDefault) {
-                DocumentType documentType = document.getLastDetail().getDocumentType();
-                PartyDocument defaultPartyDocument = getDefaultPartyDocument(party, documentType);
-                boolean defaultFound = defaultPartyDocument != null && !defaultPartyDocument.equals(partyDocument);
+                var documentType = document.getLastDetail().getDocumentType();
+                var defaultPartyDocument = getDefaultPartyDocument(party, documentType);
+                var defaultFound = defaultPartyDocument != null && !defaultPartyDocument.equals(partyDocument);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyDocumentValue defaultPartyDocumentValue = getDefaultPartyDocumentValueForUpdate(party, documentType);
+                    var defaultPartyDocumentValue = getDefaultPartyDocumentValueForUpdate(party, documentType);
 
                     defaultPartyDocumentValue.setIsDefault(Boolean.FALSE);
                     updatePartyDocumentFromValue(defaultPartyDocumentValue, false, updatedBy);
@@ -2461,8 +2441,8 @@ public class DocumentControl
     }
 
     private void deletePartyDocument(PartyDocument partyDocument, boolean checkDefault, BasePK deletedBy) {
-        Party party = partyDocument.getParty();
-        Document document = partyDocument.getDocumentForUpdate();
+        var party = partyDocument.getParty();
+        var document = partyDocument.getDocumentForUpdate();
 
         deleteDocument(document, deletedBy);
 
@@ -2471,18 +2451,18 @@ public class DocumentControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            DocumentType documentType = document.getLastDetail().getDocumentType();
-            PartyDocument defaultPartyDocument = getDefaultPartyDocument(party, documentType);
+            var documentType = document.getLastDetail().getDocumentType();
+            var defaultPartyDocument = getDefaultPartyDocument(party, documentType);
 
             if(defaultPartyDocument == null) {
-                List<PartyDocument> partyDocuments = getPartyDocumentsByPartyAndDocumentTypeForUpdate(party, documentType);
+                var partyDocuments = getPartyDocumentsByPartyAndDocumentTypeForUpdate(party, documentType);
 
                 if(!partyDocuments.isEmpty()) {
-                    Iterator<PartyDocument> iter = partyDocuments.iterator();
+                    var iter = partyDocuments.iterator();
                     if(iter.hasNext()) {
                         defaultPartyDocument = iter.next();
                     }
-                    PartyDocumentValue partyDocumentDetailValue = defaultPartyDocument.getPartyDocumentValue().clone();
+                    var partyDocumentDetailValue = defaultPartyDocument.getPartyDocumentValue().clone();
 
                     partyDocumentDetailValue.setIsDefault(Boolean.TRUE);
                     updatePartyDocumentFromValue(partyDocumentDetailValue, false, deletedBy);

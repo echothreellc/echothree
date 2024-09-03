@@ -51,8 +51,8 @@ public class Step2Action
     public ActionForward executeAction(ActionMapping mapping, Step2ActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactMechanismTypeName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_TYPE_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactMechanismTypeName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_TYPE_NAME);
         String countryName = null;
 
         if(partyName == null) {
@@ -70,8 +70,8 @@ public class Step2Action
             actionForm.setContactMechanismTypeName(contactMechanismTypeName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupVendor(request, partyName);
         } else {

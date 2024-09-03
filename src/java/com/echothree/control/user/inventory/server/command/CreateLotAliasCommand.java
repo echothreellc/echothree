@@ -22,9 +22,6 @@ import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.Lot;
-import com.echothree.model.data.inventory.server.entity.LotAliasType;
-import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -38,7 +35,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateLotAliasCommand
@@ -70,22 +66,22 @@ public class CreateLotAliasCommand
     @Override
     protected BaseResult execute() {
         var lotControl = Session.getModelController(LotControl.class);
-        String lotName = form.getLotName();
-        Lot lot = lotControl.getLotByName(lotName);
+        var lotName = form.getLotName();
+        var lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
             var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            String lotAliasTypeName = form.getLotAliasTypeName();
-            LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+            var lotAliasTypeName = form.getLotAliasTypeName();
+            var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
             if(lotAliasType != null) {
-                LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
-                String validationPattern = lotAliasTypeDetail.getValidationPattern();
-                String alias = form.getAlias();
+                var lotAliasTypeDetail = lotAliasType.getLastDetail();
+                var validationPattern = lotAliasTypeDetail.getValidationPattern();
+                var alias = form.getAlias();
 
                 if(validationPattern != null) {
-                    Pattern pattern = Pattern.compile(validationPattern);
-                    Matcher m = pattern.matcher(alias);
+                    var pattern = Pattern.compile(validationPattern);
+                    var m = pattern.matcher(alias);
 
                     if(!m.matches()) {
                         addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);

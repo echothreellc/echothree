@@ -17,12 +17,9 @@
 package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainChoicesForm;
 import com.echothree.control.user.chain.common.result.GetChainChoicesResult;
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.common.choice.ChainChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -51,16 +48,16 @@ public class AddActionForm
     private void setupConfirmationRequestChainChoices() {
         if(confirmationRequestChainChoices == null) {
             try {
-                GetChainChoicesForm commandForm = ChainUtil.getHome().getGetChainChoicesForm();
+                var commandForm = ChainUtil.getHome().getGetChainChoicesForm();
 
                 commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
                 commandForm.setChainTypeName(ChainConstants.ChainType_CONFIRMATION_REQUEST);
                 commandForm.setDefaultChainChoice(confirmationRequestChainChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetChainChoicesResult getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
+                var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
                 confirmationRequestChainChoices = getPartyContactListStatusChoicesResult.getChainChoices();
 
                 if(confirmationRequestChainChoice == null) {
@@ -75,16 +72,16 @@ public class AddActionForm
     private void setupSubscribeChainChoices() {
         if(subscribeChainChoices == null) {
             try {
-                GetChainChoicesForm commandForm = ChainUtil.getHome().getGetChainChoicesForm();
+                var commandForm = ChainUtil.getHome().getGetChainChoicesForm();
 
                 commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
                 commandForm.setChainTypeName(ChainConstants.ChainType_SUBSCRIBE);
                 commandForm.setDefaultChainChoice(subscribeChainChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetChainChoicesResult getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
+                var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
                 subscribeChainChoices = getPartyContactListStatusChoicesResult.getChainChoices();
 
                 if(subscribeChainChoice == null) {
@@ -99,16 +96,16 @@ public class AddActionForm
     private void setupUnsubscribeChainChoices() {
         if(unsubscribeChainChoices == null) {
             try {
-                GetChainChoicesForm commandForm = ChainUtil.getHome().getGetChainChoicesForm();
+                var commandForm = ChainUtil.getHome().getGetChainChoicesForm();
 
                 commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
                 commandForm.setChainTypeName(ChainConstants.ChainType_UNSUBSCRIBE);
                 commandForm.setDefaultChainChoice(unsubscribeChainChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetChainChoicesResult getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
+                var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
                 unsubscribeChainChoices = getPartyContactListStatusChoicesResult.getChainChoices();
 
                 if(unsubscribeChainChoice == null) {

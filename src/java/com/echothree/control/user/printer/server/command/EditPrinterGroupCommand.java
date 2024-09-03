@@ -29,10 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
-import com.echothree.model.data.printer.server.entity.PrinterGroupDescription;
-import com.echothree.model.data.printer.server.entity.PrinterGroupDetail;
-import com.echothree.model.data.printer.server.value.PrinterGroupDescriptionValue;
-import com.echothree.model.data.printer.server.value.PrinterGroupDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -94,8 +90,8 @@ public class EditPrinterGroupCommand
     @Override
     public PrinterGroup getEntity(EditPrinterGroupResult result) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterGroup printerGroup = null;
-        String printerGroupName = spec.getPrinterGroupName();
+        PrinterGroup printerGroup;
+        var printerGroupName = spec.getPrinterGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
@@ -127,9 +123,9 @@ public class EditPrinterGroupCommand
     @Override
     public void doLock(PrinterGroupEdit edit, PrinterGroup printerGroup) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-        PrinterGroupDescription printerGroupDescription = printerControl.getPrinterGroupDescription(printerGroup, getPreferredLanguage());
-        PrinterGroupDetail printerGroupDetail = printerGroup.getLastDetail();
+        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+        var printerGroupDescription = printerControl.getPrinterGroupDescription(printerGroup, getPreferredLanguage());
+        var printerGroupDetail = printerGroup.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
 
         edit.setPrinterGroupName(printerGroupDetail.getPrinterGroupName());
@@ -149,13 +145,13 @@ public class EditPrinterGroupCommand
     @Override
     public void canUpdate(PrinterGroup printerGroup) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupName = edit.getPrinterGroupName();
-        PrinterGroup duplicatePrinterGroup = printerControl.getPrinterGroupByName(printerGroupName);
+        var printerGroupName = edit.getPrinterGroupName();
+        var duplicatePrinterGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(duplicatePrinterGroup != null && !printerGroup.equals(duplicatePrinterGroup)) {
             addExecutionError(ExecutionErrors.DuplicatePrinterGroupName.name(), printerGroupName);
         } else {
-            UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
 
             keepPrintedJobsTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                     edit.getKeepPrintedJobsTime(), edit.getKeepPrintedJobsTimeUnitOfMeasureTypeName(),
@@ -168,9 +164,9 @@ public class EditPrinterGroupCommand
     public void doUpdate(PrinterGroup printerGroup) {
         var printerControl = Session.getModelController(PrinterControl.class);
         var partyPK = getPartyPK();
-        PrinterGroupDetailValue printerGroupDetailValue = printerControl.getPrinterGroupDetailValueForUpdate(printerGroup);
-        PrinterGroupDescription printerGroupDescription = printerControl.getPrinterGroupDescriptionForUpdate(printerGroup, getPreferredLanguage());
-        String description = edit.getDescription();
+        var printerGroupDetailValue = printerControl.getPrinterGroupDetailValueForUpdate(printerGroup);
+        var printerGroupDescription = printerControl.getPrinterGroupDescriptionForUpdate(printerGroup, getPreferredLanguage());
+        var description = edit.getDescription();
 
         printerGroupDetailValue.setPrinterGroupName(edit.getPrinterGroupName());
         printerGroupDetailValue.setKeepPrintedJobsTime(keepPrintedJobsTime);
@@ -184,7 +180,7 @@ public class EditPrinterGroupCommand
         } else if(printerGroupDescription != null && description == null) {
             printerControl.deletePrinterGroupDescription(printerGroupDescription, partyPK);
         } else if(printerGroupDescription != null && description != null) {
-            PrinterGroupDescriptionValue printerGroupDescriptionValue = printerControl.getPrinterGroupDescriptionValue(printerGroupDescription);
+            var printerGroupDescriptionValue = printerControl.getPrinterGroupDescriptionValue(printerGroupDescription);
 
             printerGroupDescriptionValue.setDescription(description);
             printerControl.updatePrinterGroupDescriptionFromValue(printerGroupDescriptionValue, partyPK);

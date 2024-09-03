@@ -18,9 +18,7 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumMimeTypesForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumMimeTypesResult;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetForumMimeTypesCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumMimeTypesResult result = ForumResultFactory.getGetForumMimeTypesResult();
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var result = ForumResultFactory.getGetForumMimeTypesResult();
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
             result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));

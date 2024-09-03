@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.form.GetShippingMethodForm;
 import com.echothree.control.user.shipping.common.result.GetShippingMethodResult;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,14 +54,14 @@ public class CommentAddAction
     
     public String getShippingMethodEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetShippingMethodForm commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
+        var commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
         
         commandForm.setShippingMethodName(actionForm.getShippingMethodName());
-        
-        CommandResult commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetShippingMethodResult result = (GetShippingMethodResult)executionResult.getResult();
-        ShippingMethodTransfer shippingMethod = result.getShippingMethod();
+
+        var commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetShippingMethodResult)executionResult.getResult();
+        var shippingMethod = result.getShippingMethod();
         
         request.setAttribute(AttributeConstants.SHIPPING_METHOD, shippingMethod);
         
@@ -83,7 +79,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getShippingMethodEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_SHIPPING_METHOD);

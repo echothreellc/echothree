@@ -21,7 +21,6 @@ import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.license.server.value.LicenseTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class SetDefaultLicenseTypeCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        String licenseTypeName = form.getLicenseTypeName();
-        LicenseTypeDetailValue licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueByNameForUpdate(licenseTypeName);
+        var licenseTypeName = form.getLicenseTypeName();
+        var licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueByNameForUpdate(licenseTypeName);
         
         if(licenseTypeDetailValue != null) {
             licenseTypeDetailValue.setIsDefault(Boolean.TRUE);

@@ -17,9 +17,7 @@
 package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchTypeDescriptionTransfer;
-import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.batch.server.entity.BatchTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,11 +31,11 @@ public class BatchTypeDescriptionTransferCache
     
     @Override
     public BatchTypeDescriptionTransfer getTransfer(BatchTypeDescription batchTypeDescription) {
-        BatchTypeDescriptionTransfer batchTypeDescriptionTransfer = get(batchTypeDescription);
+        var batchTypeDescriptionTransfer = get(batchTypeDescription);
         
         if(batchTypeDescriptionTransfer == null) {
-            BatchTypeTransfer batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchTypeDescription.getBatchType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, batchTypeDescription.getLanguage());
+            var batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchTypeDescription.getBatchType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, batchTypeDescription.getLanguage());
             
             batchTypeDescriptionTransfer = new BatchTypeDescriptionTransfer(languageTransfer, batchTypeTransfer, batchTypeDescription.getDescription());
             put(batchTypeDescription, batchTypeDescriptionTransfer);

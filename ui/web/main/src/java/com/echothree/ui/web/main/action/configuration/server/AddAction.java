@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.server;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateServerForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateServerForm commandForm = CoreUtil.getHome().getCreateServerForm();
+        var commandForm = CoreUtil.getHome().getCreateServerForm();
 
         commandForm.setServerName(actionForm.getServerName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationkind;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationKindForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationKindResult;
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-            GetCancellationKindForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindForm();
             
             commandForm.setCancellationKindName(cancellationKindName);
-            
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationKind(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationKindResult result = (GetCancellationKindResult)executionResult.getResult();
-            CancellationKindTransfer cancellationKindTransfer = result.getCancellationKind();
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationKind(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationKindResult)executionResult.getResult();
+            var cancellationKindTransfer = result.getCancellationKind();
             
             request.setAttribute(AttributeConstants.CANCELLATION_KIND, cancellationKindTransfer);
             forwardKey = ForwardConstants.DISPLAY;

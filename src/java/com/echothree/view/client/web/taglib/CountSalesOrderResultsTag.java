@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.CountSalesOrderResultsForm;
 import com.echothree.control.user.search.common.result.CountSalesOrderResultsResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -79,11 +76,11 @@ public class CountSalesOrderResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountSalesOrderResultsForm commandForm = SearchUtil.getHome().getCountSalesOrderResultsForm();
+            var commandForm = SearchUtil.getHome().getCountSalesOrderResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countSalesOrderResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countSalesOrderResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +88,8 @@ public class CountSalesOrderResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountSalesOrderResultsResult result = (CountSalesOrderResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountSalesOrderResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

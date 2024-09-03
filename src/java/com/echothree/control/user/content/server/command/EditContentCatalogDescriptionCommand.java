@@ -29,9 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDescription;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.value.ContentCatalogDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,17 +88,17 @@ public class EditContentCatalogDescriptionCommand
     public ContentCatalogDescription getEntity(EditContentCatalogDescriptionResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentCatalogDescription contentCatalogDescription = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = spec.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = spec.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 result.setContentCatalog(contentControl.getContentCatalogTransfer(getUserVisit(), contentCatalog));
 
@@ -148,7 +145,7 @@ public class EditContentCatalogDescriptionCommand
     @Override
     public void doUpdate(ContentCatalogDescription contentCatalogDescription) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentCatalogDescriptionValue contentCatalogDescriptionValue = contentControl.getContentCatalogDescriptionValue(contentCatalogDescription);
+        var contentCatalogDescriptionValue = contentControl.getContentCatalogDescriptionValue(contentCatalogDescription);
         contentCatalogDescriptionValue.setDescription(edit.getDescription());
 
         contentControl.updateContentCatalogDescriptionFromValue(contentCatalogDescriptionValue, getPartyPK());

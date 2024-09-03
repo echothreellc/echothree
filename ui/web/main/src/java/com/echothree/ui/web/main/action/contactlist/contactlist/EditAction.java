@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected ContactListSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContactListSpec spec = ContactListUtil.getHome().getContactListSpec();
+        var spec = ContactListUtil.getHome().getContactListSpec();
         
         spec.setContactListName(findParameter(request, ParameterConstants.ORIGINAL_CONTACT_LIST_NAME, actionForm.getOriginalContactListName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected ContactListEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContactListEdit edit = ContactListUtil.getHome().getContactListEdit();
+        var edit = ContactListUtil.getHome().getContactListEdit();
 
         edit.setContactListName(actionForm.getContactListName());
         edit.setContactListGroupName(actionForm.getContactListGroupChoice());

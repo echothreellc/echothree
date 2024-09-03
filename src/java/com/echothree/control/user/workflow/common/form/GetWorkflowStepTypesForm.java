@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.workflow.common.form;
 
-import com.echothree.control.user.selector.common.spec.SelectorKindSpec;
 import com.echothree.util.common.form.BaseForm;
 
 public interface GetWorkflowStepTypesForm

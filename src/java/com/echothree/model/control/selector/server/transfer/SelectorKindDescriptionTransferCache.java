@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.selector.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorKindDescriptionTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class SelectorKindDescriptionTransferCache
     }
     
     public SelectorKindDescriptionTransfer getSelectorKindDescriptionTransfer(SelectorKindDescription selectorKindDescription) {
-        SelectorKindDescriptionTransfer selectorKindDescriptionTransfer = get(selectorKindDescription);
+        var selectorKindDescriptionTransfer = get(selectorKindDescription);
         
         if(selectorKindDescriptionTransfer == null) {
-            SelectorKindTransfer selectorKindTransfer = selectorControl.getSelectorKindTransfer(userVisit, selectorKindDescription.getSelectorKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorKindDescription.getLanguage());
+            var selectorKindTransfer = selectorControl.getSelectorKindTransfer(userVisit, selectorKindDescription.getSelectorKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorKindDescription.getLanguage());
             
             selectorKindDescriptionTransfer = new SelectorKindDescriptionTransfer(languageTransfer, selectorKindTransfer, selectorKindDescription.getDescription());
             put(selectorKindDescription, selectorKindDescriptionTransfer);

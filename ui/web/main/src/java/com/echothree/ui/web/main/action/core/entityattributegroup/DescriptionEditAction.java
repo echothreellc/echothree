@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected EntityAttributeGroupDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        EntityAttributeGroupDescriptionSpec spec = CoreUtil.getHome().getEntityAttributeGroupDescriptionSpec();
+        var spec = CoreUtil.getHome().getEntityAttributeGroupDescriptionSpec();
         
         spec.setEntityAttributeGroupName(findParameter(request, ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getEntityAttributeGroupName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected EntityAttributeGroupDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        EntityAttributeGroupDescriptionEdit edit = CoreUtil.getHome().getEntityAttributeGroupDescriptionEdit();
+        var edit = CoreUtil.getHome().getEntityAttributeGroupDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

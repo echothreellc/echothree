@@ -17,14 +17,12 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPartyPaymentMethodsForm;
-import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodsResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,14 +66,14 @@ public class GetPartyPaymentMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyPaymentMethodsResult result = PaymentResultFactory.getGetPartyPaymentMethodsResult();
-        Party party = getParty();
-        String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+        var result = PaymentResultFactory.getGetPartyPaymentMethodsResult();
+        var party = getParty();
+        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
         // If the caller is a CUSTOMER, then they're the Party. If they're not, the PartyName parameter is
         // required, and we'll look them up.
         if(!partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-            String partyName = form.getPartyName();
+            var partyName = form.getPartyName();
 
             if(partyName == null) {
                 addExecutionError(ExecutionErrors.PartyNameRequired.name());

@@ -18,7 +18,6 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.SearchWarehousesForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.control.user.search.common.result.SearchWarehousesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.common.SearchKinds;
@@ -28,11 +27,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.search.WarehouseSearchEvaluator;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -81,22 +76,22 @@ public class SearchWarehousesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchWarehousesResult result = SearchResultFactory.getSearchWarehousesResult();
+        var result = SearchResultFactory.getSearchWarehousesResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.WAREHOUSE.name());
+        var searchKind = searchControl.getSearchKindByName(SearchKinds.WAREHOUSE.name());
         
         if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
-                String partyAliasTypeName = form.getPartyAliasTypeName();
-                String alias = form.getAlias();
+                var partyAliasTypeName = form.getPartyAliasTypeName();
+                var alias = form.getAlias();
                 PartyAliasType partyAliasType = null;
 
                 if(partyAliasTypeName != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.WAREHOUSE.name());
+                    var partyType = partyControl.getPartyTypeByName(PartyTypes.WAREHOUSE.name());
 
                     if(partyType != null) {
                         partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
@@ -110,14 +105,14 @@ public class SearchWarehousesCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    SearchLogic searchLogic = SearchLogic.getInstance();
-                    UserVisit userVisit = getUserVisit();
-                    WarehouseSearchEvaluator warehouseSearchEvaluator = new WarehouseSearchEvaluator(userVisit, searchType,
+                    var searchLogic = SearchLogic.getInstance();
+                    var userVisit = getUserVisit();
+                    var warehouseSearchEvaluator = new WarehouseSearchEvaluator(userVisit, searchType,
                             searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
                             searchLogic.getDefaultSearchSortDirection(null));
-                    String createdSince = form.getCreatedSince();
-                    String modifiedSince = form.getModifiedSince();
-                    String fields = form.getFields();
+                    var createdSince = form.getCreatedSince();
+                    var modifiedSince = form.getModifiedSince();
+                    var fields = form.getFields();
 
                     warehouseSearchEvaluator.setQ(this, form.getQ());
                     warehouseSearchEvaluator.setPartyAliasType(partyAliasType);

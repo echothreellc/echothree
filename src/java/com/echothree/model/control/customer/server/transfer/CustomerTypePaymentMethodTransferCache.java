@@ -17,9 +17,7 @@
 package com.echothree.model.control.customer.server.transfer;
 
 import com.echothree.model.control.customer.common.transfer.CustomerTypePaymentMethodTransfer;
-import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,14 +34,14 @@ public class CustomerTypePaymentMethodTransferCache
     }
     
     public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(CustomerTypePaymentMethod customerTypePaymentMethod) {
-        CustomerTypePaymentMethodTransfer customerTypePaymentMethodTransfer = get(customerTypePaymentMethod);
+        var customerTypePaymentMethodTransfer = get(customerTypePaymentMethod);
         
         if(customerTypePaymentMethodTransfer == null) {
-            CustomerTypeTransfer customerType = customerControl.getCustomerTypeTransfer(userVisit, customerTypePaymentMethod.getCustomerType());
-            PaymentMethodTransfer paymentMethod = paymentMethodControl.getPaymentMethodTransfer(userVisit, customerTypePaymentMethod.getPaymentMethod());
-            Integer defaultSelectionPriority = customerTypePaymentMethod.getDefaultSelectionPriority();
-            Boolean isDefault = customerTypePaymentMethod.getIsDefault();
-            Integer sortOrder = customerTypePaymentMethod.getSortOrder();
+            var customerType = customerControl.getCustomerTypeTransfer(userVisit, customerTypePaymentMethod.getCustomerType());
+            var paymentMethod = paymentMethodControl.getPaymentMethodTransfer(userVisit, customerTypePaymentMethod.getPaymentMethod());
+            var defaultSelectionPriority = customerTypePaymentMethod.getDefaultSelectionPriority();
+            var isDefault = customerTypePaymentMethod.getIsDefault();
+            var sortOrder = customerTypePaymentMethod.getSortOrder();
             
             customerTypePaymentMethodTransfer = new CustomerTypePaymentMethodTransfer(customerType, paymentMethod, defaultSelectionPriority, isDefault,
                     sortOrder);

@@ -17,11 +17,9 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPreferredDateTimeFormatForm;
-import com.echothree.control.user.party.common.result.GetPreferredDateTimeFormatResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
@@ -49,8 +47,8 @@ public class GetPreferredDateTimeFormatCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPreferredDateTimeFormatResult result = PartyResultFactory.getGetPreferredDateTimeFormatResult();
-        DateTimeFormat dateTimeFormat = getPreferredDateTimeFormat();
+        var result = PartyResultFactory.getGetPreferredDateTimeFormatResult();
+        var dateTimeFormat = getPreferredDateTimeFormat();
 
         result.setPreferredDateTimeFormat(partyControl.getDateTimeFormatTransfer(getUserVisit(), dateTimeFormat));
         sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

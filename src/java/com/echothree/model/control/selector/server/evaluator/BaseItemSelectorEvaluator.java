@@ -18,17 +18,9 @@ package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.selector.common.SelectorNodeTypes;
-import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemCategory;
-import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
-import com.echothree.model.data.selector.server.entity.SelectorNodeItemAccountingCategory;
-import com.echothree.model.data.selector.server.entity.SelectorNodeItemCategory;
-import com.echothree.model.data.selector.server.entity.SelectorNodeItemPurchasingCategory;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
-import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
@@ -44,10 +36,10 @@ public class BaseItemSelectorEvaluator
     }
     
     private Boolean evaluateItemCategory(final SelectorNodeDetail snd) {
-        SelectorNodeItemCategory selectorNodeItemCategory = cachedSelector.getSelectorNodeItemCategoryFromSelectorNodeDetail(snd);
-        ItemCategory itemCategory = selectorNodeItemCategory.getItemCategory();
-        ItemDetail itemDetail = item.getLastDetail();
-        boolean tempResult = selectorNodeItemCategory.getItemCategory().equals(itemCategory);
+        var selectorNodeItemCategory = cachedSelector.getSelectorNodeItemCategoryFromSelectorNodeDetail(snd);
+        var itemCategory = selectorNodeItemCategory.getItemCategory();
+        var itemDetail = item.getLastDetail();
+        var tempResult = selectorNodeItemCategory.getItemCategory().equals(itemCategory);
         
         if(BaseSelectorEvaluatorDebugFlags.BaseItemSelectorEvaluator) {
             log.info("--- looking for itemCategory = " + selectorNodeItemCategory.getItemCategory().getLastDetail().getItemCategoryName());
@@ -74,10 +66,10 @@ public class BaseItemSelectorEvaluator
     }
     
     private Boolean evaluateItemAccountingCategory(final SelectorNodeDetail snd) {
-        SelectorNodeItemAccountingCategory selectorNodeItemAccountingCategory = cachedSelector.getSelectorNodeItemAccountingCategoryFromSelectorNodeDetail(snd);
-        ItemAccountingCategory itemAccountingCategory = selectorNodeItemAccountingCategory.getItemAccountingCategory();
-        ItemDetail itemDetail = item.getLastDetail();
-        boolean tempResult = selectorNodeItemAccountingCategory.getItemAccountingCategory().equals(itemAccountingCategory);
+        var selectorNodeItemAccountingCategory = cachedSelector.getSelectorNodeItemAccountingCategoryFromSelectorNodeDetail(snd);
+        var itemAccountingCategory = selectorNodeItemAccountingCategory.getItemAccountingCategory();
+        var itemDetail = item.getLastDetail();
+        var tempResult = selectorNodeItemAccountingCategory.getItemAccountingCategory().equals(itemAccountingCategory);
         
         if(BaseSelectorEvaluatorDebugFlags.BaseItemSelectorEvaluator) {
             log.info("--- looking for itemAccountingCategory = " + selectorNodeItemAccountingCategory.getItemAccountingCategory().getLastDetail().getItemAccountingCategoryName());
@@ -104,10 +96,10 @@ public class BaseItemSelectorEvaluator
     }
     
     private Boolean evaluateItemPurchasingCategory(final SelectorNodeDetail snd) {
-        SelectorNodeItemPurchasingCategory selectorNodeItemPurchasingCategory = cachedSelector.getSelectorNodeItemPurchasingCategoryFromSelectorNodeDetail(snd);
-        ItemPurchasingCategory itemPurchasingCategory = selectorNodeItemPurchasingCategory.getItemPurchasingCategory();
-        ItemDetail itemDetail = item.getLastDetail();
-        boolean tempResult = selectorNodeItemPurchasingCategory.getItemPurchasingCategory().equals(itemPurchasingCategory);
+        var selectorNodeItemPurchasingCategory = cachedSelector.getSelectorNodeItemPurchasingCategoryFromSelectorNodeDetail(snd);
+        var itemPurchasingCategory = selectorNodeItemPurchasingCategory.getItemPurchasingCategory();
+        var itemDetail = item.getLastDetail();
+        var tempResult = selectorNodeItemPurchasingCategory.getItemPurchasingCategory().equals(itemPurchasingCategory);
         
         if(BaseSelectorEvaluatorDebugFlags.BaseItemSelectorEvaluator) {
             log.info("--- looking for itemPurchasingCategory = " + selectorNodeItemPurchasingCategory.getItemPurchasingCategory().getLastDetail().getItemPurchasingCategoryName());
@@ -140,8 +132,8 @@ public class BaseItemSelectorEvaluator
         Boolean result;
         
         if(snd != null) {
-            SelectorNodeType snt = snd.getSelectorNodeType();
-            String sntn = snt.getSelectorNodeTypeName();
+            var snt = snd.getSelectorNodeType();
+            var sntn = snt.getSelectorNodeTypeName();
             
             if(sntn.equals(SelectorNodeTypes.ITEM_CATEGORY.name())) {
                 result = evaluateItemCategory(snd);
@@ -170,8 +162,8 @@ public class BaseItemSelectorEvaluator
         this.cachedSelector = cachedSelector;
         this.entityInstance = entityInstance;
         this.item = item;
-        
-        Boolean result = evaluateSelectorNode(cachedSelector.getRootSelectorNodeDetail());
+
+        var result = evaluateSelectorNode(cachedSelector.getRootSelectorNodeDetail());
         
         this.item = null;
         this.entityInstance = null;

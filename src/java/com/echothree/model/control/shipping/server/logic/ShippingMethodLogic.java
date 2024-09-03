@@ -18,7 +18,6 @@ package com.echothree.model.control.shipping.server.logic;
 
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
-import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
 import com.echothree.model.control.selector.server.evaluator.ShippingMethodItemSelectorEvaluator;
@@ -26,7 +25,6 @@ import com.echothree.model.control.shipping.common.exception.ItemNotAcceptibleFo
 import com.echothree.model.control.shipping.common.exception.UnknownShippingMethodNameException;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -53,7 +51,7 @@ public class ShippingMethodLogic
 
     private ShippingMethod getShippingMethodByName(final ExecutionErrorAccumulator eea, final String shippingMethodName, final EntityPermission entityPermission) {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        ShippingMethod shippingMethod = null;
+        ShippingMethod shippingMethod;
 
         shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName, entityPermission);
 
@@ -74,10 +72,10 @@ public class ShippingMethodLogic
     
     public void checkAcceptanceOfItem(final Session session, final ExecutionErrorAccumulator eea, final SelectorCache selectorCache,
             final ShippingMethod shippingMethod, final Item item, final BasePK evaluatedBy) {
-        Selector selector = shippingMethod.getLastDetail().getItemSelector();
+        var selector = shippingMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            CachedSelector cachedSelector = selectorCache.getSelector(selector);
+            var cachedSelector = selectorCache.getSelector(selector);
             
             if(!new ShippingMethodItemSelectorEvaluator(session, evaluatedBy).evaluate(cachedSelector, item)) {
                 handleExecutionError(ItemNotAcceptibleForShippingMethodException.class, eea, ExecutionErrors.ItemNotAcceptibleForShippingMethod.name(),
@@ -88,10 +86,10 @@ public class ShippingMethodLogic
     
     public void checkAcceptanceOfItem(final Session session, final ExecutionErrorAccumulator eea, final ShippingMethod shippingMethod, final Item item,
             final BasePK evaluatedBy) {
-        Selector selector = shippingMethod.getLastDetail().getItemSelector();
+        var selector = shippingMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+            var selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                     SelectorTypes.SHIPPING_METHOD.name());
             
             checkAcceptanceOfItem(session, eea, selectorCache, shippingMethod, item, evaluatedBy);
@@ -100,10 +98,10 @@ public class ShippingMethodLogic
     
     public void checkAcceptanceOfItems(final Session session, final ExecutionErrorAccumulator eea, final ShippingMethod shippingMethod, final Set<Item> items,
             final BasePK evaluatedBy) {
-        Selector selector = shippingMethod.getLastDetail().getItemSelector();
+        var selector = shippingMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+            var selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                     SelectorTypes.SHIPPING_METHOD.name());
             
             items.forEach((item) -> {

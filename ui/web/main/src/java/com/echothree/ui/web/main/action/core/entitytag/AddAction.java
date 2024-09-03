@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entitytag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.CreateEntityTagForm;
-import com.echothree.control.user.tag.common.form.GetTagScopeForm;
 import com.echothree.control.user.tag.common.result.GetTagScopeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,13 +58,13 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagScopeForm commandForm = TagUtil.getHome().getGetTagScopeForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
 
-        CommandResult commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTagScopeResult result = (GetTagScopeResult)executionResult.getResult();
+        var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTagScopeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
     }
@@ -75,7 +72,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEntityTagForm commandForm = TagUtil.getHome().getCreateEntityTagForm();
+        var commandForm = TagUtil.getHome().getCreateEntityTagForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setEntityRef(actionForm.getEntityRef());

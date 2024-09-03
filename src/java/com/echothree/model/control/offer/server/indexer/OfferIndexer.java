@@ -26,7 +26,6 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferDetail;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import org.apache.lucene.analysis.Analyzer;
@@ -57,8 +56,8 @@ public class OfferIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final Offer offer) {
-        OfferDetail offerDetail = offer.getLastDetail();
-        String description = offerControl.getBestOfferDescription(offer, language);
+        var offerDetail = offer.getLastDetail();
+        var description = offerControl.getBestOfferDescription(offer, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, offer.getPrimaryKey());
 

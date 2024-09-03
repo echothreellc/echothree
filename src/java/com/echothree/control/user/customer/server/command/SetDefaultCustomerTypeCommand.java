@@ -21,7 +21,6 @@ import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.customer.server.value.CustomerTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultCustomerTypeCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerTypeDetailValue customerTypeDetailValue = customerControl.getCustomerTypeDetailValueByNameForUpdate(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerTypeDetailValue = customerControl.getCustomerTypeDetailValueByNameForUpdate(customerTypeName);
         
         if(customerTypeDetailValue != null) {
             customerTypeDetailValue.setIsDefault(Boolean.TRUE);

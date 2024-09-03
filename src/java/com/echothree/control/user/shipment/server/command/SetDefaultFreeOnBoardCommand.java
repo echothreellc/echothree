@@ -21,7 +21,6 @@ import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.shipment.server.value.FreeOnBoardDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultFreeOnBoardCommand
     @Override
     protected BaseResult execute() {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        String freeOnBoardName = form.getFreeOnBoardName();
-        FreeOnBoardDetailValue freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueByNameForUpdate(freeOnBoardName);
+        var freeOnBoardName = form.getFreeOnBoardName();
+        var freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueByNameForUpdate(freeOnBoardName);
         
         if(freeOnBoardDetailValue != null) {
             freeOnBoardDetailValue.setIsDefault(Boolean.TRUE);

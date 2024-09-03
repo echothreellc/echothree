@@ -19,7 +19,6 @@ package com.echothree.model.control.security.server.transfer;
 import com.echothree.model.control.security.common.transfer.PartySecurityRoleTemplateTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PartySecurityRoleTemplateTransferCache
@@ -33,14 +32,14 @@ public class PartySecurityRoleTemplateTransferCache
     }
     
     public PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplateTransfer(PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        PartySecurityRoleTemplateTransfer partySecurityRoleTemplateTransfer = get(partySecurityRoleTemplate);
+        var partySecurityRoleTemplateTransfer = get(partySecurityRoleTemplate);
         
         if(partySecurityRoleTemplateTransfer == null) {
-            PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
-            String partySecurityRoleTemplateName = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
-            Boolean isDefault = partySecurityRoleTemplateDetail.getIsDefault();
-            Integer sortOrder = partySecurityRoleTemplateDetail.getSortOrder();
-            String description = securityControl.getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getLanguage());
+            var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
+            var partySecurityRoleTemplateName = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
+            var isDefault = partySecurityRoleTemplateDetail.getIsDefault();
+            var sortOrder = partySecurityRoleTemplateDetail.getSortOrder();
+            var description = securityControl.getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getLanguage());
             
             partySecurityRoleTemplateTransfer = new PartySecurityRoleTemplateTransfer(partySecurityRoleTemplateName, isDefault,
                     sortOrder, description);

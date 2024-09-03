@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceDescriptionTransfer;
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,12 +30,12 @@ public class SequenceDescriptionTransferCache
     }
     
     public SequenceDescriptionTransfer getSequenceDescriptionTransfer(SequenceDescription sequenceDescription) {
-        SequenceDescriptionTransfer sequenceDescriptionTransfer = get(sequenceDescription);
+        var sequenceDescriptionTransfer = get(sequenceDescription);
         
         if(sequenceDescriptionTransfer == null) {
-            SequenceTransferCache sequenceTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTransferCache();
-            SequenceTransfer sequenceTransfer = sequenceTransferCache.getSequenceTransfer(sequenceDescription.getSequence());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceDescription.getLanguage());
+            var sequenceTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTransferCache();
+            var sequenceTransfer = sequenceTransferCache.getSequenceTransfer(sequenceDescription.getSequence());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceDescription.getLanguage());
             
             sequenceDescriptionTransfer = new SequenceDescriptionTransfer(languageTransfer, sequenceTransfer, sequenceDescription.getDescription());
             put(sequenceDescription, sequenceDescriptionTransfer);

@@ -19,7 +19,6 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.EmployeeTypeDescriptionEdit;
 import com.echothree.control.user.employee.common.form.EditEmployeeTypeDescriptionForm;
-import com.echothree.control.user.employee.common.result.EditEmployeeTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.EmployeeTypeDescriptionSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
@@ -27,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.EmployeeType;
-import com.echothree.model.data.employee.server.entity.EmployeeTypeDescription;
-import com.echothree.model.data.employee.server.value.EmployeeTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,24 +74,24 @@ public class EditEmployeeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditEmployeeTypeDescriptionResult result = EmployeeResultFactory.getEditEmployeeTypeDescriptionResult();
-        String employeeTypeName = spec.getEmployeeTypeName();
-        EmployeeType employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
+        var result = EmployeeResultFactory.getEditEmployeeTypeDescriptionResult();
+        var employeeTypeName = spec.getEmployeeTypeName();
+        var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
         
         if(employeeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    EmployeeTypeDescription employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, language);
+                    var employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, language);
                     
                     if(employeeTypeDescription != null) {
                         result.setEmployeeTypeDescription(employeeControl.getEmployeeTypeDescriptionTransfer(getUserVisit(), employeeTypeDescription));
                         
                         if(lockEntity(employeeType)) {
-                            EmployeeTypeDescriptionEdit edit = EmployeeEditFactory.getEmployeeTypeDescriptionEdit();
+                            var edit = EmployeeEditFactory.getEmployeeTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(employeeTypeDescription.getDescription());
@@ -109,12 +104,12 @@ public class EditEmployeeTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownEmployeeTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    EmployeeTypeDescriptionValue employeeTypeDescriptionValue = employeeControl.getEmployeeTypeDescriptionValueForUpdate(employeeType, language);
+                    var employeeTypeDescriptionValue = employeeControl.getEmployeeTypeDescriptionValueForUpdate(employeeType, language);
                     
                     if(employeeTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(employeeType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 employeeTypeDescriptionValue.setDescription(description);
                                 

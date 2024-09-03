@@ -67,11 +67,11 @@ public class CreateGlAccountCategoryCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountCategoryName = form.getGlAccountCategoryName();
-        GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+        var glAccountCategoryName = form.getGlAccountCategoryName();
+        var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
         
         if(glAccountCategory == null) {
-            String parentGlAccountCategoryName = form.getParentGlAccountCategoryName();
+            var parentGlAccountCategoryName = form.getParentGlAccountCategoryName();
             GlAccountCategory parentGlAccountCategory = null;
             
             if(parentGlAccountCategoryName != null) {

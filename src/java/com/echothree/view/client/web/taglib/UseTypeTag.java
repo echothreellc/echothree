@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseTypeForm;
 import com.echothree.control.user.offer.common.result.GetUseTypeResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -92,15 +89,15 @@ public class UseTypeTag
     public int doStartTag()
             throws JspException {
         try {
-            GetUseTypeForm commandForm = OfferUtil.getHome().getGetUseTypeForm();
+            var commandForm = OfferUtil.getHome().getGetUseTypeForm();
             
             commandForm.setUseTypeName(useTypeName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUseType(getUserVisitPK(), commandForm);
+
+            var commandResult = OfferUtil.getHome().getUseType(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +105,8 @@ public class UseTypeTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseTypeResult result = (GetUseTypeResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseTypeResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getUseType(), scope);
             }

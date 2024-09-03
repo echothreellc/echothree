@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.DeleteLeaveForm;
-import com.echothree.control.user.employee.common.form.GetLeaveForm;
 import com.echothree.control.user.employee.common.result.GetLeaveResult;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -66,14 +62,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveForm commandForm = EmployeeUtil.getHome().getGetLeaveForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveForm();
         
         commandForm.setLeaveName(actionForm.getLeaveName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeave(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLeaveResult result = (GetLeaveResult)executionResult.getResult();
-        LeaveTransfer leave = result.getLeave();
+
+        var commandResult = EmployeeUtil.getHome().getLeave(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLeaveResult)executionResult.getResult();
+        var leave = result.getLeave();
         
         request.setAttribute(AttributeConstants.LEAVE, leave);
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), leave.getParty().getPartyName(),
@@ -83,7 +79,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteLeaveForm commandForm = EmployeeUtil.getHome().getDeleteLeaveForm();
+        var commandForm = EmployeeUtil.getHome().getDeleteLeaveForm();
 
         commandForm.setLeaveName(actionForm.getLeaveName());
 

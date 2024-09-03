@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
-import com.echothree.control.user.contact.common.form.CreatePostalAddressElementTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -48,9 +47,9 @@ public class PostalAddressElementTypesHandler
             String postalAddressElementTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("postalAddressElementTypeName"))
                     postalAddressElementTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class PostalAddressElementTypesHandler
             }
             
             try {
-                CreatePostalAddressElementTypeForm form = ContactFormFactory.getCreatePostalAddressElementTypeForm();
+                var form = ContactFormFactory.getCreatePostalAddressElementTypeForm();
                 
                 form.setPostalAddressElementTypeName(postalAddressElementTypeName);
                 form.setIsDefault(isDefault);

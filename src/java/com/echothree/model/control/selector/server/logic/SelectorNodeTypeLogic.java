@@ -21,7 +21,6 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.selector.common.exception.UnknownSelectorNodeTypeNameException;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -46,7 +45,7 @@ public class SelectorNodeTypeLogic
     
     public SelectorNodeType getSelectorNodeTypeByName(final ExecutionErrorAccumulator eea, final String selectorNodeTypeName) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+        var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
 
         if(selectorNodeType == null) {
             handleExecutionError(UnknownSelectorNodeTypeNameException.class, eea, ExecutionErrors.UnknownSelectorNodeTypeName.name(), selectorNodeTypeName);

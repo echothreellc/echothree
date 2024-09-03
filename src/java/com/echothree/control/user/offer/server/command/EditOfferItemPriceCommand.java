@@ -26,7 +26,6 @@ import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.logic.ItemLogic;
-import com.echothree.model.control.offer.common.exception.CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSetException;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
@@ -34,8 +33,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.offer.server.value.OfferItemFixedPriceValue;
-import com.echothree.model.data.offer.server.value.OfferItemVariablePriceValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -93,7 +90,7 @@ public class EditOfferItemPriceCommand
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = spec.getCurrencyIsoName();
+        var currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
     }
@@ -168,7 +165,7 @@ public class EditOfferItemPriceCommand
 
                                         if(lockEntityForUpdate(offerItem)) {
                                             try {
-                                                OfferItemFixedPriceValue offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
+                                                var offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
 
                                                 offerItemFixedPriceValue.setUnitPrice(unitPrice);
 
@@ -211,7 +208,7 @@ public class EditOfferItemPriceCommand
                                     if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
                                         if(lockEntityForUpdate(offerItem)) {
                                             try {
-                                                OfferItemVariablePriceValue offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
+                                                var offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
 
                                                 offerItemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
                                                 offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);

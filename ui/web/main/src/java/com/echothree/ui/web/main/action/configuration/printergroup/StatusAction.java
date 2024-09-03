@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.configuration.printergroup;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.SetPrinterGroupStatusForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,11 +50,11 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+        var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
         
         try {
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetPrinterGroupStatusForm commandForm = PrinterUtil.getHome().getSetPrinterGroupStatusForm();
+            var actionForm = (StatusActionForm)form;
+            var commandForm = PrinterUtil.getHome().getSetPrinterGroupStatusForm();
             
             if(printerGroupName == null)
                 printerGroupName = actionForm.getPrinterGroupName();
@@ -64,8 +62,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setPrinterGroupName(printerGroupName);
                 commandForm.setPrinterGroupStatusChoice(actionForm.getPrinterGroupStatusChoice());
-                
-                CommandResult commandResult = PrinterUtil.getHome().setPrinterGroupStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = PrinterUtil.getHome().setPrinterGroupStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);

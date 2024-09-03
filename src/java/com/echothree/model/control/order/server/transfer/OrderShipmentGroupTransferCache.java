@@ -16,17 +16,11 @@
 
 package com.echothree.model.control.order.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.item.common.transfer.ItemDeliveryTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.order.common.transfer.OrderShipmentGroupTransfer;
-import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
-import com.echothree.model.data.order.server.entity.OrderShipmentGroupDetail;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -45,18 +39,18 @@ public class OrderShipmentGroupTransferCache
     }
     
     public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(OrderShipmentGroup orderShipmentGroup) {
-        OrderShipmentGroupTransfer orderShipmentGroupTransfer = get(orderShipmentGroup);
+        var orderShipmentGroupTransfer = get(orderShipmentGroup);
         
         if(orderShipmentGroupTransfer == null) {
-            OrderShipmentGroupDetail orderShipmentGroupDetail = orderShipmentGroup.getLastDetail();
-            Integer orderShipmentGroupSequence = orderShipmentGroupDetail.getOrderShipmentGroupSequence();
-            ItemDeliveryTypeTransfer itemDeliveryTypeTransfer = itemControl.getItemDeliveryTypeTransfer(userVisit, orderShipmentGroupDetail.getItemDeliveryType());
-            Boolean isDefault = orderShipmentGroupDetail.getIsDefault();
-            PartyContactMechanism partyContactMechanism = orderShipmentGroupDetail.getPartyContactMechanism();
-            PartyContactMechanismTransfer partyContactMechanismTransfer = partyContactMechanism == null ? null : contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanism);
-            ShippingMethod shippingMethod = orderShipmentGroupDetail.getShippingMethod();
-            ShippingMethodTransfer shippingMethodTransfer = shippingMethod == null ? null : shippingControl.getShippingMethodTransfer(userVisit, shippingMethod);
-            Boolean holdUntilComplete = orderShipmentGroupDetail.getHoldUntilComplete();
+            var orderShipmentGroupDetail = orderShipmentGroup.getLastDetail();
+            var orderShipmentGroupSequence = orderShipmentGroupDetail.getOrderShipmentGroupSequence();
+            var itemDeliveryTypeTransfer = itemControl.getItemDeliveryTypeTransfer(userVisit, orderShipmentGroupDetail.getItemDeliveryType());
+            var isDefault = orderShipmentGroupDetail.getIsDefault();
+            var partyContactMechanism = orderShipmentGroupDetail.getPartyContactMechanism();
+            var partyContactMechanismTransfer = partyContactMechanism == null ? null : contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanism);
+            var shippingMethod = orderShipmentGroupDetail.getShippingMethod();
+            var shippingMethodTransfer = shippingMethod == null ? null : shippingControl.getShippingMethodTransfer(userVisit, shippingMethod);
+            var holdUntilComplete = orderShipmentGroupDetail.getHoldUntilComplete();
             
             orderShipmentGroupTransfer = new OrderShipmentGroupTransfer(orderShipmentGroupSequence, itemDeliveryTypeTransfer, isDefault,
                     partyContactMechanismTransfer, shippingMethodTransfer, holdUntilComplete);

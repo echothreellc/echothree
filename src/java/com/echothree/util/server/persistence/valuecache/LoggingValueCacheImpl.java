@@ -54,8 +54,8 @@ public class LoggingValueCacheImpl
         if(PersistenceDebugFlags.LogValueCacheActions) {
             log.info(threadName + " get " + basePK);
         }
-        
-        BaseValue baseValue = wrappedValueCache.get(basePK);
+
+        var baseValue = wrappedValueCache.get(basePK);
         getCount++;
         if(baseValue != null) {
             getCacheHitCount++;
@@ -76,9 +76,8 @@ public class LoggingValueCacheImpl
 
     @Override
     public String toString() {
-        return new StringBuilder(threadName).append(" putCount = ").append(putCount).append(", getCount = ")
-                .append(getCount).append(", getCacheHitCount = ").append(getCacheHitCount).append(", removeCount = ").append(removeCount)
-                .toString();
+        return threadName + " putCount = " + putCount + ", getCount = " +
+                getCount + ", getCacheHitCount = " + getCacheHitCount + ", removeCount = " + removeCount;
     }
 
 }

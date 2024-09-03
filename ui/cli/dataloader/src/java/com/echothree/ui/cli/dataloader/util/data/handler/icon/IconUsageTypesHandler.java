@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.icon;
 
 import com.echothree.control.user.icon.common.IconUtil;
 import com.echothree.control.user.icon.common.IconService;
-import com.echothree.control.user.icon.common.form.CreateIconUsageTypeForm;
 import com.echothree.control.user.icon.common.form.IconFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,9 +47,9 @@ public class IconUsageTypesHandler
             String iconUsageTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("iconUsageTypeName"))
                     iconUsageTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class IconUsageTypesHandler
             }
             
             try {
-                CreateIconUsageTypeForm form = IconFormFactory.getCreateIconUsageTypeForm();
+                var form = IconFormFactory.getCreateIconUsageTypeForm();
                 
                 form.setIconUsageTypeName(iconUsageTypeName);
                 form.setIsDefault(isDefault);

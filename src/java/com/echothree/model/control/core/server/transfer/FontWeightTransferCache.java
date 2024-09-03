@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.FontWeightTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.FontWeight;
-import com.echothree.model.data.core.server.entity.FontWeightDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,14 +35,14 @@ public class FontWeightTransferCache
     }
 
     public FontWeightTransfer getFontWeightTransfer(FontWeight fontWeight) {
-        FontWeightTransfer fontWeightTransfer = get(fontWeight);
+        var fontWeightTransfer = get(fontWeight);
 
         if(fontWeightTransfer == null) {
-            FontWeightDetail fontWeightDetail = fontWeight.getLastDetail();
-            String fontWeightName = fontWeightDetail.getFontWeightName();
-            Boolean isDefault = fontWeightDetail.getIsDefault();
-            Integer sortOrder = fontWeightDetail.getSortOrder();
-            String description = coreControl.getBestFontWeightDescription(fontWeight, getLanguage());
+            var fontWeightDetail = fontWeight.getLastDetail();
+            var fontWeightName = fontWeightDetail.getFontWeightName();
+            var isDefault = fontWeightDetail.getIsDefault();
+            var sortOrder = fontWeightDetail.getSortOrder();
+            var description = coreControl.getBestFontWeightDescription(fontWeight, getLanguage());
 
             fontWeightTransfer = new FontWeightTransfer(fontWeightName, isDefault, sortOrder, description);
             put(fontWeight, fontWeightTransfer);

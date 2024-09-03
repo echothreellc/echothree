@@ -29,12 +29,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUse;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCodeDetail;
-import com.echothree.model.data.item.server.value.ItemHarmonizedTariffScheduleCodeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -97,17 +93,17 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
     public ItemHarmonizedTariffScheduleCode getEntity(EditItemHarmonizedTariffScheduleCodeResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = spec.getCountryName();
+            var countryName = spec.getCountryName();
             
             countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
-                String harmonizedTariffScheduleCodeUseTypeName = spec.getHarmonizedTariffScheduleCodeUseTypeName();
+                var harmonizedTariffScheduleCodeUseTypeName = spec.getHarmonizedTariffScheduleCodeUseTypeName();
                 
                 harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
@@ -150,7 +146,7 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
 
     @Override
     public void doLock(ItemHarmonizedTariffScheduleCodeEdit edit, ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        ItemHarmonizedTariffScheduleCodeDetail itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getLastDetail();
+        var itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getLastDetail();
         
         edit.setHarmonizedTariffScheduleCodeName(itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCode().getLastDetail().getHarmonizedTariffScheduleCodeName());
     }
@@ -160,12 +156,12 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
     @Override
     public void canUpdate(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
         var itemControl = Session.getModelController(ItemControl.class);
-        String harmonizedTariffScheduleCodeName = edit.getHarmonizedTariffScheduleCodeName();
+        var harmonizedTariffScheduleCodeName = edit.getHarmonizedTariffScheduleCodeName();
         
         harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(countryGeoCode, harmonizedTariffScheduleCodeName);
 
         if(harmonizedTariffScheduleCode != null) {
-            HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse = itemControl.getHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCode,
+            var harmonizedTariffScheduleCodeUse = itemControl.getHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCode,
                     harmonizedTariffScheduleCodeUseType);
 
             if(harmonizedTariffScheduleCodeUse == null) {
@@ -180,7 +176,7 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
     @Override
     public void doUpdate(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemHarmonizedTariffScheduleCodeDetailValue itemHarmonizedTariffScheduleCodeDetailValue = itemControl.getItemHarmonizedTariffScheduleCodeDetailValueForUpdate(itemHarmonizedTariffScheduleCode);
+        var itemHarmonizedTariffScheduleCodeDetailValue = itemControl.getItemHarmonizedTariffScheduleCodeDetailValueForUpdate(itemHarmonizedTariffScheduleCode);
         
         itemHarmonizedTariffScheduleCodeDetailValue.setHarmonizedTariffScheduleCodePK(harmonizedTariffScheduleCode.getPrimaryKey());
         

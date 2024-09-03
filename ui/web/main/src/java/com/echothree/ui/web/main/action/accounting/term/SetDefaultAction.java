@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.term;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.SetDefaultTermForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            String termName = request.getParameter(ParameterConstants.TERM_NAME);
-            SetDefaultTermForm commandForm = TermUtil.getHome().getSetDefaultTermForm();
+            var termName = request.getParameter(ParameterConstants.TERM_NAME);
+            var commandForm = TermUtil.getHome().getSetDefaultTermForm();
             
             commandForm.setTermName(termName);
             

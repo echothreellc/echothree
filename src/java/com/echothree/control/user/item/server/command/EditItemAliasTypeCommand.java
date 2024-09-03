@@ -29,7 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
-import com.echothree.model.data.item.server.value.ItemAliasTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -171,7 +170,7 @@ public class EditItemAliasTypeCommand
         } else if(itemAliasTypeDescription != null && description == null) {
             itemControl.deleteItemAliasTypeDescription(itemAliasTypeDescription, partyPK);
         } else if(itemAliasTypeDescription != null && description != null) {
-            ItemAliasTypeDescriptionValue itemAliasTypeDescriptionValue = itemControl.getItemAliasTypeDescriptionValue(itemAliasTypeDescription);
+            var itemAliasTypeDescriptionValue = itemControl.getItemAliasTypeDescriptionValue(itemAliasTypeDescription);
 
             itemAliasTypeDescriptionValue.setDescription(description);
             itemControl.updateItemAliasTypeDescriptionFromValue(itemAliasTypeDescriptionValue, partyPK);

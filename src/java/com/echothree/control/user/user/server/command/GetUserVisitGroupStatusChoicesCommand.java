@@ -17,11 +17,8 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetUserVisitGroupStatusChoicesForm;
-import com.echothree.control.user.user.common.result.GetUserVisitGroupStatusChoicesResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -51,14 +48,14 @@ public class GetUserVisitGroupStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetUserVisitGroupStatusChoicesResult result = UserResultFactory.getGetUserVisitGroupStatusChoicesResult();
-        String userVisitGroupName = form.getUserVisitGroupName();
-        UserVisitGroup userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetUserVisitGroupStatusChoicesResult();
+        var userVisitGroupName = form.getUserVisitGroupName();
+        var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
         
         if(userVisitGroupName == null || userVisitGroup != null) {
-            String defaultUserVisitGroupStatusChoice = form.getDefaultUserVisitGroupStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultUserVisitGroupStatusChoice = form.getDefaultUserVisitGroupStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setUserVisitGroupStatusChoices(userControl.getUserVisitGroupStatusChoices(defaultUserVisitGroupStatusChoice,
                     getPreferredLanguage(), allowNullChoice, userVisitGroup, getPartyPK()));

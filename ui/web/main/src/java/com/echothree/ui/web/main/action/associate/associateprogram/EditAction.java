@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.edit.AssociateProgramEdit;
-import com.echothree.control.user.associate.common.form.EditAssociateProgramForm;
 import com.echothree.control.user.associate.common.result.EditAssociateProgramResult;
-import com.echothree.control.user.associate.common.spec.AssociateProgramSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String originalAssociateProgramName = request.getParameter(ParameterConstants.ORIGINAL_ASSOCIATE_PROGRAM_NAME);
+        var originalAssociateProgramName = request.getParameter(ParameterConstants.ORIGINAL_ASSOCIATE_PROGRAM_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditAssociateProgramForm commandForm = AssociateUtil.getHome().getEditAssociateProgramForm();
-                AssociateProgramSpec spec = AssociateUtil.getHome().getAssociateProgramSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = AssociateUtil.getHome().getEditAssociateProgramForm();
+                var spec = AssociateUtil.getHome().getAssociateProgramSpec();
                 
                 if(originalAssociateProgramName == null)
                     originalAssociateProgramName = actionForm.getOriginalAssociateProgramName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setAssociateProgramName(originalAssociateProgramName);
                 
                 if(wasPost(request)) {
-                    AssociateProgramEdit edit = AssociateUtil.getHome().getAssociateProgramEdit();
+                    var edit = AssociateUtil.getHome().getAssociateProgramEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -87,14 +82,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AssociateUtil.getHome().editAssociateProgram(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AssociateUtil.getHome().editAssociateProgram(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditAssociateProgramResult result = (EditAssociateProgramResult)executionResult.getResult();
+                            var result = (EditAssociateProgramResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -107,13 +102,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AssociateUtil.getHome().editAssociateProgram(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditAssociateProgramResult result = (EditAssociateProgramResult)executionResult.getResult();
+
+                    var commandResult = AssociateUtil.getHome().editAssociateProgram(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditAssociateProgramResult)executionResult.getResult();
                     
                     if(result != null) {
-                        AssociateProgramEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalAssociateProgramName(edit.getAssociateProgramName());

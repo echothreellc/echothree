@@ -23,7 +23,6 @@ import com.echothree.view.client.web.WebConstants;
 import com.google.common.base.Splitter;
 import java.util.HashSet;
 import java.util.Set;
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -40,7 +39,7 @@ public class BaseTag
     private Log log = null;
     
     protected UserVisitPK getUserVisitPK() throws JspException {
-        HttpSession httpSession = pageContext.getSession();
+        var httpSession = pageContext.getSession();
         UserVisitPK userVisitPK;
         
         if(httpSession != null) {
@@ -76,7 +75,7 @@ public class BaseTag
     * @return PageContext constant corresponding to given scope description
     */
     public static int translateScope(String scope) {
-        int ret = PageContext.PAGE_SCOPE; // default
+        var ret = PageContext.PAGE_SCOPE; // default
         
         if (REQUEST.equalsIgnoreCase(scope))
             ret = PageContext.REQUEST_SCOPE;
@@ -89,17 +88,17 @@ public class BaseTag
     }
     
     public static void setOptions(String options, Set<String> defaultOptions, BaseForm commandForm) {
-        Set<String> commandOptions = null;
+        Set<String> commandOptions;
         
         if(options == null) {
             commandOptions = defaultOptions;
         } else {
-            String[] splitOptions = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(options).toArray(new String[0]);
-            int splitOptionsLength = splitOptions.length;
+            var splitOptions = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(options).toArray(new String[0]);
+            var splitOptionsLength = splitOptions.length;
 
             commandOptions = new HashSet<>(splitOptionsLength);
             
-            for(int i = 0; i < splitOptionsLength; i++) {
+            for(var i = 0; i < splitOptionsLength; i++) {
                 commandOptions.add(splitOptions[i]);
             }
         }

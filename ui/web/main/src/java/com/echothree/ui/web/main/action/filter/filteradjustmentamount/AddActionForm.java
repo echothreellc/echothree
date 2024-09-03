@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.filter.filteradjustmentamount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrencyChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureChoicesForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -51,14 +47,14 @@ public class AddActionForm
     private void setupCurrencyChoices()
             throws NamingException {
         if(currencyChoices == null) {
-            GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+            var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
             form.setDefaultCurrencyChoice(currencyChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
             currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
 
             if(currencyChoice == null)
@@ -69,14 +65,14 @@ public class AddActionForm
     private void setupUnitOfMeasureChoices()
             throws NamingException {
         if(unitOfMeasureChoices == null) {
-            GetUnitOfMeasureChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureChoicesForm();
 
             form.setDefaultUnitOfMeasureChoice(unitOfMeasureChoice);
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_QUANTITY);
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureChoicesResult getUnitOfMeasureChoicesResult = (GetUnitOfMeasureChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureChoicesResult = (GetUnitOfMeasureChoicesResult)executionResult.getResult();
             unitOfMeasureChoices = getUnitOfMeasureChoicesResult.getUnitOfMeasureChoices();
 
             if(unitOfMeasureChoice == null)

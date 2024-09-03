@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.CommandMessageTransfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTranslationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -37,12 +35,12 @@ public class CommandMessageTranslationTransferCache
     }
     
     public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(CommandMessageTranslation commandMessageTranslation) {
-        CommandMessageTranslationTransfer commandMessageTranslationTransfer = get(commandMessageTranslation);
+        var commandMessageTranslationTransfer = get(commandMessageTranslation);
         
         if(commandMessageTranslationTransfer == null) {
-            CommandMessageTransfer commandMessage = coreControl.getCommandMessageTransfer(userVisit, commandMessageTranslation.getCommandMessage());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, commandMessageTranslation.getLanguage());
-            String translation = commandMessageTranslation.getTranslation();
+            var commandMessage = coreControl.getCommandMessageTransfer(userVisit, commandMessageTranslation.getCommandMessage());
+            var language = partyControl.getLanguageTransfer(userVisit, commandMessageTranslation.getLanguage());
+            var translation = commandMessageTranslation.getTranslation();
             
             commandMessageTranslationTransfer = new CommandMessageTranslationTransfer(commandMessage, language, translation);
             put(commandMessageTranslation, commandMessageTranslationTransfer);

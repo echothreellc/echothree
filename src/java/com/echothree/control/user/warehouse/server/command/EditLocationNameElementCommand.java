@@ -19,22 +19,13 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.edit.LocationNameElementEdit;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
 import com.echothree.control.user.warehouse.common.form.EditLocationNameElementForm;
-import com.echothree.control.user.warehouse.common.result.EditLocationNameElementResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationNameElementSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElementDescription;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElementDetail;
-import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
-import com.echothree.model.data.warehouse.server.value.LocationNameElementDescriptionValue;
-import com.echothree.model.data.warehouse.server.value.LocationNameElementDetailValue;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -87,27 +78,27 @@ public class EditLocationNameElementCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditLocationNameElementResult result = WarehouseResultFactory.getEditLocationNameElementResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getEditLocationNameElementResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = spec.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = spec.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    String locationNameElementName = spec.getLocationNameElementName();
-                    LocationNameElement locationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
+                    var locationNameElementName = spec.getLocationNameElementName();
+                    var locationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
                     
                     if(locationNameElement != null) {
                         result.setLocationNameElement(warehouseControl.getLocationNameElementTransfer(getUserVisit(), locationNameElement));
                         
                         if(lockEntity(locationNameElement)) {
-                            LocationNameElementDescription locationNameElementDescription = warehouseControl.getLocationNameElementDescription(locationNameElement, getPreferredLanguage());
-                            LocationNameElementEdit edit = WarehouseEditFactory.getLocationNameElementEdit();
-                            LocationNameElementDetail locationNameElementDetail = locationNameElement.getLastDetail();
+                            var locationNameElementDescription = warehouseControl.getLocationNameElementDescription(locationNameElement, getPreferredLanguage());
+                            var edit = WarehouseEditFactory.getLocationNameElementEdit();
+                            var locationNameElementDetail = locationNameElement.getLastDetail();
                             
                             result.setEdit(edit);
                             edit.setLocationNameElementName(locationNameElementDetail.getLocationNameElementName());
@@ -126,20 +117,20 @@ public class EditLocationNameElementCommand
                         addExecutionError(ExecutionErrors.UnknownLocationNameElementName.name(), locationNameElementName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    String locationNameElementName = spec.getLocationNameElementName();
-                    LocationNameElement locationNameElement = warehouseControl.getLocationNameElementByNameForUpdate(locationType, locationNameElementName);
+                    var locationNameElementName = spec.getLocationNameElementName();
+                    var locationNameElement = warehouseControl.getLocationNameElementByNameForUpdate(locationType, locationNameElementName);
                     
                     if(locationNameElement != null) {
                         locationNameElementName = edit.getLocationNameElementName();
-                        LocationNameElement duplicateLocationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
+                        var duplicateLocationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
                         
                         if(duplicateLocationNameElement == null || locationNameElement.equals(duplicateLocationNameElement)) {
                             if(lockEntityForUpdate(locationNameElement)) {
                                 try {
                                     var partyPK = getPartyPK();
-                                    LocationNameElementDetailValue locationNameElementDetailValue = warehouseControl.getLocationNameElementDetailValueForUpdate(locationNameElement);
-                                    LocationNameElementDescription locationNameElementDescription = warehouseControl.getLocationNameElementDescriptionForUpdate(locationNameElement, getPreferredLanguage());
-                                    String description = edit.getDescription();
+                                    var locationNameElementDetailValue = warehouseControl.getLocationNameElementDetailValueForUpdate(locationNameElement);
+                                    var locationNameElementDescription = warehouseControl.getLocationNameElementDescriptionForUpdate(locationNameElement, getPreferredLanguage());
+                                    var description = edit.getDescription();
                                     
                                     locationNameElementDetailValue.setLocationNameElementName(edit.getLocationNameElementName());
                                     locationNameElementDetailValue.setOffset(Integer.valueOf(edit.getOffset()));
@@ -153,7 +144,7 @@ public class EditLocationNameElementCommand
                                     } else if(locationNameElementDescription != null && description == null) {
                                         warehouseControl.deleteLocationNameElementDescription(locationNameElementDescription, partyPK);
                                     } else if(locationNameElementDescription != null && description != null) {
-                                        LocationNameElementDescriptionValue locationNameElementDescriptionValue = warehouseControl.getLocationNameElementDescriptionValue(locationNameElementDescription);
+                                        var locationNameElementDescriptionValue = warehouseControl.getLocationNameElementDescriptionValue(locationNameElementDescription);
                                         
                                         locationNameElementDescriptionValue.setDescription(description);
                                         warehouseControl.updateLocationNameElementDescriptionFromValue(locationNameElementDescriptionValue, partyPK);

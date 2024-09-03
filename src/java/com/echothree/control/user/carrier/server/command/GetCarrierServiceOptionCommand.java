@@ -18,16 +18,10 @@ package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.GetCarrierServiceOptionForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
-import com.echothree.control.user.carrier.common.result.GetCarrierServiceOptionResult;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.carrier.server.entity.CarrierOption;
-import com.echothree.model.data.carrier.server.entity.CarrierService;
-import com.echothree.model.data.carrier.server.entity.CarrierServiceOption;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -71,25 +65,25 @@ public class GetCarrierServiceOptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierServiceOptionResult result = CarrierResultFactory.getGetCarrierServiceOptionResult();
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var result = CarrierResultFactory.getGetCarrierServiceOptionResult();
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = form.getCarrierServiceName();
-            CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = form.getCarrierServiceName();
+            var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
             
             result.setCarrier(carrierControl.getCarrierTransfer(getUserVisit(), carrier));
             
             if(carrierService != null) {
-                String carrierOptionName = form.getCarrierOptionName();
-                CarrierOption carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+                var carrierOptionName = form.getCarrierOptionName();
+                var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
                 
                 result.setCarrierService(carrierControl.getCarrierServiceTransfer(getUserVisit(), carrierService));
                 
                 if(carrierOption != null) {
-                    CarrierServiceOption carrierServiceOption = carrierControl.getCarrierServiceOption(carrierService, carrierOption);
+                    var carrierServiceOption = carrierControl.getCarrierServiceOption(carrierService, carrierOption);
                     
                     result.setCarrierOption(carrierControl.getCarrierOptionTransfer(getUserVisit(), carrierOption));
                     

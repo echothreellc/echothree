@@ -31,8 +31,6 @@ import com.echothree.model.data.employee.server.entity.LeaveType;
 import com.echothree.model.data.employee.server.value.LeaveDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -57,7 +55,7 @@ public class LeaveLogic
     
     public LeaveType getLeaveTypeByName(final ExecutionErrorAccumulator eea, final String leaveTypeName) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
+        var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
         if(leaveType == null) {
             handleExecutionError(UnknownLeaveTypeNameException.class, eea, ExecutionErrors.UnknownLeaveTypeName.name(), leaveTypeName);
@@ -68,7 +66,7 @@ public class LeaveLogic
     
     public LeaveReason getLeaveReasonByName(final ExecutionErrorAccumulator eea, final String leaveReasonName) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
+        var leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
         if(leaveReason == null) {
             handleExecutionError(UnknownLeaveReasonNameException.class, eea, ExecutionErrors.UnknownLeaveReasonName.name(), leaveReasonName);
@@ -93,8 +91,8 @@ public class LeaveLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var employeeControl = Session.getModelController(EmployeeControl.class);
 
-        Leave leave = employeeControl.createLeave(party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
+        var leave = employeeControl.createLeave(party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
 
         insertLeaveIntoWorkflow(entityInstance, leaveStatus, createdBy);
 
@@ -103,11 +101,11 @@ public class LeaveLogic
 
     public void updateLeaveFromValue(final ExecutionErrorAccumulator eea, final LeaveDetailValue leaveDetailValue, final PartyPK updatedBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        EntityInstance entityInstance = getEntityInstanceByBasePK(leaveDetailValue.getLeavePK());
-        WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
-        Workflow workflow = workflowLogic.getWorkflowByName(null, LeaveStatusConstants.Workflow_LEAVE_STATUS);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-        String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+        var entityInstance = getEntityInstanceByBasePK(leaveDetailValue.getLeavePK());
+        var workflowLogic = WorkflowLogic.getInstance();
+        var workflow = workflowLogic.getWorkflowByName(null, LeaveStatusConstants.Workflow_LEAVE_STATUS);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
         String workflowDestinationName = null;
         
         if(workflowStepName.equals(LeaveStatusConstants.WorkflowStep_APPROVED)) {

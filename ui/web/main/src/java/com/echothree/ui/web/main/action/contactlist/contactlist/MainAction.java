@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListsForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,13 +47,13 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetContactListsForm commandForm = ContactListUtil.getHome().getGetContactListsForm();
+        String forwardKey;
+        var commandForm = ContactListUtil.getHome().getGetContactListsForm();
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactLists(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactLists(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListsResult result = (GetContactListsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LISTS, result.getContactLists());
             forwardKey = ForwardConstants.DISPLAY;

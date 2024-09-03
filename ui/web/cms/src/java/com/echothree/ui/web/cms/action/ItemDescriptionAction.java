@@ -17,8 +17,6 @@
 package com.echothree.ui.web.cms.action;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemDescriptionForm;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypeForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionResult;
 import com.echothree.control.user.item.common.result.GetItemDescriptionTypeResult;
 import com.echothree.model.control.core.common.CoreProperties;
@@ -38,8 +36,6 @@ import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.ui.web.cms.framework.ByteArrayStreamInfo;
 import com.echothree.ui.web.cms.framework.CmsBaseDownloadAction;
 import com.echothree.ui.web.cms.persistence.CmsCacheBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -47,14 +43,12 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import com.google.common.base.Charsets;
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.BitSet;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 import javax.enterprise.inject.spi.Unmanaged;
@@ -62,7 +56,6 @@ import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
@@ -99,7 +92,7 @@ public class ItemDescriptionAction
     protected ItemDescriptionTypeTransfer getItemDescriptionType(HttpServletRequest request, ItemDescriptionNames itemDescriptionNames)
             throws NamingException {
         ItemDescriptionTypeTransfer itemDescriptionType = null;
-        GetItemDescriptionTypeForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
 
         commandForm.setItemDescriptionTypeName(itemDescriptionNames.itemDescriptionTypeName);
         
@@ -109,12 +102,12 @@ public class ItemDescriptionAction
                 .addClassAndProperty(ItemDescriptionTypeTransfer.class, ItemProperties.PREFERRED_WIDTH)
                 .addClassAndProperty(ItemDescriptionTypeTransfer.class, ItemProperties.MIME_TYPE_USAGE_TYPE)
                 .addClassAndProperty(MimeTypeUsageTypeTransfer.class, CoreProperties.MIME_TYPE_USAGE_TYPE_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemDescriptionType(getUserVisitPK(request), commandForm);
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypeResult result = (GetItemDescriptionTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypeResult)executionResult.getResult();
             
             itemDescriptionType = result.getItemDescriptionType();
         }
@@ -124,7 +117,7 @@ public class ItemDescriptionAction
     
     protected ItemDescriptionTransfer getItemDescription(HttpServletRequest request, ItemDescriptionNames itemDescriptionNames, Set<String> options)
             throws NamingException {
-        GetItemDescriptionForm commandForm = ItemUtil.getHome().getGetItemDescriptionForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionForm();
         ItemDescriptionTransfer itemDescription = null;
 
         commandForm.setItemDescriptionTypeName(itemDescriptionNames.itemDescriptionTypeName);
@@ -146,11 +139,11 @@ public class ItemDescriptionAction
                 .addClassAndProperty(MimeTypeTransfer.class, CoreProperties.MIME_TYPE_NAME)
                 .addClassAndProperty(MimeTypeTransfer.class, CoreProperties.ENTITY_ATTRIBUTE_TYPE)
                 .addClassAndProperty(EntityAttributeTypeTransfer.class, CoreProperties.ENTITY_ATTRIBUTE_TYPE_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionResult result = (GetItemDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionResult)executionResult.getResult();
 
             itemDescription = result.getItemDescription();
         }
@@ -160,7 +153,7 @@ public class ItemDescriptionAction
 
     protected ItemDescriptionTransfer getCachedItemDescription(HttpServletRequest request, Cache<String, Object> cache, String fqn, ItemDescriptionNames itemDescriptionNames)
             throws NamingException {
-        ItemDescriptionTransfer itemDescription = (ItemDescriptionTransfer)getCacheEntry(cache, fqn, cacheTransferObject);
+        var itemDescription = (ItemDescriptionTransfer)getCacheEntry(cache, fqn, cacheTransferObject);
 
         if(itemDescription == null) {
             Set<String> options = new HashSet<>();
@@ -184,16 +177,16 @@ public class ItemDescriptionAction
         // Build the Fqn from the most general component, to the most specific component. When the maximum cache size is exceeded,
         // it will prune the last component's contents, and that portion of the fqn off the tree. The first two components will
         // continue to exist.
-        String itemName = itemDescriptionNames.itemName;
-        StringBuilder fqn = new StringBuilder(fqnItemDescription).append('/')
+        var itemName = itemDescriptionNames.itemName;
+        var fqn = new StringBuilder(fqnItemDescription).append('/')
                 .append(itemDescriptionNames.languageIsoName.toLowerCase(Locale.getDefault())).append('/')
                 .append(itemDescriptionNames.itemDescriptionTypeName.toLowerCase(Locale.getDefault())).append('/');
 
         // Must prefer to use the itemName over the itemNames.
         if(itemName == null) {
-            String[] itemNames = itemDescriptionNames.itemNames;
+            var itemNames = itemDescriptionNames.itemNames;
             
-            for(int i = 0 ; i < itemNames.length ; i++) {
+            for(var i = 0; i < itemNames.length ; i++) {
                 if(i != 0) {
                     fqn.append(':');
                 }
@@ -230,9 +223,9 @@ public class ItemDescriptionAction
     }
     
     protected ImageReader getImageReader(ItemDescriptionTransfer itemDescription) {
-        MemoryCacheImageInputStream memoryCacheImageInputStream = new MemoryCacheImageInputStream(itemDescription.getBlobDescription().getByteArrayInputStream());
-        Iterator<ImageReader> imageReaders = ImageIO.getImageReadersByMIMEType(itemDescription.getMimeType().getMimeTypeName());
-        ImageReader imageReader = imageReaders.hasNext() ? imageReaders.next() : null;
+        var memoryCacheImageInputStream = new MemoryCacheImageInputStream(itemDescription.getBlobDescription().getByteArrayInputStream());
+        var imageReaders = ImageIO.getImageReadersByMIMEType(itemDescription.getMimeType().getMimeTypeName());
+        var imageReader = imageReaders.hasNext() ? imageReaders.next() : null;
 
         if(imageReader != null) {
             imageReader.setInput(memoryCacheImageInputStream);
@@ -253,38 +246,38 @@ public class ItemDescriptionAction
     protected CompositeImage buildCompositeImage(HttpServletRequest request, Cache<String, Object> cache, String fqn, ItemDescriptionNames itemDescriptionNames)
             throws NamingException {
         CompositeImage compositeImage = null;
-        ItemDescriptionTypeTransfer itemDescriptionType = getItemDescriptionType(request, itemDescriptionNames);
+        var itemDescriptionType = getItemDescriptionType(request, itemDescriptionNames);
 
         if(itemDescriptionType != null) {
-            String mimeTypeUsageTypeName = itemDescriptionType.getMimeTypeUsageType().getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = itemDescriptionType.getMimeTypeUsageType().getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
-                MimeTypeTransfer preferredMimeType = itemDescriptionType.getPreferredMimeType();
-                String mimeTypeName = preferredMimeType == null ? null : preferredMimeType.getMimeTypeName();
-                Integer preferredHeight = itemDescriptionType.getPreferredHeight();
-                Integer preferredWidth = itemDescriptionType.getPreferredWidth();
+                var preferredMimeType = itemDescriptionType.getPreferredMimeType();
+                var mimeTypeName = preferredMimeType == null ? null : preferredMimeType.getMimeTypeName();
+                var preferredHeight = itemDescriptionType.getPreferredHeight();
+                var preferredWidth = itemDescriptionType.getPreferredWidth();
 
                 if(preferredHeight != null && preferredWidth != null) {
-                    String[] itemNames = itemDescriptionNames.itemNames;
-                    int compositeWidth = preferredWidth * itemNames.length;
-                    BufferedImage bufferedImage = new BufferedImage(compositeWidth, preferredHeight, BufferedImage.TYPE_INT_RGB);
-                    Graphics2D  graphics2D = bufferedImage.createGraphics();
-                    BitSet imagesIncluded = new BitSet(itemNames.length);
-                    boolean hasMissingItemDescription = false;
-                    boolean hasItemDescriptionError = false;
+                    var itemNames = itemDescriptionNames.itemNames;
+                    var compositeWidth = preferredWidth * itemNames.length;
+                    var bufferedImage = new BufferedImage(compositeWidth, preferredHeight, BufferedImage.TYPE_INT_RGB);
+                    var graphics2D = bufferedImage.createGraphics();
+                    var imagesIncluded = new BitSet(itemNames.length);
+                    var hasMissingItemDescription = false;
+                    var hasItemDescriptionError = false;
                     long maximumModifiedTime = 0;
 
                     graphics2D.setColor(new Color(255, 255, 255)); // Always white.
                     graphics2D.fillRect (0, 0, compositeWidth, preferredHeight);
 
-                    for(int i = 0 ; i < itemNames.length ; i++) {
+                    for(var i = 0; i < itemNames.length ; i++) {
                         itemDescriptionNames.itemName = itemDescriptionNames.itemNames[i];
-                        String individualFqn = getFqn(itemDescriptionNames);
-                        ItemDescriptionTransfer itemDescription = getCachedItemDescription(request, cache, individualFqn, itemDescriptionNames);
+                        var individualFqn = getFqn(itemDescriptionNames);
+                        var itemDescription = getCachedItemDescription(request, cache, individualFqn, itemDescriptionNames);
                         itemDescriptionNames.itemName = null;
 
                         if(itemDescription != null) {
-                            ImageReader imageReader = getImageReader(itemDescription);
+                            var imageReader = getImageReader(itemDescription);
 
                             if(imageReader != null) {
                                 BufferedImage originalBufferedImage = null;
@@ -304,8 +297,8 @@ public class ItemDescriptionAction
                                 }
 
                                 if(originalBufferedImage != null) {
-                                    int width = Math.min(preferredWidth, itemDescription.getWidth());
-                                    int height = Math.min(preferredHeight, itemDescription.getHeight());
+                                    var width = Math.min(preferredWidth, itemDescription.getWidth());
+                                    var height = Math.min(preferredHeight, itemDescription.getHeight());
 
                                     graphics2D.drawImage(originalBufferedImage, preferredWidth * i, 0, width, height, null);
                                 } else {
@@ -317,9 +310,9 @@ public class ItemDescriptionAction
                                 break;
                             }
 
-                            EntityTimeTransfer entityTime = itemDescription.getItem().getEntityInstance().getEntityTime();
-                            Long unformattedCreatedTime = entityTime.getUnformattedCreatedTime();
-                            Long unformattedModifiedTime = entityTime.getUnformattedModifiedTime();
+                            var entityTime = itemDescription.getItem().getEntityInstance().getEntityTime();
+                            var unformattedCreatedTime = entityTime.getUnformattedCreatedTime();
+                            var unformattedModifiedTime = entityTime.getUnformattedModifiedTime();
 
                             if(unformattedModifiedTime == null) {
                                 unformattedModifiedTime = unformattedCreatedTime;
@@ -332,23 +325,23 @@ public class ItemDescriptionAction
                     }
 
                     if(!hasItemDescriptionError) {
-                        Iterator<ImageWriter> imageWriters = ImageIO.getImageWritersByMIMEType(mimeTypeName);
-                        ImageWriter imageWriter = imageWriters.hasNext() ? imageWriters.next() : null;
+                        var imageWriters = ImageIO.getImageWritersByMIMEType(mimeTypeName);
+                        var imageWriter = imageWriters.hasNext() ? imageWriters.next() : null;
 
                         if(imageWriter != null) {
-                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            Integer quality = itemDescriptionType.getQuality();
+                            var byteArrayOutputStream = new ByteArrayOutputStream();
+                            var quality = itemDescriptionType.getQuality();
 
                             if(quality == null) {
                                 quality = 90; // Default quality
                             }
 
                             try {
-                                float scaledQualtity = (float)quality / 100.0f;
-                                ImageWriteParam iwp = imageWriter.getDefaultWriteParam();
+                                var scaledQualtity = (float)quality / 100.0f;
+                                var iwp = imageWriter.getDefaultWriteParam();
 
                                 if(iwp.canWriteCompressed()) {
-                                    String[] compressionTypes = iwp.getCompressionTypes();
+                                    var compressionTypes = iwp.getCompressionTypes();
 
                                     iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 
@@ -361,7 +354,7 @@ public class ItemDescriptionAction
                                 }
 
                                 ImageOutputStream imageOutputStream = new MemoryCacheImageOutputStream(byteArrayOutputStream);
-                                IIOImage img = new IIOImage(bufferedImage, null, null);
+                                var img = new IIOImage(bufferedImage, null, null);
 
                                 imageWriter.setOutput(imageOutputStream);
                                 imageWriter.write(null, img, iwp);
@@ -373,15 +366,15 @@ public class ItemDescriptionAction
                             }
 
                             if(byteArrayOutputStream != null) {
-                                StringBuilder imagesIncludedETagComponent = new StringBuilder();
-                                int chunks = itemNames.length / 64 + (itemNames.length % 64 == 0 ? 0 : 1);
-                                int currentBit = 0;
+                                var imagesIncludedETagComponent = new StringBuilder();
+                                var chunks = itemNames.length / 64 + (itemNames.length % 64 == 0 ? 0 : 1);
+                                var currentBit = 0;
 
-                                for(int i = 0; i < chunks; i++) {
+                                for(var i = 0; i < chunks; i++) {
                                     long value = 0;
-                                    int chunkLength = Math.min(itemNames.length - i * 64, 64);
+                                    var chunkLength = Math.min(itemNames.length - i * 64, 64);
 
-                                    for(int j = 0; j < chunkLength; j++) {
+                                    for(var j = 0; j < chunkLength; j++) {
                                         value |= imagesIncluded.get(currentBit++) ? 1L << j : 0L;
                                     }
 
@@ -407,14 +400,14 @@ public class ItemDescriptionAction
     @Override
     protected String getETag(HttpServletRequest request)
             throws NamingException {
-        ItemDescriptionNames itemDescriptionNames = new ItemDescriptionNames(request);
+        var itemDescriptionNames = new ItemDescriptionNames(request);
         String eTag = null;
 
         if(itemDescriptionNames.hasAllNames()) {
-            Unmanaged.UnmanagedInstance<CmsCacheBean> cmsCacheBeanInstance = unmanagedCmsCacheBean.newInstance();
-            CmsCacheBean cmsCacheBean = cmsCacheBeanInstance.produce().inject().postConstruct().get();
-            Cache<String, Object> cache = cmsCacheBean.getCache();
-            String fqn = getFqn(itemDescriptionNames);
+            var cmsCacheBeanInstance = unmanagedCmsCacheBean.newInstance();
+            var cmsCacheBean = cmsCacheBeanInstance.produce().inject().postConstruct().get();
+            var cache = cmsCacheBean.getCache();
+            var fqn = getFqn(itemDescriptionNames);
 
             if(itemDescriptionNames.itemName == null) {
                 // Multiple item images.
@@ -446,7 +439,7 @@ public class ItemDescriptionAction
                 }
             } else {
                 // Single item image.
-                ItemDescriptionTransfer itemDescription = getCachedItemDescription(request, cache, fqn, itemDescriptionNames);
+                var itemDescription = getCachedItemDescription(request, cache, fqn, itemDescriptionNames);
 
                 if(itemDescription != null) {
                     request.setAttribute(attributeTransferObject, itemDescription);
@@ -464,21 +457,21 @@ public class ItemDescriptionAction
     @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         StreamInfo streamInfo = null;
-        ItemDescriptionTransfer itemDescription = (ItemDescriptionTransfer)request.getAttribute(attributeTransferObject);
+        var itemDescription = (ItemDescriptionTransfer)request.getAttribute(attributeTransferObject);
 
         if(itemDescription == null) {
-            CompositeImage compositeImage = (CompositeImage)request.getAttribute(attributeCompositeImage);
+            var compositeImage = (CompositeImage)request.getAttribute(attributeCompositeImage);
             
             if(compositeImage != null) {
                 streamInfo = new ByteArrayStreamInfo(compositeImage.mimeTypeName, new ByteArrayInputStream(compositeImage.blobDescription.byteArrayValue()),
                         compositeImage.lastModified);
             }
         } else {
-            MimeTypeTransfer mimeType = itemDescription.getMimeType();
-            EntityAttributeTypeTransfer entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
-            String entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
-            EntityTimeTransfer entityTime = itemDescription.getItem().getEntityInstance().getEntityTime();
-            Long modifiedTime = entityTime.getUnformattedModifiedTime();
+            var mimeType = itemDescription.getMimeType();
+            var entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
+            var entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
+            var entityTime = itemDescription.getItem().getEntityInstance().getEntityTime();
+            var modifiedTime = entityTime.getUnformattedModifiedTime();
             byte bytes[] = null;
 
             if(entityAttributeTypeName == null || EntityAttributeTypes.CLOB.name().equals(entityAttributeTypeName)) {

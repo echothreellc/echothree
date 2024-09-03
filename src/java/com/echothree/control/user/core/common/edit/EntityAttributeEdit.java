@@ -17,9 +17,10 @@
 package com.echothree.control.user.core.common.edit;
 
 import com.echothree.control.user.uom.common.spec.UnitOfMeasureTypeSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowSpec;
 
 public interface EntityAttributeEdit
-        extends EntityAttributeDescriptionEdit, UnitOfMeasureTypeSpec {
+        extends EntityAttributeDescriptionEdit, UnitOfMeasureTypeSpec, WorkflowSpec {
     
     String getEntityAttributeName();
     void setEntityAttributeName(String entityAttributeName);

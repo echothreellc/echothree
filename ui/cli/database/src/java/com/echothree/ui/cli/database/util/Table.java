@@ -130,8 +130,8 @@ public class Table {
             throws Exception {
         if(myColumns.get(attrName) != null)
             throw new Exception("Duplicate column " + attrName + " in table " + namePlural);
-        
-        Column newColumn = new Column(this, attrName, attrType, attrMaxLength, attrDefaultValue, attrSequenceSource, attrNullAllowed, description,
+
+        var newColumn = new Column(this, attrName, attrType, attrMaxLength, attrDefaultValue, attrSequenceSource, attrNullAllowed, description,
                 destinationTable, destinationColumn, onParentDelete);
         
         columns.add(newColumn);
@@ -148,7 +148,7 @@ public class Table {
     }
     
     public Column getColumn(String columnName) throws Exception {
-        Column result = myColumns.get(columnName);
+        var result = myColumns.get(columnName);
         
         if(result == null)
             throw new Exception("Column " + columnName + " not found in table " + namePlural);
@@ -157,11 +157,11 @@ public class Table {
     }
     
     public boolean hasColumn(String columnName) {
-        return myColumns.get(columnName) == null? false: true;
+        return myColumns.get(columnName) != null;
     }
     
     public Column getColumnLowerCase(String columnName) throws Exception {
-        Column result = myColumnsByLowerCase.get(columnName);
+        var result = myColumnsByLowerCase.get(columnName);
         
         if(result == null)
             throw new Exception("Column " + columnName + " not found in table " + namePlural);
@@ -170,14 +170,14 @@ public class Table {
     }
     
     public boolean hasColumnLowerCase(String columnName) {
-        return myColumnsByLowerCase.get(columnName) == null? false: true;
+        return myColumnsByLowerCase.get(columnName) != null;
     }
     
     public Index addIndex(String type, String name) throws Exception {
         if(name != null && myIndexes.get(name) != null)
             throw new Exception("Duplicate index " + name + " in table " + namePlural);
-        
-        Index newIndex = new Index(this, type, name);
+
+        var newIndex = new Index(this, type, name);
         
         if(newIndex.getType() == Index.indexPrimaryKey) {
             if(primaryKey == null) {
@@ -210,11 +210,11 @@ public class Table {
         return notForeignKeys;
     }
     
-    public boolean isColumnValid(String dbColumnName) throws Exception {
-        boolean columnValid = true;
+    public boolean isColumnValid(String dbColumnName) {
+        var columnValid = true;
         String columnBaseName;
-        
-        int underscore = dbColumnName.indexOf('_');
+
+        var underscore = dbColumnName.indexOf('_');
         if(underscore != 0) {
             columnBaseName = dbColumnName.substring(underscore + 1);
         } else {
@@ -223,14 +223,14 @@ public class Table {
         }
         
         // At this point, if the columnBaseName still contains an underscore, it
-        // is a foreign key column. Otherwise check to see if its in the list of
+        // is a foreign key column. Otherwise, check to see if it's in the list of
         // our normal database columns.
         if(columnValid) {
             if(columnBaseName.indexOf('_') != -1) {
                 // Something needs to go here for foreign key columns
                 //columnValid = fkColumns.contains(columnBaseName);
             } else if(!hasColumnLowerCase(columnBaseName))
-                // Otherwise, if its not in our list of columns, then its not
+                // Otherwise, if it's not in our list of columns, then it's not
                 // a valid column.
                 columnValid = false;
         }
@@ -238,7 +238,7 @@ public class Table {
     }
     
     public int countColumnsWithDestinationTable(String destinationTable) {
-        int totalColumns = 0;
+        var totalColumns = 0;
         
         totalColumns = columns.stream().filter((theColumn) -> (theColumn.getType() == ColumnType.columnForeignKey)).filter((theColumn) -> theColumn.getDestinationTable().equals(destinationTable)).map((_item) -> 1).reduce(totalColumns, Integer::sum);
         
@@ -246,9 +246,9 @@ public class Table {
     }
     
     public boolean isColumnInMultipleIndex(Column destinationColumn) {
-        for(Index theIndex: indexes) {
+        for(var theIndex: indexes) {
             if(theIndex.isColumnInIndex(destinationColumn)) {
-                int indexType = theIndex.getType();
+                var indexType = theIndex.getType();
                 if(indexType == Index.indexMultiple)
                     return true;
                 else if(indexType == Index.indexUnique && (theIndex.countIndexColumns() > 1))
@@ -270,7 +270,7 @@ public class Table {
     public Column getEID() {
         Column result = null;
         
-        for(Column theColumn: columns) {
+        for(var theColumn: columns) {
             if(theColumn.getType() == ColumnType.columnEID) {
                 result = theColumn;
                 break;
@@ -293,9 +293,9 @@ public class Table {
     }
     
     public boolean hasColumnOfType(int columnType) {
-        boolean result = false;
+        var result = false;
         
-        for(Column theColumn: columns) {
+        for(var theColumn: columns) {
             if(theColumn.getType() == columnType) {
                 result = true;
                 break;
@@ -306,9 +306,9 @@ public class Table {
     }
     
     public boolean hasNotNullColumn() {
-        boolean result = true;
+        var result = true;
         
-        for(Column theColumn: columns) {
+        for(var theColumn: columns) {
             if((theColumn.getType() != ColumnType.columnEID) && !theColumn.getNullAllowed()) {
                 result = false;
                 break;
@@ -327,8 +327,7 @@ public class Table {
     
     public String getPKClass() {
         if(pkClass == null) {
-            StringBuilder pkClassBuilder = new StringBuilder(nameSingular).append(PK_SUFFIX);
-            pkClass = pkClassBuilder.toString();
+            pkClass = nameSingular + PK_SUFFIX;
         }
         
         return pkClass;
@@ -336,8 +335,7 @@ public class Table {
     
     public String getValueClass() {
         if(valueClass == null) {
-            StringBuilder valueClassBuilder = new StringBuilder(nameSingular).append(VALUE_SUFFIX);
-            valueClass = valueClassBuilder.toString();
+            valueClass = nameSingular + VALUE_SUFFIX;
         }
         
         return valueClass;
@@ -349,8 +347,7 @@ public class Table {
     
     public String getFactoryClass() {
         if(factoryClass == null) {
-            StringBuilder factoryClassBuilder = new StringBuilder(nameSingular).append(FACTORY_SUFFIX);
-            factoryClass = factoryClassBuilder.toString();
+            factoryClass = nameSingular + FACTORY_SUFFIX;
         }
         
         return factoryClass;
@@ -358,7 +355,7 @@ public class Table {
     
     public String getConstantsClass() {
         if(constantsClass == null) {
-            constantsClass = new StringBuilder(nameSingular).append(CONSTANTS_SUFFIX).toString();
+            constantsClass = nameSingular + CONSTANTS_SUFFIX;
         }
         
         return constantsClass;
@@ -366,8 +363,7 @@ public class Table {
     
     public String getPKImport() {
         if(pkImport == null) {
-            StringBuilder pkImportBuilder = new StringBuilder(component.getPKPackage()).append(PERIOD).append(getPKClass());
-            pkImport = pkImportBuilder.toString();
+            pkImport = component.getPKPackage() + PERIOD + getPKClass();
         }
         
         return pkImport;
@@ -375,8 +371,7 @@ public class Table {
     
     public String getValueImport() {
         if(valueImport == null) {
-            StringBuilder valueImportBuilder = new StringBuilder(component.getValuePackage()).append(PERIOD).append(getValueClass());
-            valueImport = valueImportBuilder.toString();
+            valueImport = component.getValuePackage() + PERIOD + getValueClass();
         }
         
         return valueImport;
@@ -384,8 +379,7 @@ public class Table {
     
     public String getEntityImport() {
         if(entityImport == null) {
-            StringBuilder entityImportBuilder = new StringBuilder(component.getEntityPackage()).append(PERIOD).append(getEntityClass());
-            entityImport = entityImportBuilder.toString();
+            entityImport = component.getEntityPackage() + PERIOD + getEntityClass();
         }
         
         return entityImport;
@@ -393,8 +387,7 @@ public class Table {
     
     public String getFactoryImport() {
         if(factoryImport == null) {
-            StringBuilder factoryImportBuilder = new StringBuilder(component.getFactoryPackage()).append(PERIOD).append(getFactoryClass());
-            factoryImport = factoryImportBuilder.toString();
+            factoryImport = component.getFactoryPackage() + PERIOD + getFactoryClass();
         }
         
         return factoryImport;
@@ -402,8 +395,7 @@ public class Table {
     
     public String getConstantsImport() {
         if(constantsImport == null) {
-            StringBuilder constantsImportBuilder = new StringBuilder(component.getCommonPackage()).append(PERIOD).append(getConstantsClass());
-            constantsImport = constantsImportBuilder.toString();
+            constantsImport = component.getCommonPackage() + PERIOD + getConstantsClass();
         }
 
         return constantsImport;

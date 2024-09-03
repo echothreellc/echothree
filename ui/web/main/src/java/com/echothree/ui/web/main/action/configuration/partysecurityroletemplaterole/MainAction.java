@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplaterole;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateRolesForm;
 import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateRolesResult;
-import com.echothree.model.control.security.common.transfer.PartySecurityRoleTemplateTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
-            GetPartySecurityRoleTemplateRolesForm commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateRolesForm();
+            var partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+            var commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateRolesForm();
             
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
-            
-            CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateRoles(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartySecurityRoleTemplateRolesResult result = (GetPartySecurityRoleTemplateRolesResult)executionResult.getResult();
-            PartySecurityRoleTemplateTransfer partySecurityRoleTemplateTransfer = result.getPartySecurityRoleTemplate();
+
+            var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateRoles(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartySecurityRoleTemplateRolesResult)executionResult.getResult();
+            var partySecurityRoleTemplateTransfer = result.getPartySecurityRoleTemplate();
             
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE, partySecurityRoleTemplateTransfer);
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE_ROLES, result.getPartySecurityRoleTemplateRoles());

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepDescriptionTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepDescription;
@@ -32,11 +30,11 @@ public class WorkflowStepDescriptionTransferCache
     }
     
     public WorkflowStepDescriptionTransfer getWorkflowStepDescriptionTransfer(WorkflowStepDescription workflowStepDescription) {
-        WorkflowStepDescriptionTransfer workflowStepDescriptionTransfer = get(workflowStepDescription);
+        var workflowStepDescriptionTransfer = get(workflowStepDescription);
         
         if(workflowStepDescriptionTransfer == null) {
-            WorkflowStepTransfer workflowStepTransfer = workflowControl.getWorkflowStepTransfer(userVisit, workflowStepDescription.getWorkflowStep());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowStepDescription.getLanguage());
+            var workflowStepTransfer = workflowControl.getWorkflowStepTransfer(userVisit, workflowStepDescription.getWorkflowStep());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowStepDescription.getLanguage());
             
             workflowStepDescriptionTransfer = new WorkflowStepDescriptionTransfer(languageTransfer, workflowStepTransfer, workflowStepDescription.getDescription());
             put(workflowStepDescription, workflowStepDescriptionTransfer);

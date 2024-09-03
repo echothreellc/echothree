@@ -18,7 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateTimeZoneForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,11 +52,11 @@ public class CreateTimeZoneCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String javaTimeZoneName = form.getJavaTimeZoneName();
-        TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+        var javaTimeZoneName = form.getJavaTimeZoneName();
+        var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         
         if(timeZone == null) {
-            String unixTimeZoneName = form.getUnixTimeZoneName();
+            var unixTimeZoneName = form.getUnixTimeZoneName();
             
             timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.job;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.common.form.DeleteJobDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class DescriptionDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String jobName = request.getParameter(ParameterConstants.JOB_NAME);
+        var jobName = request.getParameter(ParameterConstants.JOB_NAME);
         
         try {
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeleteJobDescriptionForm commandForm = JobUtil.getHome().getDeleteJobDescriptionForm();
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var commandForm = JobUtil.getHome().getDeleteJobDescriptionForm();
             
             commandForm.setJobName(jobName);
             commandForm.setLanguageIsoName(languageIsoName);
@@ -67,8 +66,8 @@ public class DescriptionDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

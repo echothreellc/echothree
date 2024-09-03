@@ -18,13 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetBaseEncryptionKeyForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetBaseEncryptionKeyResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.BaseEncryptionKey;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -64,12 +61,12 @@ public class GetBaseEncryptionKeyCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetBaseEncryptionKeyResult result = CoreResultFactory.getGetBaseEncryptionKeyResult();
-        String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        BaseEncryptionKey baseEncryptionKey = baseEncryptionKeyName == null? null: coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+        var result = CoreResultFactory.getGetBaseEncryptionKeyResult();
+        var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
+        var baseEncryptionKey = baseEncryptionKeyName == null? null: coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
         if(baseEncryptionKeyName == null || baseEncryptionKey != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(baseEncryptionKey == null) {
                 result.setBaseEncryptionKey(coreControl.getActiveBaseEncryptionKeyTransfer(userVisit));

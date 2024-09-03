@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseTypesForm;
 import com.echothree.control.user.offer.common.result.GetUseTypesResult;
 import com.echothree.model.data.offer.common.UseTypeConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -115,7 +112,7 @@ public class UseTypesTag
     public int doStartTag()
             throws JspException {
         try {
-            GetUseTypesForm commandForm = OfferUtil.getHome().getGetUseTypesForm();
+            var commandForm = OfferUtil.getHome().getGetUseTypesForm();
             Map<String, Limit> limits = new HashMap<>();
             
             setOptions(options, null, commandForm);
@@ -127,7 +124,7 @@ public class UseTypesTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = OfferUtil.getHome().getUseTypes(getUserVisitPK(), commandForm);
+            var commandResult = OfferUtil.getHome().getUseTypes(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -135,8 +132,8 @@ public class UseTypesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseTypesResult result = (GetUseTypesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseTypesResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getUseTypes()), scope);
 

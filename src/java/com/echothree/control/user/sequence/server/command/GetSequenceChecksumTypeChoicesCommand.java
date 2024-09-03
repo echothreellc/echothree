@@ -17,7 +17,6 @@
 package com.echothree.control.user.sequence.server.command;
 
 import com.echothree.control.user.sequence.common.form.GetSequenceChecksumTypeChoicesForm;
-import com.echothree.control.user.sequence.common.result.GetSequenceChecksumTypeChoicesResult;
 import com.echothree.control.user.sequence.common.result.SequenceResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetSequenceChecksumTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        GetSequenceChecksumTypeChoicesResult result = SequenceResultFactory.getGetSequenceChecksumTypeChoicesResult();
-        String defaultSequenceChecksumTypeChoice = form.getDefaultSequenceChecksumTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SequenceResultFactory.getGetSequenceChecksumTypeChoicesResult();
+        var defaultSequenceChecksumTypeChoice = form.getDefaultSequenceChecksumTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
         result.setSequenceChecksumTypeChoices(sequenceControl.getSequenceChecksumTypeChoices(defaultSequenceChecksumTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

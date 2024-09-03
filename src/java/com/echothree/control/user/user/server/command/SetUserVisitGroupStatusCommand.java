@@ -17,9 +17,7 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.SetUserVisitGroupStatusForm;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -48,12 +46,12 @@ public class SetUserVisitGroupStatusCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String userVisitGroupName = form.getUserVisitGroupName();
-        UserVisitGroup userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
+        var userControl = getUserControl();
+        var userVisitGroupName = form.getUserVisitGroupName();
+        var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
         
         if(userVisitGroup != null) {
-            String userVisitGroupStatusChoice = form.getUserVisitGroupStatusChoice();
+            var userVisitGroupStatusChoice = form.getUserVisitGroupStatusChoice();
             
             userControl.setUserVisitGroupStatus(this, userVisitGroup, userVisitGroupStatusChoice, getPartyPK());
         } else {

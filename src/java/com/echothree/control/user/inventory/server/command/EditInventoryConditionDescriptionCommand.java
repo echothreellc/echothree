@@ -20,17 +20,12 @@ import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
 import com.echothree.control.user.inventory.common.edit.InventoryConditionDescriptionEdit;
 import com.echothree.control.user.inventory.common.form.EditInventoryConditionDescriptionForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.common.result.EditInventoryConditionDescriptionResult;
 import com.echothree.control.user.inventory.common.spec.InventoryConditionDescriptionSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionDescription;
-import com.echothree.model.data.inventory.server.value.InventoryConditionDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,25 +74,25 @@ public class EditInventoryConditionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        EditInventoryConditionDescriptionResult result = InventoryResultFactory.getEditInventoryConditionDescriptionResult();
-        String inventoryConditionName = spec.getInventoryConditionName();
-        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var result = InventoryResultFactory.getEditInventoryConditionDescriptionResult();
+        var inventoryConditionName = spec.getInventoryConditionName();
+        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
         
         if(inventoryCondition != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    InventoryConditionDescription inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
+                    var inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
                     
                     if(inventoryConditionDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setInventoryConditionDescription(inventoryControl.getInventoryConditionDescriptionTransfer(getUserVisit(), inventoryConditionDescription));
 
                             if(lockEntity(inventoryCondition)) {
-                                InventoryConditionDescriptionEdit edit = InventoryEditFactory.getInventoryConditionDescriptionEdit();
+                                var edit = InventoryEditFactory.getInventoryConditionDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(inventoryConditionDescription.getDescription());
@@ -113,12 +108,12 @@ public class EditInventoryConditionDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownInventoryConditionDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    InventoryConditionDescriptionValue inventoryConditionDescriptionValue = inventoryControl.getInventoryConditionDescriptionValueForUpdate(inventoryCondition, language);
+                    var inventoryConditionDescriptionValue = inventoryControl.getInventoryConditionDescriptionValueForUpdate(inventoryCondition, language);
                     
                     if(inventoryConditionDescriptionValue != null) {
                         if(lockEntityForUpdate(inventoryCondition)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 inventoryConditionDescriptionValue.setDescription(description);
                                 

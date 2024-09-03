@@ -21,9 +21,6 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.term.server.entity.PartyCreditLimit;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -57,26 +54,26 @@ public class CreatePartyCreditLimitCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+            var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
             
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
                 var accountingControl = Session.getModelController(AccountingControl.class);
-                String currencyIsoName = form.getCurrencyIsoName();
-                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                var currencyIsoName = form.getCurrencyIsoName();
+                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                 
                 if(currency != null) {
                     var termControl = Session.getModelController(TermControl.class);
-                    PartyCreditLimit partyCreditLimit = termControl.getPartyCreditLimit(party, currency);
+                    var partyCreditLimit = termControl.getPartyCreditLimit(party, currency);
                     
                     if(partyCreditLimit == null) {
-                        String strCreditLimit = form.getCreditLimit();
-                        Long creditLimit = strCreditLimit == null? null: Long.valueOf(strCreditLimit);
-                        String strPotentialCreditLimit = form.getPotentialCreditLimit();
-                        Long potentialCreditLimit = strPotentialCreditLimit == null? null: Long.valueOf(strPotentialCreditLimit);
+                        var strCreditLimit = form.getCreditLimit();
+                        var creditLimit = strCreditLimit == null? null: Long.valueOf(strCreditLimit);
+                        var strPotentialCreditLimit = form.getPotentialCreditLimit();
+                        var potentialCreditLimit = strPotentialCreditLimit == null? null: Long.valueOf(strPotentialCreditLimit);
                         
                         if(creditLimit != null || potentialCreditLimit != null) {
                             termControl.createPartyCreditLimit(party, currency, creditLimit, potentialCreditLimit, getPartyPK());

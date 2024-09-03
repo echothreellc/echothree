@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.CreateSequenceTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -48,10 +46,10 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
 
         if(wasPost(request)) {
-            CreateSequenceTypeForm commandForm = SequenceUtil.getHome().getCreateSequenceTypeForm();
+            var commandForm = SequenceUtil.getHome().getCreateSequenceTypeForm();
 
             commandForm.setSequenceTypeName(actionForm.getSequenceTypeName());
             commandForm.setPrefix(actionForm.getPrefix());
@@ -63,7 +61,7 @@ public class AddAction
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = SequenceUtil.getHome().createSequenceType(getUserVisitPK(request), commandForm);
+            var commandResult = SequenceUtil.getHome().createSequenceType(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

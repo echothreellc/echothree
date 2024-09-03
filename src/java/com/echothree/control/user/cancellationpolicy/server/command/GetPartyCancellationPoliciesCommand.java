@@ -18,15 +18,11 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.form.GetPartyCancellationPoliciesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
-import com.echothree.control.user.cancellationpolicy.common.result.GetPartyCancellationPoliciesResult;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,16 +66,16 @@ public class GetPartyCancellationPoliciesCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        GetPartyCancellationPoliciesResult result = CancellationPolicyResultFactory.getGetPartyCancellationPoliciesResult();
-        String partyName = form.getPartyName();
-        String cancellationKindName = form.getCancellationKindName();
-        String cancellationPolicyName = form.getCancellationPolicyName();
+        var result = CancellationPolicyResultFactory.getGetPartyCancellationPoliciesResult();
+        var partyName = form.getPartyName();
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationPolicyName = form.getCancellationPolicyName();
         var parameterCount = (partyName != null ? 1 : 0) + (cancellationKindName != null && cancellationPolicyName != null ? 1 : 0);
 
         if(parameterCount == 1) {
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
                     result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfersByParty(getUserVisit(), party));
@@ -87,10 +83,10 @@ public class GetPartyCancellationPoliciesCommand
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else {
-                CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+                var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
                 if(cancellationKind != null) {
-                    CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                    var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
                     if(cancellationPolicy != null) {
                         result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfersByCancellationPolicy(getUserVisit(), cancellationPolicy));

@@ -21,11 +21,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
-import com.echothree.model.data.item.server.entity.ItemWeight;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -59,32 +54,32 @@ public class CreateItemWeightCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var uomControl = Session.getModelController(UomControl.class);
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(),
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(),
                     unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                ItemUnitOfMeasureType itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
+                var itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
                 
                 if(itemUnitOfMeasureType != null) {
-                    ItemWeight itemWeight = itemControl.getItemWeight(item, unitOfMeasureType);
+                    var itemWeight = itemControl.getItemWeight(item, unitOfMeasureType);
                     
                     if(itemWeight == null) {
-                        UnitOfMeasureKind weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-                        String weightUnitOfMeasureTypeName = form.getWeightUnitOfMeasureTypeName();
-                        UnitOfMeasureType weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(weightUnitOfMeasureKind,
+                        var weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
+                        var weightUnitOfMeasureTypeName = form.getWeightUnitOfMeasureTypeName();
+                        var weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(weightUnitOfMeasureKind,
                                 weightUnitOfMeasureTypeName);
                         
                         if(weightUnitOfMeasureType != null) {
-                            Long weight = Long.valueOf(form.getWeight());
+                            var weight = Long.valueOf(form.getWeight());
                             
                             if(weight > 0) {
-                                Conversion conversion = new Conversion(uomControl, weightUnitOfMeasureType, weight);
+                                var conversion = new Conversion(uomControl, weightUnitOfMeasureType, weight);
                                 
                                 conversion.convertToLowestUnitOfMeasureType();
                                 itemControl.createItemWeight(item, unitOfMeasureType, conversion.getQuantity(), getPartyPK());

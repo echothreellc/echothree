@@ -27,12 +27,8 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDescription;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.value.ContentCategoryDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -93,21 +89,21 @@ public class EditContentCategoryDescriptionCommand
     public ContentCategoryDescription getEntity(EditContentCategoryDescriptionResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentCategoryDescription contentCategoryDescription = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = spec.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = spec.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                String contentCategoryName = spec.getContentCategoryName();
-                ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+                var contentCategoryName = spec.getContentCategoryName();
+                var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     result.setContentCategory(contentControl.getContentCategoryTransfer(getUserVisit(), contentCategory));
                     
@@ -157,7 +153,7 @@ public class EditContentCategoryDescriptionCommand
     @Override
     public void doUpdate(ContentCategoryDescription contentCategoryDescription) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentCategoryDescriptionValue contentCategoryDescriptionValue = contentControl.getContentCategoryDescriptionValue(contentCategoryDescription);
+        var contentCategoryDescriptionValue = contentControl.getContentCategoryDescriptionValue(contentCategoryDescription);
         contentCategoryDescriptionValue.setDescription(edit.getDescription());
 
         contentControl.updateContentCategoryDescriptionFromValue(contentCategoryDescriptionValue, getPartyPK());

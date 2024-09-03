@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.form.GetWorkEffortScopeDescriptionsForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeDescriptionsResult;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,17 +50,17 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetWorkEffortScopeDescriptionsForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeDescriptionsForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeDescriptionsForm();
 
         commandForm.setWorkEffortTypeName(request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME));
         commandForm.setWorkEffortScopeName(request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME));
 
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScopeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeDescriptions(getUserVisitPK(request), commandForm);
         GetWorkEffortScopeDescriptionsResult result = null;
         WorkEffortScopeTransfer workEffortScope = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetWorkEffortScopeDescriptionsResult) executionResult.getResult();
             workEffortScope = result.getWorkEffortScope();

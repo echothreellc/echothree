@@ -18,9 +18,7 @@ package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.GetChainInstanceForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
-import com.echothree.control.user.chain.common.result.GetChainInstanceResult;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetChainInstanceCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainInstanceResult result = ChainResultFactory.getGetChainInstanceResult();
-        String chainInstanceName = form.getChainInstanceName();
-        ChainInstance chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
+        var result = ChainResultFactory.getGetChainInstanceResult();
+        var chainInstanceName = form.getChainInstanceName();
+        var chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
         
         if(chainInstance != null) {
             result.setChainInstance(chainControl.getChainInstanceTransfer(getUserVisit(), chainInstance));

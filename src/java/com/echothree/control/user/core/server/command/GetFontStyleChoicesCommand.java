@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetFontStyleChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetFontStyleChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +60,9 @@ public class GetFontStyleChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetFontStyleChoicesResult result = CoreResultFactory.getGetFontStyleChoicesResult();
-        String defaultFontStyleChoice = form.getDefaultFontStyleChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetFontStyleChoicesResult();
+        var defaultFontStyleChoice = form.getDefaultFontStyleChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setFontStyleChoices(coreControl.getFontStyleChoices(defaultFontStyleChoice, getPreferredLanguage(), allowNullChoice));
         

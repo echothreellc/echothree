@@ -17,13 +17,11 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseNameElementDescriptionsForm;
-import com.echothree.control.user.offer.common.result.GetUseNameElementDescriptionsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -65,9 +63,9 @@ public class GetUseNameElementDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-        GetUseNameElementDescriptionsResult result = OfferResultFactory.getGetUseNameElementDescriptionsResult();
-        String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
+        var result = OfferResultFactory.getGetUseNameElementDescriptionsResult();
+        var useNameElementName = form.getUseNameElementName();
+        var useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
             result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));

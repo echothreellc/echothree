@@ -20,21 +20,17 @@ import com.echothree.control.user.core.common.form.CreateCacheEntryForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.core.server.entity.CacheEntry;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class CreateCacheEntryCommand
         extends BaseSimpleCommand<CreateCacheEntryForm> {
@@ -59,26 +55,26 @@ public class CreateCacheEntryCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String cacheEntryKey = form.getCacheEntryKey();
-        CacheEntry cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
+        var cacheEntryKey = form.getCacheEntryKey();
+        var cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 
         if(cacheEntry == null) {
-            String mimeTypeName = form.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = form.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
-                Long validForTime = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                var validForTime = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                         form.getValidForTime(), form.getValidForTimeUnitOfMeasureTypeName(),
                         null, ExecutionErrors.MissingRequiredValidForTime.name(), null, ExecutionErrors.MissingRequiredValidForTimeUnitOfMeasureTypeName.name(),
                         null, ExecutionErrors.UnknownValidForTimeUnitOfMeasureTypeName.name());
 
                 if(!hasExecutionErrors()) {
-                    String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-                    Set<String> entityRefs = form.getEntityRefs();
+                    var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                    var entityRefs = form.getEntityRefs();
 
                     try {
                         if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                            String clob = form.getClob();
+                            var clob = form.getClob();
 
                             if(clob != null) {
                                 coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
@@ -87,7 +83,7 @@ public class CreateCacheEntryCommand
                                 addExecutionError(ExecutionErrors.MissingClob.name());
                             }
                         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                            ByteArray blob = form.getBlob();
+                            var blob = form.getBlob();
 
                             if(blob != null) {
                                 coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,

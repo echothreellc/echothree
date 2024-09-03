@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.value.BirthdayFormatDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,12 +86,12 @@ public class EditBirthdayFormatDescriptionCommand
     public BirthdayFormatDescription getEntity(EditBirthdayFormatDescriptionResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         BirthdayFormatDescription birthdayFormatDescription = null;
-        String birthdayFormatName = spec.getBirthdayFormatName();
-        BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
+        var birthdayFormatName = spec.getBirthdayFormatName();
+        var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
 
         if(birthdayFormat != null) {
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -135,7 +133,7 @@ public class EditBirthdayFormatDescriptionCommand
     @Override
     public void doUpdate(BirthdayFormatDescription birthdayFormatDescription) {
         var partyControl = Session.getModelController(PartyControl.class);
-        BirthdayFormatDescriptionValue birthdayFormatDescriptionValue = partyControl.getBirthdayFormatDescriptionValue(birthdayFormatDescription);
+        var birthdayFormatDescriptionValue = partyControl.getBirthdayFormatDescriptionValue(birthdayFormatDescription);
         birthdayFormatDescriptionValue.setDescription(edit.getDescription());
 
         partyControl.updateBirthdayFormatDescriptionFromValue(birthdayFormatDescriptionValue, getPartyPK());

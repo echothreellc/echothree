@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.content.contentpage;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.CreateContentPageForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,16 +54,16 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-        String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+        var parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm addActionForm = (AddActionForm)form;
+                var addActionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateContentPageForm createContentPageForm = ContentUtil.getHome().getCreateContentPageForm();
+                    var createContentPageForm = ContentUtil.getHome().getCreateContentPageForm();
                     
                     if(contentCollectionName == null)
                         contentCollectionName = addActionForm.getContentCollectionName();
@@ -81,8 +79,8 @@ public class AddAction
                     createContentPageForm.setIsDefault(addActionForm.getIsDefault().toString());
                     createContentPageForm.setSortOrder(addActionForm.getSortOrder());
                     createContentPageForm.setDescription(addActionForm.getDescription());
-                    
-                    CommandResult commandResult = ContentUtil.getHome().createContentPage(getUserVisitPK(request), createContentPageForm);
+
+                    var commandResult = ContentUtil.getHome().createContentPage(getUserVisitPK(request), createContentPageForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -101,8 +99,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_SECTION_NAME, contentSectionName);

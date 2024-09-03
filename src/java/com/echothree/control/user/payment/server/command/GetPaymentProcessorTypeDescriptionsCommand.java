@@ -18,12 +18,10 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentProcessorTypeDescriptionsForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorTypeDescriptionsResult;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetPaymentProcessorTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
-        GetPaymentProcessorTypeDescriptionsResult result = PaymentResultFactory.getGetPaymentProcessorTypeDescriptionsResult();
-        String paymentProcessorTypeName = form.getPaymentProcessorTypeName();
-        PaymentProcessorType paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
+        var result = PaymentResultFactory.getGetPaymentProcessorTypeDescriptionsResult();
+        var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
+        var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
         
         if(paymentProcessorType != null) {
             result.setPaymentProcessorType(paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(getUserVisit(), paymentProcessorType));

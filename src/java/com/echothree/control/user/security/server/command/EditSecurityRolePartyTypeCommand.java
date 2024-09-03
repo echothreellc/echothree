@@ -31,12 +31,8 @@ import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.security.server.entity.SecurityRole;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.security.server.entity.SecurityRolePartyType;
-import com.echothree.model.data.security.server.value.SecurityRolePartyTypeValue;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -98,16 +94,16 @@ public class EditSecurityRolePartyTypeCommand
     public SecurityRolePartyType getEntity(EditSecurityRolePartyTypeResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRolePartyType securityRolePartyType = null;
-        String securityRoleGroupName = spec.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var securityRoleGroupName = spec.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
         if(securityRoleGroup != null) {
-            String securityRoleName = spec.getSecurityRoleName();
-            SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+            var securityRoleName = spec.getSecurityRoleName();
+            var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
             if(securityRole != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String partyTypeName = spec.getPartyTypeName();
+                var partyTypeName = spec.getPartyTypeName();
                 
                 partyType = partyControl.getPartyTypeByName(partyTypeName);
 
@@ -157,17 +153,17 @@ public class EditSecurityRolePartyTypeCommand
 
     @Override
     protected void canUpdate(SecurityRolePartyType securityRolePartyType) {
-        String partySelectorName = edit.getPartySelectorName();
+        var partySelectorName = edit.getPartySelectorName();
 
         if(partySelectorName != null) {
-            String partyTypeName = partyType.getPartyTypeName();
+            var partyTypeName = partyType.getPartyTypeName();
             
             if(partyType.getAllowUserLogins()) {
                 var selectorControl = Session.getModelController(SelectorControl.class);
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
+                var selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
 
                 if(selectorKind != null) {
-                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.SECURITY_ROLE.name());
+                    var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.SECURITY_ROLE.name());
 
                     if(selectorType != null) {
                         partySelector = selectorControl.getSelectorByName(selectorType, partySelectorName);
@@ -191,7 +187,7 @@ public class EditSecurityRolePartyTypeCommand
     @Override
     public void doUpdate(SecurityRolePartyType securityRolePartyType) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        SecurityRolePartyTypeValue securityRolePartyTypeValue = securityControl.getSecurityRolePartyTypeValue(securityRolePartyType);
+        var securityRolePartyTypeValue = securityControl.getSecurityRolePartyTypeValue(securityRolePartyType);
         
         securityRolePartyTypeValue.setPartySelectorPK(partySelector == null? null: partySelector.getPrimaryKey());
         

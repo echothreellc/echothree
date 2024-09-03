@@ -23,7 +23,6 @@ import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
 import java.util.Locale;
-import java.util.regex.Matcher;
 
 public class EmailAddressFieldType
         extends BaseFieldType {
@@ -35,14 +34,14 @@ public class EmailAddressFieldType
     
     @Override
     public String validate() {
-        int length = fieldValue.length();
-        boolean hadErrors = false;
+        var length = fieldValue.length();
+        var hadErrors = false;
         
         if(length > 80) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_LENGTH));
             hadErrors = true;
         } else {
-            Matcher m = Patterns.EmailAddress.matcher(fieldValue.toLowerCase(Locale.getDefault()));
+            var m = Patterns.EmailAddress.matcher(fieldValue.toLowerCase(Locale.getDefault()));
             if(!m.matches()) {
                 validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
                 hadErrors = true;

@@ -21,8 +21,6 @@ import com.echothree.control.user.item.common.result.GetHarmonizedTariffSchedule
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -49,12 +47,12 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
 
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnits(getUserVisitPK(request), null);
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnits(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUnitsResult result = (GetHarmonizedTariffScheduleCodeUnitsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUnitsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNITS, result.getHarmonizedTariffScheduleCodeUnits());
             forwardKey = ForwardConstants.DISPLAY;

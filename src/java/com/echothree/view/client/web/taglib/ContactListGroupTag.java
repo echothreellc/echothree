@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListGroupForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListGroupResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -92,15 +89,15 @@ public class ContactListGroupTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContactListGroupForm commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
+            var commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
             
             commandForm.setContactListGroupName(contactListGroupName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(), commandForm);
+
+            var commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +105,8 @@ public class ContactListGroupTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactListGroupResult result = (GetContactListGroupResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContactListGroupResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContactListGroup(), scope);
             }

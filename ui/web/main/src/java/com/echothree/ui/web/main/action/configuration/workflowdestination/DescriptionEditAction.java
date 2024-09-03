@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestination;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.edit.WorkflowDestinationDescriptionEdit;
-import com.echothree.control.user.workflow.common.form.EditWorkflowDestinationDescriptionForm;
 import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationDescriptionResult;
-import com.echothree.control.user.workflow.common.spec.WorkflowDestinationDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,16 +56,16 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-        String workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
-        String workflowDestinationName = request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+        var workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
+        var workflowDestinationName = request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditWorkflowDestinationDescriptionForm commandForm = WorkflowUtil.getHome().getEditWorkflowDestinationDescriptionForm();
-                WorkflowDestinationDescriptionSpec spec = WorkflowUtil.getHome().getWorkflowDestinationDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = WorkflowUtil.getHome().getEditWorkflowDestinationDescriptionForm();
+                var spec = WorkflowUtil.getHome().getWorkflowDestinationDescriptionSpec();
                 
                 if(workflowName == null)
                     workflowName = actionForm.getWorkflowName();
@@ -88,19 +83,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    WorkflowDestinationDescriptionEdit edit = WorkflowUtil.getHome().getWorkflowDestinationDescriptionEdit();
+                    var edit = WorkflowUtil.getHome().getWorkflowDestinationDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WorkflowUtil.getHome().editWorkflowDestinationDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WorkflowUtil.getHome().editWorkflowDestinationDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditWorkflowDestinationDescriptionResult result = (EditWorkflowDestinationDescriptionResult)executionResult.getResult();
+                            var result = (EditWorkflowDestinationDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -113,13 +108,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WorkflowUtil.getHome().editWorkflowDestinationDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditWorkflowDestinationDescriptionResult result = (EditWorkflowDestinationDescriptionResult)executionResult.getResult();
+
+                    var commandResult = WorkflowUtil.getHome().editWorkflowDestinationDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditWorkflowDestinationDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        WorkflowDestinationDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWorkflowName(workflowName);
@@ -140,8 +135,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WORKFLOW_NAME, workflowName);
             request.setAttribute(AttributeConstants.WORKFLOW_STEP_NAME, workflowStepName);

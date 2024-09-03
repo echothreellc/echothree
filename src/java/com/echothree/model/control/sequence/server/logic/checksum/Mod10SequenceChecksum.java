@@ -37,13 +37,13 @@ public class Mod10SequenceChecksum
     @Override
     public String calculate(String value) {
         var bytes = value.getBytes(Charsets.UTF_8);
-        int sum = 0;
+        var sum = 0;
 
-        for(int i = 0 ; i < bytes.length; i++) {
+        for(var i = 0; i < bytes.length; i++) {
             sum += (bytes [i] * (i + 1));
         }
 
-        char[] modCharacter = { SequenceGeneratorLogic.NUMERIC_VALUES.charAt(sum % SequenceGeneratorLogic.NUMERIC_MAX_INDEX) };
+        var modCharacter = new char[]{SequenceGeneratorLogic.NUMERIC_VALUES.charAt(sum % SequenceGeneratorLogic.NUMERIC_MAX_INDEX)};
         return new String(modCharacter);
     }
 

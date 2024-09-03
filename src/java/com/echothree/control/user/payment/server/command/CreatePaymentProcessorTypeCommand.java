@@ -18,12 +18,10 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.CreatePaymentProcessorTypeForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.CreatePaymentProcessorTypeResult;
 import com.echothree.model.control.payment.server.logic.PaymentProcessorTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,13 +63,13 @@ public class CreatePaymentProcessorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CreatePaymentProcessorTypeResult result = PaymentResultFactory.getCreatePaymentProcessorTypeResult();
-        String paymentProcessorTypeName = form.getPaymentProcessorTypeName();
+        var result = PaymentResultFactory.getCreatePaymentProcessorTypeResult();
+        var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        PaymentProcessorType paymentProcessorType = PaymentProcessorTypeLogic.getInstance().createPaymentProcessorType(this,
+        var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().createPaymentProcessorType(this,
                 paymentProcessorTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(paymentProcessorType != null && !hasExecutionErrors()) {

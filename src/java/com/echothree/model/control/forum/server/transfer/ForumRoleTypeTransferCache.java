@@ -30,13 +30,13 @@ public class ForumRoleTypeTransferCache
     }
     
     public ForumRoleTypeTransfer getForumRoleTypeTransfer(ForumRoleType forumRoleType) {
-        ForumRoleTypeTransfer forumRoleTypeTransfer = get(forumRoleType);
+        var forumRoleTypeTransfer = get(forumRoleType);
         
         if(forumRoleTypeTransfer == null) {
-            String forumRoleTypeName = forumRoleType.getForumRoleTypeName();
-            Boolean isDefault = forumRoleType.getIsDefault();
-            Integer sortOrder = forumRoleType.getSortOrder();
-            String description = forumControl.getBestForumRoleTypeDescription(forumRoleType, getLanguage());
+            var forumRoleTypeName = forumRoleType.getForumRoleTypeName();
+            var isDefault = forumRoleType.getIsDefault();
+            var sortOrder = forumRoleType.getSortOrder();
+            var description = forumControl.getBestForumRoleTypeDescription(forumRoleType, getLanguage());
             
             forumRoleTypeTransfer = new ForumRoleTypeTransfer(forumRoleTypeName, isDefault, sortOrder, description);
             put(forumRoleType, forumRoleTypeTransfer);

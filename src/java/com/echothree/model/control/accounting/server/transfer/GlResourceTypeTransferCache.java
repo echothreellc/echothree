@@ -19,7 +19,6 @@ package com.echothree.model.control.accounting.server.transfer;
 import com.echothree.model.control.accounting.common.transfer.GlResourceTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
-import com.echothree.model.data.accounting.server.entity.GlResourceTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class GlResourceTypeTransferCache
@@ -34,14 +33,14 @@ public class GlResourceTypeTransferCache
     
     @Override
     public GlResourceTypeTransfer getTransfer(GlResourceType glResourceType) {
-        GlResourceTypeTransfer glResourceTypeTransfer = get(glResourceType);
+        var glResourceTypeTransfer = get(glResourceType);
         
         if(glResourceTypeTransfer == null) {
-            GlResourceTypeDetail glResourceTypeDetail = glResourceType.getLastDetail();
-            String glResourceTypeName = glResourceTypeDetail.getGlResourceTypeName();
-            Boolean isDefault = glResourceTypeDetail.getIsDefault();
-            Integer sortOrder = glResourceTypeDetail.getSortOrder();
-            String description = accountingControl.getBestGlResourceTypeDescription(glResourceType, getLanguage());
+            var glResourceTypeDetail = glResourceType.getLastDetail();
+            var glResourceTypeName = glResourceTypeDetail.getGlResourceTypeName();
+            var isDefault = glResourceTypeDetail.getIsDefault();
+            var sortOrder = glResourceTypeDetail.getSortOrder();
+            var description = accountingControl.getBestGlResourceTypeDescription(glResourceType, getLanguage());
             
             glResourceTypeTransfer = new GlResourceTypeTransfer(glResourceTypeName, isDefault, sortOrder, description);
             put(glResourceType, glResourceTypeTransfer);

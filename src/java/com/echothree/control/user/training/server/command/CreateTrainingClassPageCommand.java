@@ -23,11 +23,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassPage;
-import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -77,26 +72,26 @@ public class CreateTrainingClassPageCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassPageName = form.getTrainingClassPageName();
-                TrainingClassPage trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
+                var trainingClassPageName = form.getTrainingClassPageName();
+                var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
                 if(trainingClassPage == null) {
-                    MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-                    String page = form.getPage();
-                    MimeType pageMimeType = mimeTypeLogic.checkMimeType(this, form.getPageMimeTypeName(), page, MimeTypeUsageTypes.TEXT.name(),
+                    var mimeTypeLogic = MimeTypeLogic.getInstance();
+                    var page = form.getPage();
+                    var pageMimeType = mimeTypeLogic.checkMimeType(this, form.getPageMimeTypeName(), page, MimeTypeUsageTypes.TEXT.name(),
                             ExecutionErrors.MissingRequiredPageMimeTypeName.name(), ExecutionErrors.MissingRequiredPage.name(),
                             ExecutionErrors.UnknownPageMimeTypeName.name(), ExecutionErrors.UnknownPageMimeTypeUsage.name());
 
                     if(!hasExecutionErrors()) {
-                        PartyPK createdBy = getPartyPK();
+                        var createdBy = getPartyPK();
                         var sortOrder = Integer.valueOf(form.getSortOrder());
                         var description = form.getDescription();
 

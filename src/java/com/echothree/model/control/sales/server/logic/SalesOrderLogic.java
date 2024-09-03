@@ -66,13 +66,10 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPol
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.customer.server.entity.CustomerTypeDetail;
 import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderPriority;
-import com.echothree.model.data.order.server.entity.OrderRole;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -80,16 +77,10 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
-import com.echothree.model.data.workflow.server.entity.WorkflowTrigger;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.Map;
-import java.util.Set;
 
 public class SalesOrderLogic
         extends OrderLogic {
@@ -120,7 +111,7 @@ public class SalesOrderLogic
         // 2) Try to get it from the offer, if one was supplied.
         if(customerType == null && offer != null) {
             var offerControl = Session.getModelController(OfferControl.class);
-            OfferCustomerType offerCustomerType = offerControl.getDefaultOfferCustomerType(offer);
+            var offerCustomerType = offerControl.getDefaultOfferCustomerType(offer);
 
             if(offerCustomerType != null) {
                 customerType = offerCustomerType.getCustomerType();
@@ -149,7 +140,7 @@ public class SalesOrderLogic
             allowReferenceDuplicates = billToCustomer.getAllowReferenceDuplicates();
             referenceValidationPattern = billToCustomer.getReferenceValidationPattern();
         } else if(customerType != null) {
-            CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
+            var customerTypeDetail = customerType.getLastDetail();
 
             requireReference = customerTypeDetail.getDefaultRequireReference();
             allowReferenceDuplicates = customerTypeDetail.getDefaultAllowReferenceDuplicates();
@@ -497,15 +488,15 @@ public class SalesOrderLogic
     public SalesOrderStatusChoicesBean getSalesOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
             final Order order, final PartyPK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        SalesOrderStatusChoicesBean salesOrderStatusChoicesBean = new SalesOrderStatusChoicesBean();
+        var salesOrderStatusChoicesBean = new SalesOrderStatusChoicesBean();
 
         if(order == null) {
             workflowControl.getWorkflowEntranceChoices(salesOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS), partyPK);
         } else {
             var coreControl = Session.getModelController(CoreControl.class);
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(salesOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
         }
@@ -517,15 +508,15 @@ public class SalesOrderLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-        WorkflowDestination workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
 
         if(workflowDestination != null || orderStatusChoice == null) {
             var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
-            String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
-            boolean handled = false;
+            var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            var handled = false;
             Long triggerTime = null;
             
             if(currentWorkflowStepName.equals(SalesOrderStatusConstants.WorkflowStep_ENTRY_ALLOCATED)) {
@@ -575,11 +566,11 @@ public class SalesOrderLogic
      */
     public void checkOrderAvailableForModification(final Session session, final ExecutionErrorAccumulator eea, final Order order, final PartyPK modifiedBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, getEntityInstanceByBaseEntity(order));
-        String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, getEntityInstanceByBaseEntity(order));
+        var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
         
         if(workflowStepName.equals(SalesOrderStatusConstants.WorkflowEntrance_ENTRY_ALLOCATED)) {
-            WorkflowTrigger workflowTrigger = workflowControl.getWorkflowTriggerForUpdate(workflowEntityStatus);
+            var workflowTrigger = workflowControl.getWorkflowTriggerForUpdate(workflowEntityStatus);
             
             workflowTrigger.setTriggerTime(session.START_TIME + AllocatedInventoryTimeout);
         } else if(workflowStepName.equals(SalesOrderStatusConstants.WorkflowEntrance_ENTRY_UNALLOCATED)) {
@@ -596,7 +587,7 @@ public class SalesOrderLogic
      */
     public Party getOrderBillToParty(final Order order) {
         var orderRoleControl = Session.getModelController(OrderRoleControl.class);
-        OrderRole billToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
+        var billToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
         Party party = null;
         
         if(billToOrderRole != null) {
@@ -613,7 +604,7 @@ public class SalesOrderLogic
      */
     public CustomerType getCustomerTypeFromParty(final Party party) {
         var customerControl = Session.getModelController(CustomerControl.class);
-        Customer customer = party == null ? null : customerControl.getCustomer(party);
+        var customer = party == null ? null : customerControl.getCustomer(party);
         CustomerType customerType = null;
         
         if(customer != null) {
@@ -642,7 +633,7 @@ public class SalesOrderLogic
      */
     public Party getOrderShipToParty(final Order order, final boolean billToFallback, final BasePK createdBy) {
         var orderRoleControl = Session.getModelController(OrderRoleControl.class);
-        OrderRole shipToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.name());
+        var shipToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.name());
         
         if(shipToOrderRole == null && billToFallback) {
             shipToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());

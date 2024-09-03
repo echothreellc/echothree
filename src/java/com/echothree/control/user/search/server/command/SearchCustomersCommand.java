@@ -17,7 +17,6 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.SearchCustomersForm;
-import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
@@ -29,15 +28,8 @@ import com.echothree.model.control.customer.server.search.CustomerSearchEvaluato
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeCountry;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -108,11 +100,11 @@ public class SearchCustomersCommand
     
     @Override
     protected ValidationResult validate() {
-        Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validator = new Validator(this);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            String partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasTypeName = form.getPartyAliasTypeName();
             
             if(partyAliasTypeName != null) {
                 validationResult = validator.validate(form, formAliasFieldDefinitions);
@@ -125,26 +117,26 @@ public class SearchCustomersCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchCustomersResult result = SearchResultFactory.getSearchCustomersResult();
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.CUSTOMER.name());
+        var result = SearchResultFactory.getSearchCustomersResult();
+        var searchKind = searchControl.getSearchKindByName(SearchKinds.CUSTOMER.name());
         
         if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
                 var customerControl = Session.getModelController(CustomerControl.class);
-                String customerTypeName = form.getCustomerTypeName();
-                CustomerType customerType = customerTypeName == null? null: customerControl.getCustomerTypeByName(customerTypeName);
+                var customerTypeName = form.getCustomerTypeName();
+                var customerType = customerTypeName == null? null: customerControl.getCustomerTypeByName(customerTypeName);
                 
                 if(customerTypeName == null || customerType != null) {
-                    String partyAliasTypeName = form.getPartyAliasTypeName();
-                    String alias = form.getAlias();
+                    var partyAliasTypeName = form.getPartyAliasTypeName();
+                    var alias = form.getAlias();
                     PartyAliasType partyAliasType = null;
                     
                     if(partyAliasTypeName != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
+                        var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
                         
                         if(partyType != null) {
                             partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
@@ -159,31 +151,31 @@ public class SearchCustomersCommand
                     
                     if(!hasExecutionErrors()) {
                         var geoControl = Session.getModelController(GeoControl.class);
-                        String countryName = form.getCountryName();
-                        String countryAlias = countryName == null ? null : StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
-                        GeoCode countryGeoCode = countryAlias == null ? null : geoControl.getCountryByAlias(countryAlias);
+                        var countryName = form.getCountryName();
+                        var countryAlias = countryName == null ? null : StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
+                        var countryGeoCode = countryAlias == null ? null : geoControl.getCountryByAlias(countryAlias);
 
                         if(countryName == null || countryGeoCode != null) {
-                            GeoCodeCountry geoCodeCountry = countryGeoCode == null ? null : geoControl.getGeoCodeCountry(countryGeoCode);
-                            String areaCode = form.getAreaCode();
-                            String areaCodePattern = geoCodeCountry == null ? null : geoCodeCountry.getAreaCodePattern();
-                            Pattern pattern = areaCodePattern == null ? null : Pattern.compile(areaCodePattern);
+                            var geoCodeCountry = countryGeoCode == null ? null : geoControl.getGeoCodeCountry(countryGeoCode);
+                            var areaCode = form.getAreaCode();
+                            var areaCodePattern = geoCodeCountry == null ? null : geoCodeCountry.getAreaCodePattern();
+                            var pattern = areaCodePattern == null ? null : Pattern.compile(areaCodePattern);
 
                             if(areaCode == null || (pattern == null || pattern.matcher(areaCode).matches())) {
-                                String telephoneNumberPattern = countryGeoCode == null ? null : geoCodeCountry.getTelephoneNumberPattern();
-                                String telephoneNumber = form.getTelephoneNumber();
+                                var telephoneNumberPattern = countryGeoCode == null ? null : geoCodeCountry.getTelephoneNumberPattern();
+                                var telephoneNumber = form.getTelephoneNumber();
 
                                 pattern = telephoneNumberPattern == null ? null : Pattern.compile(telephoneNumberPattern);
 
                                 if(telephoneNumber == null || (pattern == null || pattern.matcher(telephoneNumber).matches())) {
-                                    SearchLogic searchLogic = SearchLogic.getInstance();
-                                    UserVisit userVisit = getUserVisit();
-                                    CustomerSearchEvaluator customerSearchEvaluator = new CustomerSearchEvaluator(userVisit, searchType,
+                                    var searchLogic = SearchLogic.getInstance();
+                                    var userVisit = getUserVisit();
+                                    var customerSearchEvaluator = new CustomerSearchEvaluator(userVisit, searchType,
                                             searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
                                             searchLogic.getDefaultSearchSortDirection(null));
-                                    String createdSince = form.getCreatedSince();
-                                    String modifiedSince = form.getModifiedSince();
-                                    String fields = form.getFields();
+                                    var createdSince = form.getCreatedSince();
+                                    var modifiedSince = form.getModifiedSince();
+                                    var fields = form.getFields();
 
                                     customerSearchEvaluator.setFirstName(form.getFirstName());
                                     customerSearchEvaluator.setFirstNameSoundex(Boolean.parseBoolean(form.getFirstNameSoundex()));

@@ -21,7 +21,6 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorAction
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.value.PaymentProcessorActionTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultPaymentProcessorActionTypeCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        String paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
-        PaymentProcessorActionTypeDetailValue paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueByNameForUpdate(paymentProcessorActionTypeName);
+        var paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
+        var paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueByNameForUpdate(paymentProcessorActionTypeName);
         
         if(paymentProcessorActionTypeDetailValue != null) {
             paymentProcessorActionTypeDetailValue.setIsDefault(Boolean.TRUE);

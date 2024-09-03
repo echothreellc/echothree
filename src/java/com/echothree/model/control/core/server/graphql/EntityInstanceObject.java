@@ -104,9 +104,9 @@ public class EntityInstanceObject
     public String getEntityRef() {
         var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
-        return new StringBuilder(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName())
-                .append('.').append(entityTypeDetail.getEntityTypeName())
-                .append('.').append(entityInstance.getEntityUniqueId()).toString();
+        return entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName() +
+                '.' + entityTypeDetail.getEntityTypeName() +
+                '.' + entityInstance.getEntityUniqueId();
     }
 
     @GraphQLField

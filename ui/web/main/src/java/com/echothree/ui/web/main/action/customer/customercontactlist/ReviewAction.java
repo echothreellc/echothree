@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetPartyContactListForm;
 import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contactlist.common.ContactListOptions;
@@ -27,8 +26,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,9 +55,9 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetPartyContactListForm commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
+        var commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
 
         commandForm.setPartyName(partyName);
         commandForm.setContactListName(contactListName);
@@ -71,12 +68,12 @@ public class ReviewAction
         options.add(CommentOptions.CommentIncludeClob);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-        CommandResult commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
         PartyContactListTransfer partyContactList = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyContactListResult result = (GetPartyContactListResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyContactListResult)executionResult.getResult();
             partyContactList = result.getPartyContactList();
         }
 

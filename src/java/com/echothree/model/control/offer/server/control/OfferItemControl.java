@@ -21,14 +21,11 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
-import com.echothree.model.control.offer.server.transfer.OfferItemPriceTransferCache;
-import com.echothree.model.control.offer.server.transfer.OfferItemTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.offer.common.pk.OfferItemPK;
-import com.echothree.model.data.offer.common.pk.OfferItemPricePK;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
@@ -68,7 +65,7 @@ public class OfferItemControl
 
     /** Use the function in OfferLogic instead. */
     public OfferItem createOfferItem(Offer offer, Item item, BasePK createdBy) {
-        OfferItem offerItem = OfferItemFactory.getInstance().create(offer, item, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var offerItem = OfferItemFactory.getInstance().create(offer, item, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -209,7 +206,7 @@ public class OfferItemControl
 
     public List<OfferItemTransfer> getOfferItemTransfers(UserVisit userVisit, Collection<OfferItem> offerItems) {
         List<OfferItemTransfer> offerItemTransfers = new ArrayList<>(offerItems.size());
-        OfferItemTransferCache offerItemTransferCache = getOfferTransferCaches(userVisit).getOfferItemTransferCache();
+        var offerItemTransferCache = getOfferTransferCaches(userVisit).getOfferItemTransferCache();
 
         offerItems.forEach((offerItem) ->
                 offerItemTransfers.add(offerItemTransferCache.getOfferItemTransfer(offerItem))
@@ -243,7 +240,7 @@ public class OfferItemControl
     /** Use the function in OfferItemLogic instead. */
     public OfferItemPrice createOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, BasePK createdBy) {
-        OfferItemPrice offerItemPrice = OfferItemPriceFactory.getInstance().create(offerItem, inventoryCondition, unitOfMeasureType, currency,
+        var offerItemPrice = OfferItemPriceFactory.getInstance().create(offerItem, inventoryCondition, unitOfMeasureType, currency,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.MODIFY, offerItemPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -469,7 +466,7 @@ public class OfferItemControl
 
     public List<OfferItemPriceTransfer> getOfferItemPriceTransfers(UserVisit userVisit, Collection<OfferItemPrice> offerItemPrices) {
         List<OfferItemPriceTransfer> offerItemPriceTransfers = new ArrayList<>(offerItemPrices.size());
-        OfferItemPriceTransferCache offerItemPriceTransferCache = getOfferTransferCaches(userVisit).getOfferItemPriceTransferCache();
+        var offerItemPriceTransferCache = getOfferTransferCaches(userVisit).getOfferItemPriceTransferCache();
 
         offerItemPrices.forEach((offerItemPrice) ->
                 offerItemPriceTransfers.add(offerItemPriceTransferCache.getTransfer(offerItemPrice))
@@ -515,7 +512,7 @@ public class OfferItemControl
 
     /** Use the function in OfferItemLogic instead. */
     public OfferItemFixedPrice createOfferItemFixedPrice(OfferItemPrice offerItemPrice, Long unitPrice, BasePK createdBy) {
-        OfferItemFixedPrice offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPrice,
+        var offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPrice,
                 unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemFixedPrice.getPrimaryKey(),
@@ -555,7 +552,7 @@ public class OfferItemControl
     }
 
     public OfferItemFixedPriceValue getOfferItemFixedPriceValueForUpdate(OfferItemPrice offerItemPrice) {
-        OfferItemFixedPrice offerItemFixedPrice = getOfferItemFixedPriceForUpdate(offerItemPrice);
+        var offerItemFixedPrice = getOfferItemFixedPriceForUpdate(offerItemPrice);
 
         return offerItemFixedPrice == null? null: offerItemFixedPrice.getOfferItemFixedPriceValue().clone();
     }
@@ -589,8 +586,8 @@ public class OfferItemControl
             offerItemFixedPrice.setThruTime(session.START_TIME_LONG);
             offerItemFixedPrice.store();
 
-            OfferItemPricePK offerItemPricePK = offerItemFixedPrice.getOfferItemPricePK();
-            Long unitPrice = offerItemFixedPriceValue.getUnitPrice();
+            var offerItemPricePK = offerItemFixedPrice.getOfferItemPricePK();
+            var unitPrice = offerItemFixedPriceValue.getUnitPrice();
 
             offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPricePK, unitPrice,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -617,7 +614,7 @@ public class OfferItemControl
     /** Use the function in OfferItemLogic instead. */
     public OfferItemVariablePrice createOfferItemVariablePrice(OfferItemPrice offerItemPrice, Long minimumUnitPrice, Long maximumUnitPrice,
             Long unitPriceIncrement, BasePK createdBy) {
-        OfferItemVariablePrice offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
+        var offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
                 unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemVariablePrice.getPrimaryKey(),
@@ -657,7 +654,7 @@ public class OfferItemControl
     }
 
     public OfferItemVariablePriceValue getOfferItemVariablePriceValueForUpdate(OfferItemPrice offerItemPrice) {
-        OfferItemVariablePrice offerItemVariablePrice = getOfferItemVariablePriceForUpdate(offerItemPrice);
+        var offerItemVariablePrice = getOfferItemVariablePriceForUpdate(offerItemPrice);
 
         return offerItemVariablePrice == null? null: offerItemVariablePrice.getOfferItemVariablePriceValue().clone();
     }
@@ -691,10 +688,10 @@ public class OfferItemControl
             offerItemVariablePrice.setThruTime(session.START_TIME_LONG);
             offerItemVariablePrice.store();
 
-            OfferItemPricePK offerItemPricePK = offerItemVariablePrice.getOfferItemPricePK();
-            Long maximumUnitPrice = offerItemVariablePriceValue.getMaximumUnitPrice();
-            Long minimumUnitPrice = offerItemVariablePriceValue.getMinimumUnitPrice();
-            Long unitPriceIncrement = offerItemVariablePriceValue.getUnitPriceIncrement();
+            var offerItemPricePK = offerItemVariablePrice.getOfferItemPricePK();
+            var maximumUnitPrice = offerItemVariablePriceValue.getMaximumUnitPrice();
+            var minimumUnitPrice = offerItemVariablePriceValue.getMinimumUnitPrice();
+            var unitPriceIncrement = offerItemVariablePriceValue.getUnitPriceIncrement();
 
             offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPricePK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);

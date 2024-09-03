@@ -18,11 +18,9 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetServiceDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetServiceDescriptionsResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Service;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,9 +61,9 @@ public class GetServiceDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServiceDescriptionsResult result = CoreResultFactory.getGetServiceDescriptionsResult();
-        String serviceName = form.getServiceName();
-        Service service = coreControl.getServiceByName(serviceName);
+        var result = CoreResultFactory.getGetServiceDescriptionsResult();
+        var serviceName = form.getServiceName();
+        var service = coreControl.getServiceByName(serviceName);
         
         if(service != null) {
             result.setService(coreControl.getServiceTransfer(getUserVisit(), service));

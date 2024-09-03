@@ -17,9 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.item.common.transfer.ItemImageTypeDescriptionTransfer;
-import com.echothree.model.control.item.common.transfer.ItemImageTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.item.server.entity.ItemImageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,11 +31,11 @@ public class ItemImageTypeDescriptionTransferCache
     
     @Override
     public ItemImageTypeDescriptionTransfer getTransfer(ItemImageTypeDescription itemImageTypeDescription) {
-        ItemImageTypeDescriptionTransfer itemImageTypeDescriptionTransfer = get(itemImageTypeDescription);
+        var itemImageTypeDescriptionTransfer = get(itemImageTypeDescription);
         
         if(itemImageTypeDescriptionTransfer == null) {
-            ItemImageTypeTransfer itemImageTypeTransfer = itemControl.getItemImageTypeTransfer(userVisit, itemImageTypeDescription.getItemImageType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, itemImageTypeDescription.getLanguage());
+            var itemImageTypeTransfer = itemControl.getItemImageTypeTransfer(userVisit, itemImageTypeDescription.getItemImageType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemImageTypeDescription.getLanguage());
             
             itemImageTypeDescriptionTransfer = new ItemImageTypeDescriptionTransfer(languageTransfer, itemImageTypeTransfer, itemImageTypeDescription.getDescription());
             put(itemImageTypeDescription, itemImageTypeDescriptionTransfer);

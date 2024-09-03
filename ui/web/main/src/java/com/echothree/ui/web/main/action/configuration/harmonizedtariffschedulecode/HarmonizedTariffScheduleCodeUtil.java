@@ -17,12 +17,9 @@
 package com.echothree.ui.web.main.action.configuration.harmonizedtariffschedulecode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,13 +39,13 @@ public class HarmonizedTariffScheduleCodeUtil {
 
     public void setupCountryTransfer(HttpServletRequest request, String countryName)
             throws NamingException {
-        GetCountryForm commandForm = GeoUtil.getHome().getGetCountryForm();
+        var commandForm = GeoUtil.getHome().getGetCountryForm();
 
         commandForm.setCountryName(countryName);
 
-        CommandResult commandResult = GeoUtil.getHome().getCountry(MainBaseAction.getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCountryResult result = (GetCountryResult)executionResult.getResult();
+        var commandResult = GeoUtil.getHome().getCountry(MainBaseAction.getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCountryResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
     }

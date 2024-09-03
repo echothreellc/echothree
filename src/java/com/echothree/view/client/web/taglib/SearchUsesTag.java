@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.SearchUsesForm;
 import com.echothree.control.user.search.common.result.SearchUsesResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -191,7 +188,7 @@ public class SearchUsesTag
     public int doStartTag()
             throws JspException {
         try {
-            SearchUsesForm commandForm = SearchUtil.getHome().getSearchUsesForm();
+            var commandForm = SearchUtil.getHome().getSearchUsesForm();
             
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.setSearchTypeName(searchTypeName);
@@ -205,7 +202,7 @@ public class SearchUsesTag
             commandForm.setFields(fields);
             commandForm.setSearchUseTypeName(searchUseTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().searchUses(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().searchUses(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -213,8 +210,8 @@ public class SearchUsesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchUsesResult result = (SearchUsesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchUsesResult)executionResult.getResult();
 
                 if(countVar != null) {
                     pageContext.setAttribute(countVar, result.getCount(), scope);

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.searchkind;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.DeleteSearchKindForm;
-import com.echothree.control.user.search.common.form.GetSearchKindForm;
 import com.echothree.control.user.search.common.result.GetSearchKindResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -62,13 +59,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchKindForm commandForm = SearchUtil.getHome().getGetSearchKindForm();
+        var commandForm = SearchUtil.getHome().getGetSearchKindForm();
         
         commandForm.setSearchKindName(actionForm.getSearchKindName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchKind(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSearchKindResult result = (GetSearchKindResult)executionResult.getResult();
+
+        var commandResult = SearchUtil.getHome().getSearchKind(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSearchKindResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SEARCH_KIND, result.getSearchKind());
     }
@@ -76,7 +73,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSearchKindForm commandForm = SearchUtil.getHome().getDeleteSearchKindForm();
+        var commandForm = SearchUtil.getHome().getDeleteSearchKindForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
 

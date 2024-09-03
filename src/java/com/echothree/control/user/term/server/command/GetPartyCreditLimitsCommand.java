@@ -17,13 +17,10 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetPartyCreditLimitsForm;
-import com.echothree.control.user.term.common.result.GetPartyCreditLimitsResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -53,13 +50,13 @@ public class GetPartyCreditLimitsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyCreditLimitsResult result = TermResultFactory.getGetPartyCreditLimitsResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = TermResultFactory.getGetPartyCreditLimitsResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var termControl = Session.getModelController(TermControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setParty(partyControl.getPartyTransfer(userVisit, party));
             result.setPartyCreditLimits(termControl.getPartyCreditLimitTransfersByParty(getUserVisit(), party));

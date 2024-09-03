@@ -18,7 +18,6 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.SearchSalesOrderBatchesForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.control.user.search.common.result.SearchSalesOrderBatchesResult;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
@@ -28,14 +27,7 @@ import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.batch.server.entity.BatchAliasType;
-import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.payment.server.entity.PaymentMethod;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -74,41 +66,41 @@ public class SearchSalesOrderBatchesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchSalesOrderBatchesResult result = SearchResultFactory.getSearchSalesOrderBatchesResult();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SALES_ORDER_BATCH.name());
+        var searchLogic = SearchLogic.getInstance();
+        var result = SearchResultFactory.getSearchSalesOrderBatchesResult();
+        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SALES_ORDER_BATCH.name());
 
         if(!hasExecutionErrors()) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
 
             if(!hasExecutionErrors()) {
-                String currencyIsoName = form.getCurrencyIsoName();
-                Currency currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+                var currencyIsoName = form.getCurrencyIsoName();
+                var currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
 
                 if(!hasExecutionErrors()) {
-                    String paymentMethodName = form.getPaymentMethodName();
-                    PaymentMethod paymentMethod = paymentMethodName == null ? null : PaymentMethodLogic.getInstance().getPaymentMethodByName(this, paymentMethodName);
+                    var paymentMethodName = form.getPaymentMethodName();
+                    var paymentMethod = paymentMethodName == null ? null : PaymentMethodLogic.getInstance().getPaymentMethodByName(this, paymentMethodName);
 
                     if(!hasExecutionErrors()) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        String salesOrderBatchStatusChoice = form.getSalesOrderBatchStatusChoice();
-                        WorkflowStep salesOrderBatchStatusWorkflowStep = salesOrderBatchStatusChoice == null ? null :
+                        var salesOrderBatchStatusChoice = form.getSalesOrderBatchStatusChoice();
+                        var salesOrderBatchStatusWorkflowStep = salesOrderBatchStatusChoice == null ? null :
                             workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS), salesOrderBatchStatusChoice);
 
                         if(salesOrderBatchStatusChoice == null || salesOrderBatchStatusChoice != null) {
-                            BatchLogic batchLogic = BatchLogic.getInstance();
-                            BatchType batchType = batchLogic.getBatchTypeByName(this, BatchConstants.BatchType_SALES_ORDER);
+                            var batchLogic = BatchLogic.getInstance();
+                            var batchType = batchLogic.getBatchTypeByName(this, BatchConstants.BatchType_SALES_ORDER);
 
                             if(!hasExecutionErrors()) {
-                                String batchAliasTypeName = form.getBatchAliasTypeName();
-                                BatchAliasType batchAliasType = batchAliasTypeName == null ? null : batchLogic.getBatchAliasTypeByName(this, batchType, batchAliasTypeName);
+                                var batchAliasTypeName = form.getBatchAliasTypeName();
+                                var batchAliasType = batchAliasTypeName == null ? null : batchLogic.getBatchAliasTypeByName(this, batchType, batchAliasTypeName);
 
                                 if(!hasExecutionErrors()) {
-                                    SalesOrderBatchSearchEvaluator salesOrderBatchSearchEvaluator = new SalesOrderBatchSearchEvaluator(getUserVisit(), searchType, searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind), searchLogic.getDefaultSearchSortDirection(null));
-                                    String createdSince = form.getCreatedSince();
-                                    String modifiedSince = form.getModifiedSince();
-                                    String fields = form.getFields();
+                                    var salesOrderBatchSearchEvaluator = new SalesOrderBatchSearchEvaluator(getUserVisit(), searchType, searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind), searchLogic.getDefaultSearchSortDirection(null));
+                                    var createdSince = form.getCreatedSince();
+                                    var modifiedSince = form.getModifiedSince();
+                                    var fields = form.getFields();
 
                                     salesOrderBatchSearchEvaluator.setCurrency(currency);
                                     salesOrderBatchSearchEvaluator.setPaymentMethod(paymentMethod);

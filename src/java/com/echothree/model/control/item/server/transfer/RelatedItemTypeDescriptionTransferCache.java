@@ -17,9 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.item.common.transfer.RelatedItemTypeDescriptionTransfer;
-import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.item.server.entity.RelatedItemTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,11 +31,11 @@ public class RelatedItemTypeDescriptionTransferCache
     
     @Override
     public RelatedItemTypeDescriptionTransfer getTransfer(RelatedItemTypeDescription relatedItemTypeDescription) {
-        RelatedItemTypeDescriptionTransfer relatedItemTypeDescriptionTransfer = get(relatedItemTypeDescription);
+        var relatedItemTypeDescriptionTransfer = get(relatedItemTypeDescription);
         
         if(relatedItemTypeDescriptionTransfer == null) {
-            RelatedItemTypeTransfer relatedItemTypeTransfer = itemControl.getRelatedItemTypeTransfer(userVisit, relatedItemTypeDescription.getRelatedItemType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, relatedItemTypeDescription.getLanguage());
+            var relatedItemTypeTransfer = itemControl.getRelatedItemTypeTransfer(userVisit, relatedItemTypeDescription.getRelatedItemType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, relatedItemTypeDescription.getLanguage());
             
             relatedItemTypeDescriptionTransfer = new RelatedItemTypeDescriptionTransfer(languageTransfer, relatedItemTypeTransfer, relatedItemTypeDescription.getDescription());
             put(relatedItemTypeDescription, relatedItemTypeDescriptionTransfer);

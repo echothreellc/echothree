@@ -17,9 +17,7 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.model.control.financial.common.transfer.FinancialAccountAliasTypeDescriptionTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountAliasTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.financial.server.entity.FinancialAccountAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class FinancialAccountAliasTypeDescriptionTransferCache
     }
     
     public FinancialAccountAliasTypeDescriptionTransfer getFinancialAccountAliasTypeDescriptionTransfer(FinancialAccountAliasTypeDescription financialAccountAliasTypeDescription) {
-        FinancialAccountAliasTypeDescriptionTransfer financialAccountAliasTypeDescriptionTransfer = get(financialAccountAliasTypeDescription);
+        var financialAccountAliasTypeDescriptionTransfer = get(financialAccountAliasTypeDescription);
         
         if(financialAccountAliasTypeDescriptionTransfer == null) {
-            FinancialAccountAliasTypeTransfer financialAccountAliasTypeTransfer = financialControl.getFinancialAccountAliasTypeTransfer(userVisit, financialAccountAliasTypeDescription.getFinancialAccountAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountAliasTypeDescription.getLanguage());
+            var financialAccountAliasTypeTransfer = financialControl.getFinancialAccountAliasTypeTransfer(userVisit, financialAccountAliasTypeDescription.getFinancialAccountAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountAliasTypeDescription.getLanguage());
             
             financialAccountAliasTypeDescriptionTransfer = new FinancialAccountAliasTypeDescriptionTransfer(languageTransfer, financialAccountAliasTypeTransfer, financialAccountAliasTypeDescription.getDescription());
             put(financialAccountAliasTypeDescription, financialAccountAliasTypeDescriptionTransfer);

@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.chain;
 import com.echothree.control.user.chain.common.ChainUtil;
 import com.echothree.control.user.chain.common.ChainService;
 import com.echothree.control.user.chain.common.form.ChainFormFactory;
-import com.echothree.control.user.chain.common.form.CreateChainKindForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -47,7 +46,7 @@ public class ChainKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainKind")) {
-            CreateChainKindForm commandForm = ChainFormFactory.getCreateChainKindForm();
+            var commandForm = ChainFormFactory.getCreateChainKindForm();
 
             commandForm.set(getAttrsMap(attrs));
 

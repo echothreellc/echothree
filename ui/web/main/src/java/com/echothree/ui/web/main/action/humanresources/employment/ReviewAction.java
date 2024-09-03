@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employment;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmploymentForm;
 import com.echothree.control.user.employee.common.result.GetEmploymentResult;
 import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
@@ -25,8 +24,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,17 +50,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetEmploymentForm commandForm = EmployeeUtil.getHome().getGetEmploymentForm();
+        String forwardKey;
+        var commandForm = EmployeeUtil.getHome().getGetEmploymentForm();
 
         commandForm.setEmploymentName(request.getParameter(ParameterConstants.EMPLOYMENT_NAME));
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployment(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getEmployment(getUserVisitPK(request), commandForm);
         EmploymentTransfer employment = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmploymentResult result = (GetEmploymentResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmploymentResult)executionResult.getResult();
             
             employment = result.getEmployment();
         }

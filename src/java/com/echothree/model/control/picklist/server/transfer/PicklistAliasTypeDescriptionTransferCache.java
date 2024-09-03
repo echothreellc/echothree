@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.picklist.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistAliasTypeDescriptionTransfer;
-import com.echothree.model.control.picklist.common.transfer.PicklistAliasTypeTransfer;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class PicklistAliasTypeDescriptionTransferCache
     }
     
     public PicklistAliasTypeDescriptionTransfer getPicklistAliasTypeDescriptionTransfer(PicklistAliasTypeDescription picklistAliasTypeDescription) {
-        PicklistAliasTypeDescriptionTransfer picklistAliasTypeDescriptionTransfer = get(picklistAliasTypeDescription);
+        var picklistAliasTypeDescriptionTransfer = get(picklistAliasTypeDescription);
         
         if(picklistAliasTypeDescriptionTransfer == null) {
-            PicklistAliasTypeTransfer picklistAliasTypeTransfer = picklistControl.getPicklistAliasTypeTransfer(userVisit, picklistAliasTypeDescription.getPicklistAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistAliasTypeDescription.getLanguage());
+            var picklistAliasTypeTransfer = picklistControl.getPicklistAliasTypeTransfer(userVisit, picklistAliasTypeDescription.getPicklistAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistAliasTypeDescription.getLanguage());
             
             picklistAliasTypeDescriptionTransfer = new PicklistAliasTypeDescriptionTransfer(languageTransfer, picklistAliasTypeTransfer, picklistAliasTypeDescription.getDescription());
             put(picklistAliasTypeDescription, picklistAliasTypeDescriptionTransfer);

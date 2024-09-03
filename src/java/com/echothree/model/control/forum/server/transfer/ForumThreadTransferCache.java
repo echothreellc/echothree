@@ -19,16 +19,12 @@ package com.echothree.model.control.forum.server.transfer;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.forum.server.entity.ForumThreadDetail;
 import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
-import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ForumThreadTransferCache
         extends BaseForumTransferCache<ForumThread, ForumThreadTransfer> {
@@ -59,16 +55,16 @@ public class ForumThreadTransferCache
     }
     
     public ForumThreadTransfer getForumThreadTransfer(ForumThread forumThread) {
-        ForumThreadTransfer forumThreadTransfer = get(forumThread);
+        var forumThreadTransfer = get(forumThread);
         
         if(forumThreadTransfer == null) {
-            ForumThreadDetail forumThreadDetail = forumThread.getLastDetail();
-            String forumThreadName = forumThreadDetail.getForumThreadName();
-            Icon icon = forumThreadDetail.getIcon();
-            IconTransfer iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
-            Long unformattedPostedTime = forumThreadDetail.getPostedTime();
-            String postedTime = formatTypicalDateTime(unformattedPostedTime);
-            Integer sortOrder = forumThreadDetail.getSortOrder();
+            var forumThreadDetail = forumThread.getLastDetail();
+            var forumThreadName = forumThreadDetail.getForumThreadName();
+            var icon = forumThreadDetail.getIcon();
+            var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
+            var unformattedPostedTime = forumThreadDetail.getPostedTime();
+            var postedTime = formatTypicalDateTime(unformattedPostedTime);
+            var sortOrder = forumThreadDetail.getSortOrder();
                     
             forumThreadTransfer = new ForumThreadTransfer(forumThreadName, iconTransfer, unformattedPostedTime, postedTime, sortOrder);
             put(forumThread, forumThreadTransfer);

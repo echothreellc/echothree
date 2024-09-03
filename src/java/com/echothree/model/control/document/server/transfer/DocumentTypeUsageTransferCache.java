@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.document.server.transfer;
 
-import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTransfer;
-import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsage;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,14 +30,14 @@ public class DocumentTypeUsageTransferCache
     }
     
     public DocumentTypeUsageTransfer getDocumentTypeUsageTransfer(DocumentTypeUsage documentTypeUsage) {
-        DocumentTypeUsageTransfer documentTypeUsageTransfer = get(documentTypeUsage);
+        var documentTypeUsageTransfer = get(documentTypeUsage);
         
         if(documentTypeUsageTransfer == null) {
-            DocumentTypeUsageTypeTransfer documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsage.getDocumentTypeUsageType());
-            DocumentTypeTransfer documentTypeTransfer = documentControl.getDocumentTypeTransfer(userVisit, documentTypeUsage.getDocumentType());
-            Boolean isDefault = documentTypeUsage.getIsDefault();
-            Integer sortOrder = documentTypeUsage.getSortOrder();
-            Integer maximumInstances = documentTypeUsage.getMaximumInstances();
+            var documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsage.getDocumentTypeUsageType());
+            var documentTypeTransfer = documentControl.getDocumentTypeTransfer(userVisit, documentTypeUsage.getDocumentType());
+            var isDefault = documentTypeUsage.getIsDefault();
+            var sortOrder = documentTypeUsage.getSortOrder();
+            var maximumInstances = documentTypeUsage.getMaximumInstances();
             
             documentTypeUsageTransfer = new DocumentTypeUsageTransfer(documentTypeUsageTypeTransfer, documentTypeTransfer, isDefault, sortOrder,
                     maximumInstances);

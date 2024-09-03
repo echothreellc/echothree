@@ -17,9 +17,7 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeTimeZoneTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,13 +36,13 @@ public class GeoCodeTimeZoneTransferCache
     }
     
     public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(GeoCodeTimeZone geoCodeTimeZone) {
-        GeoCodeTimeZoneTransfer geoCodeTimeZoneTransfer = get(geoCodeTimeZone);
+        var geoCodeTimeZoneTransfer = get(geoCodeTimeZone);
         
         if(geoCodeTimeZoneTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeTimeZone.getGeoCode());
-            TimeZoneTransfer timeZone = partyControl.getTimeZoneTransfer(userVisit, geoCodeTimeZone.getTimeZone());
-            Boolean isDefault = geoCodeTimeZone.getIsDefault();
-            Integer sortOrder = geoCodeTimeZone.getSortOrder();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeTimeZone.getGeoCode());
+            var timeZone = partyControl.getTimeZoneTransfer(userVisit, geoCodeTimeZone.getTimeZone());
+            var isDefault = geoCodeTimeZone.getIsDefault();
+            var sortOrder = geoCodeTimeZone.getSortOrder();
             
             geoCodeTimeZoneTransfer = new GeoCodeTimeZoneTransfer(geoCode, timeZone, isDefault, sortOrder);
             put(geoCodeTimeZone, geoCodeTimeZoneTransfer);

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetAppearanceTextDecorationsForm;
 import com.echothree.control.user.core.common.result.GetAppearanceTextDecorationsResult;
-import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class TextDecorationAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
-        GetAppearanceTextDecorationsForm commandForm = CoreUtil.getHome().getGetAppearanceTextDecorationsForm();
+        var appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
+        var commandForm = CoreUtil.getHome().getGetAppearanceTextDecorationsForm();
 
         commandForm.setAppearanceName(appearanceName);
 
-        CommandResult commandResult = CoreUtil.getHome().getAppearanceTextDecorations(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getAppearanceTextDecorations(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAppearanceTextDecorationsResult result = (GetAppearanceTextDecorationsResult) executionResult.getResult();
-            AppearanceTransfer appearanceTransfer = result.getAppearance();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAppearanceTextDecorationsResult) executionResult.getResult();
+            var appearanceTransfer = result.getAppearance();
 
             request.setAttribute(AttributeConstants.APPEARANCE, appearanceTransfer);
             request.setAttribute(AttributeConstants.APPEARANCE_TEXT_DECORATIONS, result.getAppearanceTextDecorations());

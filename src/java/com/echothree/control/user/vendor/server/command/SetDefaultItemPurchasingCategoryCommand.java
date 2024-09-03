@@ -22,7 +22,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.value.ItemPurchasingCategoryDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -63,8 +62,8 @@ public class SetDefaultItemPurchasingCategoryCommand
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
 
-        String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
-        ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueByNameForUpdate(itemPurchasingCategoryName);
+        var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
+        var itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueByNameForUpdate(itemPurchasingCategoryName);
         
         if(itemPurchasingCategoryDetailValue != null) {
             itemPurchasingCategoryDetailValue.setIsDefault(Boolean.TRUE);

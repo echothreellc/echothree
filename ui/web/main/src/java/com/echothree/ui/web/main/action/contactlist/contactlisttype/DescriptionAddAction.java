@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.CreateContactListTypeDescriptionForm;
-import com.echothree.control.user.contactlist.common.form.GetContactListTypeForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListTypeForm commandForm = ContactListUtil.getHome().getGetContactListTypeForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListTypeForm();
 
         commandForm.setContactListTypeName(actionForm.getContactListTypeName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListTypeResult result = (GetContactListTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LIST_TYPE, result.getContactListType());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateContactListTypeDescriptionForm commandForm = ContactListUtil.getHome().getCreateContactListTypeDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getCreateContactListTypeDescriptionForm();
 
         commandForm.setContactListTypeName( actionForm.getContactListTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

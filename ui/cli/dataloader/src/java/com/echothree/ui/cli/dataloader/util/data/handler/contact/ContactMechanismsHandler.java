@@ -19,18 +19,12 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
-import com.echothree.control.user.contact.common.form.CreateContactEmailAddressForm;
-import com.echothree.control.user.contact.common.form.CreateContactPostalAddressForm;
-import com.echothree.control.user.contact.common.form.CreateContactTelephoneForm;
-import com.echothree.control.user.contact.common.form.CreateContactWebAddressForm;
 import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
 import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
 import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -57,14 +51,14 @@ public class ContactMechanismsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contactEmailAddress")) {
-            CreateContactEmailAddressForm form = ContactFormFactory.getCreateContactEmailAddressForm();
+            var form = ContactFormFactory.getCreateContactEmailAddressForm();
             
             String emailAddress = null;
             String allowSolicitation = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("emailAddress"))
                     emailAddress = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("allowSolicitation"))
@@ -77,21 +71,21 @@ public class ContactMechanismsHandler
             form.setEmailAddress(emailAddress);
             form.setAllowSolicitation(allowSolicitation);
             form.setDescription(description);
-            
-            CommandResult commandResult = contactService.createContactEmailAddress(initialDataParser.getUserVisit(), form);
+
+            var commandResult = contactService.createContactEmailAddress(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
                 System.err.println(commandResult);
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateContactEmailAddressResult result = (CreateContactEmailAddressResult)executionResult.getResult();
-                String contactMechanismName = result.getContactMechanismName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateContactEmailAddressResult)executionResult.getResult();
+                var contactMechanismName = result.getContactMechanismName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new ContactMechanismHandler(initialDataParser, this, partyName, contactMechanismName, entityRef));
             }
         } else if(localName.equals("contactPostalAddress")) {
-            CreateContactPostalAddressForm form = ContactFormFactory.getCreateContactPostalAddressForm();
+            var form = ContactFormFactory.getCreateContactPostalAddressForm();
             
             String personalTitleId = null;
             String firstName = null;
@@ -110,11 +104,11 @@ public class ContactMechanismsHandler
             String isCommercial = null;
             String allowSolicitation = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("personalTitle")) {
-                    String personalTitle = attrs.getValue(i);
+                    var personalTitle = attrs.getValue(i);
                     
                     if(personalTitle != null)
                         personalTitleId = (String)initialDataParser.getPersonalTitles().get(personalTitle);
@@ -125,7 +119,7 @@ public class ContactMechanismsHandler
                 else if(attrs.getQName(i).equals("lastName"))
                     lastName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("nameSuffix")) {
-                    String nameSuffix = attrs.getValue(i);
+                    var nameSuffix = attrs.getValue(i);
                     
                     if(nameSuffix != null)
                         nameSuffixId = (String)initialDataParser.getNameSuffixes().get(nameSuffix);
@@ -173,21 +167,21 @@ public class ContactMechanismsHandler
             form.setIsCommercial(isCommercial);
             form.setAllowSolicitation(allowSolicitation);
             form.setDescription(description);
-            
-            CommandResult commandResult = contactService.createContactPostalAddress(initialDataParser.getUserVisit(), form);
+
+            var commandResult = contactService.createContactPostalAddress(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
                 System.err.println(commandResult);
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateContactPostalAddressResult result = (CreateContactPostalAddressResult)executionResult.getResult();
-                String contactMechanismName = result.getContactMechanismName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateContactPostalAddressResult)executionResult.getResult();
+                var contactMechanismName = result.getContactMechanismName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new ContactMechanismHandler(initialDataParser, this, partyName, contactMechanismName, entityRef));
             }
         } else if(localName.equals("contactTelephone")) {
-            CreateContactTelephoneForm form = ContactFormFactory.getCreateContactTelephoneForm();
+            var form = ContactFormFactory.getCreateContactTelephoneForm();
             
             String countryName = null;
             String areaCode = null;
@@ -195,9 +189,9 @@ public class ContactMechanismsHandler
             String telephoneExtension = null;
             String allowSolicitation = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("countryName"))
                     countryName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("areaCode"))
@@ -219,27 +213,27 @@ public class ContactMechanismsHandler
             form.setTelephoneExtension(telephoneExtension);
             form.setAllowSolicitation(allowSolicitation);
             form.setDescription(description);
-            
-            CommandResult commandResult = contactService.createContactTelephone(initialDataParser.getUserVisit(), form);
+
+            var commandResult = contactService.createContactTelephone(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
                 System.err.println(commandResult);
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateContactTelephoneResult result = (CreateContactTelephoneResult)executionResult.getResult();
-                String contactMechanismName = result.getContactMechanismName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateContactTelephoneResult)executionResult.getResult();
+                var contactMechanismName = result.getContactMechanismName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new ContactMechanismHandler(initialDataParser, this, partyName, contactMechanismName, entityRef));
             }
         } else if(localName.equals("contactWebAddress")) {
-            CreateContactWebAddressForm form = ContactFormFactory.getCreateContactWebAddressForm();
+            var form = ContactFormFactory.getCreateContactWebAddressForm();
             
             String url = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("url"))
                     url = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -249,16 +243,16 @@ public class ContactMechanismsHandler
             form.setPartyName(partyName);
             form.setUrl(url);
             form.setDescription(description);
-            
-            CommandResult commandResult = contactService.createContactWebAddress(initialDataParser.getUserVisit(), form);
+
+            var commandResult = contactService.createContactWebAddress(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
                 System.err.println(commandResult);
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateContactWebAddressResult result = (CreateContactWebAddressResult)executionResult.getResult();
-                String contactMechanismName = result.getContactMechanismName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateContactWebAddressResult)executionResult.getResult();
+                var contactMechanismName = result.getContactMechanismName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new ContactMechanismHandler(initialDataParser, this, partyName, contactMechanismName, entityRef));
             }

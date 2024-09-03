@@ -39,10 +39,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.BoostQuery;
@@ -59,12 +56,12 @@ public abstract class BaseSpellCheckEvaluator
     
     private boolean isSimpleQuery(Query query, final String dictionaryField, final List<String> words) {
         boolean result;
-        boolean isBoosted = false;
+        var isBoosted = false;
 
         // If it's a BoostQuery, then we'll unwrap the contained Query and mark
         // that we've been boosted if needed.
         if(query instanceof BoostQuery) {
-            BoostQuery boostQuery = (BoostQuery)query;
+            var boostQuery = (BoostQuery)query;
 
             isBoosted = boostQuery.getBoost() != 1.0f;
 
@@ -80,9 +77,9 @@ public abstract class BaseSpellCheckEvaluator
         }
 
         if(query instanceof TermQuery) {
-            TermQuery termQuery = (TermQuery)query;
-            Term term = termQuery.getTerm();
-            String text = term.text();
+            var termQuery = (TermQuery)query;
+            var term = termQuery.getTerm();
+            var text = term.text();
             
             if(EvaluatorDebugFlags.LogCheckSpelling) {
                 getLog().info("    containedTerm.field() " + term.field());
@@ -113,7 +110,7 @@ public abstract class BaseSpellCheckEvaluator
     }
     
     private boolean isSimpleBooleanQuery(final BooleanQuery booleanQuery, final String dictionaryField, final List<String> words) {
-        boolean result = true;
+        var result = true;
 
         // When searchDefaultOperatorName == AND, Occur.MUST must occur on all clauses.
         // For OR, Occur.SHOULD must occur on all clauses.
@@ -123,7 +120,7 @@ public abstract class BaseSpellCheckEvaluator
         };
 
         for(var booleanClause : booleanQuery) {
-            Occur occur = booleanClause.getOccur();
+            var occur = booleanClause.getOccur();
 
             if(EvaluatorDebugFlags.LogCheckSpelling) {
                 getLog().info("booleanClause " + booleanClause);
@@ -149,7 +146,7 @@ public abstract class BaseSpellCheckEvaluator
             }
 
             if(result) {
-                Query containedQuery = booleanClause.getQuery();
+                var containedQuery = booleanClause.getQuery();
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
                     getLog().info("  booleanClause.getQuery() " + containedQuery);
@@ -168,7 +165,7 @@ public abstract class BaseSpellCheckEvaluator
     }
     
     private boolean isSimpleQuery(final ExecutionErrorAccumulator eea, final String dictionaryField, final List<String> words) {
-        boolean result = false;
+        var result = false;
         
         if(query == null) {
             parseQuery(eea, dictionaryField, null);
@@ -232,22 +229,22 @@ public abstract class BaseSpellCheckEvaluator
 
                 // Switch the default field used by parseQuery(...) over to the dictionary one in order to avoid most analysis
                 // beyond splitting the phrase into simple words.
-                final String dictionaryField = field + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name();
-                final boolean simpleQuery = isSimpleQuery(eea, dictionaryField, words);
+                final var dictionaryField = field + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name();
+                final var simpleQuery = isSimpleQuery(eea, dictionaryField, words);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
                     getLog().info("words = " + words);
                 }
 
                 if(simpleQuery) {
-                    final Analyzer analyzer = getCachedAnalyzer(null, getLanguage());
+                    final var analyzer = getCachedAnalyzer(null, getLanguage());
                     final List<String> analyzedWords = new ArrayList<>(words.size());
 
                     for(var word : words) {
                         String analyzedWord = null;
 
                         try {
-                            try(TokenStream stream = analyzer.tokenStream(field, new StringReader(word))) {
+                            try(var stream = analyzer.tokenStream(field, new StringReader(word))) {
                                 stream.reset();
 
                                 while(stream.incrementToken()) {
@@ -268,7 +265,7 @@ public abstract class BaseSpellCheckEvaluator
                         getLog().info("analyzedWords = " + analyzedWords);
                     }
 
-                    final List<List<CheckSpellingSuggestionTransfer>> suggestions = executeSpellCheck(eea, dictionaryField, words, analyzedWords);
+                    final var suggestions = executeSpellCheck(eea, dictionaryField, words, analyzedWords);
 
                     if(!hasExecutionErrors(eea)) {
                         checkSpellingWords = getCheckSpellingWordTransfers(words, analyzedWords, suggestions);
@@ -286,7 +283,7 @@ public abstract class BaseSpellCheckEvaluator
     
     public List<CheckSpellingWordTransfer> checkSpelling(final ExecutionErrorAccumulator eea) {
         List<CheckSpellingWordTransfer> checkSpellingWords = null;
-        final String languageIsoName = getLanguageIsoName();
+        final var languageIsoName = getLanguageIsoName();
         
         if(languageIsoName == null) {
             handleExecutionError(LanguageRequiredException.class, eea, ExecutionErrors.LanguageRequired.name());

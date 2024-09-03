@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.accounting.division;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreateDivisionForm;
-import com.echothree.control.user.party.common.result.CreateDivisionResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,10 +52,10 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
         
         if(wasPost(request)) {
-            CreateDivisionForm commandForm = PartyUtil.getHome().getCreateDivisionForm();
+            var commandForm = PartyUtil.getHome().getCreateDivisionForm();
             
             if(companyName == null)
                 companyName = actionForm.getCompanyName();
@@ -73,8 +69,8 @@ public class AddAction
             commandForm.setPreferredDateTimeFormatName(actionForm.getDateTimeFormatChoice());
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
-            
-            CommandResult commandResult = PartyUtil.getHome().createDivision(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createDivision(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -87,8 +83,8 @@ public class AddAction
             actionForm.setSortOrder("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPANY_NAME, companyName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

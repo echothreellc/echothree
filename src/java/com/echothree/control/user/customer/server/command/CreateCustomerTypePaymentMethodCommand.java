@@ -19,9 +19,6 @@ package com.echothree.control.user.customer.server.command;
 import com.echothree.control.user.customer.common.form.CreateCustomerTypePaymentMethodForm;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
-import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -56,20 +53,20 @@ public class CreateCustomerTypePaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-            String paymentMethodName = form.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethodName = form.getPaymentMethodName();
+            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
             
             if(paymentMethod != null) {
-                CustomerTypePaymentMethod customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType,
+                var customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType,
                         paymentMethod);
                 
                 if(customerTypePaymentMethod == null) {
-                    Integer defaultSelectionPriority = Integer.valueOf(form.getDefaultSelectionPriority());
+                    var defaultSelectionPriority = Integer.valueOf(form.getDefaultSelectionPriority());
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     

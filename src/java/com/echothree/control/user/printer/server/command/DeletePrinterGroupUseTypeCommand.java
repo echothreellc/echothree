@@ -18,7 +18,6 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.DeletePrinterGroupUseTypeForm;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeletePrinterGroupUseTypeCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByNameForUpdate(printerGroupUseTypeName);
+       var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+       var printerGroupUseType = printerControl.getPrinterGroupUseTypeByNameForUpdate(printerGroupUseTypeName);
         
         if(printerGroupUseType != null) {
             printerControl.deletePrinterGroupUseType(printerGroupUseType, getPartyPK());

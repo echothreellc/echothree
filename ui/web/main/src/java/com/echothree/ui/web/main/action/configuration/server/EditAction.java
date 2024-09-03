@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected ServerSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ServerSpec spec = CoreUtil.getHome().getServerSpec();
+        var spec = CoreUtil.getHome().getServerSpec();
         
         spec.setServerName(findParameter(request, ParameterConstants.ORIGINAL_SERVER_NAME, actionForm.getOriginalServerName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected ServerEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ServerEdit edit = CoreUtil.getHome().getServerEdit();
+        var edit = CoreUtil.getHome().getServerEdit();
 
         edit.setServerName(actionForm.getServerName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

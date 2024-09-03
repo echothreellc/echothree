@@ -20,7 +20,6 @@ import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.edit.WorkflowDestinationEdit;
 import com.echothree.control.user.workflow.common.form.EditWorkflowDestinationForm;
 import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationResult;
-import com.echothree.control.user.workflow.common.spec.WorkflowDestinationSpec;
 import com.echothree.control.user.workflow.common.spec.WorkflowDestinationUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -64,7 +63,7 @@ public class EditAction
     @Override
     protected WorkflowDestinationEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkflowDestinationEdit edit = WorkflowUtil.getHome().getWorkflowDestinationEdit();
+        var edit = WorkflowUtil.getHome().getWorkflowDestinationEdit();
 
         edit.setWorkflowDestinationName(actionForm.getWorkflowDestinationName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

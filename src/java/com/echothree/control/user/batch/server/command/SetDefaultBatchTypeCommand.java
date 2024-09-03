@@ -21,7 +21,6 @@ import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.batch.server.value.BatchTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultBatchTypeCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchTypeName = form.getBatchTypeName();
-        BatchTypeDetailValue batchTypeDetailValue = batchControl.getBatchTypeDetailValueByNameForUpdate(batchTypeName);
+        var batchTypeName = form.getBatchTypeName();
+        var batchTypeDetailValue = batchControl.getBatchTypeDetailValueByNameForUpdate(batchTypeName);
         
         if(batchTypeDetailValue != null) {
             batchTypeDetailValue.setIsDefault(Boolean.TRUE);

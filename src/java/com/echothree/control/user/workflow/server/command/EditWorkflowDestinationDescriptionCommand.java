@@ -19,7 +19,6 @@ package com.echothree.control.user.workflow.server.command;
 import com.echothree.control.user.workflow.common.edit.WorkflowDestinationDescriptionEdit;
 import com.echothree.control.user.workflow.common.edit.WorkflowEditFactory;
 import com.echothree.control.user.workflow.common.form.EditWorkflowDestinationDescriptionForm;
-import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationDescriptionResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowDestinationDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -27,13 +26,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDescription;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.model.data.workflow.server.value.WorkflowDestinationDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -83,33 +76,33 @@ public class EditWorkflowDestinationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        EditWorkflowDestinationDescriptionResult result = WorkflowResultFactory.getEditWorkflowDestinationDescriptionResult();
-        String workflowName = spec.getWorkflowName();
+        var result = WorkflowResultFactory.getEditWorkflowDestinationDescriptionResult();
+        var workflowName = spec.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = spec.getWorkflowStepName();
+            var workflowStepName = spec.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                String workflowDestinationName = spec.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                var workflowDestinationName = spec.getWorkflowDestinationName();
+                var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                            WorkflowDestinationDescription workflowDestinationDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, language);
+                            var workflowDestinationDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, language);
                             
                             if(workflowDestinationDescription != null) {
                                 if(editMode.equals(EditMode.LOCK)) {
                                     result.setWorkflowDestinationDescription(workflowControl.getWorkflowDestinationDescriptionTransfer(getUserVisit(), workflowDestinationDescription));
 
                                     if(lockEntity(workflowDestination)) {
-                                        WorkflowDestinationDescriptionEdit edit = WorkflowEditFactory.getWorkflowDestinationDescriptionEdit();
+                                        var edit = WorkflowEditFactory.getWorkflowDestinationDescriptionEdit();
 
                                         result.setEdit(edit);
                                         edit.setDescription(workflowDestinationDescription.getDescription());
@@ -125,12 +118,12 @@ public class EditWorkflowDestinationDescriptionCommand
                                 addExecutionError(ExecutionErrors.UnknownWorkflowDestinationDescription.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            WorkflowDestinationDescriptionValue workflowDestinationDescriptionValue = workflowControl.getWorkflowDestinationDescriptionValueForUpdate(workflowDestination, language);
+                            var workflowDestinationDescriptionValue = workflowControl.getWorkflowDestinationDescriptionValueForUpdate(workflowDestination, language);
                             
                             if(workflowDestinationDescriptionValue != null) {
                                 if(lockEntityForUpdate(workflowDestination)) {
                                     try {
-                                        String description = edit.getDescription();
+                                        var description = edit.getDescription();
                                         
                                         workflowDestinationDescriptionValue.setDescription(description);
                                         

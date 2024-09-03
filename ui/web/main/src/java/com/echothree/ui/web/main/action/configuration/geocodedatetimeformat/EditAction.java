@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.geocodedatetimeformat;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.edit.GeoCodeDateTimeFormatEdit;
-import com.echothree.control.user.geo.common.form.EditGeoCodeDateTimeFormatForm;
 import com.echothree.control.user.geo.common.result.EditGeoCodeDateTimeFormatResult;
-import com.echothree.control.user.geo.common.spec.GeoCodeDateTimeFormatSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+        var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditGeoCodeDateTimeFormatForm commandForm = GeoUtil.getHome().getEditGeoCodeDateTimeFormatForm();
-                GeoCodeDateTimeFormatSpec spec = GeoUtil.getHome().getGeoCodeDateTimeFormatSpec();
-                String dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
+                var actionForm = (EditActionForm)form;
+                var commandForm = GeoUtil.getHome().getEditGeoCodeDateTimeFormatForm();
+                var spec = GeoUtil.getHome().getGeoCodeDateTimeFormatSpec();
+                var dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
                 
                 if(geoCodeName == null)
                     geoCodeName = actionForm.getGeoCodeName();
@@ -80,21 +75,21 @@ public class EditAction
                 spec.setDateTimeFormatName(dateTimeFormatName);
                 
                 if(wasPost(request)) {
-                    GeoCodeDateTimeFormatEdit edit = GeoUtil.getHome().getGeoCodeDateTimeFormatEdit();
+                    var edit = GeoUtil.getHome().getGeoCodeDateTimeFormatEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = GeoUtil.getHome().editGeoCodeDateTimeFormat(getUserVisitPK(request), commandForm);
+
+                    var commandResult = GeoUtil.getHome().editGeoCodeDateTimeFormat(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditGeoCodeDateTimeFormatResult result = (EditGeoCodeDateTimeFormatResult)executionResult.getResult();
+                            var result = (EditGeoCodeDateTimeFormatResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -107,13 +102,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = GeoUtil.getHome().editGeoCodeDateTimeFormat(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGeoCodeDateTimeFormatResult result = (EditGeoCodeDateTimeFormatResult)executionResult.getResult();
+
+                    var commandResult = GeoUtil.getHome().editGeoCodeDateTimeFormat(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGeoCodeDateTimeFormatResult)executionResult.getResult();
                     
                     if(result != null) {
-                        GeoCodeDateTimeFormatEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setGeoCodeName(geoCodeName);
@@ -133,8 +128,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.GEO_CODE_NAME, geoCodeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

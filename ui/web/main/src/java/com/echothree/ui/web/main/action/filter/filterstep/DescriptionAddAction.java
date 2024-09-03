@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.filter.filterstep;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.CreateFilterStepDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,17 +54,17 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
-        String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
-        String filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+        var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+        var filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
+                var descriptionAddActionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateFilterStepDescriptionForm createFilterStepDescriptionForm = FilterUtil.getHome().getCreateFilterStepDescriptionForm();
+                    var createFilterStepDescriptionForm = FilterUtil.getHome().getCreateFilterStepDescriptionForm();
                     
                     if(filterKindName == null)
                         filterKindName = descriptionAddActionForm.getFilterKindName();
@@ -83,8 +81,8 @@ public class DescriptionAddAction
                     createFilterStepDescriptionForm.setFilterStepName(filterStepName);
                     createFilterStepDescriptionForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
                     createFilterStepDescriptionForm.setDescription(descriptionAddActionForm.getDescription());
-                    
-                    CommandResult commandResult = FilterUtil.getHome().createFilterStepDescription(getUserVisitPK(request), createFilterStepDescriptionForm);
+
+                    var commandResult = FilterUtil.getHome().createFilterStepDescription(getUserVisitPK(request), createFilterStepDescriptionForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -103,8 +101,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FILTER_KIND_NAME, filterKindName);
             request.setAttribute(AttributeConstants.FILTER_TYPE_NAME, filterTypeName);

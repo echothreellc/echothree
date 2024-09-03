@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.content.contentcollection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCollectionDescriptionsForm;
 import com.echothree.control.user.content.common.result.GetContentCollectionDescriptionsResult;
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            GetContentCollectionDescriptionsForm commandForm = ContentUtil.getHome().getGetContentCollectionDescriptionsForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentCollectionDescriptionsForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentCollectionDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCollectionDescriptionsResult result = (GetContentCollectionDescriptionsResult)executionResult.getResult();
-            ContentCollectionTransfer contentCollectionTransfer = result.getContentCollection();
+
+            var commandResult = ContentUtil.getHome().getContentCollectionDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCollectionDescriptionsResult)executionResult.getResult();
+            var contentCollectionTransfer = result.getContentCollection();
             
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION, contentCollectionTransfer);
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionTransfer.getContentCollectionName());

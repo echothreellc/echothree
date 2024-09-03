@@ -18,11 +18,8 @@ package com.echothree.model.control.returnpolicy.server.transfer;
 
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKindDetail;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,16 +36,16 @@ public class ReturnKindTransferCache
     }
     
     public ReturnKindTransfer getReturnKindTransfer(ReturnKind returnKind) {
-        ReturnKindTransfer returnKindTransfer = get(returnKind);
+        var returnKindTransfer = get(returnKind);
         
         if(returnKindTransfer == null) {
-            ReturnKindDetail returnKindDetail = returnKind.getLastDetail();
-            String returnKindName = returnKindDetail.getReturnKindName();
-            SequenceType returnSequenceType = returnKindDetail.getReturnSequenceType();
-            SequenceTypeTransfer returnSequenceTypeTransfer = returnSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, returnSequenceType);
-            Boolean isDefault = returnKindDetail.getIsDefault();
-            Integer sortOrder = returnKindDetail.getSortOrder();
-            String description = returnPolicyControl.getBestReturnKindDescription(returnKind, getLanguage());
+            var returnKindDetail = returnKind.getLastDetail();
+            var returnKindName = returnKindDetail.getReturnKindName();
+            var returnSequenceType = returnKindDetail.getReturnSequenceType();
+            var returnSequenceTypeTransfer = returnSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, returnSequenceType);
+            var isDefault = returnKindDetail.getIsDefault();
+            var sortOrder = returnKindDetail.getSortOrder();
+            var description = returnPolicyControl.getBestReturnKindDescription(returnKind, getLanguage());
             
             returnKindTransfer = new ReturnKindTransfer(returnKindName, returnSequenceTypeTransfer, isDefault, sortOrder, description);
             put(returnKind, returnKindTransfer);

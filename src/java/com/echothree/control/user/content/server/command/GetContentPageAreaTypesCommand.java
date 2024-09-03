@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentPageAreaTypesForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPageAreaTypesResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -69,7 +68,7 @@ public class GetContentPageAreaTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentPageAreaType> entities) {
-        GetContentPageAreaTypesResult result = ContentResultFactory.getGetContentPageAreaTypesResult();
+        var result = ContentResultFactory.getGetContentPageAreaTypesResult();
         var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentPageAreaTypes(contentControl.getContentPageAreaTypeTransfers(getUserVisit(), entities));

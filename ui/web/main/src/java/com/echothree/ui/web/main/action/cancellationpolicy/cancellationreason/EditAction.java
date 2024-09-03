@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationreason;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.edit.CancellationReasonEdit;
-import com.echothree.control.user.cancellationpolicy.common.form.EditCancellationReasonForm;
 import com.echothree.control.user.cancellationpolicy.common.result.EditCancellationReasonResult;
-import com.echothree.control.user.cancellationpolicy.common.spec.CancellationReasonSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-        String originalCancellationReasonName = request.getParameter(ParameterConstants.ORIGINAL_CANCELLATION_REASON_NAME);
+        var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+        var originalCancellationReasonName = request.getParameter(ParameterConstants.ORIGINAL_CANCELLATION_REASON_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditCancellationReasonForm commandForm = CancellationPolicyUtil.getHome().getEditCancellationReasonForm();
-                CancellationReasonSpec spec = CancellationPolicyUtil.getHome().getCancellationReasonSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CancellationPolicyUtil.getHome().getEditCancellationReasonForm();
+                var spec = CancellationPolicyUtil.getHome().getCancellationReasonSpec();
                 
                 if(cancellationKindName == null)
                     cancellationKindName = actionForm.getCancellationKindName();
@@ -80,7 +75,7 @@ public class EditAction
                 spec.setCancellationReasonName(originalCancellationReasonName);
                 
                 if(wasPost(request)) {
-                    CancellationReasonEdit edit = CancellationPolicyUtil.getHome().getCancellationReasonEdit();
+                    var edit = CancellationPolicyUtil.getHome().getCancellationReasonEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -89,14 +84,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().editCancellationReason(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CancellationPolicyUtil.getHome().editCancellationReason(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCancellationReasonResult result = (EditCancellationReasonResult)executionResult.getResult();
+                            var result = (EditCancellationReasonResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +104,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().editCancellationReason(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCancellationReasonResult result = (EditCancellationReasonResult)executionResult.getResult();
+
+                    var commandResult = CancellationPolicyUtil.getHome().editCancellationReason(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCancellationReasonResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CancellationReasonEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setCancellationKindName(cancellationKindName);
@@ -137,8 +132,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CANCELLATION_KIND_NAME, cancellationKindName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

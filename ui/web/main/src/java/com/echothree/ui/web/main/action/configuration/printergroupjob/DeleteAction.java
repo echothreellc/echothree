@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printergroupjob;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.DeletePrinterGroupJobForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+        var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
         
         try {
-            DeletePrinterGroupJobForm commandForm = PrinterUtil.getHome().getDeletePrinterGroupJobForm();
-            String printerGroupJobName = request.getParameter(ParameterConstants.PRINTER_GROUP_JOB_NAME);
+            var commandForm = PrinterUtil.getHome().getDeletePrinterGroupJobForm();
+            var printerGroupJobName = request.getParameter(ParameterConstants.PRINTER_GROUP_JOB_NAME);
             
             commandForm.setPrinterGroupJobName(printerGroupJobName);
             
@@ -66,8 +65,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

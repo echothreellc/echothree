@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroup;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
-import com.echothree.control.user.inventory.common.form.EditInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
-import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String originalInventoryLocationGroupName = request.getParameter(ParameterConstants.ORIGINAL_INVENTORY_LOCATION_GROUP_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var originalInventoryLocationGroupName = request.getParameter(ParameterConstants.ORIGINAL_INVENTORY_LOCATION_GROUP_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditInventoryLocationGroupForm commandForm = InventoryUtil.getHome().getEditInventoryLocationGroupForm();
-                InventoryLocationGroupSpec spec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = InventoryUtil.getHome().getEditInventoryLocationGroupForm();
+                var spec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
                 
                 if(warehouseName == null)
                     warehouseName = actionForm.getWarehouseName();
@@ -80,7 +75,7 @@ public class EditAction
                 spec.setInventoryLocationGroupName(originalInventoryLocationGroupName);
                 
                 if(wasPost(request)) {
-                    InventoryLocationGroupEdit edit = InventoryUtil.getHome().getInventoryLocationGroupEdit();
+                    var edit = InventoryUtil.getHome().getInventoryLocationGroupEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -89,14 +84,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = InventoryUtil.getHome().editInventoryLocationGroup(getUserVisitPK(request), commandForm);
+
+                    var commandResult = InventoryUtil.getHome().editInventoryLocationGroup(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditInventoryLocationGroupResult result = (EditInventoryLocationGroupResult)executionResult.getResult();
+                            var result = (EditInventoryLocationGroupResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +104,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = InventoryUtil.getHome().editInventoryLocationGroup(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditInventoryLocationGroupResult result = (EditInventoryLocationGroupResult)executionResult.getResult();
+
+                    var commandResult = InventoryUtil.getHome().editInventoryLocationGroup(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditInventoryLocationGroupResult)executionResult.getResult();
                     
                     if(result != null) {
-                        InventoryLocationGroupEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWarehouseName(warehouseName);
@@ -137,8 +132,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

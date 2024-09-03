@@ -17,9 +17,7 @@
 package com.echothree.model.control.document.server.transfer;
 
 import com.echothree.model.control.document.common.transfer.DocumentTypeDescriptionTransfer;
-import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.document.server.entity.DocumentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class DocumentTypeDescriptionTransferCache
     }
     
     public DocumentTypeDescriptionTransfer getDocumentTypeDescriptionTransfer(DocumentTypeDescription documentTypeDescription) {
-        DocumentTypeDescriptionTransfer documentTypeDescriptionTransfer = get(documentTypeDescription);
+        var documentTypeDescriptionTransfer = get(documentTypeDescription);
         
         if(documentTypeDescriptionTransfer == null) {
-            DocumentTypeTransfer documentTypeTransfer = documentControl.getDocumentTypeTransfer(userVisit, documentTypeDescription.getDocumentType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeDescription.getLanguage());
+            var documentTypeTransfer = documentControl.getDocumentTypeTransfer(userVisit, documentTypeDescription.getDocumentType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeDescription.getLanguage());
             
             documentTypeDescriptionTransfer = new DocumentTypeDescriptionTransfer(languageTransfer, documentTypeTransfer, documentTypeDescription.getDescription());
             put(documentTypeDescription, documentTypeDescriptionTransfer);

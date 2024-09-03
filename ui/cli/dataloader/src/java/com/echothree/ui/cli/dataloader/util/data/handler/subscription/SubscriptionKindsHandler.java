@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.subscription;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
 import com.echothree.control.user.subscription.common.SubscriptionService;
-import com.echothree.control.user.subscription.common.form.CreateSubscriptionKindForm;
 import com.echothree.control.user.subscription.common.form.SubscriptionFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -47,14 +46,14 @@ public class SubscriptionKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("subscriptionKind")) {
-            CreateSubscriptionKindForm commandForm = SubscriptionFormFactory.getCreateSubscriptionKindForm();
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindForm();
             String subscriptionKindName = null;
             String isDefault = null;
             String sortOrder = null;
             String commandAction = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("subscriptionKindName"))
                     subscriptionKindName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))

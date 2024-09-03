@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerCreditStatusChoicesForm;
 import com.echothree.control.user.customer.common.result.GetCustomerCreditStatusChoicesResult;
 import com.echothree.model.control.customer.common.choice.CustomerCreditStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,15 +37,15 @@ public class CustomerCreditStatusActionForm
     public void setupCustomerCreditStatusChoices()
             throws NamingException {
         if(customerCreditStatusChoices == null) {
-            GetCustomerCreditStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
 
             form.setCustomerName(customerName);
             form.setDefaultCustomerCreditStatusChoice(customerCreditStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerCreditStatusChoicesResult result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
             customerCreditStatusChoices = result.getCustomerCreditStatusChoices();
 
             if(customerCreditStatusChoice == null)

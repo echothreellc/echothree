@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceSelectorTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSelector;
@@ -38,11 +36,11 @@ public class WorkflowEntranceSelectorTransferCache
     }
     
     public WorkflowEntranceSelectorTransfer getWorkflowEntranceSelectorTransfer(WorkflowEntranceSelector workflowEntranceSelector) {
-        WorkflowEntranceSelectorTransfer workflowEntranceSelectorTransfer = get(workflowEntranceSelector);
+        var workflowEntranceSelectorTransfer = get(workflowEntranceSelector);
         
         if(workflowEntranceSelectorTransfer == null) {
-            WorkflowEntranceTransfer workflowEntrance = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntranceSelector.getWorkflowEntrance());
-            SelectorTransfer selector = selectorControl.getSelectorTransfer(userVisit, workflowEntranceSelector.getSelector());
+            var workflowEntrance = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntranceSelector.getWorkflowEntrance());
+            var selector = selectorControl.getSelectorTransfer(userVisit, workflowEntranceSelector.getSelector());
             
             workflowEntranceSelectorTransfer = new WorkflowEntranceSelectorTransfer(workflowEntrance, selector);
             put(workflowEntranceSelector, workflowEntranceSelectorTransfer);

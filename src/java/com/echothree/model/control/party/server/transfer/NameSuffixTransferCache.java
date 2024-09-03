@@ -18,9 +18,7 @@ package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.common.pk.NameSuffixPK;
 import com.echothree.model.data.party.server.entity.NameSuffix;
-import com.echothree.model.data.party.server.entity.NameSuffixDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class NameSuffixTransferCache
@@ -34,15 +32,15 @@ public class NameSuffixTransferCache
     }
     
     public NameSuffixTransfer getNameSuffixTransfer(NameSuffix nameSuffix) {
-        NameSuffixTransfer nameSuffixTransfer = get(nameSuffix);
+        var nameSuffixTransfer = get(nameSuffix);
         
         if(nameSuffixTransfer == null) {
-            NameSuffixDetail nameSuffixDetail = nameSuffix.getLastDetail();
-            NameSuffixPK nameSuffixPK = nameSuffix.getPrimaryKey();
-            String nameSuffixId = nameSuffixPK.getEntityId().toString();
-            String description = nameSuffixDetail.getDescription();
-            Boolean isDefault = nameSuffixDetail.getIsDefault();
-            Integer sortOrder = nameSuffixDetail.getSortOrder();
+            var nameSuffixDetail = nameSuffix.getLastDetail();
+            var nameSuffixPK = nameSuffix.getPrimaryKey();
+            var nameSuffixId = nameSuffixPK.getEntityId().toString();
+            var description = nameSuffixDetail.getDescription();
+            var isDefault = nameSuffixDetail.getIsDefault();
+            var sortOrder = nameSuffixDetail.getSortOrder();
             
             nameSuffixTransfer = new NameSuffixTransfer(nameSuffixId, description, isDefault, sortOrder);
             put(nameSuffix, nameSuffixTransfer);

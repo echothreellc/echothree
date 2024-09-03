@@ -22,7 +22,6 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.document.server.entity.DocumentTypeDetail;
 import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -52,14 +51,14 @@ public class DocumentLogic
 
     public Integer getPages(final MimeType mimeType, final ByteArray blob, final String clob) {
         Integer pages = null;
-        String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
         if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-            String mimeTypeName = mimeType.getLastDetail().getMimeTypeName();
+            var mimeTypeName = mimeType.getLastDetail().getMimeTypeName();
 
             if(mimeTypeName.equals(MimeTypes.APPLICATION_PDF.mimeTypeName()) && blob != null) {
                 try {
-                    PdfReader pdfReader = new PdfReader(blob.getByteArrayInputStream());
+                    var pdfReader = new PdfReader(blob.getByteArrayInputStream());
 
                     pages = pdfReader.getNumberOfPages();
                 } catch(IOException ioe) {
@@ -73,13 +72,13 @@ public class DocumentLogic
 
     public Document createDocument(final ExecutionErrorAccumulator ema, final DocumentType documentType, final MimeType mimeType,
             final Language preferredLanguage, final String description, final ByteArray blob, final String clob, final PartyPK createdBy) {
-        Integer pages = getPages(mimeType, blob, clob);
+        var pages = getPages(mimeType, blob, clob);
         Document document = null;
-        boolean hasErrors = false;
+        var hasErrors = false;
 
         if(pages != null) {
-            DocumentTypeDetail documentTypeDetail = documentType.getLastDetail();
-            Integer maximumPages = documentTypeDetail.getMaximumPages();
+            var documentTypeDetail = documentType.getLastDetail();
+            var maximumPages = documentTypeDetail.getMaximumPages();
 
             if(maximumPages != null) {
                 if(pages > maximumPages) {
@@ -112,7 +111,7 @@ public class DocumentLogic
             final Boolean isDefault, final Integer sortOrder,  final Language preferredLanguage, final String description, final ByteArray blob,
             final String clob, final PartyPK createdBy) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        Document document = createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
+        var document = createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
 
         return document == null ? null : documentControl.createPartyDocument(party, document, isDefault, sortOrder, createdBy);
     }

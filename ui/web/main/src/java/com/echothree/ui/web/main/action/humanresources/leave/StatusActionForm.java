@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetLeaveStatusChoicesForm;
 import com.echothree.control.user.employee.common.result.GetLeaveStatusChoicesResult;
 import com.echothree.model.control.employee.common.choice.LeaveStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -42,15 +39,15 @@ public class StatusActionForm
     public void setupLeaveStatusChoices() {
         if(leaveStatusChoices == null) {
             try {
-                GetLeaveStatusChoicesForm form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
+                var form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
 
                 form.setLeaveName(leaveName);
                 form.setDefaultLeaveStatusChoice(leaveStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLeaveStatusChoicesResult result = (GetLeaveStatusChoicesResult)executionResult.getResult();
+                var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
                 leaveStatusChoices = result.getLeaveStatusChoices();
 
                 if(leaveStatusChoice == null) {

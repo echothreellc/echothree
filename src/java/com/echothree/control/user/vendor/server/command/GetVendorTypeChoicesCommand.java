@@ -17,7 +17,6 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.GetVendorTypeChoicesForm;
-import com.echothree.control.user.vendor.common.result.GetVendorTypeChoicesResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetVendorTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetVendorTypeChoicesResult result = VendorResultFactory.getGetVendorTypeChoicesResult();
-        String defaultVendorTypeChoice = form.getDefaultVendorTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = VendorResultFactory.getGetVendorTypeChoicesResult();
+        var defaultVendorTypeChoice = form.getDefaultVendorTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setVendorTypeChoices(vendorControl.getVendorTypeChoices(defaultVendorTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

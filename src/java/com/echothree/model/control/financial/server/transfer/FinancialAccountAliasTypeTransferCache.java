@@ -17,10 +17,8 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.model.control.financial.common.transfer.FinancialAccountAliasTypeTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountAliasType;
-import com.echothree.model.data.financial.server.entity.FinancialAccountAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class FinancialAccountAliasTypeTransferCache
@@ -34,16 +32,16 @@ public class FinancialAccountAliasTypeTransferCache
     }
     
     public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(FinancialAccountAliasType financialAccountAliasType) {
-        FinancialAccountAliasTypeTransfer financialAccountAliasTypeTransfer = get(financialAccountAliasType);
+        var financialAccountAliasTypeTransfer = get(financialAccountAliasType);
         
         if(financialAccountAliasTypeTransfer == null) {
-            FinancialAccountAliasTypeDetail financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetail();
-            FinancialAccountTypeTransfer financialAccountType = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountAliasTypeDetail.getFinancialAccountType());
-            String financialAccountAliasTypeName = financialAccountAliasTypeDetail.getFinancialAccountAliasTypeName();
-            String validationPattern = financialAccountAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = financialAccountAliasTypeDetail.getIsDefault();
-            Integer sortOrder = financialAccountAliasTypeDetail.getSortOrder();
-            String description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage());
+            var financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetail();
+            var financialAccountType = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountAliasTypeDetail.getFinancialAccountType());
+            var financialAccountAliasTypeName = financialAccountAliasTypeDetail.getFinancialAccountAliasTypeName();
+            var validationPattern = financialAccountAliasTypeDetail.getValidationPattern();
+            var isDefault = financialAccountAliasTypeDetail.getIsDefault();
+            var sortOrder = financialAccountAliasTypeDetail.getSortOrder();
+            var description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage());
             
             financialAccountAliasTypeTransfer = new FinancialAccountAliasTypeTransfer(financialAccountType, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(financialAccountAliasType, financialAccountAliasTypeTransfer);

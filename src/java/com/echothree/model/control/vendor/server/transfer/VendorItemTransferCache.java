@@ -16,33 +16,22 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.item.common.ItemConstants;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
-import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
-import com.echothree.model.data.vendor.server.entity.VendorItemDetail;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class VendorItemTransferCache
         extends BaseVendorTransferCache<VendorItem, VendorItemTransfer> {
@@ -73,27 +62,27 @@ public class VendorItemTransferCache
     }
     
     public VendorItemTransfer getVendorItemTransfer(VendorItem vendorItem) {
-        VendorItemTransfer vendorItemTransfer = get(vendorItem);
+        var vendorItemTransfer = get(vendorItem);
         
         if(vendorItemTransfer == null) {
-            VendorItemDetail vendorItemDetail = vendorItem.getLastDetail();
-            Item item = vendorItemDetail.getItem();
-            ItemTransfer itemTransfer = itemControl.getItemTransfer(userVisit, item);
-            VendorTransfer vendor = vendorControl.getVendorTransfer(userVisit, vendorItemDetail.getVendorParty());
-            String vendorItemName = vendorItemDetail.getVendorItemName();
-            String description = vendorItemDetail.getDescription();
-            Integer priority = vendorItemDetail.getPriority();
-            CancellationPolicy cancellationPolicy = vendorItemDetail.getCancellationPolicy();
-            CancellationPolicyTransfer cancellationPolicyTransfer = cancellationPolicy == null? null: cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
-            ReturnPolicy returnPolicy = vendorItemDetail.getReturnPolicy();
-            ReturnPolicyTransfer returnPolicyTransfer = returnPolicy == null? null: returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
+            var vendorItemDetail = vendorItem.getLastDetail();
+            var item = vendorItemDetail.getItem();
+            var itemTransfer = itemControl.getItemTransfer(userVisit, item);
+            var vendor = vendorControl.getVendorTransfer(userVisit, vendorItemDetail.getVendorParty());
+            var vendorItemName = vendorItemDetail.getVendorItemName();
+            var description = vendorItemDetail.getDescription();
+            var priority = vendorItemDetail.getPriority();
+            var cancellationPolicy = vendorItemDetail.getCancellationPolicy();
+            var cancellationPolicyTransfer = cancellationPolicy == null? null: cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
+            var returnPolicy = vendorItemDetail.getReturnPolicy();
+            var returnPolicyTransfer = returnPolicy == null? null: returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
             
             if(description == null) {
                 description = itemDescriptionLogic.getBestStringUsingNames(null, ItemConstants.ItemDescriptionType_PURCHASE_ORDER_DESCRIPTION, item, getParty());
             }
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
-            WorkflowEntityStatusTransfer vendorItemStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
+            var vendorItemStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS, entityInstance);
 
             vendorItemTransfer = new VendorItemTransfer(itemTransfer, vendor, vendorItemName, description, priority, cancellationPolicyTransfer,

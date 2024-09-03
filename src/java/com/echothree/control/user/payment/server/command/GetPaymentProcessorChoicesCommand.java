@@ -17,7 +17,6 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentProcessorChoicesForm;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorChoicesResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
@@ -63,9 +62,9 @@ public class GetPaymentProcessorChoicesCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-        GetPaymentProcessorChoicesResult result = PaymentResultFactory.getGetPaymentProcessorChoicesResult();
-        String defaultPaymentProcessorChoice = form.getDefaultPaymentProcessorChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PaymentResultFactory.getGetPaymentProcessorChoicesResult();
+        var defaultPaymentProcessorChoice = form.getDefaultPaymentProcessorChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPaymentProcessorChoices(paymentProcessorControl.getPaymentProcessorChoices(defaultPaymentProcessorChoice,
                 getPreferredLanguage(), allowNullChoice));

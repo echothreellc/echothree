@@ -17,17 +17,12 @@
 package com.echothree.model.control.printer.server.transfer;
 
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupJobTransfer;
-import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
-import com.echothree.model.data.printer.server.entity.PrinterGroupJobDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -46,18 +41,18 @@ public class PrinterGroupJobTransferCache
     }
     
     public PrinterGroupJobTransfer getPrinterGroupJobTransfer(PrinterGroupJob printerGroupJob) {
-        PrinterGroupJobTransfer printerGroupJobTransfer = get(printerGroupJob);
+        var printerGroupJobTransfer = get(printerGroupJob);
         
         if(printerGroupJobTransfer == null) {
-            PrinterGroupJobDetail printerGroupJobDetail = printerGroupJob.getLastDetail();
-            String printerGroupJobName = printerGroupJobDetail.getPrinterGroupJobName();
-            PrinterGroupTransfer printerGroupTransfer = printerControl.getPrinterGroupTransfer(userVisit, printerGroupJobDetail.getPrinterGroup());
-            DocumentTransfer documentTransfer = documentControl.getDocumentTransfer(userVisit, printerGroupJobDetail.getDocument());
-            Integer copies = printerGroupJobDetail.getCopies();
-            Integer priority = printerGroupJobDetail.getPriority();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(printerGroupJob.getPrimaryKey());
-            WorkflowEntityStatusTransfer printerGroupJobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var printerGroupJobDetail = printerGroupJob.getLastDetail();
+            var printerGroupJobName = printerGroupJobDetail.getPrinterGroupJobName();
+            var printerGroupTransfer = printerControl.getPrinterGroupTransfer(userVisit, printerGroupJobDetail.getPrinterGroup());
+            var documentTransfer = documentControl.getDocumentTransfer(userVisit, printerGroupJobDetail.getDocument());
+            var copies = printerGroupJobDetail.getCopies();
+            var priority = printerGroupJobDetail.getPriority();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(printerGroupJob.getPrimaryKey());
+            var printerGroupJobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
             
             printerGroupJobTransfer = new PrinterGroupJobTransfer(printerGroupJobName, printerGroupTransfer, documentTransfer, copies, priority,

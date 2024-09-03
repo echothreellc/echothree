@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.itemaliastype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemAliasTypeForm;
 import com.echothree.control.user.item.common.result.GetItemAliasTypeResult;
 import com.echothree.model.control.item.common.transfer.ItemAliasTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetItemAliasTypeForm commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
+        String forwardKey;
+        var commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
 
         commandForm.setItemAliasTypeName(request.getParameter(ParameterConstants.ITEM_ALIAS_TYPE_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
         ItemAliasTypeTransfer itemAliasType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemAliasTypeResult result = (GetItemAliasTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAliasTypeResult)executionResult.getResult();
             
             itemAliasType = result.getItemAliasType();
         }

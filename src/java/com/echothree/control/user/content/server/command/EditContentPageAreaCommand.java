@@ -27,26 +27,13 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageArea;
-import com.echothree.model.data.content.server.entity.ContentPageAreaBlob;
-import com.echothree.model.data.content.server.entity.ContentPageAreaClob;
-import com.echothree.model.data.content.server.entity.ContentPageAreaDetail;
-import com.echothree.model.data.content.server.entity.ContentPageAreaString;
-import com.echothree.model.data.content.server.entity.ContentPageAreaUrl;
-import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
-import com.echothree.model.data.content.server.entity.ContentSection;
-import com.echothree.model.data.content.server.value.ContentPageAreaDetailValue;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -106,26 +93,26 @@ public class EditContentPageAreaCommand
     public ContentPageArea getEntity(EditContentPageAreaResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentPageArea contentPageArea = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = spec.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = spec.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = spec.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = spec.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
-                    Integer sortOrder = Integer.valueOf(spec.getSortOrder());
-                    ContentPageLayout contentPageLayout = contentPage.getLastDetail().getContentPageLayout();
-                    ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
+                    var sortOrder = Integer.valueOf(spec.getSortOrder());
+                    var contentPageLayout = contentPage.getLastDetail().getContentPageLayout();
+                    var contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
                     if(contentPageLayoutArea != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -171,11 +158,11 @@ public class EditContentPageAreaCommand
     @Override
     public void doLock(ContentPageAreaEdit edit, ContentPageArea contentPageArea) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageAreaDetail contentPageAreaDetail = contentPageArea.getLastDetail();
-        ContentPageAreaBlob contentPageAreaBlob = contentControl.getContentPageAreaBlob(contentPageAreaDetail);
-        ContentPageAreaClob contentPageAreaClob = contentControl.getContentPageAreaClob(contentPageAreaDetail);
-        ContentPageAreaString contentPageAreaString = contentControl.getContentPageAreaString(contentPageAreaDetail);
-        ContentPageAreaUrl contentPageAreaUrl = contentControl.getContentPageAreaUrl(contentPageAreaDetail);
+        var contentPageAreaDetail = contentPageArea.getLastDetail();
+        var contentPageAreaBlob = contentControl.getContentPageAreaBlob(contentPageAreaDetail);
+        var contentPageAreaClob = contentControl.getContentPageAreaClob(contentPageAreaDetail);
+        var contentPageAreaString = contentControl.getContentPageAreaString(contentPageAreaDetail);
+        var contentPageAreaUrl = contentControl.getContentPageAreaUrl(contentPageAreaDetail);
 
         edit.setMimeTypeName(contentPageArea.getLastDetail().getMimeType().getLastDetail().getMimeTypeName());
 
@@ -201,7 +188,7 @@ public class EditContentPageAreaCommand
     @Override
     public void canUpdate(ContentPageArea contentPageArea) {
         var coreControl = getCoreControl();
-        String mimeTypeName = edit.getMimeTypeName();
+        var mimeTypeName = edit.getMimeTypeName();
         
         mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
@@ -213,15 +200,15 @@ public class EditContentPageAreaCommand
     @Override
     public void doUpdate(ContentPageArea contentPageArea) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageAreaDetailValue contentPageAreaDetailValue = contentControl.getContentPageAreaDetailValueForUpdate(contentPageArea);
-        String description = edit.getDescription();
-        ByteArray contentPageAreaBlob = edit.getContentPageAreaBlob();
-        String contentPageAreaClob = edit.getContentPageAreaClob();
-        String contentPageAreaUrl = edit.getContentPageAreaUrl();
+        var contentPageAreaDetailValue = contentControl.getContentPageAreaDetailValueForUpdate(contentPageArea);
+        var description = edit.getDescription();
+        var contentPageAreaBlob = edit.getContentPageAreaBlob();
+        var contentPageAreaClob = edit.getContentPageAreaClob();
+        var contentPageAreaUrl = edit.getContentPageAreaUrl();
 
         contentPageAreaDetailValue.setMimeTypePK(mimeType.getPrimaryKey());
 
-        ContentPageAreaDetail contentPageAreaDetail = contentControl.updateContentPageAreaFromValue(contentPageAreaDetailValue, true, getPartyPK());
+        var contentPageAreaDetail = contentControl.updateContentPageAreaFromValue(contentPageAreaDetailValue, true, getPartyPK());
 
         if(contentPageAreaBlob != null) {
             contentControl.createContentPageAreaBlob(contentPageAreaDetail, contentPageAreaBlob);

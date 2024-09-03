@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.forum.forumgroupforum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumGroupChoicesForm;
 import com.echothree.control.user.forum.common.result.GetForumGroupChoicesResult;
 import com.echothree.model.control.forum.common.choice.ForumGroupChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,14 +41,14 @@ public class AddActionForm
     private void setupForumGroupChoices()
             throws NamingException {
         if(forumGroupChoices == null) {
-            GetForumGroupChoicesForm form = ForumUtil.getHome().getGetForumGroupChoicesForm();
+            var form = ForumUtil.getHome().getGetForumGroupChoicesForm();
 
             form.setDefaultForumGroupChoice(forumGroupChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ForumUtil.getHome().getForumGroupChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumGroupChoicesResult getForumGroupChoicesResult = (GetForumGroupChoicesResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumGroupChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getForumGroupChoicesResult = (GetForumGroupChoicesResult)executionResult.getResult();
             forumGroupChoices = getForumGroupChoicesResult.getForumGroupChoices();
 
             if(forumGroupChoice == null) {

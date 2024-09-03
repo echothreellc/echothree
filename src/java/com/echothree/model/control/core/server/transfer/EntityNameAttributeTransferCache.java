@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityNameAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -36,12 +34,12 @@ public class EntityNameAttributeTransferCache
     }
     
     public EntityNameAttributeTransfer getEntityNameAttributeTransfer(EntityNameAttribute entityNameAttribute, EntityInstance entityInstance) {
-        EntityNameAttributeTransfer entityNameAttributeTransfer = get(entityNameAttribute);
+        var entityNameAttributeTransfer = get(entityNameAttribute);
         
         if(entityNameAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityNameAttribute.getEntityAttribute(), entityInstance) : null;
-            String nameAttribute = entityNameAttribute.getNameAttribute();
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityNameAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityNameAttribute.getEntityAttribute(), entityInstance) : null;
+            var nameAttribute = entityNameAttribute.getNameAttribute();
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityNameAttribute.getEntityInstance(), false, false, false, false, false, false);
             
             entityNameAttributeTransfer = new EntityNameAttributeTransfer(entityAttribute, nameAttribute, entityInstanceTransfer);
             put(entityNameAttribute, entityNameAttributeTransfer);

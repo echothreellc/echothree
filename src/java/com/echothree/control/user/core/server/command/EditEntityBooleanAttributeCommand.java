@@ -20,22 +20,17 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityBooleanAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityBooleanAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditEntityBooleanAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityBooleanAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.value.EntityBooleanAttributeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -78,20 +73,20 @@ public class EditEntityBooleanAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        EditEntityBooleanAttributeResult result = CoreResultFactory.getEditEntityBooleanAttributeResult();
+        var result = CoreResultFactory.getEditEntityBooleanAttributeResult();
         var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = spec.getEntityAttributeName();
-                String entityAttributeUlid = spec.getEntityAttributeUlid();
+                var entityAttributeName = spec.getEntityAttributeName();
+                var entityAttributeUlid = spec.getEntityAttributeUlid();
                 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
@@ -99,7 +94,7 @@ public class EditEntityBooleanAttributeCommand
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                             var coreControl = getCoreControl();
                             EntityBooleanAttribute entityBooleanAttribute = null;
-                            BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                                 entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
@@ -109,7 +104,7 @@ public class EditEntityBooleanAttributeCommand
                                         result.setEntityBooleanAttribute(coreControl.getEntityBooleanAttributeTransfer(getUserVisit(), entityBooleanAttribute, entityInstance));
 
                                         if(lockEntity(basePK)) {
-                                            EntityBooleanAttributeEdit edit = CoreEditFactory.getEntityBooleanAttributeEdit();
+                                            var edit = CoreEditFactory.getEntityBooleanAttributeEdit();
 
                                             result.setEdit(edit);
                                             edit.setBooleanAttribute(entityBooleanAttribute.getBooleanAttribute().toString());
@@ -130,7 +125,7 @@ public class EditEntityBooleanAttributeCommand
                                 if(entityBooleanAttribute != null) {
                                     if(lockEntityForUpdate(basePK)) {
                                         try {
-                                            EntityBooleanAttributeValue entityBooleanAttributeValue = coreControl.getEntityBooleanAttributeValueForUpdate(entityBooleanAttribute);
+                                            var entityBooleanAttributeValue = coreControl.getEntityBooleanAttributeValueForUpdate(entityBooleanAttribute);
 
                                             entityBooleanAttributeValue.setBooleanAttribute(Boolean.valueOf(edit.getBooleanAttribute()));
 

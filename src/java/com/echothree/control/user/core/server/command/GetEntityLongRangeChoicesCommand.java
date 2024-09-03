@@ -18,15 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityLongRangeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityLongRangeChoicesResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -69,10 +64,10 @@ public class GetEntityLongRangeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetEntityLongRangeChoicesResult result = CoreResultFactory.getGetEntityLongRangeChoicesResult();
-        String entityRef = form.getEntityRef();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
+        var result = CoreResultFactory.getGetEntityLongRangeChoicesResult();
+        var entityRef = form.getEntityRef();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
         var parameterCount = (entityRef != null && componentVendorName == null && entityTypeName == null? 1: 0)
                 + (entityRef == null && componentVendorName != null && entityTypeName != null? 1: 0);
         
@@ -81,7 +76,7 @@ public class GetEntityLongRangeChoicesCommand
             EntityType entityType = null;
             
             if(entityRef == null) {
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
                     entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
@@ -93,7 +88,7 @@ public class GetEntityLongRangeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
                 }
             } else {
-                EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+                var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {
                     entityType = entityInstance.getEntityType();
@@ -103,16 +98,16 @@ public class GetEntityLongRangeChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                        String defaultEntityLongRangeChoice = form.getDefaultEntityLongRangeChoice();
-                        Boolean allowNullChoice = Boolean.valueOf(form.getAllowNullChoice());
+                        var defaultEntityLongRangeChoice = form.getDefaultEntityLongRangeChoice();
+                        var allowNullChoice = Boolean.valueOf(form.getAllowNullChoice());
                         
                         result.setEntityLongRangeChoices(coreControl.getEntityLongRangeChoices(defaultEntityLongRangeChoice,
                                 getPreferredLanguage(), allowNullChoice, entityAttribute));

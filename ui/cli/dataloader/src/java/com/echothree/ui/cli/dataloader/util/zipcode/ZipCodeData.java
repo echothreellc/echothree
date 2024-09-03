@@ -30,7 +30,7 @@ public class ZipCodeData {
     
     /** Creates a new instance of ZipCodeData */
     public ZipCodeData(String zipCodeLine) {
-        int length = zipCodeLine.length();
+        var length = zipCodeLine.length();
         
         try {
             copyrightDetailCode = zipCodeLine.substring(0, 1);
@@ -59,7 +59,7 @@ public class ZipCodeData {
     
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.append("{ copyrightDetailCode = '").append(copyrightDetailCode);
         sb.append(", zipCode = '").append(zipCode);
         sb.append("', cityStateName = '").append(cityStateName);

@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityAttributeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.EntityAttributeTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,13 +42,13 @@ public class AddActionForm
     private void setupEntityAttributeTypeChoices()
             throws NamingException {
         if(entityAttributeTypeChoices == null) {
-            GetEntityAttributeTypeChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
 
             commandForm.setDefaultEntityAttributeTypeChoice(entityAttributeTypeChoice);
 
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeTypeChoicesResult getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
             entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
 
             if(entityAttributeTypeChoice == null)

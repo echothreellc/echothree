@@ -281,10 +281,10 @@ public class EntityNamesUtils {
         var componentVendor = entityType.getLastDetail().getComponentVendor();
         var componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
 
-        ComponentVendorTranslator componentVendorTranslator = componentVendorTranslators.get(componentVendorName);
+        var componentVendorTranslator = componentVendorTranslators.get(componentVendorName);
 
         if(componentVendorTranslator != null) {
-            EntityInstanceTranslator nameTranslator = componentVendorTranslator.getNameTranslators().get(entityType.getLastDetail().getEntityTypeName());
+            var nameTranslator = componentVendorTranslator.getNameTranslators().get(entityType.getLastDetail().getEntityTypeName());
 
             if(nameTranslator != null) {
                 result = nameTranslator.getNames(entityInstance);
@@ -333,7 +333,7 @@ public class EntityNamesUtils {
 
         if(sequenceType != null) {
             var sequenceTypeName = sequenceType.getLastDetail().getSequenceTypeName();
-            boolean hasAccess = false;
+            var hasAccess = false;
 
             if(sequenceTypeName.equals(SequenceTypes.PURCHASE_INVOICE.name())
                     && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,

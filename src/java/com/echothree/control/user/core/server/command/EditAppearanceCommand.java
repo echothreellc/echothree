@@ -27,13 +27,9 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Appearance;
-import com.echothree.model.data.core.server.entity.AppearanceDescription;
-import com.echothree.model.data.core.server.entity.AppearanceDetail;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
-import com.echothree.model.data.core.server.value.AppearanceDescriptionValue;
-import com.echothree.model.data.core.server.value.AppearanceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -97,7 +93,7 @@ public class EditAppearanceCommand
     public Appearance getEntity(EditAppearanceResult result) {
         var coreControl = getCoreControl();
         Appearance appearance;
-        String appearanceName = spec.getAppearanceName();
+        var appearanceName = spec.getAppearanceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             appearance = coreControl.getAppearanceByName(appearanceName);
@@ -132,8 +128,8 @@ public class EditAppearanceCommand
     @Override
     public void doLock(AppearanceEdit edit, Appearance appearance) {
         var coreControl = getCoreControl();
-        AppearanceDescription appearanceDescription = coreControl.getAppearanceDescription(appearance, getPreferredLanguage());
-        AppearanceDetail appearanceDetail = appearance.getLastDetail();
+        var appearanceDescription = coreControl.getAppearanceDescription(appearance, getPreferredLanguage());
+        var appearanceDetail = appearance.getLastDetail();
 
         textColor = appearanceDetail.getTextColor();
         backgroundColor = appearanceDetail.getBackgroundColor();
@@ -156,28 +152,28 @@ public class EditAppearanceCommand
     @Override
     public void canUpdate(Appearance appearance) {
         var coreControl = getCoreControl();
-        String appearanceName = edit.getAppearanceName();
-        Appearance duplicateAppearance = coreControl.getAppearanceByName(appearanceName);
+        var appearanceName = edit.getAppearanceName();
+        var duplicateAppearance = coreControl.getAppearanceByName(appearanceName);
 
         if(duplicateAppearance != null && !appearance.equals(duplicateAppearance)) {
             addExecutionError(ExecutionErrors.DuplicateAppearanceName.name(), appearanceName);
         } else {
-            String textColorName = edit.getTextColorName();
+            var textColorName = edit.getTextColorName();
             
             textColor = textColorName == null ? null : coreControl.getColorByName(textColorName);
             
             if(textColorName == null || textColor != null) {
-                String backgroundColorName = edit.getBackgroundColorName();
+                var backgroundColorName = edit.getBackgroundColorName();
                 
                 backgroundColor = backgroundColorName == null ? null : coreControl.getColorByName(backgroundColorName);
 
                 if(backgroundColorName == null || backgroundColor != null) {
-                    String fontStyleName = edit.getFontStyleName();
+                    var fontStyleName = edit.getFontStyleName();
                     
                     fontStyle = fontStyleName == null ? null : AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
                     
                     if(!hasExecutionErrors()) {
-                        String fontWeightName = edit.getFontWeightName();
+                        var fontWeightName = edit.getFontWeightName();
                         
                         fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
                     }
@@ -194,9 +190,9 @@ public class EditAppearanceCommand
     public void doUpdate(Appearance appearance) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        AppearanceDetailValue appearanceDetailValue = coreControl.getAppearanceDetailValueForUpdate(appearance);
-        AppearanceDescription appearanceDescription = coreControl.getAppearanceDescriptionForUpdate(appearance, getPreferredLanguage());
-        String description = edit.getDescription();
+        var appearanceDetailValue = coreControl.getAppearanceDetailValueForUpdate(appearance);
+        var appearanceDescription = coreControl.getAppearanceDescriptionForUpdate(appearance, getPreferredLanguage());
+        var description = edit.getDescription();
 
         appearanceDetailValue.setAppearanceName(edit.getAppearanceName());
         appearanceDetailValue.setTextColorPK(textColor == null ? null : textColor.getPrimaryKey());
@@ -215,7 +211,7 @@ public class EditAppearanceCommand
                 coreControl.deleteAppearanceDescription(appearanceDescription, partyPK);
             } else {
                 if(appearanceDescription != null && description != null) {
-                    AppearanceDescriptionValue appearanceDescriptionValue = coreControl.getAppearanceDescriptionValue(appearanceDescription);
+                    var appearanceDescriptionValue = coreControl.getAppearanceDescriptionValue(appearanceDescription);
 
                     appearanceDescriptionValue.setDescription(description);
                     coreControl.updateAppearanceDescriptionFromValue(appearanceDescriptionValue, partyPK);

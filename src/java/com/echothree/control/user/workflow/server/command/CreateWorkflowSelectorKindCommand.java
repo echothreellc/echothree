@@ -22,10 +22,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -67,16 +64,16 @@ public class CreateWorkflowSelectorKindCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             var selectorControl = Session.getModelController(SelectorControl.class);
-            String selectorKindName = form.getSelectorKindName();
-            SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+            var selectorKindName = form.getSelectorKindName();
+            var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
             
             if(selectorKind != null) {
-                WorkflowSelectorKind workflowSelectorKind = workflowControl.getWorkflowSelectorKind(workflow, selectorKind);
+                var workflowSelectorKind = workflowControl.getWorkflowSelectorKind(workflow, selectorKind);
                 
                 if(workflowSelectorKind == null) {
                     workflowControl.createWorkflowSelectorKind(workflow, selectorKind, getPartyPK());

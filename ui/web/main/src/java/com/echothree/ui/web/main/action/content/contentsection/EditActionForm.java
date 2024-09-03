@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.content.contentsection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentSectionChoicesForm;
 import com.echothree.control.user.content.common.result.GetContentSectionChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentSectionChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
 import javax.naming.NamingException;
@@ -39,15 +36,15 @@ public class EditActionForm
     private void setupParentContentSectionChoices()
             throws NamingException {
         if(parentContentSectionChoices == null) {
-            GetContentSectionChoicesForm form = ContentUtil.getHome().getGetContentSectionChoicesForm();
+            var form = ContentUtil.getHome().getGetContentSectionChoicesForm();
 
             form.setContentCollectionName(contentCollectionName);
             form.setDefaultContentSectionChoice(parentContentSectionChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContentUtil.getHome().getContentSectionChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentSectionChoicesResult getContentSectionChoicesResult = (GetContentSectionChoicesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentSectionChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentSectionChoicesResult = (GetContentSectionChoicesResult)executionResult.getResult();
             parentContentSectionChoices = getContentSectionChoicesResult.getContentSectionChoices();
 
             if(parentContentSectionChoice == null)

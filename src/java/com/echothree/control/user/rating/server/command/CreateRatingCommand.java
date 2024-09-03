@@ -17,20 +17,13 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.CreateRatingForm;
-import com.echothree.control.user.rating.common.result.CreateRatingResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.rating.server.entity.Rating;
-import com.echothree.model.data.rating.server.entity.RatingType;
-import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -63,21 +56,21 @@ public class CreateRatingCommand
     
     @Override
     protected BaseResult execute() {
-        CreateRatingResult result = RatingResultFactory.getCreateRatingResult();
+        var result = RatingResultFactory.getCreateRatingResult();
         var coreControl = getCoreControl();
         String ratingName = null;
-        String entityRef = form.getEntityRef();
-        EntityInstance ratedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityRef = form.getEntityRef();
+        var ratedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(ratedEntityInstance != null) {
             var ratingControl = Session.getModelController(RatingControl.class);
             EntityInstance ratedByEntityInstance = null;
             BasePK createdBy = getPartyPK();
-            String ratedByUsername = form.getRatedByUsername();
+            var ratedByUsername = form.getRatedByUsername();
             
             if(ratedByUsername != null) {
-                UserControl userControl = getUserControl();
-                UserLogin userLogin = userControl.getUserLoginByUsername(ratedByUsername);
+                var userControl = getUserControl();
+                var userLogin = userControl.getUserLoginByUsername(ratedByUsername);
                 
                 if(userLogin != null) {
                     ratedByEntityInstance = coreControl.getEntityInstanceByBasePK(userLogin.getPartyPK());
@@ -89,20 +82,20 @@ public class CreateRatingCommand
             }
             
             if(!hasExecutionErrors()) {
-                Rating rating = ratingControl.getRating(ratedEntityInstance, ratedByEntityInstance);
+                var rating = ratingControl.getRating(ratedEntityInstance, ratedByEntityInstance);
                 
                 if(rating == null) {
-                    String ratingTypeName = form.getRatingTypeName();
-                    RatingType ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(),
+                    var ratingTypeName = form.getRatingTypeName();
+                    var ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(),
                             ratingTypeName);
                     
                     if(ratingType != null) {
-                        String ratingTypeListItemName = form.getRatingTypeListItemName();
-                        RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
+                        var ratingTypeListItemName = form.getRatingTypeListItemName();
+                        var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                         
                         if(ratingTypeListItem != null) {
                             var sequenceControl = Session.getModelController(SequenceControl.class);
-                            Sequence ratingSequence = ratingType.getLastDetail().getRatingSequence();
+                            var ratingSequence = ratingType.getLastDetail().getRatingSequence();
                             
                             if(ratingSequence == null) {
                                 ratingSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.RATING.name());

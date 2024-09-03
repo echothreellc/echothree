@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemCategoriesForm;
-import com.echothree.control.user.item.common.result.GetItemCategoriesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,7 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -69,7 +67,7 @@ public class GetItemCategoriesCommand
     @Override
     protected Collection<ItemCategory> getEntities() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String parentItemCategoryName = form.getParentItemCategoryName();
+        var parentItemCategoryName = form.getParentItemCategoryName();
         Collection<ItemCategory> itemCategories = null;
         
         parentItemCategory = parentItemCategoryName == null? null: itemControl.getItemCategoryByName(parentItemCategoryName);
@@ -86,9 +84,9 @@ public class GetItemCategoriesCommand
     
     @Override
     protected BaseResult getResult(Collection<ItemCategory> entities) {
-        GetItemCategoriesResult result = ItemResultFactory.getGetItemCategoriesResult();
+        var result = ItemResultFactory.getGetItemCategoriesResult();
         var itemControl = Session.getModelController(ItemControl.class);
-        UserVisit userVisit = getUserVisit();
+        var userVisit = getUserVisit();
         
         result.setParentItemCategory(parentItemCategory == null ? null : itemControl.getItemCategoryTransfer(userVisit, parentItemCategory));
         result.setItemCategories(itemControl.getItemCategoryTransfers(userVisit, entities));

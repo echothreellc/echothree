@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.serverservice;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetServiceChoicesForm;
 import com.echothree.control.user.core.common.result.GetServiceChoicesResult;
 import com.echothree.model.control.core.common.choice.ServiceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,14 +37,14 @@ public class AddActionForm
     private void setupServiceChoices() {
         if(serviceChoices == null) {
             try {
-                GetServiceChoicesForm commandForm = CoreUtil.getHome().getGetServiceChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetServiceChoicesForm();
 
                 commandForm.setDefaultServiceChoice(serviceChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = CoreUtil.getHome().getServiceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetServiceChoicesResult getServiceChoicesResult = (GetServiceChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getServiceChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getServiceChoicesResult = (GetServiceChoicesResult)executionResult.getResult();
                 serviceChoices = getServiceChoicesResult.getServiceChoices();
 
                 if(serviceChoice == null) {

@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.CommandMessageType;
 import com.echothree.model.data.core.server.entity.CommandMessageTypeDescription;
-import com.echothree.model.data.core.server.value.CommandMessageTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,13 +86,13 @@ public class EditCommandMessageTypeDescriptionCommand
     public CommandMessageTypeDescription getEntity(EditCommandMessageTypeDescriptionResult result) {
         var coreControl = getCoreControl();
         CommandMessageTypeDescription commandMessageTypeDescription = null;
-        String commandMessageTypeName = spec.getCommandMessageTypeName();
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageTypeName = spec.getCommandMessageTypeName();
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +134,7 @@ public class EditCommandMessageTypeDescriptionCommand
     @Override
     public void doUpdate(CommandMessageTypeDescription commandMessageTypeDescription) {
         var coreControl = getCoreControl();
-        CommandMessageTypeDescriptionValue commandMessageTypeDescriptionValue = coreControl.getCommandMessageTypeDescriptionValue(commandMessageTypeDescription);
+        var commandMessageTypeDescriptionValue = coreControl.getCommandMessageTypeDescriptionValue(commandMessageTypeDescription);
         commandMessageTypeDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateCommandMessageTypeDescriptionFromValue(commandMessageTypeDescriptionValue, getPartyPK());

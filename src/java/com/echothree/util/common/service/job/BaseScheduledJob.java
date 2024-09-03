@@ -17,15 +17,10 @@
 package com.echothree.util.common.service.job;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.form.GetJobUserVisitForm;
 import com.echothree.control.user.authentication.common.result.GetJobUserVisitResult;
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.common.form.EndJobForm;
-import com.echothree.control.user.job.common.form.StartJobForm;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,7 +45,7 @@ public abstract class BaseScheduledJob {
 
     private void startJob(UserVisitPK userVisitPK)
             throws NamingException {
-        StartJobForm commandForm = JobUtil.getHome().getStartJobForm();
+        var commandForm = JobUtil.getHome().getStartJobForm();
 
         commandForm.setJobName(jobName);
 
@@ -59,7 +54,7 @@ public abstract class BaseScheduledJob {
 
     private void endJob(UserVisitPK userVisitPK)
             throws NamingException {
-        EndJobForm commandForm = JobUtil.getHome().getEndJobForm();
+        var commandForm = JobUtil.getHome().getEndJobForm();
 
         commandForm.setJobName(jobName);
 
@@ -68,17 +63,17 @@ public abstract class BaseScheduledJob {
 
     public void executeJob()
             throws NamingException {
-        GetJobUserVisitForm commandForm = AuthenticationUtil.getHome().getGetJobUserVisitForm();
+        var commandForm = AuthenticationUtil.getHome().getGetJobUserVisitForm();
 
         commandForm.setJobName(jobName);
 
-        CommandResult commandResult = AuthenticationUtil.getHome().getJobUserVisit(commandForm);
+        var commandResult = AuthenticationUtil.getHome().getJobUserVisit(commandForm);
 
         if(commandResult.hasErrors()) {
             getLog().error(commandResult);
         } else {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetJobUserVisitResult getJobUserVisitResult = (GetJobUserVisitResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var getJobUserVisitResult = (GetJobUserVisitResult)executionResult.getResult();
 
             userVisitPK = getJobUserVisitResult.getUserVisitPK();
 

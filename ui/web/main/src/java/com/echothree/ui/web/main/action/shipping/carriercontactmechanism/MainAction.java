@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.shipping.carriercontactmechanism;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.GetCarrierForm;
 import com.echothree.control.user.carrier.common.result.GetCarrierResult;
-import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -27,8 +25,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,9 +54,9 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCarrierForm commandForm = CarrierUtil.getHome().getGetCarrierForm();
-        String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = CarrierUtil.getHome().getGetCarrierForm();
+        var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setCarrierName(carrierName);
         commandForm.setPartyName(partyName);
@@ -70,11 +66,11 @@ public class MainAction
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = CarrierUtil.getHome().getCarrier(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCarrierResult result = (GetCarrierResult)executionResult.getResult();
-        CarrierTransfer carrier = result.getCarrier();
+
+        var commandResult = CarrierUtil.getHome().getCarrier(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCarrierResult)executionResult.getResult();
+        var carrier = result.getCarrier();
         
         if(carrier == null) {
             forwardKey = ForwardConstants.ERROR_404;

@@ -18,7 +18,6 @@ package com.echothree.control.user.tag.server.command;
 
 
 import com.echothree.control.user.tag.common.form.GetTagScopeChoicesForm;
-import com.echothree.control.user.tag.common.result.GetTagScopeChoicesResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -64,9 +63,9 @@ public class GetTagScopeChoicesCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        GetTagScopeChoicesResult result = TagResultFactory.getGetTagScopeChoicesResult();
-        String defaultTagScopeChoice = form.getDefaultTagScopeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = TagResultFactory.getGetTagScopeChoicesResult();
+        var defaultTagScopeChoice = form.getDefaultTagScopeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTagScopeChoices(tagControl.getTagScopeChoices(defaultTagScopeChoice, getPreferredLanguage(), allowNullChoice));
         

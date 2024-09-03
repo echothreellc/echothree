@@ -28,7 +28,6 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemVolume;
-import com.echothree.model.data.item.server.value.ItemVolumeValue;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -86,12 +85,12 @@ public class EditItemVolumeCommand
         var itemControl = Session.getModelController(ItemControl.class);
         var uomControl = Session.getModelController(UomControl.class);
         ItemVolume itemVolume = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -138,13 +137,13 @@ public class EditItemVolumeCommand
         var uomControl = Session.getModelController(UomControl.class);
 
         height = itemVolume.getHeight();
-        Conversion heightConversion = height == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, height).convertToHighestUnitOfMeasureType();
+        var heightConversion = height == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, height).convertToHighestUnitOfMeasureType();
 
         width = itemVolume.getWidth();
-        Conversion widthConversion = width == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, width).convertToHighestUnitOfMeasureType();
+        var widthConversion = width == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, width).convertToHighestUnitOfMeasureType();
 
         depth = itemVolume.getDepth();
-        Conversion depthConversion = depth == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, depth).convertToHighestUnitOfMeasureType();
+        var depthConversion = depth == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, depth).convertToHighestUnitOfMeasureType();
 
         edit.setHeight(heightConversion.getQuantity().toString());
         edit.setHeightUnitOfMeasureTypeName(heightConversion.getUnitOfMeasureType().getLastDetail().getUnitOfMeasureTypeName());
@@ -164,7 +163,7 @@ public class EditItemVolumeCommand
     @Override
     public void canUpdate(ItemVolume itemVolume) {
         var uomControl = Session.getModelController(UomControl.class);
-        String heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
+        var heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
 
         heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind, heightUnitOfMeasureTypeName);
 
@@ -172,7 +171,7 @@ public class EditItemVolumeCommand
             height = Long.valueOf(edit.getHeight());
 
             if(height > 0) {
-                String widthUnitOfMeasureTypeName = edit.getWidthUnitOfMeasureTypeName();
+                var widthUnitOfMeasureTypeName = edit.getWidthUnitOfMeasureTypeName();
 
                 widthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind, widthUnitOfMeasureTypeName);
 
@@ -180,7 +179,7 @@ public class EditItemVolumeCommand
                     width = Long.valueOf(edit.getWidth());
 
                     if(width > 0) {
-                        String depthUnitOfMeasureTypeName = edit.getDepthUnitOfMeasureTypeName();
+                        var depthUnitOfMeasureTypeName = edit.getDepthUnitOfMeasureTypeName();
 
                         depthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind, depthUnitOfMeasureTypeName);
 
@@ -211,11 +210,11 @@ public class EditItemVolumeCommand
     public void doUpdate(ItemVolume itemVolume) {
         var itemControl = Session.getModelController(ItemControl.class);
         var uomControl = Session.getModelController(UomControl.class);
-        ItemVolumeValue itemVolumeValue = itemControl.getItemVolumeValue(itemVolume);
+        var itemVolumeValue = itemControl.getItemVolumeValue(itemVolume);
 
-        Conversion heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
-        Conversion widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
-        Conversion depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
+        var heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
+        var widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
+        var depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
 
         itemVolumeValue.setHeight(heightConversion.getQuantity());
         itemVolumeValue.setWidth(widthConversion.getQuantity());

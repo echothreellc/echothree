@@ -17,16 +17,13 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetLotAliasesForm;
-import com.echothree.control.user.inventory.common.result.GetLotAliasesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,13 +64,13 @@ public class GetLotAliasesCommand
     @Override
     protected BaseResult execute() {
         var lotControl = Session.getModelController(LotControl.class);
-        GetLotAliasesResult result = InventoryResultFactory.getGetLotAliasesResult();
-        String lotName = form.getLotName();
-        Lot lot = lotControl.getLotByName(lotName);
+        var result = InventoryResultFactory.getGetLotAliasesResult();
+        var lotName = form.getLotName();
+        var lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
             var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setLot(lotControl.getLotTransfer(userVisit, lot));
             result.setLotAliases(lotAliasControl.getLotAliasTransfersByLot(userVisit, lot));

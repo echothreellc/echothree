@@ -22,7 +22,6 @@ import com.echothree.model.control.campaign.server.logic.CampaignTermLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,11 +64,11 @@ public class SetCampaignTermStatusCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignTermName = form.getCampaignTermName();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
+        var campaignTermName = form.getCampaignTermName();
+        var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
         
         if(campaignTerm != null) {
-            String campaignTermStatusChoice = form.getCampaignTermStatusChoice();
+            var campaignTermStatusChoice = form.getCampaignTermStatusChoice();
             
             CampaignTermLogic.getInstance().setCampaignTermStatus(session, this, campaignTerm, campaignTermStatusChoice, getPartyPK());
         } else {

@@ -17,20 +17,15 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.form.CreateRatingForm;
-import com.echothree.control.user.rating.common.form.GetRatingTypeForm;
 import com.echothree.control.user.rating.common.result.GetRatingTypeResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -62,14 +57,14 @@ public class RatingAddAction
     
     public String getItemEntityRef(RatingAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
         
         commandForm.setItemName(actionForm.getItemName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemResult result = (GetItemResult)executionResult.getResult();
-        ItemTransfer item = result.getItem();
+
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemResult)executionResult.getResult();
+        var item = result.getItem();
         
         request.setAttribute(AttributeConstants.ITEM, item);
         
@@ -78,15 +73,15 @@ public class RatingAddAction
     
     public void setupRatingTypeTransfer(RatingAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetRatingTypeForm commandForm = RatingUtil.getHome().getGetRatingTypeForm();
+        var commandForm = RatingUtil.getHome().getGetRatingTypeForm();
         
         commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
         commandForm.setEntityTypeName(EntityTypes.Item.name());
         commandForm.setRatingTypeName(actionForm.getRatingTypeName());
 
-        CommandResult commandResult = RatingUtil.getHome().getRatingType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetRatingTypeResult result = (GetRatingTypeResult)executionResult.getResult();
+        var commandResult = RatingUtil.getHome().getRatingType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetRatingTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.RATING_TYPE, result.getRatingType());
     }
@@ -104,7 +99,7 @@ public class RatingAddAction
     @Override
     public CommandResult doAdd(RatingAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateRatingForm commandForm = RatingUtil.getHome().getCreateRatingForm();
+        var commandForm = RatingUtil.getHome().getCreateRatingForm();
 
         commandForm.setEntityRef(getItemEntityRef(actionForm, request));
         commandForm.setRatingTypeName(actionForm.getRatingTypeName());

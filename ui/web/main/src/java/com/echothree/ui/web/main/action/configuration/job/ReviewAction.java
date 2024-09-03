@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.job;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.common.form.GetJobForm;
 import com.echothree.control.user.job.common.result.GetJobResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetJobForm commandForm = JobUtil.getHome().getGetJobForm();
-            String jobName = request.getParameter(ParameterConstants.JOB_NAME);
+            var commandForm = JobUtil.getHome().getGetJobForm();
+            var jobName = request.getParameter(ParameterConstants.JOB_NAME);
             
             commandForm.setJobName(jobName);
-            
-            CommandResult commandResult = JobUtil.getHome().getJob(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetJobResult result = (GetJobResult)executionResult.getResult();
+
+            var commandResult = JobUtil.getHome().getJob(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetJobResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.JOB, result.getJob());
             forwardKey = ForwardConstants.DISPLAY;

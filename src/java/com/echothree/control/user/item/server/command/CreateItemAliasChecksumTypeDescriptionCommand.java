@@ -22,9 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
-import com.echothree.model.data.item.server.entity.ItemAliasChecksumTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,16 +65,16 @@ public class CreateItemAliasChecksumTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemAliasChecksumTypeName = form.getItemAliasChecksumTypeName();
-        ItemAliasChecksumType itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName);
+        var itemAliasChecksumTypeName = form.getItemAliasChecksumTypeName();
+        var itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName);
         
         if(itemAliasChecksumType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription = itemControl.getItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
+                var itemAliasChecksumTypeDescription = itemControl.getItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
                 
                 if(itemAliasChecksumTypeDescription == null) {
                     var description = form.getDescription();

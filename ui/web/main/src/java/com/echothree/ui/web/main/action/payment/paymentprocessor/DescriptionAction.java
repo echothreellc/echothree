@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessor;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentProcessorDescriptionsForm;
 import com.echothree.control.user.payment.common.result.GetPaymentProcessorDescriptionsResult;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String paymentProcessorName = request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_NAME);
-        GetPaymentProcessorDescriptionsForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorDescriptionsForm();
+        var paymentProcessorName = request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_NAME);
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorDescriptionsForm();
 
         commandForm.setPaymentProcessorName(paymentProcessorName);
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessorDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPaymentProcessorDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentProcessorDescriptionsResult result = (GetPaymentProcessorDescriptionsResult) executionResult.getResult();
-            PaymentProcessorTransfer paymentProcessorTransfer = result.getPaymentProcessor();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentProcessorDescriptionsResult) executionResult.getResult();
+            var paymentProcessorTransfer = result.getPaymentProcessor();
 
             request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR, paymentProcessorTransfer);
             request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR_DESCRIPTIONS, result.getPaymentProcessorDescriptions());

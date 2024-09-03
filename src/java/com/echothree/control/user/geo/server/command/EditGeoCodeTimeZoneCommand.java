@@ -19,7 +19,6 @@ package com.echothree.control.user.geo.server.command;
 import com.echothree.control.user.geo.common.edit.GeoCodeTimeZoneEdit;
 import com.echothree.control.user.geo.common.edit.GeoEditFactory;
 import com.echothree.control.user.geo.common.form.EditGeoCodeTimeZoneForm;
-import com.echothree.control.user.geo.common.result.EditGeoCodeTimeZoneResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeTimeZoneSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
@@ -27,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
-import com.echothree.model.data.geo.server.value.GeoCodeTimeZoneValue;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -80,24 +75,24 @@ public class EditGeoCodeTimeZoneCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        EditGeoCodeTimeZoneResult result = GeoResultFactory.getEditGeoCodeTimeZoneResult();
-        String geoCodeName = spec.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var result = GeoResultFactory.getEditGeoCodeTimeZoneResult();
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String javaTimeZoneName = spec.getJavaTimeZoneName();
-            TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+            var javaTimeZoneName = spec.getJavaTimeZoneName();
+            var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             
             if(timeZone != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    GeoCodeTimeZone geoCodeTimeZone = geoControl.getGeoCodeTimeZone(geoCode, timeZone);
+                    var geoCodeTimeZone = geoControl.getGeoCodeTimeZone(geoCode, timeZone);
                     
                     if(geoCodeTimeZone != null) {
                         result.setGeoCodeTimeZone(geoControl.getGeoCodeTimeZoneTransfer(getUserVisit(), geoCodeTimeZone));
                         
                         if(lockEntity(geoCode)) {
-                            GeoCodeTimeZoneEdit edit = GeoEditFactory.getGeoCodeTimeZoneEdit();
+                            var edit = GeoEditFactory.getGeoCodeTimeZoneEdit();
                             
                             result.setEdit(edit);
                             edit.setIsDefault(geoCodeTimeZone.getIsDefault().toString());
@@ -112,10 +107,10 @@ public class EditGeoCodeTimeZoneCommand
                         addExecutionError(ExecutionErrors.UnknownGeoCodeTimeZone.name(), geoCodeName, javaTimeZoneName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GeoCodeTimeZone geoCodeTimeZone = geoControl.getGeoCodeTimeZoneForUpdate(geoCode, timeZone);
+                    var geoCodeTimeZone = geoControl.getGeoCodeTimeZoneForUpdate(geoCode, timeZone);
                     
                     if(geoCodeTimeZone != null) {
-                        GeoCodeTimeZoneValue geoCodeTimeZoneValue = geoControl.getGeoCodeTimeZoneValue(geoCodeTimeZone);
+                        var geoCodeTimeZoneValue = geoControl.getGeoCodeTimeZoneValue(geoCodeTimeZone);
                         
                         if(lockEntityForUpdate(geoCode)) {
                             try {

@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.tax.common.transfer.GeoCodeTaxTransfer;
-import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.GeoCodeTax;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -35,12 +33,12 @@ public class GeoCodeTaxTransferCache
     
     @Override
     public GeoCodeTaxTransfer getTransfer(GeoCodeTax geoCodeTax) {
-        GeoCodeTaxTransfer geoCodeTaxTransfer = get(geoCodeTax);
+        var geoCodeTaxTransfer = get(geoCodeTax);
         
         if(geoCodeTaxTransfer == null) {
-            GeoControl geoControl = Session.getModelController(GeoControl.class);
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeTax.getGeoCode());
-            TaxTransfer tax = taxControl.getTaxTransfer(userVisit, geoCodeTax.getTax());
+            var geoControl = Session.getModelController(GeoControl.class);
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeTax.getGeoCode());
+            var tax = taxControl.getTaxTransfer(userVisit, geoCodeTax.getTax());
             
             geoCodeTaxTransfer = new GeoCodeTaxTransfer(geoCode, tax);
             put(geoCodeTax, geoCodeTaxTransfer);

@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected ProtocolSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ProtocolSpec spec = CoreUtil.getHome().getProtocolSpec();
+        var spec = CoreUtil.getHome().getProtocolSpec();
         
         spec.setProtocolName(findParameter(request, ParameterConstants.ORIGINAL_PROTOCOL_NAME, actionForm.getOriginalProtocolName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected ProtocolEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ProtocolEdit edit = CoreUtil.getHome().getProtocolEdit();
+        var edit = CoreUtil.getHome().getProtocolEdit();
 
         edit.setProtocolName(actionForm.getProtocolName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

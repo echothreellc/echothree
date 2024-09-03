@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.GetQueuedLetterForm;
 import com.echothree.control.user.letter.common.result.GetQueuedLetterResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -98,7 +95,7 @@ public class QueuedLetterTag
     public int doStartTag()
             throws JspException {
         try {
-            GetQueuedLetterForm commandForm = LetterUtil.getHome().getGetQueuedLetterForm();
+            var commandForm = LetterUtil.getHome().getGetQueuedLetterForm();
             
             commandForm.setChainInstanceName(chainInstanceName);
             commandForm.setQueuedLetterSequence(queuedLetterSequence);
@@ -106,8 +103,8 @@ public class QueuedLetterTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = LetterUtil.getHome().getQueuedLetter(getUserVisitPK(), commandForm);
+
+            var commandResult = LetterUtil.getHome().getQueuedLetter(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -115,8 +112,8 @@ public class QueuedLetterTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetQueuedLetterResult result = (GetQueuedLetterResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetQueuedLetterResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getQueuedLetter(), scope);
             }

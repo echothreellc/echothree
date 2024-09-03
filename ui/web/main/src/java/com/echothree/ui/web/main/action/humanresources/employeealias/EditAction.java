@@ -21,12 +21,10 @@ import com.echothree.control.user.party.common.edit.PartyAliasEdit;
 import com.echothree.control.user.party.common.form.EditPartyAliasForm;
 import com.echothree.control.user.party.common.result.EditPartyAliasResult;
 import com.echothree.control.user.party.common.spec.PartyAliasSpec;
-import com.echothree.model.control.party.common.transfer.PartyAliasTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,7 +51,7 @@ public class EditAction
     @Override
     protected PartyAliasSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyAliasSpec spec = PartyUtil.getHome().getPartyAliasSpec();
+        var spec = PartyUtil.getHome().getPartyAliasSpec();
 
         spec.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setPartyAliasTypeName(findParameter(request, ParameterConstants.PARTY_ALIAS_TYPE_NAME, actionForm.getPartyAliasTypeName()));
@@ -64,7 +62,7 @@ public class EditAction
     @Override
     protected PartyAliasEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyAliasEdit edit = PartyUtil.getHome().getPartyAliasEdit();
+        var edit = PartyUtil.getHome().getPartyAliasEdit();
 
         edit.setAlias(actionForm.getAlias());
 
@@ -87,10 +85,10 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPartyAliasForm commandForm)
             throws Exception {
-        CommandResult commandResult = PartyUtil.getHome().editPartyAlias(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditPartyAliasResult result = (EditPartyAliasResult)executionResult.getResult();
-        PartyAliasTransfer partyAlias = result.getPartyAlias();
+        var commandResult = PartyUtil.getHome().editPartyAlias(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditPartyAliasResult)executionResult.getResult();
+        var partyAlias = result.getPartyAlias();
 
         if(partyAlias != null) {
             request.setAttribute(AttributeConstants.PARTY_ALIAS, partyAlias);

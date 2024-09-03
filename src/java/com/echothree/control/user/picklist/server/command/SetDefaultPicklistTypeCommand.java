@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.picklist.server.value.PicklistTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultPicklistTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistTypeDetailValue picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueByNameForUpdate(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueByNameForUpdate(picklistTypeName);
         
         if(picklistTypeDetailValue != null) {
             picklistTypeDetailValue.setIsDefault(Boolean.TRUE);

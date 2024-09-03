@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCatalogItemForm;
 import com.echothree.control.user.content.common.result.GetContentCatalogItemResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -146,7 +143,7 @@ public class ContentCatalogItemTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentCatalogItemForm commandForm = ContentUtil.getHome().getGetContentCatalogItemForm();
+            var commandForm = ContentUtil.getHome().getGetContentCatalogItemForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -163,7 +160,7 @@ public class ContentCatalogItemTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCatalogItem(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentCatalogItem(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -171,8 +168,8 @@ public class ContentCatalogItemTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCatalogItemResult result = (GetContentCatalogItemResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCatalogItemResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContentCatalogItem(), scope);
             }

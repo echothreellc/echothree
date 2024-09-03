@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistgroup;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListGroupsForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListGroupsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,13 +47,13 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetContactListGroupsForm commandForm = ContactListUtil.getHome().getGetContactListGroupsForm();
+        String forwardKey;
+        var commandForm = ContactListUtil.getHome().getGetContactListGroupsForm();
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactListGroups(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactListGroups(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListGroupsResult result = (GetContactListGroupsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListGroupsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LIST_GROUPS, result.getContactListGroups());
             forwardKey = ForwardConstants.DISPLAY;

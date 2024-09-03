@@ -27,10 +27,6 @@ import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.scale.server.entity.ScaleType;
-import com.echothree.model.data.scale.server.entity.ScaleTypeDescription;
-import com.echothree.model.data.scale.server.entity.ScaleTypeDetail;
-import com.echothree.model.data.scale.server.value.ScaleTypeDescriptionValue;
-import com.echothree.model.data.scale.server.value.ScaleTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,8 +86,8 @@ public class EditScaleTypeCommand
     @Override
     public ScaleType getEntity(EditScaleTypeResult result) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        ScaleType scaleType = null;
-        String scaleTypeName = spec.getScaleTypeName();
+        ScaleType scaleType;
+        var scaleTypeName = spec.getScaleTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
@@ -123,8 +119,8 @@ public class EditScaleTypeCommand
     @Override
     public void doLock(ScaleTypeEdit edit, ScaleType scaleType) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        ScaleTypeDescription scaleTypeDescription = scaleControl.getScaleTypeDescription(scaleType, getPreferredLanguage());
-        ScaleTypeDetail scaleTypeDetail = scaleType.getLastDetail();
+        var scaleTypeDescription = scaleControl.getScaleTypeDescription(scaleType, getPreferredLanguage());
+        var scaleTypeDetail = scaleType.getLastDetail();
 
         edit.setScaleTypeName(scaleTypeDetail.getScaleTypeName());
         edit.setIsDefault(scaleTypeDetail.getIsDefault().toString());
@@ -138,8 +134,8 @@ public class EditScaleTypeCommand
     @Override
     public void canUpdate(ScaleType scaleType) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleTypeName = edit.getScaleTypeName();
-        ScaleType duplicateScaleType = scaleControl.getScaleTypeByName(scaleTypeName);
+        var scaleTypeName = edit.getScaleTypeName();
+        var duplicateScaleType = scaleControl.getScaleTypeByName(scaleTypeName);
 
         if(duplicateScaleType != null && !scaleType.equals(duplicateScaleType)) {
             addExecutionError(ExecutionErrors.DuplicateScaleTypeName.name(), scaleTypeName);
@@ -150,9 +146,9 @@ public class EditScaleTypeCommand
     public void doUpdate(ScaleType scaleType) {
         var scaleControl = Session.getModelController(ScaleControl.class);
         var partyPK = getPartyPK();
-        ScaleTypeDetailValue scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueForUpdate(scaleType);
-        ScaleTypeDescription scaleTypeDescription = scaleControl.getScaleTypeDescriptionForUpdate(scaleType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueForUpdate(scaleType);
+        var scaleTypeDescription = scaleControl.getScaleTypeDescriptionForUpdate(scaleType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         scaleTypeDetailValue.setScaleTypeName(edit.getScaleTypeName());
         scaleTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +161,7 @@ public class EditScaleTypeCommand
         } else if(scaleTypeDescription != null && description == null) {
             scaleControl.deleteScaleTypeDescription(scaleTypeDescription, partyPK);
         } else if(scaleTypeDescription != null && description != null) {
-            ScaleTypeDescriptionValue scaleTypeDescriptionValue = scaleControl.getScaleTypeDescriptionValue(scaleTypeDescription);
+            var scaleTypeDescriptionValue = scaleControl.getScaleTypeDescriptionValue(scaleTypeDescription);
 
             scaleTypeDescriptionValue.setDescription(description);
             scaleControl.updateScaleTypeDescriptionFromValue(scaleTypeDescriptionValue, partyPK);

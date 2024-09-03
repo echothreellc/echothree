@@ -16,19 +16,13 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeCountry;
-import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CountryTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CountryTransfer> {
@@ -49,34 +43,34 @@ public class CountryTransferCache
     }
     
     public CountryTransfer getCountryTransfer(GeoCode geoCode) {
-        CountryTransfer countryTransfer = get(geoCode);
+        var countryTransfer = get(geoCode);
         
         if(countryTransfer == null) {
-            GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
-            GeoCodeCountry geoCodeCountry = geoControl.getGeoCodeCountry(geoCode);
-            String geoCodeName = geoCodeDetail.getGeoCodeName();
-            GeoCodeTypeTransfer geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
-            GeoCodeScopeTransfer geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
-            Boolean isDefault = geoCodeDetail.getIsDefault();
-            Integer sortOrder = geoCodeDetail.getSortOrder();
-            String telephoneCode = geoCodeCountry.getTelephoneCode();
-            String areaCodePattern = geoCodeCountry.getAreaCodePattern();
-            Boolean areaCodeRequired = geoCodeCountry.getAreaCodeRequired();
-            String areaCodeExample = geoCodeCountry.getAreaCodeExample();
-            String telephoneNumberPattern = geoCodeCountry.getTelephoneNumberPattern();
-            String telephoneNumberExample = geoCodeCountry.getTelephoneNumberExample();
-            PostalAddressFormatTransfer postalAddressFormat = contactControl.getPostalAddressFormatTransfer(userVisit, geoCodeCountry.getPostalAddressFormat());
-            Boolean cityRequired = geoCodeCountry.getCityRequired();
-            Boolean cityGeoCodeRequired = geoCodeCountry.getCityGeoCodeRequired();
-            Boolean stateRequired = geoCodeCountry.getStateRequired();
-            Boolean stateGeoCodeRequired = geoCodeCountry.getCityGeoCodeRequired();
-            String postalCodePattern = geoCodeCountry.getPostalCodePattern();
-            Boolean postalCodeRequired = geoCodeCountry.getPostalCodeRequired();
-            Boolean postalCodeGeoCodeRequired = geoCodeCountry.getPostalCodeGeoCodeRequired();
-            Integer postalCodeLength = geoCodeCountry.getPostalCodeLength();
-            Integer postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
-            String postalCodeExample = geoCodeCountry.getPostalCodeExample();
-            String description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var geoCodeDetail = geoCode.getLastDetail();
+            var geoCodeCountry = geoControl.getGeoCodeCountry(geoCode);
+            var geoCodeName = geoCodeDetail.getGeoCodeName();
+            var geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
+            var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
+            var isDefault = geoCodeDetail.getIsDefault();
+            var sortOrder = geoCodeDetail.getSortOrder();
+            var telephoneCode = geoCodeCountry.getTelephoneCode();
+            var areaCodePattern = geoCodeCountry.getAreaCodePattern();
+            var areaCodeRequired = geoCodeCountry.getAreaCodeRequired();
+            var areaCodeExample = geoCodeCountry.getAreaCodeExample();
+            var telephoneNumberPattern = geoCodeCountry.getTelephoneNumberPattern();
+            var telephoneNumberExample = geoCodeCountry.getTelephoneNumberExample();
+            var postalAddressFormat = contactControl.getPostalAddressFormatTransfer(userVisit, geoCodeCountry.getPostalAddressFormat());
+            var cityRequired = geoCodeCountry.getCityRequired();
+            var cityGeoCodeRequired = geoCodeCountry.getCityGeoCodeRequired();
+            var stateRequired = geoCodeCountry.getStateRequired();
+            var stateGeoCodeRequired = geoCodeCountry.getCityGeoCodeRequired();
+            var postalCodePattern = geoCodeCountry.getPostalCodePattern();
+            var postalCodeRequired = geoCodeCountry.getPostalCodeRequired();
+            var postalCodeGeoCodeRequired = geoCodeCountry.getPostalCodeGeoCodeRequired();
+            var postalCodeLength = geoCodeCountry.getPostalCodeLength();
+            var postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
+            var postalCodeExample = geoCodeCountry.getPostalCodeExample();
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
             
             countryTransfer = new CountryTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, telephoneCode,
                     areaCodePattern, areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample,

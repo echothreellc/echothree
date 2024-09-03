@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcategory;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.SetDefaultContentCategoryForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,12 +51,12 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
         
         try {
-            String contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
-            SetDefaultContentCategoryForm commandForm = ContentUtil.getHome().getSetDefaultContentCategoryForm();
+            var contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
+            var commandForm = ContentUtil.getHome().getSetDefaultContentCategoryForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
@@ -69,10 +68,10 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
-            String parentContentCategoryName = request.getParameter(ParameterConstants.PARENT_CONTENT_CATEGORY_NAME);
+            var parentContentCategoryName = request.getParameter(ParameterConstants.PARENT_CONTENT_CATEGORY_NAME);
             Map<String, String> parameters = new HashMap<>(3);
             
             parameters.put(ParameterConstants.CONTENT_COLLECTION_NAME, contentCollectionName);

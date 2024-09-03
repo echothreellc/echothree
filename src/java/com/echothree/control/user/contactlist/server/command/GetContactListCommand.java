@@ -18,13 +18,11 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetContactListForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetContactListResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,9 +64,9 @@ public class GetContactListCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        GetContactListResult result = ContactListResultFactory.getGetContactListResult();
-        String contactListName = form.getContactListName();
-        ContactList contactList = contactListControl.getContactListByName(contactListName);
+        var result = ContactListResultFactory.getGetContactListResult();
+        var contactListName = form.getContactListName();
+        var contactList = contactListControl.getContactListByName(contactListName);
         
         if(contactList != null) {
             result.setContactList(contactListControl.getContactListTransfer(getUserVisit(), contactList));

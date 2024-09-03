@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityLongRangeDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.EntityLongRangeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityLongRangeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class EntityLongRangeDescriptionTransferCache
     }
     
     public EntityLongRangeDescriptionTransfer getEntityLongRangeDescriptionTransfer(EntityLongRangeDescription entityLongRangeDescription, EntityInstance entityInstance) {
-        EntityLongRangeDescriptionTransfer entityLongRangeDescriptionTransfer = get(entityLongRangeDescription);
+        var entityLongRangeDescriptionTransfer = get(entityLongRangeDescription);
         
         if(entityLongRangeDescriptionTransfer == null) {
-            EntityLongRangeTransfer entityLongRangeTransfer = coreControl.getEntityLongRangeTransfer(userVisit, entityLongRangeDescription.getEntityLongRange(), entityInstance);
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, entityLongRangeDescription.getLanguage());
+            var entityLongRangeTransfer = coreControl.getEntityLongRangeTransfer(userVisit, entityLongRangeDescription.getEntityLongRange(), entityInstance);
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityLongRangeDescription.getLanguage());
             
             entityLongRangeDescriptionTransfer = new EntityLongRangeDescriptionTransfer(languageTransfer, entityLongRangeTransfer,
                     entityLongRangeDescription.getDescription());

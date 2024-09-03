@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.tag;
 
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.common.TagService;
-import com.echothree.control.user.tag.common.form.CreateTagScopeForm;
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,9 +47,9 @@ public class TagScopesHandler
             String tagScopeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("tagScopeName"))
                     tagScopeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class TagScopesHandler
             }
             
             try {
-                CreateTagScopeForm commandForm = TagFormFactory.getCreateTagScopeForm();
+                var commandForm = TagFormFactory.getCreateTagScopeForm();
                 
                 commandForm.setTagScopeName(tagScopeName);
                 commandForm.setIsDefault(isDefault);

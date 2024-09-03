@@ -19,9 +19,6 @@ package com.echothree.control.user.term.server.command;
 import com.echothree.control.user.term.common.form.CreateTermTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.term.server.entity.TermType;
-import com.echothree.model.data.term.server.entity.TermTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateTermTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        String termTypeName = form.getTermTypeName();
-        TermType termType = termControl.getTermTypeByName(termTypeName);
+        var termTypeName = form.getTermTypeName();
+        var termType = termControl.getTermTypeByName(termTypeName);
         
         if(termType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TermTypeDescription termTypeDescription = termControl.getTermTypeDescription(termType, language);
+                var termTypeDescription = termControl.getTermTypeDescription(termType, language);
                 
                 if(termTypeDescription == null) {
                     var description = form.getDescription();

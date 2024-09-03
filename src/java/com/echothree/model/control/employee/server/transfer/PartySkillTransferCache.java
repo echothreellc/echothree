@@ -17,9 +17,7 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.model.control.employee.common.transfer.PartySkillTransfer;
-import com.echothree.model.control.employee.common.transfer.SkillTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.PartySkill;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,11 +36,11 @@ public class PartySkillTransferCache
     }
     
     public PartySkillTransfer getPartySkillTransfer(PartySkill partySkill) {
-        PartySkillTransfer partySkillTransfer = get(partySkill);
+        var partySkillTransfer = get(partySkill);
         
         if(partySkillTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partySkill.getParty());
-            SkillTypeTransfer skillType = employeeControl.getSkillTypeTransfer(userVisit, partySkill.getSkillType());
+            var party = partyControl.getPartyTransfer(userVisit, partySkill.getParty());
+            var skillType = employeeControl.getSkillTypeTransfer(userVisit, partySkill.getSkillType());
             
             partySkillTransfer = new PartySkillTransfer(party, skillType);
             put(partySkill, partySkillTransfer);

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.partyinventorylevel;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelsForm;
 import com.echothree.control.user.inventory.common.result.GetPartyInventoryLevelsResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,18 +51,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPartyInventoryLevelsForm commandForm = InventoryUtil.getHome().getGetPartyInventoryLevelsForm();
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var commandForm = InventoryUtil.getHome().getGetPartyInventoryLevelsForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         commandForm.setItemName(itemName);
         
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = InventoryUtil.getHome().getPartyInventoryLevels(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyInventoryLevelsResult result = (GetPartyInventoryLevelsResult)executionResult.getResult();
+
+        var commandResult = InventoryUtil.getHome().getPartyInventoryLevels(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyInventoryLevelsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
         request.setAttribute(AttributeConstants.PARTY_INVENTORY_LEVELS, result.getPartyInventoryLevels());

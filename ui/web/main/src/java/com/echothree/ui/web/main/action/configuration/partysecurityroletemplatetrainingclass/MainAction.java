@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplatetrainingclass;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateTrainingClassesForm;
 import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateTrainingClassesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,15 +48,15 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetPartySecurityRoleTemplateTrainingClassesForm commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateTrainingClassesForm();
+        String forwardKey;
+        var commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateTrainingClassesForm();
 
         commandForm.setPartySecurityRoleTemplateName(request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME));
 
-        CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateTrainingClasses(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateTrainingClasses(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartySecurityRoleTemplateTrainingClassesResult result = (GetPartySecurityRoleTemplateTrainingClassesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartySecurityRoleTemplateTrainingClassesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE, result.getPartySecurityRoleTemplate());
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE_TRAINING_CLASSES, result.getPartySecurityRoleTemplateTrainingClasses());

@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.EditorTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Editor;
-import com.echothree.model.data.core.server.entity.EditorDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,21 +35,21 @@ public class EditorTransferCache
     }
 
     public EditorTransfer getEditorTransfer(Editor editor) {
-        EditorTransfer editorTransfer = get(editor);
+        var editorTransfer = get(editor);
 
         if(editorTransfer == null) {
-            EditorDetail editorDetail = editor.getLastDetail();
-            String editorName = editorDetail.getEditorName();
-            Boolean hasDimensions = editorDetail.getHasDimensions();
-            Integer minimumHeight = editorDetail.getMinimumHeight();
-            Integer minimumWidth = editorDetail.getMinimumWidth();
-            Integer maximumHeight = editorDetail.getMaximumHeight();
-            Integer maximumWidth = editorDetail.getMaximumWidth();
-            Integer defaultHeight = editorDetail.getDefaultHeight();
-            Integer defaultWidth = editorDetail.getDefaultWidth();
-            Boolean isDefault = editorDetail.getIsDefault();
-            Integer sortOrder = editorDetail.getSortOrder();
-            String description = coreControl.getBestEditorDescription(editor, getLanguage());
+            var editorDetail = editor.getLastDetail();
+            var editorName = editorDetail.getEditorName();
+            var hasDimensions = editorDetail.getHasDimensions();
+            var minimumHeight = editorDetail.getMinimumHeight();
+            var minimumWidth = editorDetail.getMinimumWidth();
+            var maximumHeight = editorDetail.getMaximumHeight();
+            var maximumWidth = editorDetail.getMaximumWidth();
+            var defaultHeight = editorDetail.getDefaultHeight();
+            var defaultWidth = editorDetail.getDefaultWidth();
+            var isDefault = editorDetail.getIsDefault();
+            var sortOrder = editorDetail.getSortOrder();
+            var description = coreControl.getBestEditorDescription(editor, getLanguage());
 
             editorTransfer = new EditorTransfer(editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight, maximumWidth, defaultHeight,
                     defaultWidth, isDefault, sortOrder, description);

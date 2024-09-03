@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.glaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.edit.GlAccountCategoryDescriptionEdit;
-import com.echothree.control.user.accounting.common.form.EditGlAccountCategoryDescriptionForm;
 import com.echothree.control.user.accounting.common.result.EditGlAccountCategoryDescriptionResult;
-import com.echothree.control.user.accounting.common.spec.GlAccountCategoryDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditGlAccountCategoryDescriptionForm commandForm = AccountingUtil.getHome().getEditGlAccountCategoryDescriptionForm();
-                GlAccountCategoryDescriptionSpec spec = AccountingUtil.getHome().getGlAccountCategoryDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = AccountingUtil.getHome().getEditGlAccountCategoryDescriptionForm();
+                var spec = AccountingUtil.getHome().getGlAccountCategoryDescriptionSpec();
                 
                 if(glAccountCategoryName == null)
                     glAccountCategoryName = actionForm.getGlAccountCategoryName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    GlAccountCategoryDescriptionEdit edit = AccountingUtil.getHome().getGlAccountCategoryDescriptionEdit();
+                    var edit = AccountingUtil.getHome().getGlAccountCategoryDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditGlAccountCategoryDescriptionResult result = (EditGlAccountCategoryDescriptionResult)executionResult.getResult();
+                            var result = (EditGlAccountCategoryDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGlAccountCategoryDescriptionResult result = (EditGlAccountCategoryDescriptionResult)executionResult.getResult();
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGlAccountCategoryDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        GlAccountCategoryDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setGlAccountCategoryName(glAccountCategoryName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CATEGORY_NAME, glAccountCategoryName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

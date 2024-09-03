@@ -18,7 +18,6 @@ package com.echothree.control.user.job.common;
 
 import com.echothree.control.user.job.server.JobLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class JobUtil {
@@ -30,7 +29,7 @@ public class JobUtil {
     public static JobLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (JobLocal)ctx.lookup("ejb:echothree/echothree-server/JobBean!com.echothree.control.user.job.server.JobLocal");
         }
@@ -42,7 +41,7 @@ public class JobUtil {
     public static JobRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedRemote = (JobRemote)ctx.lookup("ejb:echothree/echothree-server/JobBean!com.echothree.control.user.job.common.JobRemote");
         }

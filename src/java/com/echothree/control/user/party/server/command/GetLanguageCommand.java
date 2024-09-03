@@ -18,14 +18,12 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetLanguageForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.control.user.party.common.result.GetLanguageResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -63,7 +61,7 @@ public class GetLanguageCommand
     protected Language getEntity() {
         var partyControl = Session.getModelController(PartyControl.class);
         Language language = null;
-        String languageIsoName = form.getLanguageIsoName();
+        var languageIsoName = form.getLanguageIsoName();
         var parameterCount = (languageIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
@@ -97,7 +95,7 @@ public class GetLanguageCommand
     @Override
     protected BaseResult getResult(Language language) {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetLanguageResult result = PartyResultFactory.getGetLanguageResult();
+        var result = PartyResultFactory.getGetLanguageResult();
 
         if(language != null) {
             result.setLanguage(partyControl.getLanguageTransfer(getUserVisit(), language));

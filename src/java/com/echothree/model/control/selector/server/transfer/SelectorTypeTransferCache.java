@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.selector.server.transfer;
 
-import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.selector.server.entity.SelectorTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SelectorTypeTransferCache
@@ -34,15 +32,15 @@ public class SelectorTypeTransferCache
     }
     
     public SelectorTypeTransfer getSelectorTypeTransfer(SelectorType selectorType) {
-        SelectorTypeTransfer selectorTypeTransfer = get(selectorType);
+        var selectorTypeTransfer = get(selectorType);
         
         if(selectorTypeTransfer == null) {
-            SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
-            SelectorKindTransfer selectorKindTransfer = selectorControl.getSelectorKindTransfer(userVisit, selectorTypeDetail.getSelectorKind());
-            String selectorTypeName = selectorTypeDetail.getSelectorTypeName();
-            Boolean isDefault = selectorTypeDetail.getIsDefault();
-            Integer sortOrder = selectorTypeDetail.getSortOrder();
-            String description = selectorControl.getBestSelectorTypeDescription(selectorType, getLanguage());
+            var selectorTypeDetail = selectorType.getLastDetail();
+            var selectorKindTransfer = selectorControl.getSelectorKindTransfer(userVisit, selectorTypeDetail.getSelectorKind());
+            var selectorTypeName = selectorTypeDetail.getSelectorTypeName();
+            var isDefault = selectorTypeDetail.getIsDefault();
+            var sortOrder = selectorTypeDetail.getSortOrder();
+            var description = selectorControl.getBestSelectorTypeDescription(selectorType, getLanguage());
             
             selectorTypeTransfer = new SelectorTypeTransfer(selectorKindTransfer, selectorTypeName, isDefault, sortOrder, description);
             put(selectorType, selectorTypeTransfer);

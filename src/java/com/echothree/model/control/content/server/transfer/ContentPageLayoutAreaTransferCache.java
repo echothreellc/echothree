@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.content.server.transfer;
 
-import com.echothree.model.control.content.common.transfer.ContentPageAreaTypeTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutAreaTransfer;
-import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,15 +30,15 @@ public class ContentPageLayoutAreaTransferCache
     }
     
     public ContentPageLayoutAreaTransfer getContentPageLayoutAreaTransfer(ContentPageLayoutArea contentPageLayoutArea) {
-        ContentPageLayoutAreaTransfer contentPageLayoutAreaTransfer = get(contentPageLayoutArea);
+        var contentPageLayoutAreaTransfer = get(contentPageLayoutArea);
         
         if(contentPageLayoutAreaTransfer == null) {
-            ContentTransferCaches contentTransferCaches = contentControl.getContentTransferCaches(userVisit);
-            ContentPageLayoutTransfer contentPageLayoutTransfer = contentTransferCaches.getContentPageLayoutTransferCache().getTransfer(contentPageLayoutArea.getContentPageLayout());
-            ContentPageAreaTypeTransfer contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(contentPageLayoutArea.getContentPageAreaType());
-            Boolean showDescriptionField = contentPageLayoutArea.getShowDescriptionField();
-            Integer sortOrder = contentPageLayoutArea.getSortOrder();
-            String description = contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, getLanguage());
+            var contentTransferCaches = contentControl.getContentTransferCaches(userVisit);
+            var contentPageLayoutTransfer = contentTransferCaches.getContentPageLayoutTransferCache().getTransfer(contentPageLayoutArea.getContentPageLayout());
+            var contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(contentPageLayoutArea.getContentPageAreaType());
+            var showDescriptionField = contentPageLayoutArea.getShowDescriptionField();
+            var sortOrder = contentPageLayoutArea.getSortOrder();
+            var description = contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, getLanguage());
             
             contentPageLayoutAreaTransfer = new ContentPageLayoutAreaTransfer(contentPageLayoutTransfer, contentPageAreaTypeTransfer, showDescriptionField, sortOrder, description);
             put(contentPageLayoutArea, contentPageLayoutAreaTransfer);

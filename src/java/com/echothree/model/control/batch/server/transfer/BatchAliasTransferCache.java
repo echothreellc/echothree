@@ -17,7 +17,6 @@
 package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchAliasTransfer;
-import com.echothree.model.control.batch.common.transfer.BatchAliasTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -34,11 +33,11 @@ public class BatchAliasTransferCache
     
     @Override
     public BatchAliasTransfer getTransfer(BatchAlias batchAlias) {
-        BatchAliasTransfer batchAliasTransfer = get(batchAlias);
+        var batchAliasTransfer = get(batchAlias);
         
         if(batchAliasTransfer == null) {
-            BatchAliasTypeTransfer batchAliasType = batchControl.getBatchAliasTypeTransfer(userVisit, batchAlias.getBatchAliasType());
-            String alias = batchAlias.getAlias();
+            var batchAliasType = batchControl.getBatchAliasTypeTransfer(userVisit, batchAlias.getBatchAliasType());
+            var alias = batchAlias.getAlias();
             
             batchAliasTransfer = new BatchAliasTransfer(batchAliasType, alias);
             put(batchAlias, batchAliasTransfer);

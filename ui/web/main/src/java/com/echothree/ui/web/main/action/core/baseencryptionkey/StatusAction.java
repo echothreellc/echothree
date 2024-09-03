@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.core.baseencryptionkey;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.SetBaseEncryptionKeyStatusForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -52,8 +50,8 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, StatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
-        SetBaseEncryptionKeyStatusForm commandForm = CoreUtil.getHome().getSetBaseEncryptionKeyStatusForm();
+        var baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
+        var commandForm = CoreUtil.getHome().getSetBaseEncryptionKeyStatusForm();
 
         if(baseEncryptionKeyName == null) {
             baseEncryptionKeyName = actionForm.getBaseEncryptionKeyName();
@@ -63,7 +61,7 @@ public class StatusAction
             commandForm.setBaseEncryptionKeyName(baseEncryptionKeyName);
             commandForm.setBaseEncryptionKeyStatusChoice(actionForm.getBaseEncryptionKeyStatusChoice());
 
-            CommandResult commandResult = CoreUtil.getHome().setBaseEncryptionKeyStatus(getUserVisitPK(request), commandForm);
+            var commandResult = CoreUtil.getHome().setBaseEncryptionKeyStatus(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -76,7 +74,7 @@ public class StatusAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.BASE_ENCRYPTION_KEY_NAME, baseEncryptionKeyName);
         }

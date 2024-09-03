@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteAppearanceTextTransformationForm;
-import com.echothree.control.user.core.common.form.GetAppearanceTextTransformationForm;
 import com.echothree.control.user.core.common.result.GetAppearanceTextTransformationResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class TextTransformationDeleteAction
     @Override
     public void setupTransfer(TextTransformationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetAppearanceTextTransformationForm commandForm = CoreUtil.getHome().getGetAppearanceTextTransformationForm();
+        var commandForm = CoreUtil.getHome().getGetAppearanceTextTransformationForm();
         
         commandForm.setAppearanceName(actionForm.getAppearanceName());
         commandForm.setTextTransformationName(actionForm.getTextTransformationName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getAppearanceTextTransformation(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getAppearanceTextTransformation(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAppearanceTextTransformationResult result = (GetAppearanceTextTransformationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAppearanceTextTransformationResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.APPEARANCE_TEXT_TRANSFORMATION, result.getAppearanceTextTransformation());
         }
@@ -80,7 +77,7 @@ public class TextTransformationDeleteAction
     @Override
     public CommandResult doDelete(TextTransformationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteAppearanceTextTransformationForm commandForm = CoreUtil.getHome().getDeleteAppearanceTextTransformationForm();
+        var commandForm = CoreUtil.getHome().getDeleteAppearanceTextTransformationForm();
 
         commandForm.setAppearanceName(actionForm.getAppearanceName());
         commandForm.setTextTransformationName(actionForm.getTextTransformationName());

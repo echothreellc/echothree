@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.DeleteServiceForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Service;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,8 +60,8 @@ public class DeleteServiceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serviceName = form.getServiceName();
-        Service service = coreControl.getServiceByNameForUpdate(serviceName);
+        var serviceName = form.getServiceName();
+        var service = coreControl.getServiceByNameForUpdate(serviceName);
         
         if(service != null) {
             coreControl.deleteService(service, getPartyPK());

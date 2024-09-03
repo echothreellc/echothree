@@ -70,14 +70,14 @@ public class SmartQueue<E> {
         list.add(data);
 
         if(estimatedTotal != null) {
-            long producedTotal = produced.incrementAndGet();
+            var producedTotal = produced.incrementAndGet();
 
             if(monitorProgress) {
                 if(producedTotal > estimatedTotal.get()) {
                     estimatedTotal.set(producedTotal);
                 }
 
-                long myEstimatedTotal = estimatedTotal.get();
+                var myEstimatedTotal = estimatedTotal.get();
                 if(producedTotal % 20 == 0 || producedTotal == myEstimatedTotal) {
                     log.info("Produced progress: " + producedTotal + " of " + myEstimatedTotal + " completed (" + percentFormat.format(producedTotal * 1.0 / myEstimatedTotal) + ").");
                 }

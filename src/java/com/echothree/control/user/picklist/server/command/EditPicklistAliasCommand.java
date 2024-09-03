@@ -26,12 +26,8 @@ import com.echothree.control.user.picklist.server.command.util.PicklistAliasUtil
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.picklist.server.entity.Picklist;
 import com.echothree.model.data.picklist.server.entity.PicklistAlias;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
-import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDetail;
-import com.echothree.model.data.picklist.server.entity.PicklistType;
-import com.echothree.model.data.picklist.server.value.PicklistAliasValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,15 +86,15 @@ public class EditPicklistAliasCommand
     public PicklistAlias getEntity(EditPicklistAliasResult result) {
         var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAlias picklistAlias = null;
-        String picklistTypeName = spec.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = spec.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistName = spec.getPicklistName();
-            Picklist picklist = picklistControl.getPicklistByName(picklistType, picklistName);
+            var picklistName = spec.getPicklistName();
+            var picklist = picklistControl.getPicklistByName(picklistType, picklistName);
 
             if(picklist != null) {
-                String picklistAliasTypeName = spec.getPicklistAliasTypeName();
+                var picklistAliasTypeName = spec.getPicklistAliasTypeName();
 
                 picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
@@ -147,11 +143,11 @@ public class EditPicklistAliasCommand
     @Override
     public void canUpdate(PicklistAlias picklistAlias) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String alias = edit.getAlias();
-        PicklistAlias duplicatePicklistAlias = picklistControl.getPicklistAliasByAlias(picklistAliasType, alias);
+        var alias = edit.getAlias();
+        var duplicatePicklistAlias = picklistControl.getPicklistAliasByAlias(picklistAliasType, alias);
 
         if(duplicatePicklistAlias != null && !picklistAlias.equals(duplicatePicklistAlias)) {
-            PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAlias.getPicklistAliasType().getLastDetail();
+            var picklistAliasTypeDetail = picklistAlias.getPicklistAliasType().getLastDetail();
 
             addExecutionError(ExecutionErrors.DuplicatePicklistAlias.name(), picklistAliasTypeDetail.getPicklistType().getLastDetail().getPicklistTypeName(),
                     picklistAliasTypeDetail.getPicklistAliasTypeName(), alias);
@@ -161,7 +157,7 @@ public class EditPicklistAliasCommand
     @Override
     public void doUpdate(PicklistAlias picklistAlias) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        PicklistAliasValue picklistAliasValue = picklistControl.getPicklistAliasValue(picklistAlias);
+        var picklistAliasValue = picklistControl.getPicklistAliasValue(picklistAlias);
 
         picklistAliasValue.setAlias(edit.getAlias());
 

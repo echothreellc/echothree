@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetEntityListItemResultsForm;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
@@ -49,7 +48,7 @@ public class GetEntityListItemResultsAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetEntityListItemResultsForm commandForm = SearchUtil.getHome().getGetEntityListItemResultsForm();
+        var commandForm = SearchUtil.getHome().getGetEntityListItemResultsForm();
 
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
 

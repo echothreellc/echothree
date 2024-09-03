@@ -19,15 +19,10 @@ package com.echothree.control.user.shipment.server.command;
 import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
 import com.echothree.control.user.shipment.common.edit.ShipmentTypeShippingMethodEdit;
 import com.echothree.control.user.shipment.common.form.EditShipmentTypeShippingMethodForm;
-import com.echothree.control.user.shipment.common.result.EditShipmentTypeShippingMethodResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.ShipmentTypeShippingMethodSpec;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
-import com.echothree.model.data.shipment.server.value.ShipmentTypeShippingMethodValue;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,24 +61,24 @@ public class EditShipmentTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        EditShipmentTypeShippingMethodResult result = ShipmentResultFactory.getEditShipmentTypeShippingMethodResult();
-        String shipmentTypeName = spec.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShipmentResultFactory.getEditShipmentTypeShippingMethodResult();
+        var shipmentTypeName = spec.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentType != null) {
             var shippingControl = Session.getModelController(ShippingControl.class);
-            String shippingMethodName = spec.getShippingMethodName();
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethodName = spec.getShippingMethodName();
+            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             
             if(shippingMethod != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    ShipmentTypeShippingMethod shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod);
+                    var shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod);
                     
                     if(shipmentTypeShippingMethod != null) {
                         result.setShipmentTypeShippingMethod(shipmentControl.getShipmentTypeShippingMethodTransfer(getUserVisit(), shipmentTypeShippingMethod));
                         
                         if(lockEntity(shippingMethod)) {
-                            ShipmentTypeShippingMethodEdit edit = ShipmentEditFactory.getShipmentTypeShippingMethodEdit();
+                            var edit = ShipmentEditFactory.getShipmentTypeShippingMethodEdit();
                             
                             result.setEdit(edit);
                             edit.setIsDefault(shipmentTypeShippingMethod.getIsDefault().toString());
@@ -98,7 +93,7 @@ public class EditShipmentTypeShippingMethodCommand
                         addExecutionError(ExecutionErrors.UnknownShipmentTypeShippingMethod.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    ShipmentTypeShippingMethodValue shipmentTypeShippingMethodValue = shipmentControl.getShipmentTypeShippingMethodValueForUpdate(shipmentType, shippingMethod);
+                    var shipmentTypeShippingMethodValue = shipmentControl.getShipmentTypeShippingMethodValueForUpdate(shipmentType, shippingMethod);
                     
                     if(shipmentTypeShippingMethodValue != null) {
                         if(lockEntityForUpdate(shippingMethod)) {

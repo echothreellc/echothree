@@ -17,13 +17,10 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupChoicesForm;
-import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupChoicesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -55,15 +52,15 @@ public class GetInventoryLocationGroupChoicesCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetInventoryLocationGroupChoicesResult result = InventoryResultFactory.getGetInventoryLocationGroupChoicesResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = InventoryResultFactory.getGetInventoryLocationGroupChoicesResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String defaultInventoryLocationGroupChoice = form.getDefaultInventoryLocationGroupChoice();
-            Party warehouseParty = warehouse.getParty();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultInventoryLocationGroupChoice = form.getDefaultInventoryLocationGroupChoice();
+            var warehouseParty = warehouse.getParty();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setInventoryLocationGroupChoices(inventoryControl.getInventoryLocationGroupChoicesByWarehouseParty(defaultInventoryLocationGroupChoice,
                     getPreferredLanguage(), allowNullChoice, warehouseParty));

@@ -19,9 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.accounting;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.AccountingService;
 import com.echothree.control.user.accounting.common.form.AccountingFormFactory;
-import com.echothree.control.user.accounting.common.form.CreateTransactionEntityRoleTypeForm;
-import com.echothree.control.user.accounting.common.form.CreateTransactionGlAccountCategoryForm;
-import com.echothree.control.user.accounting.common.form.CreateTransactionTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -51,14 +48,14 @@ public class TransactionTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("transactionTypeDescription")) {
-            CreateTransactionTypeDescriptionForm commandForm = AccountingFormFactory.getCreateTransactionTypeDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateTransactionTypeDescriptionForm();
             
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             accountingService.createTransactionTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("transactionGlAccountCategory")) {
-            CreateTransactionGlAccountCategoryForm commandForm = AccountingFormFactory.getCreateTransactionGlAccountCategoryForm();
+            var commandForm = AccountingFormFactory.getCreateTransactionGlAccountCategoryForm();
             
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));
@@ -68,7 +65,7 @@ public class TransactionTypeHandler
             initialDataParser.pushHandler(new TransactionGlAccountCategoryHandler(initialDataParser, this, transactionTypeName,
                     commandForm.getTransactionGlAccountCategoryName()));
         } else if(localName.equals("transactionEntityRoleType")) {
-            CreateTransactionEntityRoleTypeForm commandForm = AccountingFormFactory.getCreateTransactionEntityRoleTypeForm();
+            var commandForm = AccountingFormFactory.getCreateTransactionEntityRoleTypeForm();
             
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));

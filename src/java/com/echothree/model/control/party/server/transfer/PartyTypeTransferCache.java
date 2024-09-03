@@ -19,17 +19,11 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
-import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
-import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicy;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class PartyTypeTransferCache
         extends BasePartyTransferCache<PartyType, PartyTypeTransfer> {
@@ -56,26 +50,26 @@ public class PartyTypeTransferCache
     }
     
     public PartyTypeTransfer getPartyTypeTransfer(PartyType partyType) {
-        PartyTypeTransfer partyTypeTransfer = get(partyType);
+        var partyTypeTransfer = get(partyType);
         
         if(partyTypeTransfer == null) {
-            String partyTypeName = partyType.getPartyTypeName();
-            PartyType parentPartyType = partyType.getParentPartyType();
-            PartyTypeTransfer parentPartyTypeTransfer = parentPartyType == null? null: getPartyTypeTransfer(parentPartyType);
-            SequenceType billingAccountSequenceType = partyType.getBillingAccountSequenceType();
-            SequenceTypeTransfer billingAccountSequenceTypeTransfer = billingAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, billingAccountSequenceType);
-            Boolean allowUserLogins = partyType.getAllowUserLogins();
-            Boolean allowPartyAliases = partyType.getAllowPartyAliases();
-            Boolean isDefault = partyType.getIsDefault();
-            Integer sortOrder = partyType.getSortOrder();
-            String description = partyControl.getBestPartyTypeDescription(partyType, getLanguage());
+            var partyTypeName = partyType.getPartyTypeName();
+            var parentPartyType = partyType.getParentPartyType();
+            var parentPartyTypeTransfer = parentPartyType == null? null: getPartyTypeTransfer(parentPartyType);
+            var billingAccountSequenceType = partyType.getBillingAccountSequenceType();
+            var billingAccountSequenceTypeTransfer = billingAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, billingAccountSequenceType);
+            var allowUserLogins = partyType.getAllowUserLogins();
+            var allowPartyAliases = partyType.getAllowPartyAliases();
+            var isDefault = partyType.getIsDefault();
+            var sortOrder = partyType.getSortOrder();
+            var description = partyControl.getBestPartyTypeDescription(partyType, getLanguage());
             
             partyTypeTransfer = new PartyTypeTransfer(partyTypeName, parentPartyTypeTransfer, billingAccountSequenceTypeTransfer, allowUserLogins,
                     allowPartyAliases, isDefault, sortOrder, description);
             put(partyType, partyTypeTransfer);
             
             if(includeAuditPolicy) {
-                PartyTypeAuditPolicy partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
+                var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
                 
                 if(partyTypeAuditPolicy != null) {
                     partyTypeTransfer.setPartyTypeAuditPolicy(partyControl.getPartyTypeAuditPolicyTransfer(userVisit, partyTypeAuditPolicy));
@@ -83,7 +77,7 @@ public class PartyTypeTransferCache
             }
             
             if(includeLockoutPolicy) {
-                PartyTypeLockoutPolicy partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
+                var partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
                 
                 if(partyTypeLockoutPolicy != null) {
                     partyTypeTransfer.setPartyTypeLockoutPolicy(partyControl.getPartyTypeLockoutPolicyTransfer(userVisit, partyTypeLockoutPolicy));
@@ -91,7 +85,7 @@ public class PartyTypeTransferCache
             }
             
             if(includePasswordStringPolicy) {
-                PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
+                var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
                 
                 if(partyTypePasswordStringPolicy != null) {
                     partyTypeTransfer.setPartyTypePasswordStringPolicy(partyControl.getPartyTypePasswordStringPolicyTransfer(userVisit, partyTypePasswordStringPolicy));

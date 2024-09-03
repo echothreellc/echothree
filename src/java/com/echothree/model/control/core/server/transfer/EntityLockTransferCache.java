@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.CoreDebugFlags;
 import com.echothree.model.control.core.server.control.CoreControl;
@@ -30,9 +29,6 @@ import com.echothree.util.server.persistence.DslContextFactory;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
@@ -50,10 +46,10 @@ public class EntityLockTransferCache
     
     @SuppressWarnings("Finally")
     public EntityLockTransfer getEntityLockTransfer(BasePK lockTarget) {
-        EntityLockTransfer entityLockTransfer = (EntityLockTransfer)get(lockTarget);
+        var entityLockTransfer = (EntityLockTransfer)get(lockTarget);
         
         if(entityLockTransfer == null) {
-            EntityInstance lockTargetEntityInstance = coreControl.getEntityInstanceByBasePK(lockTarget);
+            var lockTargetEntityInstance = coreControl.getEntityInstanceByBasePK(lockTarget);
             
             entityLockTransfer = getEntityLockTransferByEntityInstance(lockTargetEntityInstance, true);
         }
@@ -68,7 +64,7 @@ public class EntityLockTransferCache
     private EntityLockTransfer getEntityLockTransferByEntityInstance(EntityInstance lockTargetEntityInstance, boolean putInCache) {
         EntityLockTransfer entityLockTransfer = null;
         
-        try (Connection conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
+        try (var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
             long lockTargetEntityInstanceId = lockTargetEntityInstance.getPrimaryKey().getEntityId();
             long lockedByEntityInstanceId = 0;
             long lockedTime = 0;
@@ -82,13 +78,13 @@ public class EntityLockTransferCache
                 getLog().info("--- lockTargetEntityInstance=" + lockTargetEntityInstance);
             }
 
-            try (PreparedStatement ps = conn.prepareStatement(
+            try (var ps = conn.prepareStatement(
                     "SELECT lcks_lockedbyentityinstanceid, lcks_lockedtime, lcks_lockexpirationtime "
                     + "FROM entitylocks "
                     + "WHERE lcks_locktargetentityinstanceid = ?")) {
                 ps.setLong(1, lockTargetEntityInstanceId);
 
-                try (ResultSet rs = ps.executeQuery()) {
+                try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
                         lockedByEntityInstanceId = rs.getLong(1);
                         lockedTime = rs.getLong(2);
@@ -102,10 +98,10 @@ public class EntityLockTransferCache
             }
 
             if(lockedByEntityInstanceId != 0) {
-                EntityInstancePK lockedByEntityInstancePK = new EntityInstancePK(lockedByEntityInstanceId);
-                EntityInstance lockedByEntityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, lockedByEntityInstancePK);
-                EntityInstanceTransfer lockTargetEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockTargetEntityInstance, false, false, false, false, false, false);
-                EntityInstanceTransfer lockedByEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false, false, false);
+                var lockedByEntityInstancePK = new EntityInstancePK(lockedByEntityInstanceId);
+                var lockedByEntityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, lockedByEntityInstancePK);
+                var lockTargetEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockTargetEntityInstance, false, false, false, false, false, false);
+                var lockedByEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false, false, false);
 
                 if(CoreDebugFlags.LogEntityLocks) {
                     getLog().info("--- lockedByEntityInstancePK=" + lockedByEntityInstancePK);

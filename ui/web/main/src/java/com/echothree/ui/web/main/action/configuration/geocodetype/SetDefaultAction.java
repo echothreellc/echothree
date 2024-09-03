@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodetype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.SetDefaultGeoCodeTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultGeoCodeTypeForm commandForm = GeoUtil.getHome().getSetDefaultGeoCodeTypeForm();
+        var commandForm = GeoUtil.getHome().getSetDefaultGeoCodeTypeForm();
 
         commandForm.setGeoCodeTypeName(request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME));
 

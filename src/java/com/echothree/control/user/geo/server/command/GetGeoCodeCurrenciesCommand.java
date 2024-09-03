@@ -18,14 +18,11 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetGeoCodeCurrenciesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetGeoCodeCurrenciesResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,14 +65,14 @@ public class GetGeoCodeCurrenciesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeCurrenciesResult result = GeoResultFactory.getGetGeoCodeCurrenciesResult();
-        String geoCodeName = form.getGeoCodeName();
-        String currencyIsoName = form.getCurrencyIsoName();
+        var result = GeoResultFactory.getGetGeoCodeCurrenciesResult();
+        var geoCodeName = form.getGeoCodeName();
+        var currencyIsoName = form.getCurrencyIsoName();
         var parameterCount = (geoCodeName != null? 1: 0) + (currencyIsoName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(geoCodeName != null) {
-                GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+                var geoCode = geoControl.getGeoCodeByName(geoCodeName);
                 
                 if(geoCode != null) {
                     result.setGeoCode(geoControl.getGeoCodeTransfer(getUserVisit(), geoCode));
@@ -85,7 +82,7 @@ public class GetGeoCodeCurrenciesCommand
                 }
             } else if(currencyIsoName != null) {
                 var accountingControl = Session.getModelController(AccountingControl.class);
-                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                 
                 if(currency != null) {
                     result.setCurrency(accountingControl.getCurrencyTransfer(getUserVisit(), currency));

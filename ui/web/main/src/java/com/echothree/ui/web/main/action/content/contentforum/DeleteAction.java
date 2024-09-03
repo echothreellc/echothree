@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentforum;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.DeleteContentForumForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
         
         try {
-            String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-            DeleteContentForumForm commandForm = ContentUtil.getHome().getDeleteContentForumForm();
+            var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+            var commandForm = ContentUtil.getHome().getDeleteContentForumForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setForumName(forumName);
@@ -67,8 +66,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

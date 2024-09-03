@@ -33,9 +33,6 @@ import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDescription;
-import com.echothree.model.data.workflow.server.value.WorkflowDescriptionValue;
-import com.echothree.model.data.workflow.server.value.WorkflowDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -44,8 +41,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditWorkflowCommand
@@ -167,9 +162,9 @@ public class EditWorkflowCommand
     public void doUpdate(Workflow workflow) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyPK = getPartyPK();
-        WorkflowDetailValue workflowDetailValue = workflowControl.getWorkflowDetailValueForUpdate(workflow);
-        WorkflowDescription workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, getPreferredLanguage());
-        String description = edit.getDescription();
+        var workflowDetailValue = workflowControl.getWorkflowDetailValueForUpdate(workflow);
+        var workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, getPreferredLanguage());
+        var description = edit.getDescription();
 
         workflowDetailValue.setWorkflowName(edit.getWorkflowName());
         workflowDetailValue.setSelectorTypePK(selectorType == null ? null : selectorType.getPrimaryKey());
@@ -183,7 +178,7 @@ public class EditWorkflowCommand
         } else if(workflowDescription != null && description == null) {
             workflowControl.deleteWorkflowDescription(workflowDescription, partyPK);
         } else if(workflowDescription != null && description != null) {
-            WorkflowDescriptionValue workflowDescriptionValue = workflowControl.getWorkflowDescriptionValue(workflowDescription);
+            var workflowDescriptionValue = workflowControl.getWorkflowDescriptionValue(workflowDescription);
 
             workflowDescriptionValue.setDescription(description);
             workflowControl.updateWorkflowDescriptionFromValue(workflowDescriptionValue, partyPK);

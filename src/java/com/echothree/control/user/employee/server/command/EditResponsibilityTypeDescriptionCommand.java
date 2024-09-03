@@ -19,15 +19,10 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.ResponsibilityTypeDescriptionEdit;
 import com.echothree.control.user.employee.common.form.EditResponsibilityTypeDescriptionForm;
-import com.echothree.control.user.employee.common.result.EditResponsibilityTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.ResponsibilityTypeDescriptionSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.employee.server.entity.ResponsibilityType;
-import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
-import com.echothree.model.data.employee.server.value.ResponsibilityTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,24 +60,24 @@ public class EditResponsibilityTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditResponsibilityTypeDescriptionResult result = EmployeeResultFactory.getEditResponsibilityTypeDescriptionResult();
-        String responsibilityTypeName = spec.getResponsibilityTypeName();
-        ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
+        var result = EmployeeResultFactory.getEditResponsibilityTypeDescriptionResult();
+        var responsibilityTypeName = spec.getResponsibilityTypeName();
+        var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
         
         if(responsibilityType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    ResponsibilityTypeDescription responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescription(responsibilityType, language);
+                    var responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescription(responsibilityType, language);
                     
                     if(responsibilityTypeDescription != null) {
                         result.setResponsibilityTypeDescription(employeeControl.getResponsibilityTypeDescriptionTransfer(getUserVisit(), responsibilityTypeDescription));
                         
                         if(lockEntity(responsibilityType)) {
-                            ResponsibilityTypeDescriptionEdit edit = EmployeeEditFactory.getResponsibilityTypeDescriptionEdit();
+                            var edit = EmployeeEditFactory.getResponsibilityTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(responsibilityTypeDescription.getDescription());
@@ -95,12 +90,12 @@ public class EditResponsibilityTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownResponsibilityTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    ResponsibilityTypeDescriptionValue responsibilityTypeDescriptionValue = employeeControl.getResponsibilityTypeDescriptionValueForUpdate(responsibilityType, language);
+                    var responsibilityTypeDescriptionValue = employeeControl.getResponsibilityTypeDescriptionValueForUpdate(responsibilityType, language);
                     
                     if(responsibilityTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(responsibilityType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 responsibilityTypeDescriptionValue.setDescription(description);
                                 

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupsForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeEntityAttributeGroupsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,21 +49,21 @@ public class EntityAttributeGroupAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            GetEntityAttributeEntityAttributeGroupsForm commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroups(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeEntityAttributeGroupsResult result = (GetEntityAttributeEntityAttributeGroupsResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroups(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeEntityAttributeGroupsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE, result.getEntityAttribute());
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS, result.getEntityAttributeEntityAttributeGroups());

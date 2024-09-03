@@ -17,8 +17,6 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTransfer;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTypeTransfer;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,14 +30,14 @@ public class ContactMechanismAliasTransferCache
     }
     
     public ContactMechanismAliasTransfer getContactMechanismAliasTransfer(ContactMechanismAlias contactMechanismAlias) {
-        ContactMechanismAliasTransfer contactMechanismAliasTransfer = get(contactMechanismAlias);
+        var contactMechanismAliasTransfer = get(contactMechanismAlias);
         
         if(contactMechanismAliasTransfer == null) {
-            ContactMechanismTransfer contactMechanism = contactControl.getContactMechanismTransfer(userVisit,
+            var contactMechanism = contactControl.getContactMechanismTransfer(userVisit,
                     contactMechanismAlias.getContactMechanism());
-            ContactMechanismAliasTypeTransfer contactMechanismAliasType = contactControl.getContactMechanismAliasTypeTransfer(userVisit,
+            var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeTransfer(userVisit,
                     contactMechanismAlias.getContactMechanismAliasType());
-            String alias = contactMechanismAlias.getAlias();
+            var alias = contactMechanismAlias.getAlias();
             
             contactMechanismAliasTransfer = new ContactMechanismAliasTransfer(contactMechanism, contactMechanismAliasType, alias);
             put(contactMechanismAlias, contactMechanismAliasTransfer);

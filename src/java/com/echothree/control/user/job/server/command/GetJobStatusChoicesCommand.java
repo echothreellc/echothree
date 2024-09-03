@@ -17,13 +17,11 @@
 package com.echothree.control.user.job.server.command;
 
 import com.echothree.control.user.job.common.form.GetJobStatusChoicesForm;
-import com.echothree.control.user.job.common.result.GetJobStatusChoicesResult;
 import com.echothree.control.user.job.common.result.JobResultFactory;
 import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetJobStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        GetJobStatusChoicesResult result = JobResultFactory.getGetJobStatusChoicesResult();
-        String jobName = form.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var result = JobResultFactory.getGetJobStatusChoicesResult();
+        var jobName = form.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(jobName == null || job != null) {
-            String defaultJobStatusChoice = form.getDefaultJobStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultJobStatusChoice = form.getDefaultJobStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setJobStatusChoices(jobControl.getJobStatusChoices(defaultJobStatusChoice, getPreferredLanguage(),
                     allowNullChoice, job, getPartyPK()));

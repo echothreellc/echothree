@@ -21,7 +21,6 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCo
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.value.PaymentProcessorTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultPaymentProcessorTypeCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
-        String paymentProcessorTypeName = form.getPaymentProcessorTypeName();
-        PaymentProcessorTypeDetailValue paymentProcessorTypeDetailValue = paymentProcessorTypeControl.getPaymentProcessorTypeDetailValueByNameForUpdate(paymentProcessorTypeName);
+        var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
+        var paymentProcessorTypeDetailValue = paymentProcessorTypeControl.getPaymentProcessorTypeDetailValueByNameForUpdate(paymentProcessorTypeName);
         
         if(paymentProcessorTypeDetailValue != null) {
             paymentProcessorTypeDetailValue.setIsDefault(Boolean.TRUE);

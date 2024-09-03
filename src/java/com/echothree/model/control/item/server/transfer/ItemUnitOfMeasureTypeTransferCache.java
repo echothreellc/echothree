@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.common.transfer.ItemUnitOfMeasureTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -39,13 +37,13 @@ public class ItemUnitOfMeasureTypeTransferCache
     
     @Override
     public ItemUnitOfMeasureTypeTransfer getTransfer(ItemUnitOfMeasureType itemUnitOfMeasureType) {
-        ItemUnitOfMeasureTypeTransfer itemUnitOfMeasureTypeTransfer = get(itemUnitOfMeasureType);
+        var itemUnitOfMeasureTypeTransfer = get(itemUnitOfMeasureType);
         
         if(itemUnitOfMeasureTypeTransfer == null) {
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemUnitOfMeasureType.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemUnitOfMeasureType.getUnitOfMeasureType());
-            Boolean isDefault = itemUnitOfMeasureType.getIsDefault();
-            Integer sortOrder = itemUnitOfMeasureType.getSortOrder();
+            var item = itemControl.getItemTransfer(userVisit, itemUnitOfMeasureType.getItem());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemUnitOfMeasureType.getUnitOfMeasureType());
+            var isDefault = itemUnitOfMeasureType.getIsDefault();
+            var sortOrder = itemUnitOfMeasureType.getSortOrder();
             
             itemUnitOfMeasureTypeTransfer = new ItemUnitOfMeasureTypeTransfer(item, unitOfMeasureType, isDefault, sortOrder);
             put(itemUnitOfMeasureType, itemUnitOfMeasureTypeTransfer);

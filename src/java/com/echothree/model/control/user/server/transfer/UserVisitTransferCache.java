@@ -16,32 +16,17 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserOptions;
-import com.echothree.model.control.user.common.transfer.UserKeyTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.associate.server.entity.AssociateReferral;
-import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class UserVisitTransferCache
         extends BaseUserTransferCache<UserVisit, UserVisitTransfer> {
@@ -65,27 +50,27 @@ public class UserVisitTransferCache
     }
     
     public UserVisitTransfer getUserVisitTransfer(UserVisit userVisitEntity) {
-        UserVisitTransfer userVisitTransfer = get(userVisit);
+        var userVisitTransfer = get(userVisit);
         
         if(userVisitTransfer == null) {
-            UserKey userKey = userVisitEntity.getUserKey();
-            UserKeyTransfer userKeyTransfer = userKey == null ? null : userControl.getUserKeyTransfer(userVisit, userKey);
-            Language preferredLanguage = userVisitEntity.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = userVisitEntity.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = userVisitEntity.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = userVisitEntity.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            Long unformattedLastCommandTime = userVisitEntity.getLastCommandTime();
-            String lastCommandTime = formatTypicalDateTime(unformattedLastCommandTime);
-            OfferUse offerUse = userVisitEntity.getOfferUse();
-            OfferUseTransfer offerUseTransfer = offerUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, offerUse);
-            AssociateReferral associateReferral = userVisitEntity.getAssociateReferral();
-            AssociateReferralTransfer associateReferralTransfer = associateReferral == null ? null : associateControl.getAssociateReferralTransfer(userVisit, associateReferral);
-            Long unformattedRetainUntilTime = userVisitEntity.getRetainUntilTime();
-            String retainUntilTime = formatTypicalDateTime(unformattedRetainUntilTime);
+            var userKey = userVisitEntity.getUserKey();
+            var userKeyTransfer = userKey == null ? null : userControl.getUserKeyTransfer(userVisit, userKey);
+            var preferredLanguage = userVisitEntity.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = userVisitEntity.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = userVisitEntity.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = userVisitEntity.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var unformattedLastCommandTime = userVisitEntity.getLastCommandTime();
+            var lastCommandTime = formatTypicalDateTime(unformattedLastCommandTime);
+            var offerUse = userVisitEntity.getOfferUse();
+            var offerUseTransfer = offerUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, offerUse);
+            var associateReferral = userVisitEntity.getAssociateReferral();
+            var associateReferralTransfer = associateReferral == null ? null : associateControl.getAssociateReferralTransfer(userVisit, associateReferral);
+            var unformattedRetainUntilTime = userVisitEntity.getRetainUntilTime();
+            var retainUntilTime = formatTypicalDateTime(unformattedRetainUntilTime);
 
             userVisitTransfer = new UserVisitTransfer(userKeyTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer,
                     preferredDateTimeFormatTransfer, unformattedLastCommandTime, lastCommandTime, offerUseTransfer, associateReferralTransfer,

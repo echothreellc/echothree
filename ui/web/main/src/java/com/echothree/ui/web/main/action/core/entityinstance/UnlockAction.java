@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityinstance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.UnlockEntityForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class UnlockAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        UnlockEntityForm commandForm = CoreUtil.getHome().getUnlockEntityForm();
+        var commandForm = CoreUtil.getHome().getUnlockEntityForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
 

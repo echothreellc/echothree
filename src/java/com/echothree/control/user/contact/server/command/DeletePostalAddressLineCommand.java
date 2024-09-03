@@ -18,8 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.DeletePostalAddressLineForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
-import com.echothree.model.data.contact.server.entity.PostalAddressLine;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,12 +49,12 @@ public class DeletePostalAddressLineCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
-            Integer postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
-            PostalAddressLine postalAddressLine = contactControl.getPostalAddressLineForUpdate(postalAddressFormat, postalAddressLineSortOrder);
+            var postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
+            var postalAddressLine = contactControl.getPostalAddressLineForUpdate(postalAddressFormat, postalAddressLineSortOrder);
             
             if(postalAddressLine != null) {
                 contactControl.deletePostalAddressLine(postalAddressLine, getPartyPK());

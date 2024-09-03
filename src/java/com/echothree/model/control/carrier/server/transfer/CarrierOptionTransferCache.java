@@ -17,13 +17,9 @@
 package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.model.control.carrier.common.transfer.CarrierOptionTransfer;
-import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
-import com.echothree.model.data.carrier.server.entity.CarrierOptionDetail;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -40,33 +36,33 @@ public class CarrierOptionTransferCache
     }
     
     public CarrierOptionTransfer getCarrierOptionTransfer(CarrierOption carrierOption) {
-        CarrierOptionTransfer carrierOptionTransfer = get(carrierOption);
+        var carrierOptionTransfer = get(carrierOption);
         
         if(carrierOptionTransfer == null) {
-            CarrierOptionDetail carrierOptionDetail = carrierOption.getLastDetail();
-            CarrierTransfer carrier = carrierControl.getCarrierTransfer(userVisit, carrierOptionDetail.getCarrierParty());
-            String carrierOptionName = carrierOptionDetail.getCarrierOptionName();
-            Boolean isRecommended = carrierOptionDetail.getIsRecommended();
-            Boolean isRequired = carrierOptionDetail.getIsRequired();
-            Selector recommendedGeoCodeSelector = carrierOptionDetail.getRecommendedGeoCodeSelector();
-            SelectorTransfer recommendedGeoCodeSelectorTransfer = recommendedGeoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, recommendedGeoCodeSelector);
-            Selector requiredGeoCodeSelector = carrierOptionDetail.getRequiredGeoCodeSelector();
-            SelectorTransfer requiredGeoCodeSelectorTransfer = requiredGeoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredGeoCodeSelector);
-            Selector recommendedItemSelector = carrierOptionDetail.getRecommendedItemSelector();
-            SelectorTransfer recommendedItemSelectorTransfer = recommendedItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, recommendedItemSelector);
-            Selector requiredItemSelector = carrierOptionDetail.getRequiredItemSelector();
-            SelectorTransfer requiredItemSelectorTransfer = requiredItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredItemSelector);
-            Selector recommendedOrderSelector = carrierOptionDetail.getRecommendedOrderSelector();
-            SelectorTransfer recommendedOrderSelectorTransfer = recommendedOrderSelector == null? null: selectorControl.getSelectorTransfer(userVisit, recommendedOrderSelector);
-            Selector requiredOrderSelector = carrierOptionDetail.getRequiredOrderSelector();
-            SelectorTransfer requiredOrderSelectorTransfer = requiredOrderSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredOrderSelector);
-            Selector recommendedShipmentSelector = carrierOptionDetail.getRecommendedShipmentSelector();
-            SelectorTransfer recommendedShipmentSelectorTransfer = recommendedShipmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, recommendedShipmentSelector);
-            Selector requiredShipmentSelector = carrierOptionDetail.getRequiredShipmentSelector();
-            SelectorTransfer requiredShipmentSelectorTransfer = requiredShipmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredShipmentSelector);
-            Boolean isDefault = carrierOptionDetail.getIsDefault();
-            Integer sortOrder = carrierOptionDetail.getSortOrder();
-            String description = carrierControl.getBestCarrierOptionDescription(carrierOption, getLanguage());
+            var carrierOptionDetail = carrierOption.getLastDetail();
+            var carrier = carrierControl.getCarrierTransfer(userVisit, carrierOptionDetail.getCarrierParty());
+            var carrierOptionName = carrierOptionDetail.getCarrierOptionName();
+            var isRecommended = carrierOptionDetail.getIsRecommended();
+            var isRequired = carrierOptionDetail.getIsRequired();
+            var recommendedGeoCodeSelector = carrierOptionDetail.getRecommendedGeoCodeSelector();
+            var recommendedGeoCodeSelectorTransfer = recommendedGeoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, recommendedGeoCodeSelector);
+            var requiredGeoCodeSelector = carrierOptionDetail.getRequiredGeoCodeSelector();
+            var requiredGeoCodeSelectorTransfer = requiredGeoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredGeoCodeSelector);
+            var recommendedItemSelector = carrierOptionDetail.getRecommendedItemSelector();
+            var recommendedItemSelectorTransfer = recommendedItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, recommendedItemSelector);
+            var requiredItemSelector = carrierOptionDetail.getRequiredItemSelector();
+            var requiredItemSelectorTransfer = requiredItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredItemSelector);
+            var recommendedOrderSelector = carrierOptionDetail.getRecommendedOrderSelector();
+            var recommendedOrderSelectorTransfer = recommendedOrderSelector == null? null: selectorControl.getSelectorTransfer(userVisit, recommendedOrderSelector);
+            var requiredOrderSelector = carrierOptionDetail.getRequiredOrderSelector();
+            var requiredOrderSelectorTransfer = requiredOrderSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredOrderSelector);
+            var recommendedShipmentSelector = carrierOptionDetail.getRecommendedShipmentSelector();
+            var recommendedShipmentSelectorTransfer = recommendedShipmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, recommendedShipmentSelector);
+            var requiredShipmentSelector = carrierOptionDetail.getRequiredShipmentSelector();
+            var requiredShipmentSelectorTransfer = requiredShipmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredShipmentSelector);
+            var isDefault = carrierOptionDetail.getIsDefault();
+            var sortOrder = carrierOptionDetail.getSortOrder();
+            var description = carrierControl.getBestCarrierOptionDescription(carrierOption, getLanguage());
             
             carrierOptionTransfer = new CarrierOptionTransfer(carrier, carrierOptionName, isRecommended, isRequired, recommendedGeoCodeSelectorTransfer,
                     requiredGeoCodeSelectorTransfer, recommendedItemSelectorTransfer, requiredItemSelectorTransfer, recommendedOrderSelectorTransfer,

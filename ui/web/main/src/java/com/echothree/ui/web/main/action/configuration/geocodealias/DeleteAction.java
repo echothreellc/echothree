@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.geocodealias;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.DeleteGeoCodeAliasForm;
-import com.echothree.control.user.geo.common.form.GetGeoCodeAliasForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeAliasResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetGeoCodeAliasForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeAliasForm();
         
         commandForm.setGeoCodeName(actionForm.getGeoCodeName());
         commandForm.setGeoCodeAliasTypeName(actionForm.getGeoCodeAliasTypeName());
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeAlias(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCodeAlias(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasResult result = (GetGeoCodeAliasResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.GEO_CODE_ALIAS, result.getGeoCodeAlias());
         }
@@ -80,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteGeoCodeAliasForm commandForm = GeoUtil.getHome().getDeleteGeoCodeAliasForm();
+        var commandForm = GeoUtil.getHome().getDeleteGeoCodeAliasForm();
 
         commandForm.setGeoCodeName(actionForm.getGeoCodeName());
         commandForm.setGeoCodeAliasTypeName(actionForm.getGeoCodeAliasTypeName());

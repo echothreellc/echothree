@@ -26,7 +26,6 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderType;
@@ -243,7 +242,7 @@ public class OrderSearchEvaluator
             resultSet = super.executeSearch(eea);
             
             if(orderStatusWorkflowStep != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByOrderStatusWorkflowStep(orderStatusWorkflowStep);
+                var entityInstancePKHolder = getEntityInstancePKHolderByOrderStatusWorkflowStep(orderStatusWorkflowStep);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -253,7 +252,7 @@ public class OrderSearchEvaluator
             }
             
             if(orderPriority != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByOrderPriority(orderPriority);
+                var entityInstancePKHolder = getEntityInstancePKHolderByOrderPriority(orderPriority);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -263,7 +262,7 @@ public class OrderSearchEvaluator
             }
             
             if(currency != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByCurrency(currency);
+                var entityInstancePKHolder = getEntityInstancePKHolderByCurrency(currency);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -273,7 +272,7 @@ public class OrderSearchEvaluator
             }
             
             if(term != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByTerm(term);
+                var entityInstancePKHolder = getEntityInstancePKHolderByTerm(term);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -283,7 +282,7 @@ public class OrderSearchEvaluator
             }
             
             if(reference != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByReference(reference);
+                var entityInstancePKHolder = getEntityInstancePKHolderByReference(reference);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -293,7 +292,7 @@ public class OrderSearchEvaluator
             }
             
             if(cancellationPolicy != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByCancellationPolicy(cancellationPolicy);
+                var entityInstancePKHolder = getEntityInstancePKHolderByCancellationPolicy(cancellationPolicy);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -303,7 +302,7 @@ public class OrderSearchEvaluator
             }
             
             if(returnPolicy != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByReturnPolicy(returnPolicy);
+                var entityInstancePKHolder = getEntityInstancePKHolderByReturnPolicy(returnPolicy);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -313,7 +312,7 @@ public class OrderSearchEvaluator
             }
             
             if(countParameters() == 0 && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByOrderType(orderType);
+                var entityInstancePKHolder = getEntityInstancePKHolderByOrderType(orderType);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -332,7 +331,7 @@ public class OrderSearchEvaluator
                 }
 
                 if(orderAliasType != null) {
-                    OrderAlias orderAlias = orderAliasControl.getOrderAliasByAlias(orderAliasType, alias);
+                    var orderAlias = orderAliasControl.getOrderAliasByAlias(orderAliasType, alias);
                     
                     order = orderAlias == null ? null : orderAlias.getOrder();
                 }

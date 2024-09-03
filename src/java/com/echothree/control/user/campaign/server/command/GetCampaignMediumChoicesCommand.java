@@ -18,7 +18,6 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.GetCampaignMediumChoicesForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.GetCampaignMediumChoicesResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetCampaignMediumChoicesCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignMediumChoicesResult result = CampaignResultFactory.getGetCampaignMediumChoicesResult();
-        String defaultCampaignMediumChoice = form.getDefaultCampaignMediumChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CampaignResultFactory.getGetCampaignMediumChoicesResult();
+        var defaultCampaignMediumChoice = form.getDefaultCampaignMediumChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCampaignMediumChoices(campaignControl.getCampaignMediumChoices(defaultCampaignMediumChoice, getPreferredLanguage(), allowNullChoice));
         

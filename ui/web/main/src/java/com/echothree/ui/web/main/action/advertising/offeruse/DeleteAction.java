@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offeruse;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.DeleteOfferUseForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
         
         try {
-            String useName = request.getParameter(ParameterConstants.USE_NAME);
-            DeleteOfferUseForm commandForm = OfferUtil.getHome().getDeleteOfferUseForm();
+            var useName = request.getParameter(ParameterConstants.USE_NAME);
+            var commandForm = OfferUtil.getHome().getDeleteOfferUseForm();
             
             commandForm.setOfferName(offerName);
             commandForm.setUseName(useName);
@@ -67,8 +66,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

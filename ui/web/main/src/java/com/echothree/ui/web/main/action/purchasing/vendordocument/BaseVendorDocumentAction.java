@@ -17,18 +17,14 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.GetPartyDocumentForm;
 import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorForm;
 import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import java.util.Set;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,16 +35,16 @@ public abstract class BaseVendorDocumentAction<A extends ActionForm>
 
     public static VendorTransfer setupVendor(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
         VendorTransfer vendor = null;
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorResult result = (GetVendorResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorResult)executionResult.getResult();
 
             vendor = result.getVendor();
 
@@ -67,7 +63,7 @@ public abstract class BaseVendorDocumentAction<A extends ActionForm>
 
     public static PartyDocumentTransfer setupPartyDocumentTransfer(HttpServletRequest request, String documentName, Set<String> options)
             throws NamingException {
-        GetPartyDocumentForm commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
+        var commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
         PartyDocumentTransfer partyDocument = null;
 
         commandForm.setDocumentName(documentName);
@@ -76,11 +72,11 @@ public abstract class BaseVendorDocumentAction<A extends ActionForm>
             commandForm.setOptions(options);
         }
 
-        CommandResult commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
+        var commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyDocumentResult result = (GetPartyDocumentResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyDocumentResult)executionResult.getResult();
 
             partyDocument = result.getPartyDocument();
 

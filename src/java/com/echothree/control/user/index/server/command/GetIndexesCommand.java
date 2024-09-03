@@ -17,7 +17,6 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.GetIndexesForm;
-import com.echothree.control.user.index.common.result.GetIndexesResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -61,7 +60,7 @@ public class GetIndexesCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexesResult result = IndexResultFactory.getGetIndexesResult();
+        var result = IndexResultFactory.getGetIndexesResult();
         
         result.setIndexes(indexControl.getIndexTransfers(getUserVisit()));
         

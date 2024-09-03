@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.term.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.common.transfer.PartyCreditLimitTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.term.server.entity.PartyCreditLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -43,14 +40,14 @@ public class PartyCreditLimitTransferCache
     }
     
     public PartyCreditLimitTransfer getPartyCreditLimitTransfer(PartyCreditLimit partyCreditLimit) {
-        PartyCreditLimitTransfer partyCreditLimitTransfer = get(partyCreditLimit);
+        var partyCreditLimitTransfer = get(partyCreditLimit);
         
         if(partyCreditLimitTransfer == null) {
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyCreditLimit.getParty());
-            Currency currency = partyCreditLimit.getCurrency();
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
-            String creditLimit = AmountUtils.getInstance().formatAmount(currency, partyCreditLimit.getCreditLimit());
-            String potentialCreditLimit = AmountUtils.getInstance().formatAmount(currency, partyCreditLimit.getPotentialCreditLimit());
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyCreditLimit.getParty());
+            var currency = partyCreditLimit.getCurrency();
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            var creditLimit = AmountUtils.getInstance().formatAmount(currency, partyCreditLimit.getCreditLimit());
+            var potentialCreditLimit = AmountUtils.getInstance().formatAmount(currency, partyCreditLimit.getPotentialCreditLimit());
             
             partyCreditLimitTransfer = new PartyCreditLimitTransfer(partyTransfer, currencyTransfer, creditLimit,
                     potentialCreditLimit);

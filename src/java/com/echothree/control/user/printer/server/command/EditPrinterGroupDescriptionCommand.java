@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.printer.server.entity.PrinterGroupDescription;
-import com.echothree.model.data.printer.server.value.PrinterGroupDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditPrinterGroupDescriptionCommand
     public PrinterGroupDescription getEntity(EditPrinterGroupDescriptionResult result) {
         var printerControl = Session.getModelController(PrinterControl.class);
         PrinterGroupDescription printerGroupDescription = null;
-        String printerGroupName = spec.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+        var printerGroupName = spec.getPrinterGroupName();
+        var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(printerGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditPrinterGroupDescriptionCommand
     @Override
     public void doUpdate(PrinterGroupDescription printerGroupDescription) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterGroupDescriptionValue printerGroupDescriptionValue = printerControl.getPrinterGroupDescriptionValue(printerGroupDescription);
+        var printerGroupDescriptionValue = printerControl.getPrinterGroupDescriptionValue(printerGroupDescription);
 
         printerGroupDescriptionValue.setDescription(edit.getDescription());
 

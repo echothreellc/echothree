@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.printergroupusetype;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.DeletePrinterGroupUseTypeDescriptionForm;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypeDescriptionForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPrinterGroupUseTypeDescriptionForm commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeDescriptionForm();
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeDescriptionForm();
         
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupUseTypeDescriptionResult result = (GetPrinterGroupUseTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupUseTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PRINTER_GROUP_USE_TYPE_DESCRIPTION, result.getPrinterGroupUseTypeDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePrinterGroupUseTypeDescriptionForm commandForm = PrinterUtil.getHome().getDeletePrinterGroupUseTypeDescriptionForm();
+        var commandForm = PrinterUtil.getHome().getDeletePrinterGroupUseTypeDescriptionForm();
 
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

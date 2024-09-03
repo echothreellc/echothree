@@ -17,16 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancestep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowEntranceStepsForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowEntranceStepsResult;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,26 +49,28 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            String workflowEntranceName = request.getParameter(ParameterConstants.WORKFLOW_ENTRANCE_NAME);
-            GetWorkflowEntranceStepsForm commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceStepsForm();
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var workflowEntranceName = request.getParameter(ParameterConstants.WORKFLOW_ENTRANCE_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceStepsForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowEntranceSteps(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowEntranceStepsResult result = (GetWorkflowEntranceStepsResult)executionResult.getResult();
-            WorkflowTransfer workflowTransfer = result.getWorkflow();
-            WorkflowEntranceTransfer workflowEntranceTransfer = result.getWorkflowEntrance();
-            
-            request.setAttribute(AttributeConstants.WORKFLOW, workflowTransfer);
-            request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE, workflowEntranceTransfer);
-            request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE_STEPS, result.getWorkflowEntranceSteps());
-            forwardKey = ForwardConstants.DISPLAY;
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowEntranceSteps(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowEntranceStepsResult)executionResult.getResult();
+            var workflowEntrance = result.getWorkflowEntrance();
+
+            if(workflowEntrance == null) {
+                forwardKey = ForwardConstants.ERROR_404;
+            } else {
+                request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE, workflowEntrance);
+                request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE_STEPS, result.getWorkflowEntranceSteps());
+                forwardKey = ForwardConstants.DISPLAY;
+            }
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }

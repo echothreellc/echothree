@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customertype;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.SetDefaultCustomerTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
-            SetDefaultCustomerTypeForm commandForm = CustomerUtil.getHome().getSetDefaultCustomerTypeForm();
+            var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+            var commandForm = CustomerUtil.getHome().getSetDefaultCustomerTypeForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             

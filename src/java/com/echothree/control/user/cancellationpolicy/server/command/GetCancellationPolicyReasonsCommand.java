@@ -18,14 +18,10 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPolicyReasonsForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyReasonsResult;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,18 +65,18 @@ public class GetCancellationPolicyReasonsCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        GetCancellationPolicyReasonsResult result = CancellationPolicyResultFactory.getGetCancellationPolicyReasonsResult();
-        String cancellationPolicyName = form.getCancellationPolicyName();
-        String cancellationReasonName = form.getCancellationReasonName();
+        var result = CancellationPolicyResultFactory.getGetCancellationPolicyReasonsResult();
+        var cancellationPolicyName = form.getCancellationPolicyName();
+        var cancellationReasonName = form.getCancellationReasonName();
         var parameterCount = (cancellationReasonName != null? 1: 0) + (cancellationPolicyName != null? 1: 0);
         
         if(parameterCount == 1) {
-            String cancellationKindName = form.getCancellationKindName();
-            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+            var cancellationKindName = form.getCancellationKindName();
+            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
             
             if(cancellationKind != null) {
                 if(cancellationPolicyName != null) {
-                    CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                    var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
                     
                     if(cancellationPolicy != null) {
                         result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(getUserVisit(), cancellationPolicy));
@@ -89,7 +85,7 @@ public class GetCancellationPolicyReasonsCommand
                         addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
                     }
                 } else if(cancellationKindName != null && cancellationReasonName != null) {
-                    CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+                    var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
                     
                     if(cancellationReason != null) {
                         result.setCancellationReason(cancellationPolicyControl.getCancellationReasonTransfer(getUserVisit(), cancellationReason));

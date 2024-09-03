@@ -17,21 +17,15 @@
 package com.echothree.ui.web.main.action.purchasing.vendorcontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorForm;
 import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.geo.common.GeoOptions;
-import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import java.util.HashSet;
 import java.util.Set;
 import javax.naming.NamingException;
@@ -44,44 +38,44 @@ public abstract class BaseVendorContactMechanismAction<A
 
     public void setupDefaultCountry(HttpServletRequest request)
             throws NamingException {
-        GetCountryForm commandForm =  GeoUtil.getHome().getGetCountryForm();
+        var commandForm =  GeoUtil.getHome().getGetCountryForm();
         
         Set<String> options = new HashSet<>();
         options.add(GeoOptions.CountryIncludeAliases);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCountryResult result = (GetCountryResult)executionResult.getResult();
+        var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCountryResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.DEFAULT_COUNTRY, result.getCountry());
     }
     
     public void setupCountry(HttpServletRequest request, String countryName)
             throws NamingException {
-        GetCountryForm commandForm =  GeoUtil.getHome().getGetCountryForm();
+        var commandForm =  GeoUtil.getHome().getGetCountryForm();
         
         commandForm.setCountryName(countryName);
 
-        CommandResult commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCountryResult result = (GetCountryResult)executionResult.getResult();
+        var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCountryResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
     }
     
     public static void setupVendor(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorResult result = (GetVendorResult)executionResult.getResult();
-            VendorTransfer vendor = result.getVendor();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorResult)executionResult.getResult();
+            var vendor = result.getVendor();
 
             if(vendor != null) {
                 request.setAttribute(AttributeConstants.VENDOR, vendor);
@@ -96,27 +90,27 @@ public abstract class BaseVendorContactMechanismAction<A
 
     public static void setupContactMechanismTransfer(HttpServletRequest request, String contactMechanismName)
             throws NamingException {
-        GetContactMechanismForm commandForm = ContactUtil.getHome().getGetContactMechanismForm();
+        var commandForm = ContactUtil.getHome().getGetContactMechanismForm();
 
         commandForm.setContactMechanismName(contactMechanismName);
 
-        CommandResult commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContactMechanismResult result = (GetContactMechanismResult)executionResult.getResult();
+        var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContactMechanismResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTACT_MECHANISM, result.getContactMechanism());
     }
 
     public static void setupPartyContactMechanismTransfer(HttpServletRequest request, String partyName, String contactMechanismName)
             throws NamingException {
-        GetContactMechanismForm commandForm = ContactUtil.getHome().getGetContactMechanismForm();
+        var commandForm = ContactUtil.getHome().getGetContactMechanismForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setContactMechanismName(contactMechanismName);
 
-        CommandResult commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContactMechanismResult result = (GetContactMechanismResult)executionResult.getResult();
+        var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContactMechanismResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_CONTACT_MECHANISM, result.getPartyContactMechanism());
     }

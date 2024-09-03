@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.accounting.divisioncontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetNameSuffixChoicesForm;
-import com.echothree.control.user.party.common.form.GetPersonalTitleChoicesForm;
 import com.echothree.control.user.party.common.result.GetNameSuffixChoicesResult;
 import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
 import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
 import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -62,14 +58,14 @@ public class ContactPostalAddressAddActionForm
     private void setupPersonalTitleChoices() {
         if(personalTitleChoices == null) {
             try {
-                GetPersonalTitleChoicesForm commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
                 
                 commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPersonalTitleChoicesResult result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
                 personalTitleChoices = result.getPersonalTitleChoices();
                 
                 if(personalTitleChoice == null)
@@ -84,14 +80,14 @@ public class ContactPostalAddressAddActionForm
     private void setupNameSuffixChoices() {
         if(nameSuffixChoices == null) {
             try {
-                GetNameSuffixChoicesForm commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
                 
                 commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetNameSuffixChoicesResult result = (GetNameSuffixChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetNameSuffixChoicesResult)executionResult.getResult();
                 nameSuffixChoices = result.getNameSuffixChoices();
                 
                 if(nameSuffixChoice == null)

@@ -59,9 +59,8 @@ public class Database {
         return name;
     }
     
-    public Component addComponent(String attrName)
-    throws Exception {
-        Component result = myComponentsByName.get(attrName);
+    public Component addComponent(String attrName) {
+        var result = myComponentsByName.get(attrName);
         
         if(result == null) {
             result = new Component(this, attrName);
@@ -77,7 +76,7 @@ public class Database {
     }
     
     public Component getComponentByName(String attrName) throws Exception {
-        Component result = myComponentsByName.get(attrName);
+        var result = myComponentsByName.get(attrName);
         
         if(result == null)
             throw new Exception("Component \"" + attrName + "\" doesn't exist");
@@ -92,7 +91,7 @@ public class Database {
     public Table addTable(Component component, String namePlural, String nameSingular,
             String columnPrefix, String chunkSize, String description)
             throws Exception {
-        Table result = new Table(this, component, namePlural, nameSingular, columnPrefix, chunkSize, description);
+        var result = new Table(this, component, namePlural, nameSingular, columnPrefix, chunkSize, description);
         
         if(myTablesByPlural.containsKey(namePlural))
             throw new Exception("Error adding table, duplicate namePlural \"" + namePlural + "\"");
@@ -117,14 +116,14 @@ public class Database {
     }
     
     public Table getTable(String namePlural) throws Exception {
-        Table result = myTablesByPlural.get(namePlural);
+        var result = myTablesByPlural.get(namePlural);
         if(result == null)
             throw new Exception("Table \"" + namePlural + "\" doesn't exist");
         return result;
     }
     
     public Table getTableLowerCase(String namePlural) throws Exception {
-        Table result = myTablesByPluralLowerCase.get(namePlural);
+        var result = myTablesByPluralLowerCase.get(namePlural);
         if(result == null)
             throw new Exception("Table \"" + namePlural + "\" doesn't exist");
         return result;
@@ -135,14 +134,14 @@ public class Database {
     }
     
     public Table getTableBySingular(String nameSingular) throws Exception {
-        Table result = myTablesBySingular.get(nameSingular);
+        var result = myTablesBySingular.get(nameSingular);
         if(result == null)
             throw new Exception("Table \"" + nameSingular + "\" doesn't exist");
         return result;
     }
     
     public Table getTableByColumnPrefix(String columnPrefix) throws Exception {
-        Table result = myTablesByColumnPrefix.get(columnPrefix);
+        var result = myTablesByColumnPrefix.get(columnPrefix);
         if(result == null)
             throw new Exception("Table \"" + columnPrefix + "\" doesn't exist");
         return result;
@@ -150,14 +149,14 @@ public class Database {
     
     public ColumnType addColumnType(String type, String realType, String maxLength, String description, String destinationTable, String destinationColumn,
             String onParentDelete) throws Exception {
-        ColumnType result = new ColumnType(type, realType, maxLength, description, destinationTable, destinationColumn, onParentDelete);
+        var result = new ColumnType(type, realType, maxLength, description, destinationTable, destinationColumn, onParentDelete);
         myColumnTypes.add(result);
         myColumnTypesByType.put(type, result);
         return result;
     }
     
     public ColumnType getColumnType(String type) throws Exception {
-        ColumnType result = myColumnTypesByType.get(type);
+        var result = myColumnTypesByType.get(type);
         if(result == null)
             throw new Exception("Column type \"" + type + "\" doesn't exist");
         return result;

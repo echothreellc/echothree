@@ -22,7 +22,6 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -46,7 +45,7 @@ public class SymbolPositionLogic
 
     public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        SymbolPosition symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+        var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
 
         if(symbolPosition == null) {
             handleExecutionError(UnknownSymbolPositionNameException.class, eea, ExecutionErrors.UnknownSymbolPositionName.name(), symbolPositionName);

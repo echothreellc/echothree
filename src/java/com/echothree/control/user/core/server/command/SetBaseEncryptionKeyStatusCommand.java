@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetBaseEncryptionKeyStatusForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.BaseEncryptionKey;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -57,11 +56,11 @@ public class SetBaseEncryptionKeyStatusCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        BaseEncryptionKey baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+        var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
+        var baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
         if(baseEncryptionKey != null) {
-            String BaseEncryptionKeyStatusChoice = form.getBaseEncryptionKeyStatusChoice();
+            var BaseEncryptionKeyStatusChoice = form.getBaseEncryptionKeyStatusChoice();
             
             coreControl.setBaseEncryptionKeyStatus(this, baseEncryptionKey, BaseEncryptionKeyStatusChoice, getPartyPK());
         } else {

@@ -19,9 +19,6 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.DeletePartyContactMechanismAliasForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismAlias;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,17 +52,17 @@ public class DeletePartyContactMechanismAliasCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-            ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+            var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+            var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
             
             if(contactMechanismAliasType != null) {
-                String alias = form.getAlias();
-                PartyContactMechanismAlias partyContactMechanismAlias = contactControl.getPartyContactMechanismAliasByAliasForUpdate(party,
+                var alias = form.getAlias();
+                var partyContactMechanismAlias = contactControl.getPartyContactMechanismAliasByAliasForUpdate(party,
                         contactMechanismAliasType, alias);
                 
                 if(partyContactMechanismAlias != null) {

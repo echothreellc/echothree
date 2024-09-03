@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.payment;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
-import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.control.user.payment.common.result.CreatePartyPaymentMethodResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -54,18 +51,18 @@ public class PartyPaymentMethodsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyPaymentMethod")) {
-            CreatePartyPaymentMethodForm commandForm = PaymentFormFactory.getCreatePartyPaymentMethodForm();
+            var commandForm = PaymentFormFactory.getCreatePartyPaymentMethodForm();
             
             commandForm.setPartyName(partyName);
             commandForm.setBillingContactMechanismName(contactMechanismName);
             commandForm.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = paymentService.createPartyPaymentMethod(initialDataParser.getUserVisit(), commandForm);
+
+            var commandResult = paymentService.createPartyPaymentMethod(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreatePartyPaymentMethodResult result = (CreatePartyPaymentMethodResult)executionResult.getResult();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreatePartyPaymentMethodResult)executionResult.getResult();
+                var entityRef = result.getEntityRef();
 
                 initialDataParser.pushHandler(new PartyPaymentMethodHandler(initialDataParser, this, entityRef));
             }

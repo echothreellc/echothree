@@ -17,15 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.core.server.entity.EventSubscriber;
-import com.echothree.model.data.core.server.entity.EventSubscriberEntityInstance;
-import com.echothree.model.data.core.server.entity.EventSubscriberEntityType;
-import com.echothree.model.data.core.server.entity.EventSubscriberEventType;
-import com.echothree.model.data.core.server.entity.EventType;
-import com.echothree.model.data.core.server.entity.QueuedEvent;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -34,7 +26,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ProcessQueuedEventsCommand
@@ -56,22 +47,22 @@ public class ProcessQueuedEventsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        long remainingTime = (long) 2 * 60 * 1000; // 2 minutes
-        List<QueuedEvent> queuedEvents = coreControl.getQueuedEventsForUpdate();
+        var remainingTime = (long) 2 * 60 * 1000; // 2 minutes
+        var queuedEvents = coreControl.getQueuedEventsForUpdate();
 
         for(var queuedEvent : queuedEvents) {
-            long startTime = System.currentTimeMillis();
+            var startTime = System.currentTimeMillis();
             Set<EventSubscriber> eventSubscribers = new HashSet<>();
-            Event event = queuedEvent.getEvent();
+            var event = queuedEvent.getEvent();
 
             if(event != null) {
                 // TODO: this should not be necessary, bug 444
-                EventType eventType = event.getEventType();
-                EntityInstance entityInstance = event.getEntityInstance();
-                EntityType entityType = entityInstance.getEntityType();
-                List<EventSubscriberEventType> eventSubscriberEventTypes = coreControl.getEventSubscriberEventTypes(eventType);
-                List<EventSubscriberEntityType> eventSubscriberEntityTypes = coreControl.getEventSubscriberEntityTypes(entityType, eventType);
-                List<EventSubscriberEntityInstance> eventSubscriberEntityInstances = coreControl.getEventSubscriberEntityInstances(entityInstance, eventType);
+                var eventType = event.getEventType();
+                var entityInstance = event.getEntityInstance();
+                var entityType = entityInstance.getEntityType();
+                var eventSubscriberEventTypes = coreControl.getEventSubscriberEventTypes(eventType);
+                var eventSubscriberEntityTypes = coreControl.getEventSubscriberEntityTypes(entityType, eventType);
+                var eventSubscriberEntityInstances = coreControl.getEventSubscriberEntityInstances(entityInstance, eventType);
 
                 eventSubscriberEventTypes.stream().map((eventSubscriberEventType) -> eventSubscriberEventType.getEventSubscriber()).filter((eventSubscriber) -> !eventSubscribers.contains(eventSubscriber)).map((eventSubscriber) -> {
                     coreControl.createQueuedSubscriberEvent(eventSubscriber, event);

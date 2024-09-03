@@ -21,9 +21,6 @@ import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.carrier.server.value.CarrierServiceDetailValue;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,13 +62,13 @@ public class SetDefaultCarrierServiceCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = form.getCarrierServiceName();
-            CarrierServiceDetailValue carrierServiceDetailValue = carrierControl.getCarrierServiceDetailValueByNameForUpdate(carrierParty, carrierServiceName);
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = form.getCarrierServiceName();
+            var carrierServiceDetailValue = carrierControl.getCarrierServiceDetailValueByNameForUpdate(carrierParty, carrierServiceName);
             
             if(carrierServiceDetailValue != null) {
                 carrierServiceDetailValue.setIsDefault(Boolean.TRUE);

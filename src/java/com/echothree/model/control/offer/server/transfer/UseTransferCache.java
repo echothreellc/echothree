@@ -17,12 +17,9 @@
 package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.UseTransfer;
-import com.echothree.model.control.offer.common.transfer.UseTypeTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.entity.UseDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -40,15 +37,15 @@ public class UseTransferCache
     }
     
     public UseTransfer getUseTransfer(Use use) {
-        UseTransfer useTransfer = get(use);
+        var useTransfer = get(use);
         
         if(useTransfer == null) {
-            UseDetail useDetail = use.getLastDetail();
-            String useName = useDetail.getUseName();
-            UseTypeTransfer useType = useTypeControl.getUseTypeTransfer(userVisit, useDetail.getUseType());
-            Boolean isDefault = useDetail.getIsDefault();
-            Integer sortOrder = useDetail.getSortOrder();
-            String description = useControl.getBestUseDescription(use, getLanguage());
+            var useDetail = use.getLastDetail();
+            var useName = useDetail.getUseName();
+            var useType = useTypeControl.getUseTypeTransfer(userVisit, useDetail.getUseType());
+            var isDefault = useDetail.getIsDefault();
+            var sortOrder = useDetail.getSortOrder();
+            var description = useControl.getBestUseDescription(use, getLanguage());
             
             useTransfer = new UseTransfer(useName, useType, isDefault, sortOrder, description);
             put(use, useTransfer);

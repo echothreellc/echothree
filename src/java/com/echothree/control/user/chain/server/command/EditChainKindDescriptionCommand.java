@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainKindDescription;
-import com.echothree.model.data.chain.server.value.ChainKindDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditChainKindDescriptionCommand
     public ChainKindDescription getEntity(EditChainKindDescriptionResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainKindDescription chainKindDescription = null;
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditChainKindDescriptionCommand
     @Override
     public void doUpdate(ChainKindDescription chainKindDescription) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainKindDescriptionValue chainKindDescriptionValue = chainControl.getChainKindDescriptionValue(chainKindDescription);
+        var chainKindDescriptionValue = chainControl.getChainKindDescriptionValue(chainKindDescription);
 
         chainKindDescriptionValue.setDescription(edit.getDescription());
 

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListContactMechanismPurposesForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListContactMechanismPurposesResult;
-import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class ContactListContactMechanismPurposeAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
-        GetContactListContactMechanismPurposesForm commandForm = ContactListUtil.getHome().getGetContactListContactMechanismPurposesForm();
+        var contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
+        var commandForm = ContactListUtil.getHome().getGetContactListContactMechanismPurposesForm();
 
         commandForm.setContactListName(contactListName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactListContactMechanismPurposes(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactListContactMechanismPurposes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListContactMechanismPurposesResult result = (GetContactListContactMechanismPurposesResult) executionResult.getResult();
-            ContactListTransfer contactListTransfer = result.getContactList();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListContactMechanismPurposesResult) executionResult.getResult();
+            var contactListTransfer = result.getContactList();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST, contactListTransfer);
             request.setAttribute(AttributeConstants.CONTACT_LIST_CONTACT_MECHANISM_PURPOSES, result.getContactListContactMechanismPurposes());

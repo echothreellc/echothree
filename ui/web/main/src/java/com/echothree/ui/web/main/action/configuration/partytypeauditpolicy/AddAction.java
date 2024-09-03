@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.configuration.partytypeauditpolicy;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreatePartyTypeAuditPolicyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -49,11 +47,11 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        String forwardKey;
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
 
         if(wasPost(request)) {
-            CreatePartyTypeAuditPolicyForm commandForm = PartyUtil.getHome().getCreatePartyTypeAuditPolicyForm();
+            var commandForm = PartyUtil.getHome().getCreatePartyTypeAuditPolicyForm();
 
             if(partyTypeName == null) {
                 partyTypeName = actionForm.getPartyTypeName();
@@ -64,7 +62,7 @@ public class AddAction
             commandForm.setRetainUserVisitsTime(actionForm.getRetainUserVisitsTime());
             commandForm.setRetainUserVisitsTimeUnitOfMeasureTypeName(actionForm.getRetainUserVisitsTimeUnitOfMeasureTypeChoice());
 
-            CommandResult commandResult = PartyUtil.getHome().createPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
+            var commandResult = PartyUtil.getHome().createPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

@@ -19,10 +19,6 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.DeleteForumMessageAttachmentDescriptionForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,20 +51,20 @@ public class DeleteForumMessageAttachmentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageName = form.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var forumMessageName = form.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
-            Integer forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
-            ForumMessageAttachment forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
+            var forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
+            var forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 
             if(forumMessageAttachment != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    ForumMessageAttachmentDescription forumMessageAttachmentDescription = forumControl.getForumMessageAttachmentDescriptionForUpdate(forumMessageAttachment, language);
+                    var forumMessageAttachmentDescription = forumControl.getForumMessageAttachmentDescriptionForUpdate(forumMessageAttachment, language);
 
                     if(forumMessageAttachmentDescription != null) {
                         forumControl.deleteForumMessageAttachmentDescription(forumMessageAttachmentDescription, getPartyPK());

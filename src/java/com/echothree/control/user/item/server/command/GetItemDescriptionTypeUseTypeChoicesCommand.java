@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemDescriptionTypeUseTypeChoicesForm;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeUseTypeChoicesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetItemDescriptionTypeUseTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemDescriptionTypeUseTypeChoicesResult result = ItemResultFactory.getGetItemDescriptionTypeUseTypeChoicesResult();
-        String defaultItemDescriptionTypeUseTypeChoice = form.getDefaultItemDescriptionTypeUseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetItemDescriptionTypeUseTypeChoicesResult();
+        var defaultItemDescriptionTypeUseTypeChoice = form.getDefaultItemDescriptionTypeUseTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setItemDescriptionTypeUseTypeChoices(itemControl.getItemDescriptionTypeUseTypeChoices(defaultItemDescriptionTypeUseTypeChoice, getPreferredLanguage(), allowNullChoice));
         

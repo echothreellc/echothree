@@ -17,14 +17,10 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.GeoOptions;
-import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class GeoCodeTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, GeoCodeTransfer> {
@@ -44,16 +40,16 @@ public class GeoCodeTransferCache
     }
     
     public GeoCodeTransfer getGeoCodeTransfer(GeoCode geoCode) {
-        GeoCodeTransfer geoCodeTransfer = get(geoCode);
+        var geoCodeTransfer = get(geoCode);
         
         if(geoCodeTransfer == null) {
-            GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
-            String geoCodeName = geoCodeDetail.getGeoCodeName();
-            GeoCodeTypeTransfer geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
-            GeoCodeScopeTransfer geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
-            Boolean isDefault = geoCodeDetail.getIsDefault();
-            Integer sortOrder = geoCodeDetail.getSortOrder();
-            String description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var geoCodeDetail = geoCode.getLastDetail();
+            var geoCodeName = geoCodeDetail.getGeoCodeName();
+            var geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
+            var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
+            var isDefault = geoCodeDetail.getIsDefault();
+            var sortOrder = geoCodeDetail.getSortOrder();
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
             
             geoCodeTransfer = new GeoCodeTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
             put(geoCode, geoCodeTransfer);

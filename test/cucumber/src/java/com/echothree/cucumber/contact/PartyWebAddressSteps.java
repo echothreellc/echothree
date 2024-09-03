@@ -17,9 +17,7 @@
 package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
-import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;

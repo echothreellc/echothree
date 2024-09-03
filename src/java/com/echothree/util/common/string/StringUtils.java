@@ -88,12 +88,12 @@ public class StringUtils {
     }
 
     public String cleanStringToName(final String s) {
-        char[] a = s.toCharArray();
-        int l = a.length;
-        StringBuilder r = new StringBuilder(l);
+        var a = s.toCharArray();
+        var l = a.length;
+        var r = new StringBuilder(l);
         
-        for(int i = 0; i < l; i++) {
-            char t = a[i];
+        for(var i = 0; i < l; i++) {
+            var t = a[i];
             
             if(!Character.isLetterOrDigit(t) && t != '-' && t != '_') {
                 t = '_';
@@ -107,7 +107,7 @@ public class StringUtils {
     }
 
     public int countSpaces(final String str) {
-        int count = 0;
+        var count = 0;
 
         for(int codePoint : codePoints(str)) {
             if(Character.isSpaceChar(codePoint)) {
@@ -133,10 +133,10 @@ public class StringUtils {
     }
 
     public String cleanString(final String str, final boolean includeDigits, final boolean includeLetters, final boolean includeSpaces) {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
 
         for(int codePoint : codePoints(str)) {
-            boolean appended = false;
+            var appended = false;
 
             if(includeDigits && includeLetters) {
                 if(Character.isLetterOrDigit(codePoint)) {
@@ -168,15 +168,15 @@ public class StringUtils {
     }
     
     public String upperCaseFirstCharacter(final String str) {
-        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toUpperCase(Locale.getDefault())).append(str.substring(1)).toString();
+        return str == null ? null : str.length() == 0 ? str : str.substring(0, 1).toUpperCase(Locale.getDefault()) + str.substring(1);
     }
 
     public String lowerCaseFirstCharacter(final String str) {
-        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toLowerCase(Locale.getDefault())).append(str.substring(1)).toString();
+        return str == null ? null : str.length() == 0 ? str : str.substring(0, 1).toLowerCase(Locale.getDefault()) + str.substring(1);
     }
 
     public String normalizeCase(final String str) {
-        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toUpperCase(Locale.getDefault())).append(str.substring(1).toLowerCase(Locale.getDefault())).toString();
+        return str == null ? null : str.length() == 0 ? str : str.substring(0, 1).toUpperCase(Locale.getDefault()) + str.substring(1).toLowerCase(Locale.getDefault());
     }
 
     // Similar to http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5003547
@@ -192,7 +192,7 @@ public class StringUtils {
             
             @Override
             public Integer next() {
-                int result = str.codePointAt(nextIndex);
+                var result = str.codePointAt(nextIndex);
                 nextIndex += Character.charCount(result);
                 return result;
             }
@@ -208,7 +208,7 @@ public class StringUtils {
         if(mimeTypeName.equals(MimeTypes.TEXT_HTML.mimeTypeName())) {
             return value;
         } else if(mimeTypeName.equals(MimeTypes.TEXT_PLAIN.mimeTypeName())) {
-            return new StringBuilder("<pre>").append(HtmlEscapers.htmlEscaper().escape(value)).append("</pre>").toString();
+            return "<pre>" + HtmlEscapers.htmlEscaper().escape(value) + "</pre>";
         } else if(mimeTypeName.equals(MimeTypes.TEXT_X_MARKUP.mimeTypeName())) {
             return MarkupUtils.getInstance().filter(value);
         } else if(mimeTypeName.equals(MimeTypes.TEXT_X_TEXTILE.mimeTypeName())) {
@@ -219,7 +219,7 @@ public class StringUtils {
     }
 
     public String mask(final String value, final char mask, final int unmasked) {
-        int len = value.length();
+        var len = value.length();
         String result;
 
         // Make sure there's enough String to mask anything at all
@@ -228,7 +228,7 @@ public class StringUtils {
 
             Arrays.fill(maskChars, mask);
 
-            result = new StringBuilder().append(maskChars).append(value, len - unmasked, len).toString();
+            result = String.valueOf(maskChars) + value.substring(len - unmasked, len);
         } else {
             result = value;
         }
@@ -245,7 +245,7 @@ public class StringUtils {
     }
 
     public String repeatingStringFromChar(final char val, final int length) {
-        char[] data = new char[length];
+        var data = new char[length];
 
         Arrays.fill(data, val);
 

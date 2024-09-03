@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.period;
 
 import com.echothree.control.user.period.common.PeriodUtil;
 import com.echothree.control.user.period.common.PeriodService;
-import com.echothree.control.user.period.common.form.CreateFiscalYearForm;
-import com.echothree.control.user.period.common.form.CreatePeriodKindForm;
 import com.echothree.control.user.period.common.form.PeriodFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,7 +46,7 @@ public class PeriodKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("periodKind")) {
-            CreatePeriodKindForm commandForm = PeriodFormFactory.getCreatePeriodKindForm();
+            var commandForm = PeriodFormFactory.getCreatePeriodKindForm();
 
             commandForm.set(getAttrsMap(attrs));
 
@@ -56,7 +54,7 @@ public class PeriodKindsHandler
 
             initialDataParser.pushHandler(new PeriodKindHandler(initialDataParser, this, commandForm.getPeriodKindName()));
         } else if(localName.equals("fiscalYear")) {
-            CreateFiscalYearForm commandForm = PeriodFormFactory.getCreateFiscalYearForm();
+            var commandForm = PeriodFormFactory.getCreateFiscalYearForm();
 
             commandForm.set(getAttrsMap(attrs));
 

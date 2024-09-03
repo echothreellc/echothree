@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.CreateLetterDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,14 +52,14 @@ public class DescriptionAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
-        DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
+        String forwardKey;
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        var descriptionAddActionForm = (DescriptionAddActionForm)form;
         
         if(wasPost(request)) {
-            CreateLetterDescriptionForm createLetterDescriptionForm = LetterUtil.getHome().getCreateLetterDescriptionForm();
+            var createLetterDescriptionForm = LetterUtil.getHome().getCreateLetterDescriptionForm();
             
             if(chainKindName == null)
                 chainKindName = descriptionAddActionForm.getChainKindName();
@@ -75,8 +73,8 @@ public class DescriptionAddAction
             createLetterDescriptionForm.setLetterName(letterName);
             createLetterDescriptionForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
             createLetterDescriptionForm.setDescription(descriptionAddActionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().createLetterDescription(getUserVisitPK(request), createLetterDescriptionForm);
+
+            var commandResult = LetterUtil.getHome().createLetterDescription(getUserVisitPK(request), createLetterDescriptionForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -90,8 +88,8 @@ public class DescriptionAddAction
             descriptionAddActionForm.setLetterName(letterName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CHAIN_KIND_NAME, chainKindName);
             request.setAttribute(AttributeConstants.CHAIN_TYPE_NAME, chainTypeName);

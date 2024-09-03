@@ -17,21 +17,17 @@
 package com.echothree.ui.web.main.action.accounting.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyForm;
 import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.invoice.common.InvoiceOptions;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.data.invoice.common.InvoiceConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -64,7 +60,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
 
         commandForm.setCompanyName(request.getParameter(ParameterConstants.COMPANY_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -91,11 +87,11 @@ public class ReviewAction
         Map<String, Limit> limits = new HashMap<>();
         limits.put(InvoiceConstants.ENTITY_TYPE_NAME, new Limit("5"));
         commandForm.setLimits(limits);
-        
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
-        CompanyTransfer company = result.getCompany();
+
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
+        var company = result.getCompany();
 
         if(company == null) {
             forwardKey = ForwardConstants.ERROR_404;

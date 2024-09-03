@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
-import com.echothree.model.control.chain.common.transfer.ChainInstanceTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.model.control.letter.common.transfer.QueuedLetterTransfer;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.QueuedLetter;
@@ -38,11 +36,11 @@ public class QueuedLetterTransferCache
     }
     
     public QueuedLetterTransfer getQueuedLetterTransfer(QueuedLetter queuedLetter) {
-        QueuedLetterTransfer queuedLetterTransfer = get(queuedLetter);
+        var queuedLetterTransfer = get(queuedLetter);
         
         if(queuedLetterTransfer == null) {
-            ChainInstanceTransfer chainInstance = chainControl.getChainInstanceTransfer(userVisit, queuedLetter.getChainInstance());
-            LetterTransfer letter = letterControl.getLetterTransfer(userVisit, queuedLetter.getLetter());
+            var chainInstance = chainControl.getChainInstanceTransfer(userVisit, queuedLetter.getChainInstance());
+            var letter = letterControl.getLetterTransfer(userVisit, queuedLetter.getLetter());
             
             queuedLetterTransfer = new QueuedLetterTransfer(chainInstance, letter);
             put(queuedLetter, queuedLetterTransfer);

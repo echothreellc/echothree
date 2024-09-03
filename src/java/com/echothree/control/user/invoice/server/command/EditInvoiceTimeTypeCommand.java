@@ -27,11 +27,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.invoice.server.entity.InvoiceTimeType;
-import com.echothree.model.data.invoice.server.entity.InvoiceTimeTypeDescription;
-import com.echothree.model.data.invoice.server.entity.InvoiceTimeTypeDetail;
-import com.echothree.model.data.invoice.server.entity.InvoiceType;
-import com.echothree.model.data.invoice.server.value.InvoiceTimeTypeDescriptionValue;
-import com.echothree.model.data.invoice.server.value.InvoiceTimeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -93,11 +88,11 @@ public class EditInvoiceTimeTypeCommand
     public InvoiceTimeType getEntity(EditInvoiceTimeTypeResult result) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
         InvoiceTimeType invoiceTimeType = null;
-        String invoiceTypeName = spec.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = spec.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String invoiceTimeTypeName = spec.getInvoiceTimeTypeName();
+            var invoiceTimeTypeName = spec.getInvoiceTimeTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
@@ -132,8 +127,8 @@ public class EditInvoiceTimeTypeCommand
     @Override
     public void doLock(InvoiceTimeTypeEdit edit, InvoiceTimeType invoiceTimeType) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        InvoiceTimeTypeDescription invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, getPreferredLanguage());
-        InvoiceTimeTypeDetail invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
+        var invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, getPreferredLanguage());
+        var invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
 
         edit.setInvoiceTimeTypeName(invoiceTimeTypeDetail.getInvoiceTimeTypeName());
         edit.setIsDefault(invoiceTimeTypeDetail.getIsDefault().toString());
@@ -147,12 +142,12 @@ public class EditInvoiceTimeTypeCommand
     @Override
     public void canUpdate(InvoiceTimeType invoiceTimeType) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = spec.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = spec.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String invoiceTimeTypeName = edit.getInvoiceTimeTypeName();
-            InvoiceTimeType duplicateInvoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+            var invoiceTimeTypeName = edit.getInvoiceTimeTypeName();
+            var duplicateInvoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
             if(duplicateInvoiceTimeType != null && !invoiceTimeType.equals(duplicateInvoiceTimeType)) {
                 addExecutionError(ExecutionErrors.DuplicateInvoiceTimeTypeName.name(), invoiceTypeName, invoiceTimeTypeName);
@@ -166,9 +161,9 @@ public class EditInvoiceTimeTypeCommand
     public void doUpdate(InvoiceTimeType invoiceTimeType) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
         var partyPK = getPartyPK();
-        InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue = invoiceControl.getInvoiceTimeTypeDetailValueForUpdate(invoiceTimeType);
-        InvoiceTimeTypeDescription invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescriptionForUpdate(invoiceTimeType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var invoiceTimeTypeDetailValue = invoiceControl.getInvoiceTimeTypeDetailValueForUpdate(invoiceTimeType);
+        var invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescriptionForUpdate(invoiceTimeType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         invoiceTimeTypeDetailValue.setInvoiceTimeTypeName(edit.getInvoiceTimeTypeName());
         invoiceTimeTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -183,7 +178,7 @@ public class EditInvoiceTimeTypeCommand
                 invoiceControl.deleteInvoiceTimeTypeDescription(invoiceTimeTypeDescription, partyPK);
             } else {
                 if(invoiceTimeTypeDescription != null && description != null) {
-                    InvoiceTimeTypeDescriptionValue invoiceTimeTypeDescriptionValue = invoiceControl.getInvoiceTimeTypeDescriptionValue(invoiceTimeTypeDescription);
+                    var invoiceTimeTypeDescriptionValue = invoiceControl.getInvoiceTimeTypeDescriptionValue(invoiceTimeTypeDescription);
 
                     invoiceTimeTypeDescriptionValue.setDescription(description);
                     invoiceControl.updateInvoiceTimeTypeDescriptionFromValue(invoiceTimeTypeDescriptionValue, partyPK);

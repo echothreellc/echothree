@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.tagscopeentitytype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityTypesForm;
 import com.echothree.control.user.core.common.result.GetEntityTypesResult;
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.CreateTagScopeEntityTypeForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,13 +52,13 @@ public class Step2Action
     
     private void setEntityTypeTransfers(HttpServletRequest request, String componentVendorName)
         throws NamingException {
-        GetEntityTypesForm commandForm = CoreUtil.getHome().getGetEntityTypesForm();
+        var commandForm = CoreUtil.getHome().getGetEntityTypesForm();
 
         commandForm.setComponentVendorName(componentVendorName);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityTypesResult result = (GetEntityTypesResult)executionResult.getResult();
+        var commandResult = CoreUtil.getHome().getEntityTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ENTITY_TYPES, result.getEntityTypes());
     }
@@ -71,20 +67,20 @@ public class Step2Action
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String tagScopeName = request.getParameter(ParameterConstants.TAG_SCOPE_NAME);
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var tagScopeName = request.getParameter(ParameterConstants.TAG_SCOPE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
         
         if(entityTypeName == null) {
             forwardKey = ForwardConstants.FORM;
         } else {
-            CreateTagScopeEntityTypeForm commandForm = TagUtil.getHome().getCreateTagScopeEntityTypeForm();
+            var commandForm = TagUtil.getHome().getCreateTagScopeEntityTypeForm();
 
             commandForm.setTagScopeName(tagScopeName);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            CommandResult commandResult = TagUtil.getHome().createTagScopeEntityType(getUserVisitPK(request), commandForm);
+            var commandResult = TagUtil.getHome().createTagScopeEntityType(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -93,8 +89,8 @@ public class Step2Action
                 forwardKey = ForwardConstants.DISPLAY;
             }
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupTagScopeTransfer(request, tagScopeName);
             setEntityTypeTransfers(request, componentVendorName);

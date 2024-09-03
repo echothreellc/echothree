@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTypePartTypeTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumMessageTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageTypePartType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,13 +30,13 @@ public class ForumMessageTypePartTypeTransferCache
     }
     
     public ForumMessageTypePartTypeTransfer getForumMessageTypePartTypeTransfer(ForumMessageTypePartType forumMessageTypePartType) {
-        ForumMessageTypePartTypeTransfer forumMessageTypePartTypeTransfer = get(forumMessageTypePartType);
+        var forumMessageTypePartTypeTransfer = get(forumMessageTypePartType);
         
         if(forumMessageTypePartTypeTransfer == null) {
-            ForumMessageTypeTransfer forumMessageType = forumControl.getForumMessageTypeTransfer(userVisit, forumMessageTypePartType.getForumMessageType());
-            Boolean indexDefault = forumMessageTypePartType.getIndexDefault();
-            Integer sortOrder = forumMessageTypePartType.getSortOrder();
-            ForumMessagePartTypeTransfer forumMessagePartType = forumControl.getForumMessagePartTypeTransfer(userVisit, forumMessageTypePartType.getForumMessagePartType());
+            var forumMessageType = forumControl.getForumMessageTypeTransfer(userVisit, forumMessageTypePartType.getForumMessageType());
+            var indexDefault = forumMessageTypePartType.getIndexDefault();
+            var sortOrder = forumMessageTypePartType.getSortOrder();
+            var forumMessagePartType = forumControl.getForumMessagePartTypeTransfer(userVisit, forumMessageTypePartType.getForumMessagePartType());
             
             forumMessageTypePartTypeTransfer = new ForumMessageTypePartTypeTransfer(forumMessageType, indexDefault, sortOrder, forumMessagePartType);
             put(forumMessageTypePartType, forumMessageTypePartTypeTransfer);

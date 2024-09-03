@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected EntityTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EntityTypeSpec spec = CoreUtil.getHome().getEntityTypeSpec();
+        var spec = CoreUtil.getHome().getEntityTypeSpec();
         
         spec.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
         spec.setEntityTypeName(findParameter(request, ParameterConstants.ORIGINAL_ENTITY_TYPE_NAME, actionForm.getOriginalEntityTypeName()));
@@ -61,7 +61,7 @@ public class EditAction
     @Override
     protected EntityTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EntityTypeEdit edit = CoreUtil.getHome().getEntityTypeEdit();
+        var edit = CoreUtil.getHome().getEntityTypeEdit();
 
         edit.setEntityTypeName(actionForm.getEntityTypeName());
         edit.setKeepAllHistory(actionForm.getKeepAllHistory().toString());

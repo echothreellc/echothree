@@ -17,16 +17,11 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateRoleForm;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateRoleResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateRole;
-import com.echothree.model.data.security.server.entity.SecurityRole;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,20 +65,20 @@ public class GetPartySecurityRoleTemplateRoleCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        GetPartySecurityRoleTemplateRoleResult result = SecurityResultFactory.getGetPartySecurityRoleTemplateRoleResult();
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var result = SecurityResultFactory.getGetPartySecurityRoleTemplateRoleResult();
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
-            String securityRoleGroupName = form.getSecurityRoleGroupName();
-            SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+            var securityRoleGroupName = form.getSecurityRoleGroupName();
+            var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
             
             if(securityRoleGroup != null) {
-                String securityRoleName = form.getSecurityRoleName();
-                SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+                var securityRoleName = form.getSecurityRoleName();
+                var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
                 
                 if(securityRole != null) {
-                    PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRole(partySecurityRoleTemplate,
+                    var partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRole(partySecurityRoleTemplate,
                             securityRole);
                     
                     if(partySecurityRoleTemplateRole != null) {

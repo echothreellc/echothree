@@ -47,57 +47,31 @@ import com.echothree.model.control.forum.common.transfer.ForumRoleTypeTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumTypeTransfer;
-import com.echothree.model.control.forum.server.transfer.ForumDescriptionTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumForumThreadTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumGroupDescriptionTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumGroupForumTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumGroupTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumMessageAttachmentTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumMessagePartTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumMessageRoleTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumMessageTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumMessageTypePartTypeTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumMimeTypeTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumPartyRoleTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumPartyTypeRoleTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumThreadTransferCache;
-import com.echothree.model.control.forum.server.transfer.ForumTransferCache;
 import com.echothree.model.control.forum.server.transfer.ForumTransferCaches;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.forum.common.pk.ForumGroupPK;
-import com.echothree.model.data.forum.common.pk.ForumMessageAttachmentPK;
 import com.echothree.model.data.forum.common.pk.ForumMessagePK;
-import com.echothree.model.data.forum.common.pk.ForumMessagePartPK;
-import com.echothree.model.data.forum.common.pk.ForumMessagePartTypePK;
-import com.echothree.model.data.forum.common.pk.ForumMessageTypePK;
 import com.echothree.model.data.forum.common.pk.ForumPK;
 import com.echothree.model.data.forum.common.pk.ForumThreadPK;
-import com.echothree.model.data.forum.common.pk.ForumTypePK;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumBlobMessagePart;
 import com.echothree.model.data.forum.server.entity.ForumClobMessagePart;
 import com.echothree.model.data.forum.server.entity.ForumDescription;
-import com.echothree.model.data.forum.server.entity.ForumDetail;
 import com.echothree.model.data.forum.server.entity.ForumForumThread;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.entity.ForumGroupDescription;
-import com.echothree.model.data.forum.server.entity.ForumGroupDetail;
 import com.echothree.model.data.forum.server.entity.ForumGroupForum;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDescription;
-import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDetail;
 import com.echothree.model.data.forum.server.entity.ForumMessageBlobAttachment;
 import com.echothree.model.data.forum.server.entity.ForumMessageClobAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageDetail;
 import com.echothree.model.data.forum.server.entity.ForumMessagePart;
-import com.echothree.model.data.forum.server.entity.ForumMessagePartDetail;
 import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
 import com.echothree.model.data.forum.server.entity.ForumMessagePartTypeDescription;
 import com.echothree.model.data.forum.server.entity.ForumMessageRole;
@@ -112,7 +86,6 @@ import com.echothree.model.data.forum.server.entity.ForumRoleType;
 import com.echothree.model.data.forum.server.entity.ForumRoleTypeDescription;
 import com.echothree.model.data.forum.server.entity.ForumStringMessagePart;
 import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.forum.server.entity.ForumThreadDetail;
 import com.echothree.model.data.forum.server.entity.ForumType;
 import com.echothree.model.data.forum.server.entity.ForumTypeDescription;
 import com.echothree.model.data.forum.server.entity.ForumTypeMessageType;
@@ -170,13 +143,10 @@ import com.echothree.model.data.forum.server.value.ForumMessagePartDetailValue;
 import com.echothree.model.data.forum.server.value.ForumMimeTypeValue;
 import com.echothree.model.data.forum.server.value.ForumStringMessagePartValue;
 import com.echothree.model.data.forum.server.value.ForumThreadDetailValue;
-import com.echothree.model.data.icon.common.pk.IconPK;
 import com.echothree.model.data.icon.server.entity.Icon;
-import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
@@ -185,13 +155,11 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -222,8 +190,8 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumGroup createForumGroup(String forumGroupName, Icon icon, Integer sortOrder, BasePK createdBy) {
-        ForumGroup forumGroup = ForumGroupFactory.getInstance().create();
-        ForumGroupDetail forumGroupDetail = ForumGroupDetailFactory.getInstance().create(forumGroup, forumGroupName, icon,
+        var forumGroup = ForumGroupFactory.getInstance().create();
+        var forumGroupDetail = ForumGroupDetailFactory.getInstance().create(forumGroup, forumGroupName, icon,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -240,8 +208,8 @@ public class ForumControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumGroup */
     public ForumGroup getForumGroupByEntityInstance(EntityInstance entityInstance) {
-        ForumGroupPK pk = new ForumGroupPK(entityInstance.getEntityUniqueId());
-        ForumGroup forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new ForumGroupPK(entityInstance.getEntityUniqueId());
+        var forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return forumGroup;
     }
@@ -254,7 +222,7 @@ public class ForumControl
     }
 
     public List<ForumGroup> getForumGroups() {
-        PreparedStatement ps = ForumGroupFactory.getInstance().prepareStatement(
+        var ps = ForumGroupFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM forumgroups, forumgroupdetails " +
                 "WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid " +
@@ -279,8 +247,8 @@ public class ForumControl
                         "WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid AND frmgrpdt_forumgroupname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumGroupFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, forumGroupName);
             
@@ -309,7 +277,7 @@ public class ForumControl
     }
     
     public ForumGroupChoicesBean getForumGroupChoices(String defaultForumGroupChoice, Language language, boolean allowNullChoice) {
-        List<ForumGroup> forumGroups = getForumGroups();
+        var forumGroups = getForumGroups();
         var size = forumGroups.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -325,7 +293,7 @@ public class ForumControl
         }
         
         for(var forumGroup : forumGroups) {
-            ForumGroupDetail forumGroupDetail = forumGroup.getLastDetail();
+            var forumGroupDetail = forumGroup.getLastDetail();
             
             var label = getBestForumGroupDescription(forumGroup, language);
             var value = forumGroupDetail.getForumGroupName();
@@ -347,7 +315,7 @@ public class ForumControl
     
     public List<ForumGroupTransfer> getForumGroupTransfers(UserVisit userVisit, Collection<ForumGroup> forumGroups) {
         List<ForumGroupTransfer> forumGroupTransfers = new ArrayList<>(forumGroups.size());
-        ForumGroupTransferCache forumGroupTransferCache = getForumTransferCaches(userVisit).getForumGroupTransferCache();
+        var forumGroupTransferCache = getForumTransferCaches(userVisit).getForumGroupTransferCache();
         
         forumGroups.forEach((forumGroup) ->
                 forumGroupTransfers.add(forumGroupTransferCache.getForumGroupTransfer(forumGroup))
@@ -362,17 +330,17 @@ public class ForumControl
     
     public void updateForumGroupFromValue(ForumGroupDetailValue forumGroupDetailValue, BasePK updatedBy) {
         if(forumGroupDetailValue.hasBeenModified()) {
-            ForumGroup forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumGroupDetailValue.getForumGroupPK());
-            ForumGroupDetail forumGroupDetail = forumGroup.getActiveDetailForUpdate();
+            var forumGroupDetail = forumGroup.getActiveDetailForUpdate();
             
             forumGroupDetail.setThruTime(session.START_TIME_LONG);
             forumGroupDetail.store();
-            
-            ForumGroupPK forumGroupPK = forumGroupDetail.getForumGroupPK();
-            String forumGroupName = forumGroupDetailValue.getForumGroupName();
-            IconPK iconPK = forumGroupDetailValue.getIconPK();
-            Integer sortOrder = forumGroupDetailValue.getSortOrder();
+
+            var forumGroupPK = forumGroupDetail.getForumGroupPK();
+            var forumGroupName = forumGroupDetailValue.getForumGroupName();
+            var iconPK = forumGroupDetailValue.getIconPK();
+            var sortOrder = forumGroupDetailValue.getSortOrder();
             
             forumGroupDetail = ForumGroupDetailFactory.getInstance().create(forumGroupPK, forumGroupName, iconPK,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -387,8 +355,8 @@ public class ForumControl
     public void deleteForumGroup(ForumGroup forumGroup, BasePK deletedBy) {
         deleteForumGroupDescriptionsByForumGroup(forumGroup, deletedBy);
         deleteForumGroupForumsByForumGroup(forumGroup, deletedBy);
-        
-        ForumGroupDetail forumGroupDetail = forumGroup.getLastDetailForUpdate();
+
+        var forumGroupDetail = forumGroup.getLastDetailForUpdate();
         forumGroupDetail.setThruTime(session.START_TIME_LONG);
         forumGroup.setActiveDetail(null);
         forumGroup.store();
@@ -401,7 +369,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumGroupDescription createForumGroupDescription(ForumGroup forumGroup, Language language, String description, BasePK createdBy) {
-        ForumGroupDescription forumGroupDescription = ForumGroupDescriptionFactory.getInstance().create(forumGroup,
+        var forumGroupDescription = ForumGroupDescriptionFactory.getInstance().create(forumGroup,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forumGroup.getPrimaryKey(), EventTypes.MODIFY, forumGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -426,8 +394,8 @@ public class ForumControl
                         "WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_lang_languageid = ? AND frmgrpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumGroupDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumGroupDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -476,8 +444,8 @@ public class ForumControl
                         "WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumGroupDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumGroupDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -500,7 +468,7 @@ public class ForumControl
     
     public String getBestForumGroupDescription(ForumGroup forumGroup, Language language) {
         String description;
-        ForumGroupDescription forumGroupDescription = getForumGroupDescription(forumGroup, language);
+        var forumGroupDescription = getForumGroupDescription(forumGroup, language);
         
         if(forumGroupDescription == null && !language.getIsDefault()) {
             forumGroupDescription = getForumGroupDescription(forumGroup, getPartyControl().getDefaultLanguage());
@@ -522,11 +490,11 @@ public class ForumControl
     
     public List<ForumGroupDescriptionTransfer> getForumGroupDescriptionTransfersByForumGroup(UserVisit userVisit,
             ForumGroup forumGroup) {
-        List<ForumGroupDescription> forumGroupDescriptions = getForumGroupDescriptionsByForumGroup(forumGroup);
+        var forumGroupDescriptions = getForumGroupDescriptionsByForumGroup(forumGroup);
         List<ForumGroupDescriptionTransfer> forumGroupDescriptionTransfers = null;
         
         if(forumGroupDescriptions != null) {
-            ForumGroupDescriptionTransferCache forumGroupDescriptionTransferCache = getForumTransferCaches(userVisit).getForumGroupDescriptionTransferCache();
+            var forumGroupDescriptionTransferCache = getForumTransferCaches(userVisit).getForumGroupDescriptionTransferCache();
             
             forumGroupDescriptionTransfers = new ArrayList<>(forumGroupDescriptions.size());
             
@@ -540,15 +508,15 @@ public class ForumControl
     
     public void updateForumGroupDescriptionFromValue(ForumGroupDescriptionValue forumGroupDescriptionValue, BasePK updatedBy) {
         if(forumGroupDescriptionValue.hasBeenModified()) {
-            ForumGroupDescription forumGroupDescription = ForumGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumGroupDescription = ForumGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumGroupDescriptionValue.getPrimaryKey());
             
             forumGroupDescription.setThruTime(session.START_TIME_LONG);
             forumGroupDescription.store();
-            
-            ForumGroup forumGroup = forumGroupDescription.getForumGroup();
-            Language language = forumGroupDescription.getLanguage();
-            String description = forumGroupDescriptionValue.getDescription();
+
+            var forumGroup = forumGroupDescription.getForumGroup();
+            var language = forumGroupDescription.getLanguage();
+            var description = forumGroupDescriptionValue.getDescription();
             
             forumGroupDescription = ForumGroupDescriptionFactory.getInstance().create(forumGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -564,7 +532,7 @@ public class ForumControl
     }
     
     public void deleteForumGroupDescriptionsByForumGroup(ForumGroup forumGroup, BasePK deletedBy) {
-        List<ForumGroupDescription> forumGroupDescriptions = getForumGroupDescriptionsByForumGroupForUpdate(forumGroup);
+        var forumGroupDescriptions = getForumGroupDescriptionsByForumGroupForUpdate(forumGroup);
         
         forumGroupDescriptions.forEach((forumGroupDescription) -> 
                 deleteForumGroupDescription(forumGroupDescription, deletedBy)
@@ -577,8 +545,8 @@ public class ForumControl
     
     public Forum createForum(String forumName, ForumType forumType, Icon icon, Sequence forumThreadSequence,
             Sequence forumMessageSequence, Integer sortOrder, BasePK createdBy) {
-        Forum forum = ForumFactory.getInstance().create();
-        ForumDetail forumDetail = ForumDetailFactory.getInstance().create(forum, forumName, forumType, icon,
+        var forum = ForumFactory.getInstance().create();
+        var forumDetail = ForumDetailFactory.getInstance().create(forum, forumName, forumType, icon,
                 forumThreadSequence, forumMessageSequence, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -595,8 +563,8 @@ public class ForumControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Forum */
     public Forum getForumByEntityInstance(EntityInstance entityInstance) {
-        ForumPK pk = new ForumPK(entityInstance.getEntityUniqueId());
-        Forum forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new ForumPK(entityInstance.getEntityUniqueId());
+        var forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return forum;
     }
@@ -609,7 +577,7 @@ public class ForumControl
     }
 
     public List<Forum> getForums() {
-        PreparedStatement ps = ForumFactory.getInstance().prepareStatement(
+        var ps = ForumFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM forums, forumdetails " +
                 "WHERE frm_activedetailid = frmdt_forumdetailid " +
@@ -634,8 +602,8 @@ public class ForumControl
                         "WHERE frm_activedetailid = frmdt_forumdetailid AND frmdt_forumname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, forumName);
             
@@ -668,7 +636,7 @@ public class ForumControl
     }
     
     public ForumChoicesBean getForumChoices(String defaultForumChoice, Language language, boolean allowNullChoice) {
-        List<Forum> forums = getForums();
+        var forums = getForums();
         var size = forums.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -684,7 +652,7 @@ public class ForumControl
         }
         
         for(var forum : forums) {
-            ForumDetail forumDetail = forum.getLastDetail();
+            var forumDetail = forum.getLastDetail();
             
             var label = getBestForumDescription(forum, language);
             var value = forumDetail.getForumName();
@@ -702,7 +670,7 @@ public class ForumControl
     
     public List<ForumTransfer> getForumTransfers(final UserVisit userVisit, final List<Forum> forums) {
         List<ForumTransfer> forumTransfers = new ArrayList<>(forums.size());
-        ForumTransferCache forumTransferCache = getForumTransferCaches(userVisit).getForumTransferCache();
+        var forumTransferCache = getForumTransferCaches(userVisit).getForumTransferCache();
         
         forums.forEach((forum) ->
                 forumTransfers.add(forumTransferCache.getForumTransfer(forum))
@@ -717,20 +685,20 @@ public class ForumControl
     
     public void updateForumFromValue(ForumDetailValue forumDetailValue, BasePK updatedBy) {
         if(forumDetailValue.hasBeenModified()) {
-            Forum forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumDetailValue.getForumPK());
-            ForumDetail forumDetail = forum.getActiveDetailForUpdate();
+            var forumDetail = forum.getActiveDetailForUpdate();
             
             forumDetail.setThruTime(session.START_TIME_LONG);
             forumDetail.store();
-            
-            ForumPK forumPK = forumDetail.getForumPK();
-            String forumName = forumDetailValue.getForumName();
-            ForumTypePK forumTypePK = forumDetail.getForumTypePK(); // Not updated
-            IconPK iconPK = forumDetailValue.getIconPK();
-            SequencePK forumThreadSequencePK = forumDetailValue.getForumThreadSequencePK();
-            SequencePK forumMessageSequencePK = forumDetailValue.getForumMessageSequencePK();
-            Integer sortOrder = forumDetailValue.getSortOrder();
+
+            var forumPK = forumDetail.getForumPK();
+            var forumName = forumDetailValue.getForumName();
+            var forumTypePK = forumDetail.getForumTypePK(); // Not updated
+            var iconPK = forumDetailValue.getIconPK();
+            var forumThreadSequencePK = forumDetailValue.getForumThreadSequencePK();
+            var forumMessageSequencePK = forumDetailValue.getForumMessageSequencePK();
+            var sortOrder = forumDetailValue.getSortOrder();
             
             forumDetail = ForumDetailFactory.getInstance().create(forumPK, forumName, forumTypePK, iconPK,
                     forumThreadSequencePK, forumMessageSequencePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -755,8 +723,8 @@ public class ForumControl
         deleteForumDescriptionsByForum(forum, deletedBy);
         deleteForumGroupForumsByForum(forum, deletedBy);
         deleteForumForumThreadsByForum(forum, deletedBy);
-        
-        ForumDetail forumDetail = forum.getLastDetailForUpdate();
+
+        var forumDetail = forum.getLastDetailForUpdate();
         forumDetail.setThruTime(session.START_TIME_LONG);
         forum.setActiveDetail(null);
         forum.store();
@@ -775,7 +743,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumDescription createForumDescription(Forum forum, Language language, String description, BasePK createdBy) {
-        ForumDescription forumDescription = ForumDescriptionFactory.getInstance().create(forum, language, description,
+        var forumDescription = ForumDescriptionFactory.getInstance().create(forum, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -799,8 +767,8 @@ public class ForumControl
                         "WHERE frmd_frm_forumid = ? AND frmd_lang_languageid = ? AND frmd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -847,8 +815,8 @@ public class ForumControl
                         "WHERE frmd_frm_forumid = ? AND frmd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -871,7 +839,7 @@ public class ForumControl
     
     public String getBestForumDescription(Forum forum, Language language) {
         String description;
-        ForumDescription forumDescription = getForumDescription(forum, language);
+        var forumDescription = getForumDescription(forum, language);
         
         if(forumDescription == null && !language.getIsDefault()) {
             forumDescription = getForumDescription(forum, getPartyControl().getDefaultLanguage());
@@ -891,11 +859,11 @@ public class ForumControl
     }
     
     public List<ForumDescriptionTransfer> getForumDescriptionTransfersByForum(UserVisit userVisit, Forum forum) {
-        List<ForumDescription> forumDescriptions = getForumDescriptionsByForum(forum);
+        var forumDescriptions = getForumDescriptionsByForum(forum);
         List<ForumDescriptionTransfer> forumDescriptionTransfers = null;
         
         if(forumDescriptions != null) {
-            ForumDescriptionTransferCache forumDescriptionTransferCache = getForumTransferCaches(userVisit).getForumDescriptionTransferCache();
+            var forumDescriptionTransferCache = getForumTransferCaches(userVisit).getForumDescriptionTransferCache();
             
             forumDescriptionTransfers = new ArrayList<>(forumDescriptions.size());
             
@@ -909,15 +877,15 @@ public class ForumControl
     
     public void updateForumDescriptionFromValue(ForumDescriptionValue forumDescriptionValue, BasePK updatedBy) {
         if(forumDescriptionValue.hasBeenModified()) {
-            ForumDescription forumDescription = ForumDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumDescription = ForumDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumDescriptionValue.getPrimaryKey());
             
             forumDescription.setThruTime(session.START_TIME_LONG);
             forumDescription.store();
-            
-            Forum forum = forumDescription.getForum();
-            Language language = forumDescription.getLanguage();
-            String description = forumDescriptionValue.getDescription();
+
+            var forum = forumDescription.getForum();
+            var language = forumDescription.getLanguage();
+            var description = forumDescriptionValue.getDescription();
             
             forumDescription = ForumDescriptionFactory.getInstance().create(forum, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -933,7 +901,7 @@ public class ForumControl
     }
     
     public void deleteForumDescriptionsByForum(Forum forum, BasePK deletedBy) {
-        List<ForumDescription> forumDescriptions = getForumDescriptionsByForumForUpdate(forum);
+        var forumDescriptions = getForumDescriptionsByForumForUpdate(forum);
         
         forumDescriptions.forEach((forumDescription) -> 
                 deleteForumDescription(forumDescription, deletedBy)
@@ -946,19 +914,19 @@ public class ForumControl
     
     public ForumGroupForum createForumGroupForum(ForumGroup forumGroup, Forum forum, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ForumGroupForum defaultForumGroupForum = getDefaultForumGroupForum(forum);
-        boolean defaultFound = defaultForumGroupForum != null;
+        var defaultForumGroupForum = getDefaultForumGroupForum(forum);
+        var defaultFound = defaultForumGroupForum != null;
         
         if(defaultFound && isDefault) {
-            ForumGroupForumValue defaultForumGroupForumValue = getDefaultForumGroupForumValueForUpdate(forum);
+            var defaultForumGroupForumValue = getDefaultForumGroupForumValueForUpdate(forum);
             
             defaultForumGroupForumValue.setIsDefault(Boolean.FALSE);
             updateForumGroupForumFromValue(defaultForumGroupForumValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ForumGroupForum forumGroupForum = ForumGroupForumFactory.getInstance().create(forumGroup, forum,
+
+        var forumGroupForum = ForumGroupForumFactory.getInstance().create(forumGroup, forum,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forumGroup.getPrimaryKey(), EventTypes.MODIFY, forumGroupForum.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -990,8 +958,8 @@ public class ForumControl
                         "WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, forum.getPrimaryKey().getEntityId());
@@ -1037,8 +1005,8 @@ public class ForumControl
                         "WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_isdefault = 1 AND frmgrpfrm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1060,7 +1028,7 @@ public class ForumControl
     }
     
     public ForumGroupForumValue getDefaultForumGroupForumValueForUpdate(Forum forum) {
-        ForumGroupForum forumGroupForum = getDefaultForumGroupForumForUpdate(forum);
+        var forumGroupForum = getDefaultForumGroupForumForUpdate(forum);
         
         return forumGroupForum == null? null: forumGroupForum.getForumGroupForumValue().clone();
     }
@@ -1083,8 +1051,8 @@ public class ForumControl
                         "WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1123,8 +1091,8 @@ public class ForumControl
                         "WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1147,7 +1115,7 @@ public class ForumControl
     
     public List<ForumGroupForumTransfer> getForumGroupForumTransfers(UserVisit userVisit, Collection<ForumGroupForum> forumGroupForums) {
         List<ForumGroupForumTransfer> forumGroupForumTransfers = new ArrayList<>(forumGroupForums.size());
-        ForumGroupForumTransferCache forumGroupForumTransferCache = getForumTransferCaches(userVisit).getForumGroupForumTransferCache();
+        var forumGroupForumTransferCache = getForumTransferCaches(userVisit).getForumGroupForumTransferCache();
         
         forumGroupForums.forEach((forumGroupForum) ->
                 forumGroupForumTransfers.add(forumGroupForumTransferCache.getForumGroupForumTransfer(forumGroupForum))
@@ -1170,24 +1138,24 @@ public class ForumControl
     
     private void updateForumGroupForumFromValue(ForumGroupForumValue forumGroupForumValue, boolean checkDefault, BasePK updatedBy) {
         if(forumGroupForumValue.hasBeenModified()) {
-            ForumGroupForum forumGroupForum = ForumGroupForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumGroupForum = ForumGroupForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumGroupForumValue.getPrimaryKey());
             
             forumGroupForum.setThruTime(session.START_TIME_LONG);
             forumGroupForum.store();
-            
-            ForumGroupPK forumGroupPK = forumGroupForum.getForumGroupPK(); // Not Updated
-            Forum forum = forumGroupForum.getForum(); // Not Updated
-            Boolean isDefault = forumGroupForumValue.getIsDefault();
-            Integer sortOrder = forumGroupForumValue.getSortOrder();
+
+            var forumGroupPK = forumGroupForum.getForumGroupPK(); // Not Updated
+            var forum = forumGroupForum.getForum(); // Not Updated
+            var isDefault = forumGroupForumValue.getIsDefault();
+            var sortOrder = forumGroupForumValue.getSortOrder();
             
             if(checkDefault) {
-                ForumGroupForum defaultForumGroupForum = getDefaultForumGroupForum(forum);
-                boolean defaultFound = defaultForumGroupForum != null && !defaultForumGroupForum.equals(forumGroupForum);
+                var defaultForumGroupForum = getDefaultForumGroupForum(forum);
+                var defaultFound = defaultForumGroupForum != null && !defaultForumGroupForum.equals(forumGroupForum);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ForumGroupForumValue defaultForumGroupForumValue = getDefaultForumGroupForumValueForUpdate(forum);
+                    var defaultForumGroupForumValue = getDefaultForumGroupForumValueForUpdate(forum);
                     
                     defaultForumGroupForumValue.setIsDefault(Boolean.FALSE);
                     updateForumGroupForumFromValue(defaultForumGroupForumValue, false, updatedBy);
@@ -1213,17 +1181,17 @@ public class ForumControl
         forumGroupForum.store();
         
         // Check for default, and pick one if necessary
-        Forum forum = forumGroupForum.getForum();
-        ForumGroupForum defaultForumGroupForum = getDefaultForumGroupForum(forum);
+        var forum = forumGroupForum.getForum();
+        var defaultForumGroupForum = getDefaultForumGroupForum(forum);
         if(defaultForumGroupForum == null) {
-            List<ForumGroupForum> forumGroupForums = getForumGroupForumsByForumForUpdate(forum);
+            var forumGroupForums = getForumGroupForumsByForumForUpdate(forum);
             
             if(!forumGroupForums.isEmpty()) {
-                Iterator<ForumGroupForum> iter = forumGroupForums.iterator();
+                var iter = forumGroupForums.iterator();
                 if(iter.hasNext()) {
                     defaultForumGroupForum = iter.next();
                 }
-                ForumGroupForumValue forumGroupForumValue = defaultForumGroupForum.getForumGroupForumValue().clone();
+                var forumGroupForumValue = defaultForumGroupForum.getForumGroupForumValue().clone();
                 
                 forumGroupForumValue.setIsDefault(Boolean.TRUE);
                 updateForumGroupForumFromValue(forumGroupForumValue, false, deletedBy);
@@ -1259,7 +1227,7 @@ public class ForumControl
         ForumRoleType forumRoleType;
         
         try {
-            PreparedStatement ps = ForumRoleTypeFactory.getInstance().prepareStatement(
+            var ps = ForumRoleTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forumroletypes " +
                     "WHERE frmrtyp_forumroletypename = ?");
@@ -1275,7 +1243,7 @@ public class ForumControl
     }
     
     public List<ForumRoleType> getForumRoleTypes() {
-        PreparedStatement ps = ForumRoleTypeFactory.getInstance().prepareStatement(
+        var ps = ForumRoleTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM forumroletypes " +
                 "ORDER BY frmrtyp_sortorder, frmrtyp_forumroletypename");
@@ -1285,7 +1253,7 @@ public class ForumControl
     
     public ForumRoleTypeChoicesBean getForumRoleTypeChoices(String defaultForumRoleTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<ForumRoleType> forumRoleTypes = getForumRoleTypes();
+        var forumRoleTypes = getForumRoleTypes();
         var size = forumRoleTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1332,7 +1300,7 @@ public class ForumControl
         ForumRoleTypeDescription forumRoleTypeDescription;
         
         try {
-            PreparedStatement ps = ForumRoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ForumRoleTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forumroletypedescriptions " +
                     "WHERE frmrtypd_frmrtyp_forumroletypeid = ? AND frmrtypd_lang_languageid = ?");
@@ -1351,7 +1319,7 @@ public class ForumControl
     
     public String getBestForumRoleTypeDescription(ForumRoleType forumRoleType, Language language) {
         String description;
-        ForumRoleTypeDescription forumRoleTypeDescription = getForumRoleTypeDescription(forumRoleType, language);
+        var forumRoleTypeDescription = getForumRoleTypeDescription(forumRoleType, language);
         
         if(forumRoleTypeDescription == null && !language.getIsDefault()) {
             forumRoleTypeDescription = getForumRoleTypeDescription(forumRoleType, getPartyControl().getDefaultLanguage());
@@ -1378,7 +1346,7 @@ public class ForumControl
         ForumType forumType;
         
         try {
-            PreparedStatement ps = ForumTypeFactory.getInstance().prepareStatement(
+            var ps = ForumTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forumtypes " +
                     "WHERE frmtyp_forumtypename = ?");
@@ -1394,7 +1362,7 @@ public class ForumControl
     }
     
     public List<ForumType> getForumTypes() {
-        PreparedStatement ps = ForumTypeFactory.getInstance().prepareStatement(
+        var ps = ForumTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM forumtypes " +
                 "ORDER BY frmtyp_sortorder, frmtyp_forumtypename");
@@ -1403,7 +1371,7 @@ public class ForumControl
     }
     
     public ForumTypeChoicesBean getForumTypeChoices(String defaultForumTypeChoice, Language language, boolean allowNullChoice) {
-        List<ForumType> forumTypes = getForumTypes();
+        var forumTypes = getForumTypes();
         var size = forumTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1449,7 +1417,7 @@ public class ForumControl
         ForumTypeDescription forumTypeDescription;
         
         try {
-            PreparedStatement ps = ForumTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ForumTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forumtypedescriptions " +
                     "WHERE frmtypd_frmtyp_forumtypeid = ? AND frmtypd_lang_languageid = ?");
@@ -1468,7 +1436,7 @@ public class ForumControl
     
     public String getBestForumTypeDescription(ForumType forumType, Language language) {
         String description;
-        ForumTypeDescription forumTypeDescription = getForumTypeDescription(forumType, language);
+        var forumTypeDescription = getForumTypeDescription(forumType, language);
         
         if(forumTypeDescription == null && !language.getIsDefault()) {
             forumTypeDescription = getForumTypeDescription(forumType, getPartyControl().getDefaultLanguage());
@@ -1489,19 +1457,19 @@ public class ForumControl
     
     public ForumMimeType createForumMimeType(Forum forum, MimeType mimeType, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ForumMimeType defaultForumMimeType = getDefaultForumMimeType(forum);
-        boolean defaultFound = defaultForumMimeType != null;
+        var defaultForumMimeType = getDefaultForumMimeType(forum);
+        var defaultFound = defaultForumMimeType != null;
         
         if(defaultFound && isDefault) {
-            ForumMimeTypeValue defaultForumMimeTypeValue = getDefaultForumMimeTypeValueForUpdate(forum);
+            var defaultForumMimeTypeValue = getDefaultForumMimeTypeValueForUpdate(forum);
             
             defaultForumMimeTypeValue.setIsDefault(Boolean.FALSE);
             updateForumMimeTypeFromValue(defaultForumMimeTypeValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ForumMimeType forumMimeType = ForumMimeTypeFactory.getInstance().create(forum, mimeType,
+
+        var forumMimeType = ForumMimeTypeFactory.getInstance().create(forum, mimeType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumMimeType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1525,8 +1493,8 @@ public class ForumControl
                         "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, mimeType.getPrimaryKey().getEntityId());
@@ -1572,8 +1540,8 @@ public class ForumControl
                         "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_isdefault = 1 AND frmmtyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1595,7 +1563,7 @@ public class ForumControl
     }
     
     public ForumMimeTypeValue getDefaultForumMimeTypeValueForUpdate(Forum forum) {
-        ForumMimeType forumMimeType = getDefaultForumMimeTypeForUpdate(forum);
+        var forumMimeType = getDefaultForumMimeTypeForUpdate(forum);
         
         return forumMimeType == null? null: forumMimeType.getForumMimeTypeValue().clone();
     }
@@ -1618,8 +1586,8 @@ public class ForumControl
                         "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1658,8 +1626,8 @@ public class ForumControl
                         "WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1683,7 +1651,7 @@ public class ForumControl
     public MimeTypeChoicesBean getForumMimeTypeChoices(Forum forum, String defaultMimeTypeChoice, Language language,
             boolean allowNullChoice) {
         var coreControl = Session.getModelController(CoreControl.class);
-        List<ForumMimeType> forumMimeTypes = getForumMimeTypesByForum(forum);
+        var forumMimeTypes = getForumMimeTypesByForum(forum);
         var size = forumMimeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1699,7 +1667,7 @@ public class ForumControl
         }
         
         for(var forumMimeType : forumMimeTypes) {
-            MimeType mimeType = forumMimeType.getMimeType();
+            var mimeType = forumMimeType.getMimeType();
             var label = coreControl.getBestMimeTypeDescription(mimeType, language);
             var value = mimeType.getLastDetail().getMimeTypeName();
             
@@ -1717,7 +1685,7 @@ public class ForumControl
     
     public List<ForumMimeTypeTransfer> getForumMimeTypeTransfers(UserVisit userVisit, Collection<ForumMimeType> forumMimeTypes) {
         List<ForumMimeTypeTransfer> forumMimeTypeTransfers = new ArrayList<>(forumMimeTypes.size());
-        ForumMimeTypeTransferCache forumMimeTypeTransferCache = getForumTransferCaches(userVisit).getForumMimeTypeTransferCache();
+        var forumMimeTypeTransferCache = getForumTransferCaches(userVisit).getForumMimeTypeTransferCache();
         
         forumMimeTypes.forEach((forumMimeType) ->
                 forumMimeTypeTransfers.add(forumMimeTypeTransferCache.getForumMimeTypeTransfer(forumMimeType))
@@ -1740,25 +1708,25 @@ public class ForumControl
     
     private void updateForumMimeTypeFromValue(ForumMimeTypeValue forumMimeTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(forumMimeTypeValue.hasBeenModified()) {
-            ForumMimeType forumMimeType = ForumMimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumMimeType = ForumMimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumMimeTypeValue.getPrimaryKey());
             
             forumMimeType.setThruTime(session.START_TIME_LONG);
             forumMimeType.store();
-            
-            Forum forum = forumMimeType.getForum(); // Not Updated
-            ForumPK forumPK = forum.getPrimaryKey(); // Not Updated
-            MimeTypePK mimeTypePK = forumMimeType.getMimeTypePK(); // Not Updated
-            Boolean isDefault = forumMimeTypeValue.getIsDefault();
-            Integer sortOrder = forumMimeTypeValue.getSortOrder();
+
+            var forum = forumMimeType.getForum(); // Not Updated
+            var forumPK = forum.getPrimaryKey(); // Not Updated
+            var mimeTypePK = forumMimeType.getMimeTypePK(); // Not Updated
+            var isDefault = forumMimeTypeValue.getIsDefault();
+            var sortOrder = forumMimeTypeValue.getSortOrder();
             
             if(checkDefault) {
-                ForumMimeType defaultForumMimeType = getDefaultForumMimeType(forum);
-                boolean defaultFound = defaultForumMimeType != null && !defaultForumMimeType.equals(forumMimeType);
+                var defaultForumMimeType = getDefaultForumMimeType(forum);
+                var defaultFound = defaultForumMimeType != null && !defaultForumMimeType.equals(forumMimeType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ForumMimeTypeValue defaultForumMimeTypeValue = getDefaultForumMimeTypeValueForUpdate(forum);
+                    var defaultForumMimeTypeValue = getDefaultForumMimeTypeValueForUpdate(forum);
                     
                     defaultForumMimeTypeValue.setIsDefault(Boolean.FALSE);
                     updateForumMimeTypeFromValue(defaultForumMimeTypeValue, false, updatedBy);
@@ -1784,17 +1752,17 @@ public class ForumControl
         forumMimeType.store();
         
         // Check for default, and pick one if necessary
-        Forum forum = forumMimeType.getForum();
-        ForumMimeType defaultForumMimeType = getDefaultForumMimeType(forum);
+        var forum = forumMimeType.getForum();
+        var defaultForumMimeType = getDefaultForumMimeType(forum);
         if(defaultForumMimeType == null) {
-            List<ForumMimeType> forumMimeTypes = getForumMimeTypesByForumForUpdate(forum);
+            var forumMimeTypes = getForumMimeTypesByForumForUpdate(forum);
             
             if(!forumMimeTypes.isEmpty()) {
-                Iterator<ForumMimeType> iter = forumMimeTypes.iterator();
+                var iter = forumMimeTypes.iterator();
                 if(iter.hasNext()) {
                     defaultForumMimeType = iter.next();
                 }
-                ForumMimeTypeValue forumMimeTypeValue = defaultForumMimeType.getForumMimeTypeValue().clone();
+                var forumMimeTypeValue = defaultForumMimeType.getForumMimeTypeValue().clone();
                 
                 forumMimeTypeValue.setIsDefault(Boolean.TRUE);
                 updateForumMimeTypeFromValue(forumMimeTypeValue, false, deletedBy);
@@ -1823,7 +1791,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumPartyRole createForumPartyRole(Forum forum, Party party, ForumRoleType forumRoleType, BasePK createdBy) {
-        ForumPartyRole forumPartyRole = ForumPartyRoleFactory.getInstance().create(forum, party, forumRoleType,
+        var forumPartyRole = ForumPartyRoleFactory.getInstance().create(forum, party, forumRoleType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumPartyRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1866,8 +1834,8 @@ public class ForumControl
                         "WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1907,8 +1875,8 @@ public class ForumControl
                         "WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1947,8 +1915,8 @@ public class ForumControl
                         "AND frmparr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, party.getPrimaryKey().getEntityId());
@@ -1972,11 +1940,11 @@ public class ForumControl
     }
     
     public List<ForumPartyRoleTransfer> getForumPartyRoleTransfersByForum(UserVisit userVisit, Forum forum) {
-        List<ForumPartyRole> forumPartyRoles = getForumPartyRolesByForum(forum);
+        var forumPartyRoles = getForumPartyRolesByForum(forum);
         List<ForumPartyRoleTransfer> forumPartyRoleTransfers = null;
         
         if(forumPartyRoles != null) {
-            ForumPartyRoleTransferCache forumPartyRoleTransferCache = getForumTransferCaches(userVisit).getForumPartyRoleTransferCache();
+            var forumPartyRoleTransferCache = getForumTransferCaches(userVisit).getForumPartyRoleTransferCache();
             
             forumPartyRoleTransfers = new ArrayList<>(forumPartyRoles.size());
             
@@ -1999,7 +1967,7 @@ public class ForumControl
     }
     
     public void deleteForumPartyRolesByForum(Forum forum, BasePK deletedBy) {
-        List<ForumPartyRole> forumPartyRoles = getForumPartyRolesByForumForUpdate(forum);
+        var forumPartyRoles = getForumPartyRolesByForumForUpdate(forum);
         
         forumPartyRoles.forEach((forumPartyRole) -> 
                 deleteForumPartyRole(forumPartyRole, deletedBy)
@@ -2012,7 +1980,7 @@ public class ForumControl
     
     public ForumPartyTypeRole createForumPartyTypeRole(Forum forum, PartyType partyType, ForumRoleType forumRoleType,
             BasePK createdBy) {
-        ForumPartyTypeRole forumPartyTypeRole = ForumPartyTypeRoleFactory.getInstance().create(forum, partyType,
+        var forumPartyTypeRole = ForumPartyTypeRoleFactory.getInstance().create(forum, partyType,
                 forumRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumPartyTypeRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2055,8 +2023,8 @@ public class ForumControl
                         "WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumPartyTypeRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumPartyTypeRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2095,8 +2063,8 @@ public class ForumControl
                         "AND frmptypr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumPartyTypeRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumPartyTypeRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, partyType.getPrimaryKey().getEntityId());
@@ -2120,11 +2088,11 @@ public class ForumControl
     }
     
     public List<ForumPartyTypeRoleTransfer> getForumPartyTypeRoleTransfersByForum(UserVisit userVisit, Forum forum) {
-        List<ForumPartyTypeRole> forumPartyTypeRoles = getForumPartyTypeRolesByForum(forum);
+        var forumPartyTypeRoles = getForumPartyTypeRolesByForum(forum);
         List<ForumPartyTypeRoleTransfer> forumPartyTypeRoleTransfers = null;
         
         if(forumPartyTypeRoles != null) {
-            ForumPartyTypeRoleTransferCache forumPartyTypeRoleTransferCache = getForumTransferCaches(userVisit).getForumPartyTypeRoleTransferCache();
+            var forumPartyTypeRoleTransferCache = getForumTransferCaches(userVisit).getForumPartyTypeRoleTransferCache();
             
             forumPartyTypeRoleTransfers = new ArrayList<>(forumPartyTypeRoles.size());
             
@@ -2147,7 +2115,7 @@ public class ForumControl
     }
     
     public void deleteForumPartyTypeRolesByForum(Forum forum, BasePK deletedBy) {
-        List<ForumPartyTypeRole> forumPartyTypeRoles = getForumPartyTypeRolesByForumForUpdate(forum);
+        var forumPartyTypeRoles = getForumPartyTypeRolesByForumForUpdate(forum);
         
         forumPartyTypeRoles.forEach((forumPartyTypeRole) -> 
                 deleteForumPartyTypeRole(forumPartyTypeRole, deletedBy)
@@ -2181,8 +2149,8 @@ public class ForumControl
                         "WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumType.getPrimaryKey().getEntityId());
             
@@ -2203,7 +2171,7 @@ public class ForumControl
     }
     
     private ForumTypeMessageType getForumTypeMessageType(ForumType forumType, ForumMessageType forumMessageType, EntityPermission entityPermission) {
-        ForumTypeMessageType forumTypeMessageType = null;
+        ForumTypeMessageType forumTypeMessageType;
 
         try {
             String query = null;
@@ -2219,7 +2187,7 @@ public class ForumControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
+            var ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, forumType.getPrimaryKey().getEntityId());
             ps.setLong(2, forumMessageType.getPrimaryKey().getEntityId());
@@ -2241,7 +2209,7 @@ public class ForumControl
     }
 
     private ForumTypeMessageType getDefaultForumTypeMessageType(ForumType forumType, EntityPermission entityPermission) {
-        ForumTypeMessageType forumTypeMessageType = null;
+        ForumTypeMessageType forumTypeMessageType;
 
         try {
             String query = null;
@@ -2257,7 +2225,7 @@ public class ForumControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
+            var ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, forumType.getPrimaryKey().getEntityId());
 
@@ -2283,19 +2251,19 @@ public class ForumControl
     
     public ForumForumThread createForumForumThread(Forum forum, ForumThread forumThread, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ForumForumThread defaultForumForumThread = getDefaultForumForumThread(forumThread);
-        boolean defaultFound = defaultForumForumThread != null;
+        var defaultForumForumThread = getDefaultForumForumThread(forumThread);
+        var defaultFound = defaultForumForumThread != null;
         
         if(defaultFound && isDefault) {
-            ForumForumThreadValue defaultForumForumThreadValue = getDefaultForumForumThreadValueForUpdate(forumThread);
+            var defaultForumForumThreadValue = getDefaultForumForumThreadValueForUpdate(forumThread);
             
             defaultForumForumThreadValue.setIsDefault(Boolean.FALSE);
             updateForumForumThreadFromValue(defaultForumForumThreadValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ForumForumThread forumForumThread = ForumForumThreadFactory.getInstance().create(forum, forumThread,
+
+        var forumForumThread = ForumForumThreadFactory.getInstance().create(forum, forumThread,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumForumThread.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2319,8 +2287,8 @@ public class ForumControl
                         "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, forumThread.getPrimaryKey().getEntityId());
@@ -2366,8 +2334,8 @@ public class ForumControl
                         "WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_isdefault = 1 AND frmfrmthrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumThread.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2389,7 +2357,7 @@ public class ForumControl
     }
     
     public ForumForumThreadValue getDefaultForumForumThreadValueForUpdate(ForumThread forumThread) {
-        ForumForumThread forumForumThread = getDefaultForumForumThreadForUpdate(forumThread);
+        var forumForumThread = getDefaultForumForumThreadForUpdate(forumThread);
         
         return forumForumThread == null? null: forumForumThread.getForumForumThreadValue().clone();
     }
@@ -2412,8 +2380,8 @@ public class ForumControl
                         "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2452,8 +2420,8 @@ public class ForumControl
                         "WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumThread.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2476,7 +2444,7 @@ public class ForumControl
     
     public List<ForumForumThreadTransfer> getForumForumThreadTransfers(UserVisit userVisit, Collection<ForumForumThread> forumForumThreads) {
         List<ForumForumThreadTransfer> forumForumThreadTransfers = new ArrayList<>(forumForumThreads.size());
-        ForumForumThreadTransferCache forumForumThreadTransferCache = getForumTransferCaches(userVisit).getForumForumThreadTransferCache();
+        var forumForumThreadTransferCache = getForumTransferCaches(userVisit).getForumForumThreadTransferCache();
         
         forumForumThreads.forEach((forumForumThread) ->
                 forumForumThreadTransfers.add(forumForumThreadTransferCache.getForumForumThreadTransfer(forumForumThread))
@@ -2499,24 +2467,24 @@ public class ForumControl
     
     private void updateForumForumThreadFromValue(ForumForumThreadValue forumForumThreadValue, boolean checkDefault, BasePK updatedBy) {
         if(forumForumThreadValue.hasBeenModified()) {
-            ForumForumThread forumForumThread = ForumForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumForumThread = ForumForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumForumThreadValue.getPrimaryKey());
             
             forumForumThread.setThruTime(session.START_TIME_LONG);
             forumForumThread.store();
-            
-            ForumPK forumPK = forumForumThread.getForumPK(); // Not Updated
-            ForumThread forumThread = forumForumThread.getForumThread(); // Not Updated
-            Boolean isDefault = forumForumThreadValue.getIsDefault();
-            Integer sortOrder = forumForumThreadValue.getSortOrder();
+
+            var forumPK = forumForumThread.getForumPK(); // Not Updated
+            var forumThread = forumForumThread.getForumThread(); // Not Updated
+            var isDefault = forumForumThreadValue.getIsDefault();
+            var sortOrder = forumForumThreadValue.getSortOrder();
             
             if(checkDefault) {
-                ForumForumThread defaultForumForumThread = getDefaultForumForumThread(forumThread);
-                boolean defaultFound = defaultForumForumThread != null && !defaultForumForumThread.equals(forumForumThread);
+                var defaultForumForumThread = getDefaultForumForumThread(forumThread);
+                var defaultFound = defaultForumForumThread != null && !defaultForumForumThread.equals(forumForumThread);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ForumForumThreadValue defaultForumForumThreadValue = getDefaultForumForumThreadValueForUpdate(forumThread);
+                    var defaultForumForumThreadValue = getDefaultForumForumThreadValueForUpdate(forumThread);
                     
                     defaultForumForumThreadValue.setIsDefault(Boolean.FALSE);
                     updateForumForumThreadFromValue(defaultForumForumThreadValue, false, updatedBy);
@@ -2543,17 +2511,17 @@ public class ForumControl
         
         if(checkForumThread) {
             // Check for default, and pick one if necessary
-            ForumThread forumThread = forumForumThread.getForumThreadForUpdate();
-            ForumForumThread defaultForumForumThread = getDefaultForumForumThread(forumThread);
+            var forumThread = forumForumThread.getForumThreadForUpdate();
+            var defaultForumForumThread = getDefaultForumForumThread(forumThread);
             if(defaultForumForumThread == null) {
-                List<ForumForumThread> forumForumThreads = getForumForumThreadsByForumThreadForUpdate(forumThread);
+                var forumForumThreads = getForumForumThreadsByForumThreadForUpdate(forumThread);
                 
                 if(!forumForumThreads.isEmpty()) {
-                    Iterator<ForumForumThread> iter = forumForumThreads.iterator();
+                    var iter = forumForumThreads.iterator();
                     if(iter.hasNext()) {
                         defaultForumForumThread = iter.next();
                     }
-                    ForumForumThreadValue forumForumThreadValue = defaultForumForumThread.getForumForumThreadValue().clone();
+                    var forumForumThreadValue = defaultForumForumThread.getForumForumThreadValue().clone();
                     
                     forumForumThreadValue.setIsDefault(Boolean.TRUE);
                     updateForumForumThreadFromValue(forumForumThreadValue, false, deletedBy);
@@ -2594,7 +2562,7 @@ public class ForumControl
     
     public ForumThread createForumThread(Forum forum, Icon icon, Long postedTime, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
+        var sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
         
         if(sequence == null) {
             sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_THREAD.name());
@@ -2604,8 +2572,8 @@ public class ForumControl
     }
     
     public ForumThread createForumThread(String forumThreadName, Icon icon, Long postedTime, Integer sortOrder, BasePK createdBy) {
-        ForumThread forumThread = ForumThreadFactory.getInstance().create();
-        ForumThreadDetail forumThreadDetail = ForumThreadDetailFactory.getInstance().create(forumThread, forumThreadName,
+        var forumThread = ForumThreadFactory.getInstance().create();
+        var forumThreadDetail = ForumThreadDetailFactory.getInstance().create(forumThread, forumThreadName,
                 icon, postedTime, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2622,8 +2590,8 @@ public class ForumControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumThread */
     public ForumThread getForumThreadByEntityInstance(EntityInstance entityInstance) {
-        ForumThreadPK pk = new ForumThreadPK(entityInstance.getEntityUniqueId());
-        ForumThread forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new ForumThreadPK(entityInstance.getEntityUniqueId());
+        var forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return forumThread;
     }
@@ -2644,8 +2612,8 @@ public class ForumControl
                         "WHERE frmthrd_activedetailid = frmthrddt_forumthreaddetailid AND frmthrddt_forumthreadname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumThreadFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumThreadFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, forumThreadName);
             
@@ -2674,7 +2642,7 @@ public class ForumControl
     }
     
     public long countForumThreadsByForum(Forum forum, boolean includeFutureForumThreads) {
-        long count = 0;
+        long count;
         
         if (includeFutureForumThreads) {
             count = session.queryForLong(
@@ -2723,8 +2691,8 @@ public class ForumControl
                         "AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumThreadFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumThreadFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2756,7 +2724,7 @@ public class ForumControl
     
     public List<ForumThreadTransfer> getForumThreadTransfers(UserVisit userVisit, Collection<ForumThread> forumThreads) {
         List<ForumThreadTransfer> forumThreadTransfers = new ArrayList<>(forumThreads.size());
-        ForumThreadTransferCache forumThreadTransferCache = getForumTransferCaches(userVisit).getForumThreadTransferCache();
+        var forumThreadTransferCache = getForumTransferCaches(userVisit).getForumThreadTransferCache();
         
         forumThreads.forEach((forumThread) ->
                 forumThreadTransfers.add(forumThreadTransferCache.getForumThreadTransfer(forumThread))
@@ -2771,18 +2739,18 @@ public class ForumControl
     
     public void updateForumThreadFromValue(ForumThreadDetailValue forumThreadDetailValue, BasePK updatedBy) {
         if(forumThreadDetailValue.hasBeenModified()) {
-            ForumThread forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumThreadDetailValue.getForumThreadPK());
-            ForumThreadDetail forumThreadDetail = forumThread.getActiveDetailForUpdate();
+            var forumThreadDetail = forumThread.getActiveDetailForUpdate();
             
             forumThreadDetail.setThruTime(session.START_TIME_LONG);
             forumThreadDetail.store();
-            
-            ForumThreadPK forumThreadPK = forumThreadDetail.getForumThreadPK();
-            String forumThreadName = forumThreadDetail.getForumThreadName(); // Not updated
-            IconPK iconPK = forumThreadDetailValue.getIconPK();
-            Long postedTime = forumThreadDetailValue.getPostedTime();
-            Integer sortOrder = forumThreadDetailValue.getSortOrder();
+
+            var forumThreadPK = forumThreadDetail.getForumThreadPK();
+            var forumThreadName = forumThreadDetail.getForumThreadName(); // Not updated
+            var iconPK = forumThreadDetailValue.getIconPK();
+            var postedTime = forumThreadDetailValue.getPostedTime();
+            var sortOrder = forumThreadDetailValue.getSortOrder();
             
             forumThreadDetail = ForumThreadDetailFactory.getInstance().create(forumThreadPK, forumThreadName,
                     iconPK, postedTime, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2797,8 +2765,8 @@ public class ForumControl
     public void deleteForumThread(ForumThread forumThread, BasePK deletedBy) {
         deleteForumMessagesByForumThread(forumThread, deletedBy);
         deleteForumForumThreadsByForumThread(forumThread, deletedBy);
-        
-        ForumThreadDetail forumThreadDetail = forumThread.getLastDetailForUpdate();
+
+        var forumThreadDetail = forumThread.getLastDetailForUpdate();
         forumThreadDetail.setThruTime(session.START_TIME_LONG);
         forumThread.setActiveDetail(null);
         forumThread.store();
@@ -2819,9 +2787,9 @@ public class ForumControl
     public ForumMessage createForumMessage(ForumThread forumThread, ForumMessageType forumMessageType,
             ForumMessage parentForumMessage, Icon icon, Long postedTime, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        ForumForumThread forumForumThread = getDefaultForumForumThread(forumThread);
-        Forum forum = forumForumThread == null? null: forumForumThread.getForum();
-        Sequence sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
+        var forumForumThread = getDefaultForumForumThread(forumThread);
+        var forum = forumForumThread == null? null: forumForumThread.getForum();
+        var sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
         
         if(sequence == null) {
             sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_MESSAGE.name());
@@ -2833,8 +2801,8 @@ public class ForumControl
     
     public ForumMessage createForumMessage(String forumMessageName, ForumThread forumThread, ForumMessageType forumMessageType,
             ForumMessage parentForumMessage, Icon icon, Long postedTime, BasePK createdBy) {
-        ForumMessage forumMessage = ForumMessageFactory.getInstance().create();
-        ForumMessageDetail forumMessageDetail = ForumMessageDetailFactory.getInstance().create(forumMessage,
+        var forumMessage = ForumMessageFactory.getInstance().create();
+        var forumMessageDetail = ForumMessageDetailFactory.getInstance().create(forumMessage,
                 forumMessageName, forumThread, forumMessageType, parentForumMessage, icon, postedTime, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -2844,8 +2812,8 @@ public class ForumControl
         forumMessage.setActiveDetail(forumMessageDetail);
         forumMessage.setLastDetail(forumMessageDetail);
         forumMessage.store();
-        
-        ForumMessagePK forumMessagePK = forumMessage.getPrimaryKey();
+
+        var forumMessagePK = forumMessage.getPrimaryKey();
         sendEvent(forumMessagePK, EventTypes.CREATE, null, null, createdBy);
         if(parentForumMessage != null) {
             sendEvent(forumThread.getPrimaryKey(), EventTypes.TOUCH, forumMessagePK, EventTypes.CREATE, createdBy);
@@ -2857,8 +2825,8 @@ public class ForumControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessage */
     public ForumMessage getForumMessageByEntityInstance(EntityInstance entityInstance) {
-        ForumMessagePK pk = new ForumMessagePK(entityInstance.getEntityUniqueId());
-        ForumMessage forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new ForumMessagePK(entityInstance.getEntityUniqueId());
+        var forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return forumMessage;
     }
@@ -2886,8 +2854,8 @@ public class ForumControl
                         "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_forummessagename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMessageFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMessageFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, forumMessageName);
             
@@ -2941,8 +2909,8 @@ public class ForumControl
                         "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_frmthrd_forumthreadid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMessageFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumThread.getPrimaryKey().getEntityId());
             
@@ -3001,7 +2969,7 @@ public class ForumControl
     
     public List<ForumMessageTransfer> getForumMessageTransfers(UserVisit userVisit, Collection<ForumMessage> forumMessages) {
         List<ForumMessageTransfer> forumMessageTransfers = new ArrayList<>(forumMessages.size());
-        ForumMessageTransferCache forumMessageTransferCache = getForumTransferCaches(userVisit).getForumMessageTransferCache();
+        var forumMessageTransferCache = getForumTransferCaches(userVisit).getForumMessageTransferCache();
         
         forumMessages.forEach((forumMessage) ->
                 forumMessageTransfers.add(forumMessageTransferCache.getForumMessageTransfer(forumMessage))
@@ -3016,20 +2984,20 @@ public class ForumControl
     
     public void updateForumMessageFromValue(ForumMessageDetailValue forumMessageDetailValue, BasePK updatedBy) {
         if(forumMessageDetailValue.hasBeenModified()) {
-            ForumMessage forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumMessageDetailValue.getForumMessagePK());
-            ForumMessageDetail forumMessageDetail = forumMessage.getActiveDetailForUpdate();
+            var forumMessageDetail = forumMessage.getActiveDetailForUpdate();
             
             forumMessageDetail.setThruTime(session.START_TIME_LONG);
             forumMessageDetail.store();
-            
-            ForumMessagePK forumMessagePK = forumMessageDetail.getForumMessagePK();
-            String forumMessageName = forumMessageDetail.getForumMessageName(); // Not updated
-            ForumThreadPK forumThreadPK = forumMessageDetail.getForumThreadPK(); // Not updated
-            ForumMessageTypePK forumMessageTypePK = forumMessageDetail.getForumMessageTypePK(); // Not updated
-            ForumMessagePK parentForumMessagePK = forumMessageDetail.getParentForumMessagePK(); // Not updated
-            IconPK iconPK = forumMessageDetailValue.getIconPK();
-            Long postedTime = forumMessageDetailValue.getPostedTime();
+
+            var forumMessagePK = forumMessageDetail.getForumMessagePK();
+            var forumMessageName = forumMessageDetail.getForumMessageName(); // Not updated
+            var forumThreadPK = forumMessageDetail.getForumThreadPK(); // Not updated
+            var forumMessageTypePK = forumMessageDetail.getForumMessageTypePK(); // Not updated
+            var parentForumMessagePK = forumMessageDetail.getParentForumMessagePK(); // Not updated
+            var iconPK = forumMessageDetailValue.getIconPK();
+            var postedTime = forumMessageDetailValue.getPostedTime();
             
             forumMessageDetail = ForumMessageDetailFactory.getInstance().create(forumMessagePK, forumMessageName,
                     forumThreadPK, forumMessageTypePK, parentForumMessagePK, iconPK, postedTime, session.START_TIME_LONG,
@@ -3048,8 +3016,8 @@ public class ForumControl
         deleteForumMessageRolesByForumMessage(forumMessage, deletedBy);
         deleteForumMessagePartsByForumMessage(forumMessage, deletedBy);
         deleteForumMessageAttachmentsByForumMessage(forumMessage, deletedBy);
-        
-        ForumMessageDetail forumMessageDetail = forumMessage.getLastDetailForUpdate();
+
+        var forumMessageDetail = forumMessage.getLastDetailForUpdate();
         forumMessageDetail.setThruTime(session.START_TIME_LONG);
         forumMessage.setActiveDetail(null);
         forumMessage.store();
@@ -3110,7 +3078,7 @@ public class ForumControl
     }
 
     public ForumMessageStatus getOrCreateForumMessageStatusForUpdate(ForumMessage forumMessage) {
-        ForumMessageStatus forumMessageStatus = getForumMessageStatusForUpdate(forumMessage);
+        var forumMessageStatus = getForumMessageStatusForUpdate(forumMessage);
 
         if(forumMessageStatus == null) {
             createForumMessageStatus(forumMessage);
@@ -3121,7 +3089,7 @@ public class ForumControl
     }
 
     public void removeForumMessageStatusByForumMessage(ForumMessage forumMessage) {
-        ForumMessageStatus forumMessageStatus = getForumMessageStatusForUpdate(forumMessage);
+        var forumMessageStatus = getForumMessageStatusForUpdate(forumMessage);
 
         if(forumMessageStatus != null) {
             forumMessageStatus.remove();
@@ -3134,8 +3102,8 @@ public class ForumControl
 
     public ForumMessageAttachment createForumMessageAttachment(ForumMessage forumMessage, Integer forumMessageAttachmentSequence, MimeType mimeType,
             BasePK createdBy) {
-        ForumMessageAttachment forumMessageAttachment = ForumMessageAttachmentFactory.getInstance().create();
-        ForumMessageAttachmentDetail forumMessageAttachmentDetail = ForumMessageAttachmentDetailFactory.getInstance().create(forumMessageAttachment,
+        var forumMessageAttachment = ForumMessageAttachmentFactory.getInstance().create();
+        var forumMessageAttachmentDetail = ForumMessageAttachmentDetailFactory.getInstance().create(forumMessageAttachment,
                 forumMessage, forumMessageAttachmentSequence, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -3226,7 +3194,7 @@ public class ForumControl
 
     public List<ForumMessageAttachmentTransfer> getForumMessageAttachmentTransfers(UserVisit userVisit, Collection<ForumMessageAttachment> forumMessageAttachments) {
         List<ForumMessageAttachmentTransfer> forumMessageAttachmentTransfers = new ArrayList<>(forumMessageAttachments.size());
-        ForumMessageAttachmentTransferCache forumMessageAttachmentTransferCache = getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache();
+        var forumMessageAttachmentTransferCache = getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache();
 
         forumMessageAttachments.forEach((forumMessageAttachment) ->
                 forumMessageAttachmentTransfers.add(forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(forumMessageAttachment))
@@ -3241,17 +3209,17 @@ public class ForumControl
 
     public void updateForumMessageAttachmentFromValue(ForumMessageAttachmentDetailValue forumMessageAttachmentDetailValue, BasePK updatedBy) {
         if(forumMessageAttachmentDetailValue.hasBeenModified()) {
-            ForumMessageAttachment forumMessageAttachment = ForumMessageAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumMessageAttachment = ForumMessageAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumMessageAttachmentDetailValue.getForumMessageAttachmentPK());
-            ForumMessageAttachmentDetail forumMessageAttachmentDetail = forumMessageAttachment.getActiveDetailForUpdate();
+            var forumMessageAttachmentDetail = forumMessageAttachment.getActiveDetailForUpdate();
 
             forumMessageAttachmentDetail.setThruTime(session.START_TIME_LONG);
             forumMessageAttachmentDetail.store();
 
-            ForumMessageAttachmentPK forumMessageAttachmentPK = forumMessageAttachmentDetail.getForumMessageAttachmentPK(); // Not updated
-            ForumMessagePK forumMessagePK = forumMessageAttachmentDetail.getForumMessagePK(); // Not updated
-            Integer forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence(); // Not updated
-            MimeTypePK mimeTypePK = forumMessageAttachmentDetailValue.getMimeTypePK();
+            var forumMessageAttachmentPK = forumMessageAttachmentDetail.getForumMessageAttachmentPK(); // Not updated
+            var forumMessagePK = forumMessageAttachmentDetail.getForumMessagePK(); // Not updated
+            var forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence(); // Not updated
+            var mimeTypePK = forumMessageAttachmentDetailValue.getMimeTypePK();
 
             forumMessageAttachmentDetail = ForumMessageAttachmentDetailFactory.getInstance().create(forumMessageAttachmentPK, forumMessagePK, forumMessageAttachmentSequence,
                     mimeTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3266,12 +3234,12 @@ public class ForumControl
     public void deleteForumMessageAttachment(ForumMessageAttachment forumMessageAttachment, BasePK deletedBy) {
         deleteForumMessageAttachmentDescriptionsByForumMessageAttachment(forumMessageAttachment, deletedBy);
 
-        ForumMessageAttachmentDetail forumMessageAttachmentDetail = forumMessageAttachment.getLastDetailForUpdate();
+        var forumMessageAttachmentDetail = forumMessageAttachment.getLastDetailForUpdate();
         forumMessageAttachmentDetail.setThruTime(session.START_TIME_LONG);
         forumMessageAttachmentDetail.store();
         forumMessageAttachment.setActiveDetail(null);
 
-        String entityAttributeTypeName = forumMessageAttachmentDetail.getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var entityAttributeTypeName = forumMessageAttachmentDetail.getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
             deleteForumMessageBlobAttachmentByForumMessageAttachment(forumMessageAttachment, deletedBy);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
@@ -3296,7 +3264,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
 
     private void verifyForumMessageAttachmentMimeType(ForumMessageAttachment forumMessageAttachment, String entityAttributeTypeName) {
-        String forumMessageAttachmentEntityAttributeTypeName = forumMessageAttachment.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var forumMessageAttachmentEntityAttributeTypeName = forumMessageAttachment.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
         if(!forumMessageAttachmentEntityAttributeTypeName.equals(entityAttributeTypeName)) {
             throw new IllegalArgumentException("ForumMessageAttachment entityAttributeTypeName is " + forumMessageAttachmentEntityAttributeTypeName + ", expected " + entityAttributeTypeName);
@@ -3310,7 +3278,7 @@ public class ForumControl
     public ForumMessageBlobAttachment createForumMessageBlobAttachment(ForumMessageAttachment forumMessageAttachment, ByteArray blob, BasePK createdBy) {
         verifyForumMessageAttachmentMimeType(forumMessageAttachment, EntityAttributeTypes.BLOB.name());
 
-        ForumMessageBlobAttachment forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachment, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachment, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
 
@@ -3357,14 +3325,14 @@ public class ForumControl
 
     public void updateForumMessageBlobAttachmentFromValue(ForumMessageBlobAttachmentValue forumMessageAttachmentBlobValue, BasePK updatedBy) {
         if(forumMessageAttachmentBlobValue.hasBeenModified()) {
-            ForumMessageBlobAttachment forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumMessageAttachmentBlobValue.getPrimaryKey());
 
             forumMessageAttachmentBlob.setThruTime(session.START_TIME_LONG);
             forumMessageAttachmentBlob.store();
 
-            ForumMessageAttachmentPK forumMessageAttachmentPK = forumMessageAttachmentBlob.getForumMessageAttachmentPK(); // Not updated
-            ByteArray blob = forumMessageAttachmentBlobValue.getBlob();
+            var forumMessageAttachmentPK = forumMessageAttachmentBlob.getForumMessageAttachmentPK(); // Not updated
+            var blob = forumMessageAttachmentBlobValue.getBlob();
 
             forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachmentPK, blob, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -3380,7 +3348,7 @@ public class ForumControl
     }
 
     public void deleteForumMessageBlobAttachmentByForumMessageAttachment(ForumMessageAttachment forumMessageAttachment, BasePK deletedBy) {
-        ForumMessageBlobAttachment forumMessageAttachmentBlob = getForumMessageBlobAttachmentForUpdate(forumMessageAttachment);
+        var forumMessageAttachmentBlob = getForumMessageBlobAttachmentForUpdate(forumMessageAttachment);
 
         if(forumMessageAttachmentBlob != null) {
             deleteForumMessageBlobAttachment(forumMessageAttachmentBlob, deletedBy);
@@ -3394,7 +3362,7 @@ public class ForumControl
     public ForumMessageClobAttachment createForumMessageClobAttachment(ForumMessageAttachment forumMessageAttachment, String clob, BasePK createdBy) {
         verifyForumMessageAttachmentMimeType(forumMessageAttachment, EntityAttributeTypes.CLOB.name());
 
-        ForumMessageClobAttachment forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachment, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachment, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentClob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
 
@@ -3441,14 +3409,14 @@ public class ForumControl
 
     public void updateForumMessageClobAttachmentFromValue(ForumMessageClobAttachmentValue forumMessageAttachmentClobValue, BasePK updatedBy) {
         if(forumMessageAttachmentClobValue.hasBeenModified()) {
-            ForumMessageClobAttachment forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumMessageAttachmentClobValue.getPrimaryKey());
 
             forumMessageAttachmentClob.setThruTime(session.START_TIME_LONG);
             forumMessageAttachmentClob.store();
 
-            ForumMessageAttachmentPK forumMessageAttachmentPK = forumMessageAttachmentClob.getForumMessageAttachmentPK(); // Not updated
-            String clob = forumMessageAttachmentClobValue.getClob();
+            var forumMessageAttachmentPK = forumMessageAttachmentClob.getForumMessageAttachmentPK(); // Not updated
+            var clob = forumMessageAttachmentClobValue.getClob();
 
             forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachmentPK, clob, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -3464,7 +3432,7 @@ public class ForumControl
     }
 
     public void deleteForumMessageClobAttachmentByForumMessageAttachment(ForumMessageAttachment forumMessageAttachment, BasePK deletedBy) {
-        ForumMessageClobAttachment forumMessageAttachmentClob = getForumMessageClobAttachmentForUpdate(forumMessageAttachment);
+        var forumMessageAttachmentClob = getForumMessageClobAttachmentForUpdate(forumMessageAttachment);
 
         if(forumMessageAttachmentClob != null) {
             deleteForumMessageClobAttachment(forumMessageAttachmentClob, deletedBy);
@@ -3476,7 +3444,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
 
     public ForumMessageAttachmentDescription createForumMessageAttachmentDescription(ForumMessageAttachment forumMessageAttachment, Language language, String description, BasePK createdBy) {
-        ForumMessageAttachmentDescription forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().create(forumMessageAttachment, language,
+        var forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().create(forumMessageAttachment, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3555,17 +3523,17 @@ public class ForumControl
 
     public String getBestForumMessageAttachmentDescription(ForumMessageAttachment forumMessageAttachment, Language language) {
         String description;
-        ForumMessageAttachmentDescription forumMessageAttachmentDescription = getForumMessageAttachmentDescription(forumMessageAttachment, language);
+        var forumMessageAttachmentDescription = getForumMessageAttachmentDescription(forumMessageAttachment, language);
 
         if(forumMessageAttachmentDescription == null && !language.getIsDefault()) {
             forumMessageAttachmentDescription = getForumMessageAttachmentDescription(forumMessageAttachment, getPartyControl().getDefaultLanguage());
         }
 
         if(forumMessageAttachmentDescription == null) {
-            ForumMessageAttachmentDetail forumMessageAttachmentDetail = forumMessageAttachment.getLastDetail();
+            var forumMessageAttachmentDetail = forumMessageAttachment.getLastDetail();
             
-            description = new StringBuilder(forumMessageAttachmentDetail.getForumMessage().getLastDetail().getForumMessageName()).append('-')
-                    .append(forumMessageAttachmentDetail.getForumMessageAttachmentSequence()).toString();
+            description = forumMessageAttachmentDetail.getForumMessage().getLastDetail().getForumMessageName() + '-' +
+                    forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
         } else {
             description = forumMessageAttachmentDescription.getDescription();
         }
@@ -3578,7 +3546,7 @@ public class ForumControl
     }
 
     public List<ForumMessageAttachmentDescriptionTransfer> getForumMessageAttachmentDescriptionTransfersByForumMessageAttachment(UserVisit userVisit, ForumMessageAttachment forumMessageAttachment) {
-        List<ForumMessageAttachmentDescription> forumMessageAttachmentDescriptions = getForumMessageAttachmentDescriptionsByForumMessageAttachment(forumMessageAttachment);
+        var forumMessageAttachmentDescriptions = getForumMessageAttachmentDescriptionsByForumMessageAttachment(forumMessageAttachment);
         List<ForumMessageAttachmentDescriptionTransfer> forumMessageAttachmentDescriptionTransfers = null;
 
         if(forumMessageAttachmentDescriptions != null) {
@@ -3594,14 +3562,14 @@ public class ForumControl
 
     public void updateForumMessageAttachmentDescriptionFromValue(ForumMessageAttachmentDescriptionValue forumMessageAttachmentDescriptionValue, BasePK updatedBy) {
         if(forumMessageAttachmentDescriptionValue.hasBeenModified()) {
-            ForumMessageAttachmentDescription forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, forumMessageAttachmentDescriptionValue.getPrimaryKey());
+            var forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, forumMessageAttachmentDescriptionValue.getPrimaryKey());
 
             forumMessageAttachmentDescription.setThruTime(session.START_TIME_LONG);
             forumMessageAttachmentDescription.store();
 
-            ForumMessageAttachment forumMessageAttachment = forumMessageAttachmentDescription.getForumMessageAttachment();
-            Language language = forumMessageAttachmentDescription.getLanguage();
-            String description = forumMessageAttachmentDescriptionValue.getDescription();
+            var forumMessageAttachment = forumMessageAttachmentDescription.getForumMessageAttachment();
+            var language = forumMessageAttachmentDescription.getLanguage();
+            var description = forumMessageAttachmentDescriptionValue.getDescription();
 
             forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().create(forumMessageAttachment, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3618,7 +3586,7 @@ public class ForumControl
     }
 
     public void deleteForumMessageAttachmentDescriptionsByForumMessageAttachment(ForumMessageAttachment forumMessageAttachment, BasePK deletedBy) {
-        List<ForumMessageAttachmentDescription> forumMessageAttachmentDescriptions = getForumMessageAttachmentDescriptionsByForumMessageAttachmentForUpdate(forumMessageAttachment);
+        var forumMessageAttachmentDescriptions = getForumMessageAttachmentDescriptionsByForumMessageAttachmentForUpdate(forumMessageAttachment);
 
         forumMessageAttachmentDescriptions.forEach((forumMessageAttachmentDescription) -> 
                 deleteForumMessageAttachmentDescription(forumMessageAttachmentDescription, deletedBy)
@@ -3631,7 +3599,7 @@ public class ForumControl
     
     public ForumMessageRole createForumMessageRole(ForumMessage forumMessage, ForumRoleType forumRoleType, Party party,
             BasePK createdBy) {
-        ForumMessageRole forumMessageRole = ForumMessageRoleFactory.getInstance().create(forumMessage, forumRoleType,
+        var forumMessageRole = ForumMessageRoleFactory.getInstance().create(forumMessage, forumRoleType,
                 party, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forumMessage.getPrimaryKey(), EventTypes.MODIFY, forumMessageRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3655,8 +3623,8 @@ public class ForumControl
                         "WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_par_partyid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMessageRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMessageRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumMessage.getPrimaryKey().getEntityId());
             ps.setLong(2, forumRoleType.getPrimaryKey().getEntityId());
@@ -3698,8 +3666,8 @@ public class ForumControl
                         "WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMessageRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMessageRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumMessage.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3726,7 +3694,7 @@ public class ForumControl
     
     public List<ForumMessageRoleTransfer> getForumMessageRoleTransfers(UserVisit userVisit, Collection<ForumMessageRole> forumMessageRoles) {
         List<ForumMessageRoleTransfer> forumMessageRoleTransfers = new ArrayList<>(forumMessageRoles.size());
-        ForumMessageRoleTransferCache forumMessageRoleTransferCache = getForumTransferCaches(userVisit).getForumMessageRoleTransferCache();
+        var forumMessageRoleTransferCache = getForumTransferCaches(userVisit).getForumMessageRoleTransferCache();
         
         forumMessageRoles.forEach((forumMessageRole) ->
                 forumMessageRoleTransfers.add(forumMessageRoleTransferCache.getForumMessageRoleTransfer(forumMessageRole))
@@ -3761,9 +3729,9 @@ public class ForumControl
     
     public ForumMessagePart createForumMessagePart(ForumMessage forumMessage, ForumMessagePartType forumMessagePartType,
             Language language, MimeType mimeType, BasePK createdBy) {
-        
-        ForumMessagePart forumMessagePart = ForumMessagePartFactory.getInstance().create();
-        ForumMessagePartDetail forumMessagePartDetail = ForumMessagePartDetailFactory.getInstance().create(session,
+
+        var forumMessagePart = ForumMessagePartFactory.getInstance().create();
+        var forumMessagePartDetail = ForumMessagePartDetailFactory.getInstance().create(session,
                 forumMessagePart, forumMessage, forumMessagePartType, language, mimeType, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -3798,8 +3766,8 @@ public class ForumControl
                         "AND frmmsgprtdt_frmmsg_forummessageid = ? AND frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprtdt_lang_languageid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumMessagePartFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumMessagePartFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumMessage.getPrimaryKey().getEntityId());
             ps.setLong(2, forumMessagePartType.getPrimaryKey().getEntityId());
@@ -3836,7 +3804,7 @@ public class ForumControl
         List<ForumMessagePart> forumMessageParts;
         
         try {
-            PreparedStatement ps = ForumMessagePartFactory.getInstance().prepareStatement(
+            var ps = ForumMessagePartFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessageparts, forummessagepartdetails " +
                     "WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid " +
@@ -3855,7 +3823,7 @@ public class ForumControl
     
     public ForumMessagePart getBestForumMessagePart(ForumMessage forumMessage, ForumMessagePartType forumMessagePartType,
             Language language) {
-        ForumMessagePart forumMessagePart = getForumMessagePart(forumMessage, forumMessagePartType, language);
+        var forumMessagePart = getForumMessagePart(forumMessage, forumMessagePartType, language);
         
         if(forumMessagePart == null && !language.getIsDefault()) {
             forumMessagePart = getForumMessagePart(forumMessage, forumMessagePartType, getPartyControl().getDefaultLanguage());
@@ -3870,7 +3838,7 @@ public class ForumControl
     
     public List<ForumMessagePartTransfer> getForumMessagePartTransfers(UserVisit userVisit, Collection<ForumMessagePart> forumMessageParts) {
         List<ForumMessagePartTransfer> forumMessagePartTransfers = new ArrayList<>(forumMessageParts.size());
-        ForumMessagePartTransferCache forumMessagePartTransferCache = getForumTransferCaches(userVisit).getForumMessagePartTransferCache();
+        var forumMessagePartTransferCache = getForumTransferCaches(userVisit).getForumMessagePartTransferCache();
         
         forumMessageParts.forEach((forumMessagePart) ->
                 forumMessagePartTransfers.add(forumMessagePartTransferCache.getForumMessagePartTransfer(forumMessagePart))
@@ -3880,7 +3848,7 @@ public class ForumControl
     }
     
     public List<ForumMessagePartTransfer> getForumMessagePartTransfersByForumMessageAndLanguage(UserVisit userVisit, ForumMessage forumMessage, Language language) {
-        List<ForumMessageTypePartType> forumMessageTypePartTypes = getForumMessageTypePartTypesByForumMessageType(forumMessage.getLastDetail().getForumMessageType());
+        var forumMessageTypePartTypes = getForumMessageTypePartTypesByForumMessageType(forumMessage.getLastDetail().getForumMessageType());
         List<ForumMessagePartTransfer> forumMessagePartTransfers = new ArrayList<>(forumMessageTypePartTypes.size());
         
         forumMessageTypePartTypes.stream().map((forumMessageTypePartType) -> getBestForumMessagePart(forumMessage,
@@ -3893,18 +3861,18 @@ public class ForumControl
     
     public void updateForumMessagePartFromValue(ForumMessagePartDetailValue forumMessagePartDetailValue, BasePK updatedBy) {
         if(forumMessagePartDetailValue.hasBeenModified()) {
-            ForumMessagePart forumMessagePart = ForumMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumMessagePart = ForumMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumMessagePartDetailValue.getForumMessagePartPK());
-            ForumMessagePartDetail forumMessagePartDetail = forumMessagePart.getActiveDetailForUpdate();
+            var forumMessagePartDetail = forumMessagePart.getActiveDetailForUpdate();
             
             forumMessagePartDetail.setThruTime(session.START_TIME_LONG);
             forumMessagePartDetail.store();
-            
-            ForumMessagePartPK forumMessagePartPK = forumMessagePartDetail.getForumMessagePartPK();
-            ForumMessagePK forumMessagePK = forumMessagePartDetail.getForumMessagePK(); // Not updated
-            ForumMessagePartTypePK forumMessagePartTypePK = forumMessagePartDetail.getForumMessagePartTypePK(); // Not updated
-            LanguagePK languagePK = forumMessagePartDetail.getLanguagePK(); // Not updated
-            MimeTypePK mimeTypePK = forumMessagePartDetailValue.getMimeTypePK();
+
+            var forumMessagePartPK = forumMessagePartDetail.getForumMessagePartPK();
+            var forumMessagePK = forumMessagePartDetail.getForumMessagePK(); // Not updated
+            var forumMessagePartTypePK = forumMessagePartDetail.getForumMessagePartTypePK(); // Not updated
+            var languagePK = forumMessagePartDetail.getLanguagePK(); // Not updated
+            var mimeTypePK = forumMessagePartDetailValue.getMimeTypePK();
             
             forumMessagePartDetail = ForumMessagePartDetailFactory.getInstance().create(forumMessagePartPK, forumMessagePK,
                     forumMessagePartTypePK, languagePK, mimeTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3917,13 +3885,13 @@ public class ForumControl
     }
     
     public void deleteForumMessagePart(ForumMessagePart forumMessagePart, BasePK deletedBy) {
-        ForumMessagePartDetail forumMessagePartDetail = forumMessagePart.getLastDetailForUpdate();
-        MimeType mimeType = forumMessagePartDetail.getMimeType();
+        var forumMessagePartDetail = forumMessagePart.getLastDetailForUpdate();
+        var mimeType = forumMessagePartDetail.getMimeType();
         
         if(mimeType == null) {
             deleteForumStringMessagePartByForumMessagePart(forumMessagePart, deletedBy);
         } else {
-            String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+            var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             
             if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
                 deleteForumBlobMessagePartByForumMessagePart(forumMessagePart, deletedBy);
@@ -3954,7 +3922,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumStringMessagePart createForumStringMessagePart(ForumMessagePart forumMessagePart, String string, BasePK createdBy) {
-        ForumStringMessagePart forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(session,
+        var forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(session,
                 forumMessagePart, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumStringMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3978,8 +3946,8 @@ public class ForumControl
                         "WHERE frmsmsgprt_frmmsgprt_forummessagepartid = ? AND frmsmsgprt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumStringMessagePartFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumStringMessagePartFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumMessagePart.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4010,14 +3978,14 @@ public class ForumControl
     
     public void updateForumStringMessagePartFromValue(ForumStringMessagePartValue forumStringMessagePartValue, BasePK updatedBy) {
         if(forumStringMessagePartValue.hasBeenModified()) {
-            ForumStringMessagePart forumStringMessagePart = ForumStringMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumStringMessagePart = ForumStringMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumStringMessagePartValue.getPrimaryKey());
             
             forumStringMessagePart.setThruTime(session.START_TIME_LONG);
             forumStringMessagePart.store();
-            
-            ForumMessagePartPK forumMessagePartPK = forumStringMessagePart.getForumMessagePartPK(); // Not updated
-            String string = forumStringMessagePartValue.getString();
+
+            var forumMessagePartPK = forumStringMessagePart.getForumMessagePartPK(); // Not updated
+            var string = forumStringMessagePartValue.getString();
             
             forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(forumMessagePartPK, string,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4035,7 +4003,7 @@ public class ForumControl
     }
     
     public void deleteForumStringMessagePartByForumMessagePart(ForumMessagePart forumMessagePart, BasePK deletedBy) {
-        ForumStringMessagePart forumStringMessagePart = getForumStringMessagePartForUpdate(forumMessagePart);
+        var forumStringMessagePart = getForumStringMessagePartForUpdate(forumMessagePart);
         
         if(forumStringMessagePart != null) {
             deleteForumStringMessagePart(forumStringMessagePart, deletedBy);
@@ -4047,7 +4015,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumClobMessagePart createForumClobMessagePart(ForumMessagePart forumMessagePart, String clob, BasePK createdBy) {
-        ForumClobMessagePart forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(session,
+        var forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(session,
                 forumMessagePart, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumClobMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4071,8 +4039,8 @@ public class ForumControl
                         "WHERE frmcmsgprt_frmmsgprt_forummessagepartid = ? AND frmcmsgprt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumClobMessagePartFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumClobMessagePartFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumMessagePart.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4103,14 +4071,14 @@ public class ForumControl
     
     public void updateForumClobMessagePartFromValue(ForumClobMessagePartValue forumClobMessagePartValue, BasePK updatedBy) {
         if(forumClobMessagePartValue.hasBeenModified()) {
-            ForumClobMessagePart forumClobMessagePart = ForumClobMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumClobMessagePart = ForumClobMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumClobMessagePartValue.getPrimaryKey());
             
             forumClobMessagePart.setThruTime(session.START_TIME_LONG);
             forumClobMessagePart.store();
-            
-            ForumMessagePartPK forumMessagePartPK = forumClobMessagePart.getForumMessagePartPK(); // Not updated
-            String clob = forumClobMessagePartValue.getClob();
+
+            var forumMessagePartPK = forumClobMessagePart.getForumMessagePartPK(); // Not updated
+            var clob = forumClobMessagePartValue.getClob();
             
             forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(forumMessagePartPK, clob,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4126,7 +4094,7 @@ public class ForumControl
     }
     
     public void deleteForumClobMessagePartByForumMessagePart(ForumMessagePart forumMessagePart, BasePK deletedBy) {
-        ForumClobMessagePart forumClobMessagePart = getForumClobMessagePartForUpdate(forumMessagePart);
+        var forumClobMessagePart = getForumClobMessagePartForUpdate(forumMessagePart);
         
         if(forumClobMessagePart != null) {
             deleteForumClobMessagePart(forumClobMessagePart, deletedBy);
@@ -4138,7 +4106,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumBlobMessagePart createForumBlobMessagePart(ForumMessagePart forumMessagePart, ByteArray blob, BasePK createdBy) {
-        ForumBlobMessagePart forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(session,
+        var forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(session,
                 forumMessagePart, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumBlobMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4162,8 +4130,8 @@ public class ForumControl
                         "WHERE frmbmsgprt_frmmsgprt_forummessagepartid = ? AND frmbmsgprt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ForumBlobMessagePartFactory.getInstance().prepareStatement(query);
+
+            var ps = ForumBlobMessagePartFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, forumMessagePart.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4194,14 +4162,14 @@ public class ForumControl
     
     public void updateForumBlobMessagePartFromValue(ForumBlobMessagePartValue forumBlobMessagePartValue, BasePK updatedBy) {
         if(forumBlobMessagePartValue.hasBeenModified()) {
-            ForumBlobMessagePart forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumBlobMessagePartValue.getPrimaryKey());
             
             forumBlobMessagePart.setThruTime(session.START_TIME_LONG);
             forumBlobMessagePart.store();
-            
-            ForumMessagePartPK forumMessagePartPK = forumBlobMessagePart.getForumMessagePartPK(); // Not updated
-            ByteArray blob = forumBlobMessagePartValue.getBlob();
+
+            var forumMessagePartPK = forumBlobMessagePart.getForumMessagePartPK(); // Not updated
+            var blob = forumBlobMessagePartValue.getBlob();
             
             forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(forumMessagePartPK, blob,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4217,7 +4185,7 @@ public class ForumControl
     }
     
     public void deleteForumBlobMessagePartByForumMessagePart(ForumMessagePart forumMessagePart, BasePK deletedBy) {
-        ForumBlobMessagePart forumBlobMessagePart = getForumBlobMessagePartForUpdate(forumMessagePart);
+        var forumBlobMessagePart = getForumBlobMessagePartForUpdate(forumMessagePart);
         
         if(forumBlobMessagePart != null) {
             deleteForumBlobMessagePart(forumBlobMessagePart, deletedBy);
@@ -4237,7 +4205,7 @@ public class ForumControl
         ForumMessagePartType forumMessagePartType;
         
         try {
-            PreparedStatement ps = ForumMessagePartTypeFactory.getInstance().prepareStatement(
+            var ps = ForumMessagePartTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessageparttypes " +
                     "WHERE frmmsgprttyp_forummessageparttypename = ?");
@@ -4254,7 +4222,7 @@ public class ForumControl
     }
     
     public List<ForumMessagePartType> getForumMessagePartTypes() {
-        PreparedStatement ps = ForumMessagePartTypeFactory.getInstance().prepareStatement(
+        var ps = ForumMessagePartTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM forummessageparttypes " +
                 "ORDER BY frmmsgprttyp_sortorder, frmmsgprttyp_forummessageparttypename");
@@ -4280,7 +4248,7 @@ public class ForumControl
         ForumMessagePartTypeDescription forumMessagePartTypeDescription;
         
         try {
-            PreparedStatement ps = ForumMessagePartTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ForumMessagePartTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessageparttypedescriptions " +
                     "WHERE frmmsgprttypd_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprttypd_lang_languageid = ?");
@@ -4299,7 +4267,7 @@ public class ForumControl
     
     public String getBestForumMessagePartTypeDescription(ForumMessagePartType forumMessagePartType, Language language) {
         String description;
-        ForumMessagePartTypeDescription forumMessagePartTypeDescription = getForumMessagePartTypeDescription(forumMessagePartType,
+        var forumMessagePartTypeDescription = getForumMessagePartTypeDescription(forumMessagePartType,
                 language);
         
         if(forumMessagePartTypeDescription == null && !language.getIsDefault()) {
@@ -4328,7 +4296,7 @@ public class ForumControl
         ForumMessageType forumMessageType;
         
         try {
-            PreparedStatement ps = ForumMessageTypeFactory.getInstance().prepareStatement(
+            var ps = ForumMessageTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessagetypes " +
                     "WHERE frmmsgtyp_forummessagetypename = ?");
@@ -4344,7 +4312,7 @@ public class ForumControl
     }
     
     public List<ForumMessageType> getForumMessageTypes() {
-        PreparedStatement ps = ForumMessageTypeFactory.getInstance().prepareStatement(
+        var ps = ForumMessageTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM forummessagetypes " +
                 "ORDER BY frmmsgtyp_sortorder, frmmsgtyp_forummessagetypename");
@@ -4354,7 +4322,7 @@ public class ForumControl
     
     public ForumMessageTypeChoicesBean getForumMessageTypeChoices(String defaultForumMessageTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<ForumMessageType> forumMessageTypes = getForumMessageTypes();
+        var forumMessageTypes = getForumMessageTypes();
         var size = forumMessageTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -4401,7 +4369,7 @@ public class ForumControl
         ForumMessageTypeDescription forumMessageTypeDescription;
         
         try {
-            PreparedStatement ps = ForumMessageTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ForumMessageTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessagetypedescriptions " +
                     "WHERE frmmsgtypd_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypd_lang_languageid = ?");
@@ -4420,7 +4388,7 @@ public class ForumControl
     
     public String getBestForumMessageTypeDescription(ForumMessageType forumMessageType, Language language) {
         String description;
-        ForumMessageTypeDescription forumMessageTypeDescription = getForumMessageTypeDescription(forumMessageType, language);
+        var forumMessageTypeDescription = getForumMessageTypeDescription(forumMessageType, language);
         
         if(forumMessageTypeDescription == null && !language.getIsDefault()) {
             forumMessageTypeDescription = getForumMessageTypeDescription(forumMessageType, getPartyControl().getDefaultLanguage());
@@ -4448,7 +4416,7 @@ public class ForumControl
         ForumMessageTypePartType forumMessageTypePartType;
         
         try {
-            PreparedStatement ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
+            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessagetypeparttypes " +
                     "WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_sortorder = ?");
@@ -4469,7 +4437,7 @@ public class ForumControl
         ForumMessageTypePartType forumMessageTypePartType;
         
         try {
-            PreparedStatement ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
+            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessagetypeparttypes " +
                     "WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_indexdefault = 1");
@@ -4488,7 +4456,7 @@ public class ForumControl
         List<ForumMessageTypePartType> forumMessageTypePartTypes;
         
         try {
-            PreparedStatement ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
+            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessagetypeparttypes " +
                     "WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? " +
@@ -4508,7 +4476,7 @@ public class ForumControl
         List<ForumMessageTypePartType> forumMessageTypePartTypes;
         
         try {
-            PreparedStatement ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
+            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM forummessagetypeparttypes " +
                     "WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_includeinindex = 1 " +
@@ -4526,11 +4494,11 @@ public class ForumControl
     
     public List<ForumMessageTypePartTypeTransfer> getForumMessageTypePartTypeTransfersByForumMessageType(UserVisit userVisit,
             ForumMessageType forumMessageType) {
-        List<ForumMessageTypePartType> forumMessageTypePartTypes = getForumMessageTypePartTypesByForumMessageType(forumMessageType);
+        var forumMessageTypePartTypes = getForumMessageTypePartTypesByForumMessageType(forumMessageType);
         List<ForumMessageTypePartTypeTransfer> forumMessageTypePartTypeTransfers = null;
         
         if(forumMessageTypePartTypes != null) {
-            ForumMessageTypePartTypeTransferCache forumMessageTypePartTypeTransferCache = getForumTransferCaches(userVisit).getForumMessageTypePartTypeTransferCache();
+            var forumMessageTypePartTypeTransferCache = getForumTransferCaches(userVisit).getForumMessageTypePartTypeTransferCache();
             
             forumMessageTypePartTypeTransfers = new ArrayList<>(forumMessageTypePartTypes.size());
             

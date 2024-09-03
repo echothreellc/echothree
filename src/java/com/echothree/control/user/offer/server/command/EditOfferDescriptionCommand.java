@@ -19,7 +19,6 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferDescriptionEdit;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.form.EditOfferDescriptionForm;
-import com.echothree.control.user.offer.common.result.EditOfferDescriptionResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferDescriptionSpec;
 import com.echothree.model.control.offer.server.control.OfferControl;
@@ -27,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferDescription;
-import com.echothree.model.data.offer.server.value.OfferDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,24 +74,24 @@ public class EditOfferDescriptionCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        EditOfferDescriptionResult result = OfferResultFactory.getEditOfferDescriptionResult();
-        String offerName = spec.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var result = OfferResultFactory.getEditOfferDescriptionResult();
+        var offerName = spec.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    OfferDescription offerDescription = offerControl.getOfferDescription(offer, language);
+                    var offerDescription = offerControl.getOfferDescription(offer, language);
                     
                     if(offerDescription != null) {
                         result.setOfferDescription(offerControl.getOfferDescriptionTransfer(getUserVisit(), offerDescription));
                         
                         if(lockEntity(offer)) {
-                            OfferDescriptionEdit edit = OfferEditFactory.getOfferDescriptionEdit();
+                            var edit = OfferEditFactory.getOfferDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(offerDescription.getDescription());
@@ -109,12 +104,12 @@ public class EditOfferDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownOfferDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    OfferDescriptionValue offerDescriptionValue = offerControl.getOfferDescriptionValueForUpdate(offer, language);
+                    var offerDescriptionValue = offerControl.getOfferDescriptionValueForUpdate(offer, language);
                     
                     if(offerDescriptionValue != null) {
                         if(lockEntityForUpdate(offer)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 offerDescriptionValue.setDescription(description);
                                 

@@ -23,15 +23,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.security.server.entity.SecurityRole;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecurityRole;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -76,35 +68,35 @@ public class DeleteWorkflowDestinationSecurityRoleCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                var workflowDestinationName = form.getWorkflowDestinationName();
+                var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String partyTypeName = form.getPartyTypeName();
-                    PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                    var partyTypeName = form.getPartyTypeName();
+                    var partyType = partyControl.getPartyTypeByName(partyTypeName);
                     
                     if(partyType != null) {
-                        WorkflowDestinationPartyType workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
+                        var workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
                         
                         if(workflowDestinationPartyType != null) {
-                            SecurityRoleGroup securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
+                            var securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
                             
                             if(securityRoleGroup != null) {
                                 var securityControl = Session.getModelController(SecurityControl.class);
-                                String securityRoleName = form.getSecurityRoleName();
-                                SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+                                var securityRoleName = form.getSecurityRoleName();
+                                var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
                                 
                                 if(securityRole != null) {
-                                    WorkflowDestinationSecurityRole workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRoleForUpdate(workflowDestinationPartyType, securityRole);
+                                    var workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRoleForUpdate(workflowDestinationPartyType, securityRole);
                                     
                                     if(workflowDestinationSecurityRole != null) {
                                         workflowControl.deleteWorkflowDestinationSecurityRole(workflowDestinationSecurityRole, getPartyPK());

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.filter.filteradjustmentfixedamount;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.GetFilterAdjustmentFixedAmountsForm;
 import com.echothree.control.user.filter.common.result.GetFilterAdjustmentFixedAmountsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetFilterAdjustmentFixedAmountsForm getFilterAdjustmentFixedAmountsForm = FilterUtil.getHome().getGetFilterAdjustmentFixedAmountsForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+            var getFilterAdjustmentFixedAmountsForm = FilterUtil.getHome().getGetFilterAdjustmentFixedAmountsForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
             
             getFilterAdjustmentFixedAmountsForm.setFilterKindName(filterKindName);
             getFilterAdjustmentFixedAmountsForm.setFilterAdjustmentName(filterAdjustmentName);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentFixedAmounts(getUserVisitPK(request), getFilterAdjustmentFixedAmountsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentFixedAmountsResult result = (GetFilterAdjustmentFixedAmountsResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterAdjustmentFixedAmounts(getUserVisitPK(request), getFilterAdjustmentFixedAmountsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterAdjustmentFixedAmountsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT, result.getFilterAdjustment());
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT_FIXED_AMOUNTS, result.getFilterAdjustmentFixedAmounts());

@@ -18,10 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.CreateContactMechanismAliasForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -32,7 +28,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateContactMechanismAliasCommand
@@ -56,21 +51,21 @@ public class CreateContactMechanismAliasCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-            ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+            var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+            var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
 
             if(contactMechanismAliasType != null) {
-                ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
-                String validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
-                String alias = form.getAlias();
+                var contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
+                var validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
+                var alias = form.getAlias();
 
                 if(validationPattern != null) {
-                    Pattern pattern = Pattern.compile(validationPattern);
-                    Matcher m = pattern.matcher(alias);
+                    var pattern = Pattern.compile(validationPattern);
+                    var m = pattern.matcher(alias);
 
                     if(!m.matches()) {
                         addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
@@ -78,7 +73,7 @@ public class CreateContactMechanismAliasCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    ContactMechanismAlias contactMechanismAlias = contactControl.getContactMechanismAliasByAlias(contactMechanismAliasType,
+                    var contactMechanismAlias = contactControl.getContactMechanismAliasByAlias(contactMechanismAliasType,
                             alias);
 
                     if(contactMechanismAlias == null) {

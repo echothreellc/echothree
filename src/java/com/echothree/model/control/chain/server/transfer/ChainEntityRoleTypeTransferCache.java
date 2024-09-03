@@ -17,12 +17,9 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypeTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
-import com.echothree.model.data.chain.server.entity.ChainEntityRoleTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,15 +36,15 @@ public class ChainEntityRoleTypeTransferCache
     }
     
     public ChainEntityRoleTypeTransfer getChainEntityRoleTypeTransfer(ChainEntityRoleType chainEntityRoleType) {
-        ChainEntityRoleTypeTransfer chainEntityRoleTypeTransfer = get(chainEntityRoleType);
+        var chainEntityRoleTypeTransfer = get(chainEntityRoleType);
         
         if(chainEntityRoleTypeTransfer == null) {
-            ChainEntityRoleTypeDetail chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetail();
-            ChainTypeTransfer chainType = chainControl.getChainTypeTransfer(userVisit, chainEntityRoleTypeDetail.getChainType());
-            String chainEntityRoleTypeName = chainEntityRoleTypeDetail.getChainEntityRoleTypeName();
-            EntityTypeTransfer entityType = coreControl.getEntityTypeTransfer(userVisit, chainEntityRoleTypeDetail.getEntityType());
-            Integer sortOrder = chainEntityRoleTypeDetail.getSortOrder();
-            String description = chainControl.getBestChainEntityRoleTypeDescription(chainEntityRoleType, getLanguage());
+            var chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetail();
+            var chainType = chainControl.getChainTypeTransfer(userVisit, chainEntityRoleTypeDetail.getChainType());
+            var chainEntityRoleTypeName = chainEntityRoleTypeDetail.getChainEntityRoleTypeName();
+            var entityType = coreControl.getEntityTypeTransfer(userVisit, chainEntityRoleTypeDetail.getEntityType());
+            var sortOrder = chainEntityRoleTypeDetail.getSortOrder();
+            var description = chainControl.getBestChainEntityRoleTypeDescription(chainEntityRoleType, getLanguage());
             
             chainEntityRoleTypeTransfer = new ChainEntityRoleTypeTransfer(chainType, chainEntityRoleTypeName, entityType, sortOrder, description);
             put(chainEntityRoleType, chainEntityRoleTypeTransfer);

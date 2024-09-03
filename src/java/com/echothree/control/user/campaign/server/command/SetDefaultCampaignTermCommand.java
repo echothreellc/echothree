@@ -21,7 +21,6 @@ import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.value.CampaignTermDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class SetDefaultCampaignTermCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignTermName = form.getCampaignTermName();
-        CampaignTermDetailValue campaignTermDetailValue = campaignControl.getCampaignTermDetailValueByNameForUpdate(campaignTermName);
+        var campaignTermName = form.getCampaignTermName();
+        var campaignTermDetailValue = campaignControl.getCampaignTermDetailValueByNameForUpdate(campaignTermName);
         
         if(campaignTermDetailValue != null) {
             campaignTermDetailValue.setIsDefault(Boolean.TRUE);

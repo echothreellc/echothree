@@ -31,13 +31,13 @@ public class ItemDeliveryTypeTransferCache
     
     @Override
     public ItemDeliveryTypeTransfer getTransfer(ItemDeliveryType itemDeliveryType) {
-        ItemDeliveryTypeTransfer itemDeliveryTypeTransfer = get(itemDeliveryType);
+        var itemDeliveryTypeTransfer = get(itemDeliveryType);
         
         if(itemDeliveryTypeTransfer == null) {
-            String itemDeliveryTypeName = itemDeliveryType.getItemDeliveryTypeName();
-            Boolean isDefault = itemDeliveryType.getIsDefault();
-            Integer sortOrder = itemDeliveryType.getSortOrder();
-            String description = itemControl.getBestItemDeliveryTypeDescription(itemDeliveryType, getLanguage());
+            var itemDeliveryTypeName = itemDeliveryType.getItemDeliveryTypeName();
+            var isDefault = itemDeliveryType.getIsDefault();
+            var sortOrder = itemDeliveryType.getSortOrder();
+            var description = itemControl.getBestItemDeliveryTypeDescription(itemDeliveryType, getLanguage());
             
             itemDeliveryTypeTransfer = new ItemDeliveryTypeTransfer(itemDeliveryTypeName, isDefault, sortOrder, description);
             put(itemDeliveryType, itemDeliveryTypeTransfer);

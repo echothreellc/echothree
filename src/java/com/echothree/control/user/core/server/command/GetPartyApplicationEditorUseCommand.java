@@ -18,23 +18,13 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetPartyApplicationEditorUseForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetPartyApplicationEditorUseResult;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.common.transfer.EditorTransfer;
-import com.echothree.model.control.core.common.transfer.PartyApplicationEditorUseTransfer;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Application;
-import com.echothree.model.data.core.server.entity.ApplicationEditor;
-import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
-import com.echothree.model.data.core.server.entity.ApplicationEditorUseDetail;
-import com.echothree.model.data.core.server.entity.PartyApplicationEditorUse;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -75,21 +65,21 @@ public class GetPartyApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyApplicationEditorUseResult result = CoreResultFactory.getGetPartyApplicationEditorUseResult();
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
+        var result = CoreResultFactory.getGetPartyApplicationEditorUseResult();
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
-            String applicationName = form.getApplicationName();
-            Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+            var applicationName = form.getApplicationName();
+            var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
             
             if(!hasExecutionErrors()) {
-                String applicationEditorUseName = form.getApplicationEditorUseName();
-                ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                var applicationEditorUseName = form.getApplicationEditorUseName();
+                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
                     var coreControl = getCoreControl();
-                    PartyApplicationEditorUse partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
+                    var partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     var partyPK = getPartyPK();
                     
                     if(partyApplicationEditorUse == null && partyName == null) {
@@ -97,17 +87,17 @@ public class GetPartyApplicationEditorUseCommand
                     }
                     
                     if(partyApplicationEditorUse != null) {
-                        UserVisit userVisit = getUserVisit();
-                        PartyApplicationEditorUseTransfer partyApplicationEditorUseTransfer = coreControl.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
+                        var userVisit = getUserVisit();
+                        var partyApplicationEditorUseTransfer = coreControl.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
                         
                         // Fill in a few defaults in the TO of the Party is requesting this for themselves.
                         if(partyName == null) {
-                            ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getLastDetail();
-                            Integer preferredHeight = partyApplicationEditorUseTransfer.getPreferredHeight();
-                            Integer preferredWidth = partyApplicationEditorUseTransfer.getPreferredWidth();
+                            var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
+                            var preferredHeight = partyApplicationEditorUseTransfer.getPreferredHeight();
+                            var preferredWidth = partyApplicationEditorUseTransfer.getPreferredWidth();
                             
                             if(partyApplicationEditorUseTransfer.getApplicationEditor() == null) {
-                                ApplicationEditor applicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
+                                var applicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
                                         
                                 if(applicationEditor == null) {
                                     applicationEditor = coreControl.getDefaultApplicationEditor(application);
@@ -132,7 +122,7 @@ public class GetPartyApplicationEditorUseCommand
                                 }
 
                                 if(preferredHeight == null || preferredWidth == null) {
-                                    EditorTransfer editor = partyApplicationEditorUseTransfer.getApplicationEditor().getEditor();
+                                    var editor = partyApplicationEditorUseTransfer.getApplicationEditor().getEditor();
 
                                     if(preferredHeight == null) {
                                         preferredHeight = editor.getDefaultHeight();

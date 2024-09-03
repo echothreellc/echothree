@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemimagetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateItemImageTypeForm commandForm = ItemUtil.getHome().getCreateItemImageTypeForm();
+        var commandForm = ItemUtil.getHome().getCreateItemImageTypeForm();
 
         commandForm.setItemImageTypeName(actionForm.getItemImageTypeName());
         commandForm.setPreferredMimeTypeName(actionForm.getPreferredMimeTypeChoice());

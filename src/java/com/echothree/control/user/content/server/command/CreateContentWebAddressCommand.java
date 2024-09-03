@@ -21,9 +21,6 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentWebAddress;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,12 +64,12 @@ public class CreateContentWebAddressCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentWebAddressName = form.getContentWebAddressName();
-        ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress == null) {
-            String contentCollectionName = form.getContentCollectionName();
-            ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+            var contentCollectionName = form.getContentCollectionName();
+            var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
             
             if(contentCollection != null) {
                 var description = form.getDescription();
@@ -81,7 +78,7 @@ public class CreateContentWebAddressCommand
                 contentWebAddress = contentControl.createContentWebAddress(contentWebAddressName, contentCollection, partyPK);
                 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
                     
                     contentControl.createContentWebAddressDescription(contentWebAddress, language, description, partyPK);
                 }

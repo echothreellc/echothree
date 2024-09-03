@@ -22,10 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Application;
-import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
-import com.echothree.model.data.core.server.entity.PartyApplicationEditorUse;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,20 +63,20 @@ public class DeletePartyApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
-            String applicationName = form.getApplicationName();
-            Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+            var applicationName = form.getApplicationName();
+            var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
             
             if(!hasExecutionErrors()) {
-                String applicationEditorUseName = form.getApplicationEditorUseName();
-                ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                var applicationEditorUseName = form.getApplicationEditorUseName();
+                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
                     var coreControl = getCoreControl();
-                    PartyApplicationEditorUse partyApplicationEditorUse = coreControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
+                    var partyApplicationEditorUse = coreControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse != null) {
                         coreControl.deletePartyApplicationEditorUse(partyApplicationEditorUse, getPartyPK());

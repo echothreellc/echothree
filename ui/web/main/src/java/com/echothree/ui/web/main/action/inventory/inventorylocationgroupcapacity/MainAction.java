@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacity;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupCapacitiesForm;
 import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupCapacitiesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,16 +48,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetInventoryLocationGroupCapacitiesForm commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupCapacitiesForm();
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+        var commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupCapacitiesForm();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
-        
-        CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroupCapacities(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetInventoryLocationGroupCapacitiesResult result = (GetInventoryLocationGroupCapacitiesResult)executionResult.getResult();
+
+        var commandResult = InventoryUtil.getHome().getInventoryLocationGroupCapacities(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetInventoryLocationGroupCapacitiesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP, result.getInventoryLocationGroup());
         request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP_CAPACITIES, result.getInventoryLocationGroupCapacities());

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.messagetype;
 
 import com.echothree.control.user.message.common.MessageUtil;
-import com.echothree.control.user.message.common.form.GetMessageTypeDescriptionsForm;
 import com.echothree.control.user.message.common.result.GetMessageTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,18 +52,18 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
-            GetMessageTypeDescriptionsForm commandForm = MessageUtil.getHome().getGetMessageTypeDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
+            var commandForm = MessageUtil.getHome().getGetMessageTypeDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setMessageTypeName(messageTypeName);
-            
-            CommandResult commandResult = MessageUtil.getHome().getMessageTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMessageTypeDescriptionsResult result = (GetMessageTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = MessageUtil.getHome().getMessageTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMessageTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.MESSAGE_TYPE, result.getMessageType());
             request.setAttribute(AttributeConstants.MESSAGE_TYPE_DESCRIPTIONS, result.getMessageTypeDescriptions());

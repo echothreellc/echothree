@@ -18,12 +18,10 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetLeaveReasonDescriptionsForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetLeaveReasonDescriptionsResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.LeaveReason;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetLeaveReasonDescriptionsCommand
    @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetLeaveReasonDescriptionsResult result = EmployeeResultFactory.getGetLeaveReasonDescriptionsResult();
-        String leaveReasonName = form.getLeaveReasonName();
-        LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
+       var result = EmployeeResultFactory.getGetLeaveReasonDescriptionsResult();
+       var leaveReasonName = form.getLeaveReasonName();
+       var leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
         
         if(leaveReason != null) {
             result.setLeaveReason(employeeControl.getLeaveReasonTransfer(getUserVisit(), leaveReason));

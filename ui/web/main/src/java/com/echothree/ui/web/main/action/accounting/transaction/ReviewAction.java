@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transaction;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetTransactionForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionResult;
 import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
@@ -27,8 +26,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,9 +54,9 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetTransactionForm commandForm = AccountingUtil.getHome().getGetTransactionForm();
-        String transactionName = request.getParameter(ParameterConstants.TRANSACTION_NAME);
+        String forwardKey;
+        var commandForm = AccountingUtil.getHome().getGetTransactionForm();
+        var transactionName = request.getParameter(ParameterConstants.TRANSACTION_NAME);
 
         commandForm.setTransactionName(transactionName);
         
@@ -70,12 +67,12 @@ public class ReviewAction
         commandFormOptions.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(commandFormOptions);
 
-        CommandResult commandResult = AccountingUtil.getHome().getTransaction(getUserVisitPK(request), commandForm);
+        var commandResult = AccountingUtil.getHome().getTransaction(getUserVisitPK(request), commandForm);
         TransactionTransfer transaction = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionResult result = (GetTransactionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionResult)executionResult.getResult();
             
             transaction = result.getTransaction();
         }

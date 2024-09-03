@@ -22,8 +22,6 @@ import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +67,17 @@ public class CreateIndexTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
         var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
             var indexControl = Session.getModelController(IndexControl.class);
-            String indexTypeName = form.getIndexTypeName();
-            IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+            var indexTypeName = form.getIndexTypeName();
+            var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
             if(indexType == null) {
-                EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+                var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
 
                 if(!hasExecutionErrors()) {
                     var partyPK = getPartyPK();

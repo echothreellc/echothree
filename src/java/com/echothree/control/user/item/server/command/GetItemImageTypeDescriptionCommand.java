@@ -17,16 +17,12 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemImageTypeDescriptionForm;
-import com.echothree.control.user.item.common.result.GetItemImageTypeDescriptionResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemImageType;
-import com.echothree.model.data.item.server.entity.ItemImageTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetItemImageTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemImageTypeDescriptionResult result = ItemResultFactory.getGetItemImageTypeDescriptionResult();
-        String itemImageTypeName = form.getItemImageTypeName();
-        ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
+        var result = ItemResultFactory.getGetItemImageTypeDescriptionResult();
+        var itemImageTypeName = form.getItemImageTypeName();
+        var itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
         
         if(itemImageType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemImageTypeDescription itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, language);
+                var itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, language);
                 
                 if(itemImageTypeDescription != null) {
                     result.setItemImageTypeDescription(itemControl.getItemImageTypeDescriptionTransfer(getUserVisit(), itemImageTypeDescription));

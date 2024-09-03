@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendorcarrieraccount;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.DeletePartyCarrierAccountForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -66,7 +65,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyCarrierAccountForm commandForm = CarrierUtil.getHome().getDeletePartyCarrierAccountForm();
+        var commandForm = CarrierUtil.getHome().getDeletePartyCarrierAccountForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setCarrierName(actionForm.getCarrierName());

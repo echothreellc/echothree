@@ -27,10 +27,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateDescription;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateDetail;
-import com.echothree.model.data.security.server.value.PartySecurityRoleTemplateDescriptionValue;
-import com.echothree.model.data.security.server.value.PartySecurityRoleTemplateDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,8 +86,8 @@ public class EditPartySecurityRoleTemplateCommand
     @Override
     public PartySecurityRoleTemplate getEntity(EditPartySecurityRoleTemplateResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        PartySecurityRoleTemplate partySecurityRoleTemplate = null;
-        String partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
+        PartySecurityRoleTemplate partySecurityRoleTemplate;
+        var partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
@@ -123,8 +119,8 @@ public class EditPartySecurityRoleTemplateCommand
     @Override
     public void doLock(PartySecurityRoleTemplateEdit edit, PartySecurityRoleTemplate partySecurityRoleTemplate) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getPreferredLanguage());
-        PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
+        var partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getPreferredLanguage());
+        var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
         
         edit.setPartySecurityRoleTemplateName(partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName());
         edit.setIsDefault(partySecurityRoleTemplateDetail.getIsDefault().toString());
@@ -138,8 +134,8 @@ public class EditPartySecurityRoleTemplateCommand
     @Override
     public void canUpdate(PartySecurityRoleTemplate partySecurityRoleTemplate) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = edit.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate duplicatePartySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = edit.getPartySecurityRoleTemplateName();
+        var duplicatePartySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
 
         if(duplicatePartySecurityRoleTemplate != null && !partySecurityRoleTemplate.equals(duplicatePartySecurityRoleTemplate)) {
             addExecutionError(ExecutionErrors.DuplicatePartySecurityRoleTemplateName.name(), partySecurityRoleTemplateName);
@@ -150,9 +146,9 @@ public class EditPartySecurityRoleTemplateCommand
     public void doUpdate(PartySecurityRoleTemplate partySecurityRoleTemplate) {
         var securityControl = Session.getModelController(SecurityControl.class);
         var partyPK = getPartyPK();
-        PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueForUpdate(partySecurityRoleTemplate);
-        PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescriptionForUpdate(partySecurityRoleTemplate, getPreferredLanguage());
-        String description = edit.getDescription();
+        var partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueForUpdate(partySecurityRoleTemplate);
+        var partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescriptionForUpdate(partySecurityRoleTemplate, getPreferredLanguage());
+        var description = edit.getDescription();
 
         partySecurityRoleTemplateDetailValue.setPartySecurityRoleTemplateName(edit.getPartySecurityRoleTemplateName());
         partySecurityRoleTemplateDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +161,7 @@ public class EditPartySecurityRoleTemplateCommand
         } else if(partySecurityRoleTemplateDescription != null && description == null) {
             securityControl.deletePartySecurityRoleTemplateDescription(partySecurityRoleTemplateDescription, partyPK);
         } else if(partySecurityRoleTemplateDescription != null && description != null) {
-            PartySecurityRoleTemplateDescriptionValue partySecurityRoleTemplateDescriptionValue = securityControl.getPartySecurityRoleTemplateDescriptionValue(partySecurityRoleTemplateDescription);
+            var partySecurityRoleTemplateDescriptionValue = securityControl.getPartySecurityRoleTemplateDescriptionValue(partySecurityRoleTemplateDescription);
 
             partySecurityRoleTemplateDescriptionValue.setDescription(description);
             securityControl.updatePartySecurityRoleTemplateDescriptionFromValue(partySecurityRoleTemplateDescriptionValue, partyPK);

@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityAttributeDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.EntityAttributeDescription;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class EntityAttributeDescriptionTransferCache
     }
     
     public EntityAttributeDescriptionTransfer getEntityAttributeDescriptionTransfer(EntityAttributeDescription entityAttributeDescription, EntityInstance entityInstance) {
-        EntityAttributeDescriptionTransfer entityAttributeDescriptionTransfer = get(entityAttributeDescription);
+        var entityAttributeDescriptionTransfer = get(entityAttributeDescription);
         
         if(entityAttributeDescriptionTransfer == null) {
-            EntityAttributeTransfer entityAttributeTransfer = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeDescription.getEntityAttribute(), entityInstance) : null;
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAttributeDescription.getLanguage());
+            var entityAttributeTransfer = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeDescription.getEntityAttribute(), entityInstance) : null;
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAttributeDescription.getLanguage());
             
             entityAttributeDescriptionTransfer = new EntityAttributeDescriptionTransfer(languageTransfer, entityAttributeTransfer, entityAttributeDescription.getDescription());
             put(entityAttributeDescription, entityAttributeDescriptionTransfer);

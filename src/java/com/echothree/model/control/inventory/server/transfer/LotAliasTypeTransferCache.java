@@ -20,7 +20,6 @@ import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfe
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
-import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -38,15 +37,15 @@ public class LotAliasTypeTransferCache
     
     @Override
     public LotAliasTypeTransfer getTransfer(LotAliasType lotAliasType) {
-        LotAliasTypeTransfer lotAliasTypeTransfer = get(lotAliasType);
+        var lotAliasTypeTransfer = get(lotAliasType);
         
         if(lotAliasTypeTransfer == null) {
-            LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
-            String lotAliasTypeName = lotAliasTypeDetail.getLotAliasTypeName();
-            String validationPattern = lotAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = lotAliasTypeDetail.getIsDefault();
-            Integer sortOrder = lotAliasTypeDetail.getSortOrder();
-            String description = lotAliasControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage());
+            var lotAliasTypeDetail = lotAliasType.getLastDetail();
+            var lotAliasTypeName = lotAliasTypeDetail.getLotAliasTypeName();
+            var validationPattern = lotAliasTypeDetail.getValidationPattern();
+            var isDefault = lotAliasTypeDetail.getIsDefault();
+            var sortOrder = lotAliasTypeDetail.getSortOrder();
+            var description = lotAliasControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage());
             
             lotAliasTypeTransfer = new LotAliasTypeTransfer(lotAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(lotAliasType, lotAliasTypeTransfer);

@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.SetDefaultTextTransformationF
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.value.TextTransformationDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,8 +60,8 @@ public class SetDefaultTextTransformationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textTransformationName = form.getTextTransformationName();
-        TextTransformationDetailValue textTransformationDetailValue = coreControl.getTextTransformationDetailValueByNameForUpdate(textTransformationName);
+        var textTransformationName = form.getTextTransformationName();
+        var textTransformationDetailValue = coreControl.getTextTransformationDetailValueByNameForUpdate(textTransformationName);
         
         if(textTransformationDetailValue != null) {
             textTransformationDetailValue.setIsDefault(Boolean.TRUE);

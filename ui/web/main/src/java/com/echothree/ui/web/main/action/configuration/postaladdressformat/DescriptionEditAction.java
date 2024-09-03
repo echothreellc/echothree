@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.postaladdressformat;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.edit.PostalAddressFormatDescriptionEdit;
-import com.echothree.control.user.contact.common.form.EditPostalAddressFormatDescriptionForm;
 import com.echothree.control.user.contact.common.result.EditPostalAddressFormatDescriptionResult;
-import com.echothree.control.user.contact.common.spec.PostalAddressFormatDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditPostalAddressFormatDescriptionForm commandForm = ContactUtil.getHome().getEditPostalAddressFormatDescriptionForm();
-                PostalAddressFormatDescriptionSpec spec = ContactUtil.getHome().getPostalAddressFormatDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = ContactUtil.getHome().getEditPostalAddressFormatDescriptionForm();
+                var spec = ContactUtil.getHome().getPostalAddressFormatDescriptionSpec();
                 
                 if(postalAddressFormatName == null)
                     postalAddressFormatName = actionForm.getPostalAddressFormatName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    PostalAddressFormatDescriptionEdit edit = ContactUtil.getHome().getPostalAddressFormatDescriptionEdit();
+                    var edit = ContactUtil.getHome().getPostalAddressFormatDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ContactUtil.getHome().editPostalAddressFormatDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContactUtil.getHome().editPostalAddressFormatDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditPostalAddressFormatDescriptionResult result = (EditPostalAddressFormatDescriptionResult)executionResult.getResult();
+                            var result = (EditPostalAddressFormatDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ContactUtil.getHome().editPostalAddressFormatDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditPostalAddressFormatDescriptionResult result = (EditPostalAddressFormatDescriptionResult)executionResult.getResult();
+
+                    var commandResult = ContactUtil.getHome().editPostalAddressFormatDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditPostalAddressFormatDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        PostalAddressFormatDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setPostalAddressFormatName(postalAddressFormatName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMAT_NAME, postalAddressFormatName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

@@ -26,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.FontWeight;
-import com.echothree.model.data.core.server.entity.FontWeightDescription;
-import com.echothree.model.data.core.server.entity.FontWeightDetail;
-import com.echothree.model.data.core.server.value.FontWeightDescriptionValue;
-import com.echothree.model.data.core.server.value.FontWeightDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,7 +85,7 @@ public class EditFontWeightCommand
     public FontWeight getEntity(EditFontWeightResult result) {
         var coreControl = getCoreControl();
         FontWeight fontWeight;
-        String fontWeightName = spec.getFontWeightName();
+        var fontWeightName = spec.getFontWeightName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             fontWeight = coreControl.getFontWeightByName(fontWeightName);
@@ -119,8 +115,8 @@ public class EditFontWeightCommand
     @Override
     public void doLock(FontWeightEdit edit, FontWeight fontWeight) {
         var coreControl = getCoreControl();
-        FontWeightDescription fontWeightDescription = coreControl.getFontWeightDescription(fontWeight, getPreferredLanguage());
-        FontWeightDetail fontWeightDetail = fontWeight.getLastDetail();
+        var fontWeightDescription = coreControl.getFontWeightDescription(fontWeight, getPreferredLanguage());
+        var fontWeightDetail = fontWeight.getLastDetail();
 
         edit.setFontWeightName(fontWeightDetail.getFontWeightName());
         edit.setIsDefault(fontWeightDetail.getIsDefault().toString());
@@ -134,8 +130,8 @@ public class EditFontWeightCommand
     @Override
     public void canUpdate(FontWeight fontWeight) {
         var coreControl = getCoreControl();
-        String fontWeightName = edit.getFontWeightName();
-        FontWeight duplicateFontWeight = coreControl.getFontWeightByName(fontWeightName);
+        var fontWeightName = edit.getFontWeightName();
+        var duplicateFontWeight = coreControl.getFontWeightByName(fontWeightName);
 
         if(duplicateFontWeight != null && !fontWeight.equals(duplicateFontWeight)) {
             addExecutionError(ExecutionErrors.DuplicateFontWeightName.name(), fontWeightName);
@@ -146,9 +142,9 @@ public class EditFontWeightCommand
     public void doUpdate(FontWeight fontWeight) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        FontWeightDetailValue fontWeightDetailValue = coreControl.getFontWeightDetailValueForUpdate(fontWeight);
-        FontWeightDescription fontWeightDescription = coreControl.getFontWeightDescriptionForUpdate(fontWeight, getPreferredLanguage());
-        String description = edit.getDescription();
+        var fontWeightDetailValue = coreControl.getFontWeightDetailValueForUpdate(fontWeight);
+        var fontWeightDescription = coreControl.getFontWeightDescriptionForUpdate(fontWeight, getPreferredLanguage());
+        var description = edit.getDescription();
 
         fontWeightDetailValue.setFontWeightName(edit.getFontWeightName());
         fontWeightDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +159,7 @@ public class EditFontWeightCommand
                 coreControl.deleteFontWeightDescription(fontWeightDescription, partyPK);
             } else {
                 if(fontWeightDescription != null && description != null) {
-                    FontWeightDescriptionValue fontWeightDescriptionValue = coreControl.getFontWeightDescriptionValue(fontWeightDescription);
+                    var fontWeightDescriptionValue = coreControl.getFontWeightDescriptionValue(fontWeightDescription);
 
                     fontWeightDescriptionValue.setDescription(description);
                     coreControl.updateFontWeightDescriptionFromValue(fontWeightDescriptionValue, partyPK);

@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected PartyAliasTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyAliasTypeEdit edit = PartyUtil.getHome().getPartyAliasTypeEdit();
+        var edit = PartyUtil.getHome().getPartyAliasTypeEdit();
 
         edit.setPartyAliasTypeName(actionForm.getPartyAliasTypeName());
         edit.setValidationPattern(actionForm.getValidationPattern());

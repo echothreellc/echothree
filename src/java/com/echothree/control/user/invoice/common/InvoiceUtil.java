@@ -18,7 +18,6 @@ package com.echothree.control.user.invoice.common;
 
 import com.echothree.control.user.invoice.server.InvoiceLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class InvoiceUtil {
@@ -30,7 +29,7 @@ public class InvoiceUtil {
     public static InvoiceLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (InvoiceLocal)ctx.lookup("ejb:echothree/echothree-server/InvoiceBean!com.echothree.control.user.invoice.server.InvoiceLocal");
         }
@@ -42,7 +41,7 @@ public class InvoiceUtil {
     public static InvoiceRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (InvoiceRemote)ctx.lookup("ejb:echothree/echothree-server/InvoiceBean!com.echothree.control.user.invoice.common.InvoiceRemote");
         }

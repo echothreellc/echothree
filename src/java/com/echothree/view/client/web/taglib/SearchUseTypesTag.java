@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.SearchUseTypesForm;
 import com.echothree.control.user.search.common.result.SearchUseTypesResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -191,7 +188,7 @@ public class SearchUseTypesTag
     public int doStartTag()
             throws JspException {
         try {
-            SearchUseTypesForm commandForm = SearchUtil.getHome().getSearchUseTypesForm();
+            var commandForm = SearchUtil.getHome().getSearchUseTypesForm();
             
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.setSearchTypeName(searchTypeName);
@@ -205,7 +202,7 @@ public class SearchUseTypesTag
             commandForm.setFields(fields);
             commandForm.setSearchUseTypeName(searchUseTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().searchUseTypes(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().searchUseTypes(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -213,8 +210,8 @@ public class SearchUseTypesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchUseTypesResult result = (SearchUseTypesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchUseTypesResult)executionResult.getResult();
 
                 if(countVar != null) {
                     pageContext.setAttribute(countVar, result.getCount(), scope);

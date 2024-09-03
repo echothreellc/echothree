@@ -18,12 +18,10 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetGeoCodeAliasTypeChoicesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetGeoCodeAliasTypeChoicesResult;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,9 +66,9 @@ public class GetGeoCodeAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeAliasTypeChoicesResult result = GeoResultFactory.getGetGeoCodeAliasTypeChoicesResult();
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        String geoCodeName = form.getGeoCodeName();
+        var result = GeoResultFactory.getGetGeoCodeAliasTypeChoicesResult();
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeName = form.getGeoCodeName();
         var parameterCount = (geoCodeTypeName == null ? 0 : 1) + (geoCodeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -83,7 +81,7 @@ public class GetGeoCodeAliasTypeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownGeoCodeTypeName.name(), geoCodeTypeName);
                 }
             } else {
-                GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+                var geoCode = geoControl.getGeoCodeByName(geoCodeName);
                 
                 if(geoCode == null) {
                     addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
@@ -93,8 +91,8 @@ public class GetGeoCodeAliasTypeChoicesCommand
             }
 
             if(geoCodeType != null) {
-                String defaultGeoCodeAliasTypeChoice = form.getDefaultGeoCodeAliasTypeChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultGeoCodeAliasTypeChoice = form.getDefaultGeoCodeAliasTypeChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setGeoCodeAliasTypeChoices(geoControl.getGeoCodeAliasTypeChoices(defaultGeoCodeAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                         geoCodeType));

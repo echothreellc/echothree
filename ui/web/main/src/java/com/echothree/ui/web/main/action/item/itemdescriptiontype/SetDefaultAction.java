@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.SetDefaultItemDescriptionTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultItemDescriptionTypeForm commandForm = ItemUtil.getHome().getSetDefaultItemDescriptionTypeForm();
+        var commandForm = ItemUtil.getHome().getSetDefaultItemDescriptionTypeForm();
 
         commandForm.setItemDescriptionTypeName(request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME));
 

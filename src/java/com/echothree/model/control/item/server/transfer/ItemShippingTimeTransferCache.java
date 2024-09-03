@@ -16,17 +16,14 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemShippingTimeTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemShippingTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ItemShippingTimeTransferCache
         extends BaseItemTransferCache<ItemShippingTime, ItemShippingTimeTransfer> {
@@ -62,15 +59,15 @@ public class ItemShippingTimeTransferCache
     
     @Override
     public ItemShippingTimeTransfer getTransfer(ItemShippingTime itemShippingTime) {
-        ItemShippingTimeTransfer itemShippingTimeTransfer = get(itemShippingTime);
+        var itemShippingTimeTransfer = get(itemShippingTime);
         
         if(itemShippingTimeTransfer == null) {
-            ItemTransfer itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, itemShippingTime.getItem());
-            CustomerTypeTransfer customerTypeTransfer = filterCustomerType ? null : customerControl.getCustomerTypeTransfer(userVisit, itemShippingTime.getCustomerType());
-            Long unformattedShippingStartTime = itemShippingTime.getShippingStartTime();
-            String shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(unformattedShippingStartTime);
-            Long unformattedShippingEndTime = itemShippingTime.getShippingEndTime();
-            String shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(unformattedShippingEndTime);
+            var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, itemShippingTime.getItem());
+            var customerTypeTransfer = filterCustomerType ? null : customerControl.getCustomerTypeTransfer(userVisit, itemShippingTime.getCustomerType());
+            var unformattedShippingStartTime = itemShippingTime.getShippingStartTime();
+            var shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(unformattedShippingStartTime);
+            var unformattedShippingEndTime = itemShippingTime.getShippingEndTime();
+            var shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(unformattedShippingEndTime);
             
             itemShippingTimeTransfer = new ItemShippingTimeTransfer(itemTransfer, customerTypeTransfer,
                     filterUnformattedShippingStartTime ? null : unformattedShippingStartTime, shippingStartTime,

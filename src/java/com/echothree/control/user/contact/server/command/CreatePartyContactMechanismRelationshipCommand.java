@@ -19,10 +19,6 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.CreatePartyContactMechanismRelationshipForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismRelationship;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,27 +51,27 @@ public class CreatePartyContactMechanismRelationshipCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String fromContactMechanismName = form.getFromContactMechanismName();
-            ContactMechanism fromContactMechanism = contactControl.getContactMechanismByName(fromContactMechanismName);
+            var fromContactMechanismName = form.getFromContactMechanismName();
+            var fromContactMechanism = contactControl.getContactMechanismByName(fromContactMechanismName);
 
             if(fromContactMechanism != null) {
-                PartyContactMechanism fromPartyContactMechanism = contactControl.getPartyContactMechanism(party, fromContactMechanism);
+                var fromPartyContactMechanism = contactControl.getPartyContactMechanism(party, fromContactMechanism);
                 
                 if(fromPartyContactMechanism != null) {
-                    String toContactMechanismName = form.getToContactMechanismName();
-                    ContactMechanism toContactMechanism = contactControl.getContactMechanismByName(toContactMechanismName);
+                    var toContactMechanismName = form.getToContactMechanismName();
+                    var toContactMechanism = contactControl.getContactMechanismByName(toContactMechanismName);
 
                     if(toContactMechanism != null) {
-                        PartyContactMechanism toPartyContactMechanism = contactControl.getPartyContactMechanism(party, toContactMechanism);
+                        var toPartyContactMechanism = contactControl.getPartyContactMechanism(party, toContactMechanism);
                         
                         if(toPartyContactMechanism != null) {
                             if(!fromPartyContactMechanism.equals(toPartyContactMechanism)) {
-                                PartyContactMechanismRelationship partyContactMechanismRelationship = contactControl.getPartyContactMechanismRelationship(fromPartyContactMechanism, toPartyContactMechanism);
+                                var partyContactMechanismRelationship = contactControl.getPartyContactMechanismRelationship(fromPartyContactMechanism, toPartyContactMechanism);
 
                                 if(partyContactMechanismRelationship == null) {
                                     contactControl.createPartyContactMechanismRelationship(fromPartyContactMechanism, toPartyContactMechanism, getPartyPK());

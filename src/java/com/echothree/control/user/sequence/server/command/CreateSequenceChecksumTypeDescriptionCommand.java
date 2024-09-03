@@ -22,9 +22,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
-import com.echothree.model.data.sequence.server.entity.SequenceChecksumTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,16 +65,16 @@ public class CreateSequenceChecksumTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
-        SequenceChecksumType sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
+        var sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
+        var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
         
         if(sequenceChecksumType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SequenceChecksumTypeDescription sequenceChecksumTypeDescription = sequenceControl.getSequenceChecksumTypeDescription(sequenceChecksumType, language);
+                var sequenceChecksumTypeDescription = sequenceControl.getSequenceChecksumTypeDescription(sequenceChecksumType, language);
                 
                 if(sequenceChecksumTypeDescription == null) {
                     var description = form.getDescription();

@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.sequence.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.CreateSequenceForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,11 +51,11 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+        String forwardKey;
+        var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
 
         if(wasPost(request)) {
-            CreateSequenceForm commandForm = SequenceUtil.getHome().getCreateSequenceForm();
+            var commandForm = SequenceUtil.getHome().getCreateSequenceForm();
 
             if(sequenceTypeName == null) {
                 sequenceTypeName = actionForm.getSequenceTypeName();
@@ -71,7 +69,7 @@ public class AddAction
             commandForm.setValue(actionForm.getValue());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = SequenceUtil.getHome().createSequence(getUserVisitPK(request), commandForm);
+            var commandResult = SequenceUtil.getHome().createSequence(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -85,7 +83,7 @@ public class AddAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SEQUENCE_TYPE_NAME, sequenceTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

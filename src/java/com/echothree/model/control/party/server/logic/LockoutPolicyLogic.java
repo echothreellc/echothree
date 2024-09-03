@@ -18,7 +18,6 @@ package com.echothree.model.control.party.server.logic;
 
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
 import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicyDetail;
 import com.echothree.model.data.user.server.entity.UserLoginStatus;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -42,7 +41,7 @@ public class LockoutPolicyLogic {
     private void resetFailureCount(final Session session, final UserLoginStatus userLoginStatus,
             final PartyTypeLockoutPolicyDetail policyDetail) {
         if(!policyDetail.getManualLockoutReset()) {
-            Long resetFailureCountTime = policyDetail.getResetFailureCountTime();
+            var resetFailureCountTime = policyDetail.getResetFailureCountTime();
             
             if(resetFailureCountTime != null && userLoginStatus.getFailureCount() != 0) {
                 if(session.START_TIME - userLoginStatus.getLastFailureTime() > resetFailureCountTime) {
@@ -54,7 +53,7 @@ public class LockoutPolicyLogic {
     
     private void checkLockoutFailureCount(final ExecutionErrorAccumulator ema, final UserLoginStatus userLoginStatus,
             final PartyTypeLockoutPolicyDetail policyDetail) {
-        Integer lockoutFailureCount = policyDetail.getLockoutFailureCount();
+        var lockoutFailureCount = policyDetail.getLockoutFailureCount();
         
         if(lockoutFailureCount != null && userLoginStatus.getFailureCount() >= lockoutFailureCount) {
             ema.addExecutionError(ExecutionErrors.LockoutFailureCountExceeded.name());
@@ -67,8 +66,8 @@ public class LockoutPolicyLogic {
     
     private void checkLockoutInactiveTime(final Session session, final ExecutionErrorAccumulator ema,
             final UserLoginStatus userLoginStatus, final PartyTypeLockoutPolicyDetail policyDetail) {
-        Long lockoutInactiveTime = policyDetail.getLockoutInactiveTime();
-        Long lastLoginTime = userLoginStatus.getLastLoginTime();
+        var lockoutInactiveTime = policyDetail.getLockoutInactiveTime();
+        var lastLoginTime = userLoginStatus.getLastLoginTime();
         
         if(lockoutInactiveTime != null && lastLoginTime != null && session.START_TIME - userLoginStatus.getLastLoginTime() >= lockoutInactiveTime) {
             ema.addExecutionError(ExecutionErrors.LockoutInactiveTimeExceeded.name());
@@ -78,10 +77,10 @@ public class LockoutPolicyLogic {
     public void checkUserLogin(final Session session, final ExecutionErrorAccumulator ema, final Party party,
             final UserLoginStatus userLoginStatus) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyTypeLockoutPolicy policy = partyControl.getPartyTypeLockoutPolicy(party.getLastDetail().getPartyType());
+        var policy = partyControl.getPartyTypeLockoutPolicy(party.getLastDetail().getPartyType());
         
         if(policy != null) {
-            PartyTypeLockoutPolicyDetail policyDetail = policy.getLastDetail();
+            var policyDetail = policy.getLastDetail();
             
             resetFailureCount(session, userLoginStatus, policyDetail);
             checkLockoutFailureCount(ema, userLoginStatus, policyDetail);

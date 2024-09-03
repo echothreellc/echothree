@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekind;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.SetDefaultUnitOfMeasureKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-            SetDefaultUnitOfMeasureKindForm commandForm = UomUtil.getHome().getSetDefaultUnitOfMeasureKindForm();
+            var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+            var commandForm = UomUtil.getHome().getSetDefaultUnitOfMeasureKindForm();
             
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             

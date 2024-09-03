@@ -19,9 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateMimeTypeDescriptionForm;
-import com.echothree.control.user.core.common.form.CreateMimeTypeFileExtensionForm;
-import com.echothree.control.user.core.common.form.CreateMimeTypeUsageForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -52,21 +49,21 @@ public class MimeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("mimeTypeDescription")) {
-            CreateMimeTypeDescriptionForm commandForm = CoreFormFactory.getCreateMimeTypeDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateMimeTypeDescriptionForm();
 
             commandForm.setMimeTypeName(mimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             coreService.createMimeTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("mimeTypeFileExtension")) {
-            CreateMimeTypeFileExtensionForm commandForm = CoreFormFactory.getCreateMimeTypeFileExtensionForm();
+            var commandForm = CoreFormFactory.getCreateMimeTypeFileExtensionForm();
 
             commandForm.setMimeTypeName(mimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             coreService.createMimeTypeFileExtension(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("mimeTypeUsage")) {
-            CreateMimeTypeUsageForm commandForm = CoreFormFactory.getCreateMimeTypeUsageForm();
+            var commandForm = CoreFormFactory.getCreateMimeTypeUsageForm();
 
             commandForm.setMimeTypeName(mimeTypeName);
             commandForm.set(getAttrsMap(attrs));

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTransfer;
-import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -33,11 +31,11 @@ public class ItemDescriptionTypeUseTransferCache
     
     @Override
     public ItemDescriptionTypeUseTransfer getTransfer(ItemDescriptionTypeUse itemDescriptionTypeUse) {
-        ItemDescriptionTypeUseTransfer itemDescriptionTypeUseTransfer = get(itemDescriptionTypeUse);
+        var itemDescriptionTypeUseTransfer = get(itemDescriptionTypeUse);
         
         if(itemDescriptionTypeUseTransfer == null) {
-            ItemDescriptionTypeTransfer itemDescriptionType = itemControl.getItemDescriptionTypeTransfer(userVisit, itemDescriptionTypeUse.getItemDescriptionType());
-            ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeTransfer(userVisit, itemDescriptionTypeUse.getItemDescriptionTypeUseType());
+            var itemDescriptionType = itemControl.getItemDescriptionTypeTransfer(userVisit, itemDescriptionTypeUse.getItemDescriptionType());
+            var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeTransfer(userVisit, itemDescriptionTypeUse.getItemDescriptionTypeUseType());
             
             itemDescriptionTypeUseTransfer = new ItemDescriptionTypeUseTransfer(itemDescriptionType, itemDescriptionTypeUseType);
             put(itemDescriptionTypeUse, itemDescriptionTypeUseTransfer);

@@ -17,13 +17,11 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseNameElementForm;
-import com.echothree.control.user.offer.common.result.CreateUseNameElementResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.logic.UseNameElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,14 +64,14 @@ public class CreateUseNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        CreateUseNameElementResult result = OfferResultFactory.getCreateUseNameElementResult();
-        String useNameElementName = form.getUseNameElementName();
-        Integer offset = Integer.valueOf(form.getOffset());
-        Integer length = Integer.valueOf(form.getLength());
-        String validationPattern = form.getValidationPattern();
+        var result = OfferResultFactory.getCreateUseNameElementResult();
+        var useNameElementName = form.getUseNameElementName();
+        var offset = Integer.valueOf(form.getOffset());
+        var length = Integer.valueOf(form.getLength());
+        var validationPattern = form.getValidationPattern();
         var description = form.getDescription();
 
-        UseNameElement useNameElement = UseNameElementLogic.getInstance().createUseNameElement(this,
+        var useNameElement = UseNameElementLogic.getInstance().createUseNameElement(this,
                 useNameElementName, offset, length, validationPattern, getPreferredLanguage(), description,
                 getPartyPK());
 

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.searchkind;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.CreateSearchKindForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSearchKindForm commandForm = SearchUtil.getHome().getCreateSearchKindForm();
+        var commandForm = SearchUtil.getHome().getCreateSearchKindForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

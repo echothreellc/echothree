@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetBirthdayFormatsForm;
-import com.echothree.control.user.party.common.result.GetBirthdayFormatsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -60,7 +59,7 @@ public class GetBirthdayFormatsCommand
     
     @Override
     protected BaseResult execute() {
-        GetBirthdayFormatsResult result = PartyResultFactory.getGetBirthdayFormatsResult();
+        var result = PartyResultFactory.getGetBirthdayFormatsResult();
         var partyControl = Session.getModelController(PartyControl.class);
         
         result.setBirthdayFormats(partyControl.getBirthdayFormatTransfers(getUserVisit()));

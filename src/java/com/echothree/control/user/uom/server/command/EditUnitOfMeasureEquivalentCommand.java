@@ -19,14 +19,9 @@ package com.echothree.control.user.uom.server.command;
 import com.echothree.control.user.uom.common.edit.UnitOfMeasureEquivalentEdit;
 import com.echothree.control.user.uom.common.edit.UomEditFactory;
 import com.echothree.control.user.uom.common.form.EditUnitOfMeasureEquivalentForm;
-import com.echothree.control.user.uom.common.result.EditUnitOfMeasureEquivalentResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.control.user.uom.common.spec.UnitOfMeasureEquivalentSpec;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.uom.server.value.UnitOfMeasureEquivalentValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,23 +60,23 @@ public class EditUnitOfMeasureEquivalentCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        EditUnitOfMeasureEquivalentResult result = UomResultFactory.getEditUnitOfMeasureEquivalentResult();
-        String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var result = UomResultFactory.getEditUnitOfMeasureEquivalentResult();
+        var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String fromUnitOfMeasureTypeName = spec.getFromUnitOfMeasureTypeName();
-            UnitOfMeasureType fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
+            var fromUnitOfMeasureTypeName = spec.getFromUnitOfMeasureTypeName();
+            var fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
                     fromUnitOfMeasureTypeName);
             
             if(fromUnitOfMeasureType != null) {
-                String toUnitOfMeasureTypeName = spec.getToUnitOfMeasureTypeName();
-                UnitOfMeasureType toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
+                var toUnitOfMeasureTypeName = spec.getToUnitOfMeasureTypeName();
+                var toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
                         toUnitOfMeasureTypeName);
                 
                 if(toUnitOfMeasureType != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        UnitOfMeasureEquivalent unitOfMeasureEquivalent = uomControl.getUnitOfMeasureEquivalent(fromUnitOfMeasureType,
+                        var unitOfMeasureEquivalent = uomControl.getUnitOfMeasureEquivalent(fromUnitOfMeasureType,
                                 toUnitOfMeasureType);
                         
                         if(unitOfMeasureEquivalent != null) {
@@ -89,7 +84,7 @@ public class EditUnitOfMeasureEquivalentCommand
                                     unitOfMeasureEquivalent));
                             
                             if(lockEntity(unitOfMeasureKind)) {
-                                UnitOfMeasureEquivalentEdit edit = UomEditFactory.getUnitOfMeasureEquivalentEdit();
+                                var edit = UomEditFactory.getUnitOfMeasureEquivalentEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setToQuantity(unitOfMeasureEquivalent.getToQuantity().toString());
@@ -102,7 +97,7 @@ public class EditUnitOfMeasureEquivalentCommand
                             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureEquivalent.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        UnitOfMeasureEquivalentValue unitOfMeasureEquivalentValue = uomControl.getUnitOfMeasureEquivalentValueForUpdate(fromUnitOfMeasureType,
+                        var unitOfMeasureEquivalentValue = uomControl.getUnitOfMeasureEquivalentValueForUpdate(fromUnitOfMeasureType,
                                 toUnitOfMeasureType);
                         
                         if(unitOfMeasureEquivalentValue != null) {

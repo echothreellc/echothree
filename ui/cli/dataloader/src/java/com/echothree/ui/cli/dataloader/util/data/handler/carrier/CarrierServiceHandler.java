@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.carrier;
 import com.echothree.control.user.carrier.common.CarrierUtil;
 import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
-import com.echothree.control.user.carrier.common.form.CreateCarrierServiceDescriptionForm;
-import com.echothree.control.user.carrier.common.form.CreateCarrierServiceOptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -54,9 +52,9 @@ public class CarrierServiceHandler
         if(localName.equals("carrierServiceDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -64,7 +62,7 @@ public class CarrierServiceHandler
             }
             
             try {
-                CreateCarrierServiceDescriptionForm commandForm = CarrierFormFactory.getCreateCarrierServiceDescriptionForm();
+                var commandForm = CarrierFormFactory.getCreateCarrierServiceDescriptionForm();
                 
                 commandForm.setCarrierName(carrierName);
                 commandForm.setCarrierServiceName(carrierServiceName);
@@ -85,9 +83,9 @@ public class CarrierServiceHandler
             String requiredOrderSelectorName = null;
             String recommendedShipmentSelectorName = null;
             String requiredShipmentSelectorName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("carrierOptionName"))
                     carrierOptionName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isRecommended"))
@@ -109,7 +107,7 @@ public class CarrierServiceHandler
             }
             
             try {
-                CreateCarrierServiceOptionForm commandForm = CarrierFormFactory.getCreateCarrierServiceOptionForm();
+                var commandForm = CarrierFormFactory.getCreateCarrierServiceOptionForm();
                 
                 commandForm.setCarrierName(carrierName);
                 commandForm.setCarrierServiceName(carrierServiceName);

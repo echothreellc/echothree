@@ -18,7 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.DeleteEmploymentForm;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.data.employee.server.entity.Employment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteEmploymentCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employmentName = form.getEmploymentName();
-        Employment employment = employeeControl.getEmploymentByNameForUpdate(employmentName);
+        var employmentName = form.getEmploymentName();
+        var employment = employeeControl.getEmploymentByNameForUpdate(employmentName);
 
         if(employment != null) {
             employeeControl.deleteEmployment(employment, getPartyPK());

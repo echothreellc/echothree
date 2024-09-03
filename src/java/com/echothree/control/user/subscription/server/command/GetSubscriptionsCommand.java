@@ -17,15 +17,10 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.GetSubscriptionsForm;
-import com.echothree.control.user.subscription.common.result.GetSubscriptionsResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
-import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -57,17 +52,17 @@ public class GetSubscriptionsCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        GetSubscriptionsResult result = SubscriptionResultFactory.getGetSubscriptionsResult();
-        String subscriptionKindName = form.getSubscriptionKindName();
-        String subscriptionTypeName = form.getSubscriptionTypeName();
-        String partyName = form.getPartyName();
-        UserVisit userVisit = getUserVisit();
+        var result = SubscriptionResultFactory.getGetSubscriptionsResult();
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionTypeName = form.getSubscriptionTypeName();
+        var partyName = form.getPartyName();
+        var userVisit = getUserVisit();
         
         if(subscriptionKindName != null && subscriptionTypeName != null && partyName == null) {
-            SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+            var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
             
             if(subscriptionKind != null) {
-                SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+                var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
                 
                 result.setSubscriptionKind(subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKind));
                 
@@ -82,7 +77,7 @@ public class GetSubscriptionsCommand
             }
         } else if(subscriptionKindName == null && subscriptionTypeName == null && partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            Party party = partyControl.getPartyByName(partyName);
+            var party = partyControl.getPartyByName(partyName);
             
             if(party != null) {
                 result.setParty(partyControl.getPartyTransfer(userVisit, party));

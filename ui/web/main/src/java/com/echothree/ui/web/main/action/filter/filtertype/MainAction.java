@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.filter.filtertype;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.GetFilterTypesForm;
 import com.echothree.control.user.filter.common.result.GetFilterTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetFilterTypesForm commandForm = FilterUtil.getHome().getGetFilterTypesForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var commandForm = FilterUtil.getHome().getGetFilterTypesForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
             
             commandForm.setFilterKindName(filterKindName);
 
-            CommandResult commandResult = FilterUtil.getHome().getFilterTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterTypesResult getFilterTypesResult = (GetFilterTypesResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getFilterTypesResult = (GetFilterTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_KIND, getFilterTypesResult.getFilterKind());
             request.setAttribute(AttributeConstants.FILTER_TYPES, getFilterTypesResult.getFilterTypes());

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.divisioncontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.DeleteContactMechanismForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -66,7 +65,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContactMechanismForm commandForm = ContactUtil.getHome().getDeleteContactMechanismForm();
+        var commandForm = ContactUtil.getHome().getDeleteContactMechanismForm();
         
         commandForm.setContactMechanismName(actionForm.getContactMechanismName());
 

@@ -28,7 +28,7 @@ public class Databases {
     }
     
     public Database addDatabase(String name) {
-        Database result = (Database)myDatabases.get(name);
+        var result = myDatabases.get(name);
         
         if(result == null) {
             result = new Database(name);
@@ -39,7 +39,7 @@ public class Databases {
     }
     
     public Database getDatabase(String name) throws Exception {
-        Database result = (Database)myDatabases.get(name);
+        var result = myDatabases.get(name);
         
         if(result == null)
             throw new Exception("Database \"" + name + "\" doesn't exist");

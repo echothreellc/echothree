@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPrinterStatusChoicesForm;
 import com.echothree.control.user.printer.common.result.GetPrinterStatusChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -43,14 +40,14 @@ public class StatusActionForm
     public void setupPrinterStatusChoices()
             throws NamingException {
         if(printerStatusChoices == null) {
-            GetPrinterStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterStatusChoicesForm();
+            var form = PrinterUtil.getHome().getGetPrinterStatusChoicesForm();
 
             form.setPrinterName(printerName);
             form.setDefaultPrinterStatusChoice(printerStatusChoice);
 
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterStatusChoicesResult getPrinterStatusChoicesResult = (GetPrinterStatusChoicesResult)executionResult.getResult();
+            var commandResult = PrinterUtil.getHome().getPrinterStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPrinterStatusChoicesResult = (GetPrinterStatusChoicesResult)executionResult.getResult();
             printerStatusChoices = getPrinterStatusChoicesResult.getPrinterStatusChoices();
 
             if(printerStatusChoice == null)

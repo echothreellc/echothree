@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentCatalogItemForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentCatalogItemResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.content.server.control.ContentControl;
@@ -26,18 +25,9 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentWebAddress;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -76,8 +66,8 @@ public class GetContentCatalogItemCommand
     
     @Override
     protected ContentCatalogItem getEntity() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         ContentCatalogItem contentCatalogItem = null;
 
@@ -86,7 +76,7 @@ public class GetContentCatalogItemCommand
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -103,35 +93,35 @@ public class GetContentCatalogItemCommand
 
             if(!hasExecutionErrors()) {
                 var itemControl = Session.getModelController(ItemControl.class);
-                String itemName = form.getItemName();
-                Item item = itemControl.getItemByName(itemName);
+                var itemName = form.getItemName();
+                var item = itemControl.getItemByName(itemName);
 
                 if(item != null) {
                     var inventoryControl = Session.getModelController(InventoryControl.class);
-                    String inventoryConditionName = form.getInventoryConditionName();
-                    InventoryCondition inventoryCondition = inventoryConditionName == null ? inventoryControl.getDefaultInventoryCondition()
+                    var inventoryConditionName = form.getInventoryConditionName();
+                    var inventoryCondition = inventoryConditionName == null ? inventoryControl.getDefaultInventoryCondition()
                             : inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
                         var uomControl = Session.getModelController(UomControl.class);
-                        String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                        ItemDetail itemDetail = item.getLastDetail();
-                        UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-                        UnitOfMeasureType unitOfMeasureType = unitOfMeasureTypeName == null ? uomControl.getDefaultUnitOfMeasureType(unitOfMeasureKind)
+                        var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                        var itemDetail = item.getLastDetail();
+                        var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+                        var unitOfMeasureType = unitOfMeasureTypeName == null ? uomControl.getDefaultUnitOfMeasureType(unitOfMeasureKind)
                                 : uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                         if(unitOfMeasureType != null) {
                             var accountingControl = Session.getModelController(AccountingControl.class);
-                            String currencyIsoName = form.getCurrencyIsoName();
-                            Currency currency = currencyIsoName == null ? accountingControl.getDefaultCurrency()
+                            var currencyIsoName = form.getCurrencyIsoName();
+                            var currency = currencyIsoName == null ? accountingControl.getDefaultCurrency()
                                     : accountingControl.getCurrencyByIsoName(currencyIsoName);
 
                             if(currency != null) {
-                                String contentCatalogName = form.getContentCatalogName();
+                                var contentCatalogName = form.getContentCatalogName();
                                 var partyPK = getPartyPK();
-                                UserVisit userVisit = getUserVisitForUpdate();
+                                var userVisit = getUserVisitForUpdate();
 
-                                ContentCatalog contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
+                                var contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
                                         : contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
                                 if(contentCatalog != null) {
@@ -192,7 +182,7 @@ public class GetContentCatalogItemCommand
     
     @Override
     protected BaseResult getResult(ContentCatalogItem contentCatalogItem) {
-        GetContentCatalogItemResult result = ContentResultFactory.getGetContentCatalogItemResult();
+        var result = ContentResultFactory.getGetContentCatalogItemResult();
 
         if (contentCatalogItem != null) {
             var contentControl = Session.getModelController(ContentControl.class);

@@ -19,7 +19,6 @@ package com.echothree.control.user.returnpolicy.server.command;
 import com.echothree.control.user.returnpolicy.common.edit.ReturnPolicyEditFactory;
 import com.echothree.control.user.returnpolicy.common.edit.ReturnReasonDescriptionEdit;
 import com.echothree.control.user.returnpolicy.common.form.EditReturnReasonDescriptionForm;
-import com.echothree.control.user.returnpolicy.common.result.EditReturnReasonDescriptionResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.control.user.returnpolicy.common.spec.ReturnReasonDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -27,11 +26,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonDescription;
-import com.echothree.model.data.returnpolicy.server.value.ReturnReasonDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -81,28 +75,28 @@ public class EditReturnReasonDescriptionCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        EditReturnReasonDescriptionResult result = ReturnPolicyResultFactory.getEditReturnReasonDescriptionResult();
-        String returnKindName = spec.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getEditReturnReasonDescriptionResult();
+        var returnKindName = spec.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnReasonName = spec.getReturnReasonName();
-            ReturnReason returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+            var returnReasonName = spec.getReturnReasonName();
+            var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
             
             if(returnReason != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        ReturnReasonDescription returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language);
+                        var returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language);
                         
                         if(returnReasonDescription != null) {
                             result.setReturnReasonDescription(returnPolicyControl.getReturnReasonDescriptionTransfer(getUserVisit(), returnReasonDescription));
                             
                             if(lockEntity(returnReason)) {
-                                ReturnReasonDescriptionEdit edit = ReturnPolicyEditFactory.getReturnReasonDescriptionEdit();
+                                var edit = ReturnPolicyEditFactory.getReturnReasonDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(returnReasonDescription.getDescription());
@@ -115,12 +109,12 @@ public class EditReturnReasonDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownReturnReasonDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        ReturnReasonDescriptionValue returnReasonDescriptionValue = returnPolicyControl.getReturnReasonDescriptionValueForUpdate(returnReason, language);
+                        var returnReasonDescriptionValue = returnPolicyControl.getReturnReasonDescriptionValueForUpdate(returnReason, language);
                         
                         if(returnReasonDescriptionValue != null) {
                             if(lockEntityForUpdate(returnReason)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     returnReasonDescriptionValue.setDescription(description);
                                     

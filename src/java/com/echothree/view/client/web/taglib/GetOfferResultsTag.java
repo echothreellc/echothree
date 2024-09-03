@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetOfferResultsForm;
 import com.echothree.control.user.search.common.result.GetOfferResultsResult;
 import com.echothree.model.data.search.common.SearchResultConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -114,7 +111,7 @@ public class GetOfferResultsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetOfferResultsForm commandForm = SearchUtil.getHome().getGetOfferResultsForm();
+            var commandForm = SearchUtil.getHome().getGetOfferResultsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setSearchTypeName(searchTypeName);
@@ -127,8 +124,8 @@ public class GetOfferResultsTag
                 limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit(offerResultCount, offerResultOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = SearchUtil.getHome().getOfferResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getOfferResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -136,8 +133,8 @@ public class GetOfferResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetOfferResultsResult result = (GetOfferResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetOfferResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getOfferResults()), scope);
 

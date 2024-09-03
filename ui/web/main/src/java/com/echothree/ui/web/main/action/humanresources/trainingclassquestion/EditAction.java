@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected TrainingClassQuestionSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TrainingClassQuestionSpec spec = TrainingUtil.getHome().getTrainingClassQuestionSpec();
+        var spec = TrainingUtil.getHome().getTrainingClassQuestionSpec();
         
         spec.setTrainingClassName(findParameter(request, ParameterConstants.TRAINING_CLASS_NAME, actionForm.getTrainingClassName()));
         spec.setTrainingClassSectionName(findParameter(request, ParameterConstants.TRAINING_CLASS_SECTION_NAME, actionForm.getTrainingClassSectionName()));
@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected TrainingClassQuestionEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TrainingClassQuestionEdit edit = TrainingUtil.getHome().getTrainingClassQuestionEdit();
+        var edit = TrainingUtil.getHome().getTrainingClassQuestionEdit();
 
         edit.setTrainingClassQuestionName(actionForm.getTrainingClassQuestionName());
         edit.setAskingRequired(actionForm.getAskingRequired().toString());

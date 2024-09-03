@@ -21,7 +21,6 @@ import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.value.SourceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class SetDefaultSourceCommand
     @Override
     protected BaseResult execute() {
         var sourceControl = Session.getModelController(SourceControl.class);
-        String sourceName = form.getSourceName();
-        SourceDetailValue sourceDetailValue = sourceControl.getSourceDetailValueByNameForUpdate(sourceName);
+        var sourceName = form.getSourceName();
+        var sourceDetailValue = sourceControl.getSourceDetailValueByNameForUpdate(sourceName);
         
         if(sourceDetailValue != null) {
             sourceDetailValue.setIsDefault(Boolean.TRUE);

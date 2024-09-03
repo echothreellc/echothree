@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.purchasing.itempurchasingcategory;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetItemPurchasingCategoryChoicesForm;
 import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryChoicesResult;
 import com.echothree.model.control.vendor.common.choice.ItemPurchasingCategoryChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +42,14 @@ public class AddActionForm
     private void setupParentItemPurchasingCategoryChoices() {
         if(parentItemPurchasingCategoryChoices == null) {
             try {
-                GetItemPurchasingCategoryChoicesForm form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
+                var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
                 
                 form.setDefaultItemPurchasingCategoryChoice(parentItemPurchasingCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemPurchasingCategoryChoicesResult getItemPurchasingCategoryChoicesResult = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemPurchasingCategoryChoicesResult = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
                 parentItemPurchasingCategoryChoices = getItemPurchasingCategoryChoicesResult.getItemPurchasingCategoryChoices();
                 
                 if(parentItemPurchasingCategoryChoice == null)

@@ -25,7 +25,6 @@ import com.echothree.model.control.selector.common.exception.DuplicateSelectorKi
 import com.echothree.model.control.selector.common.exception.UnknownDefaultSelectorKindException;
 import com.echothree.model.control.selector.common.exception.UnknownSelectorKindNameException;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;

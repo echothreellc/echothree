@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.form.CreateTaxDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,11 +51,11 @@ public class DescriptionAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, DescriptionAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        String forwardKey;
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         
         if(wasPost(request)) {
-            CreateTaxDescriptionForm commandForm = TaxUtil.getHome().getCreateTaxDescriptionForm();
+            var commandForm = TaxUtil.getHome().getCreateTaxDescriptionForm();
             
             if(taxName == null)
                 taxName = actionForm.getTaxName();
@@ -65,8 +63,8 @@ public class DescriptionAddAction
             commandForm.setTaxName(taxName);
             commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = TaxUtil.getHome().createTaxDescription(getUserVisitPK(request), commandForm);
+
+            var commandResult = TaxUtil.getHome().createTaxDescription(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -78,8 +76,8 @@ public class DescriptionAddAction
             actionForm.setTaxName(taxName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.TAX_NAME, taxName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

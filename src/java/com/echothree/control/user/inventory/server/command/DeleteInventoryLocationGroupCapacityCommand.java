@@ -20,12 +20,7 @@ import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationG
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
-import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupCapacity;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -58,26 +53,26 @@ public class DeleteInventoryLocationGroupCapacityCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
+            var inventoryLocationGroupName = form.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
                     inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-                UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 
                 if(unitOfMeasureKind != null) {
-                    String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                    UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                    var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                    var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                     
                     if(unitOfMeasureType != null) {
-                        InventoryLocationGroupCapacity inventoryLocationGroupCapacity = inventoryControl.getInventoryLocationGroupCapacityForUpdate(inventoryLocationGroup,
+                        var inventoryLocationGroupCapacity = inventoryControl.getInventoryLocationGroupCapacityForUpdate(inventoryLocationGroup,
                                 unitOfMeasureType);
                         
                         if(inventoryLocationGroupCapacity != null) {

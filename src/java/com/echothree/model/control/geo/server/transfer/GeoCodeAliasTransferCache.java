@@ -17,9 +17,6 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeAliasTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeAliasTypeTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -33,13 +30,13 @@ public class GeoCodeAliasTransferCache
     }
     
     public GeoCodeAliasTransfer getGeoCodeAliasTransfer(GeoCodeAlias geoCodeAlias) {
-        GeoCodeAliasTransfer geoCodeAliasTransfer = get(geoCodeAlias);
+        var geoCodeAliasTransfer = get(geoCodeAlias);
         
         if(geoCodeAliasTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeAlias.getGeoCode());
-            GeoCodeScopeTransfer geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeAlias.getGeoCodeScope());
-            GeoCodeAliasTypeTransfer geoCodeAliasType = geoControl.getGeoCodeAliasTypeTransfer(userVisit, geoCodeAlias.getGeoCodeAliasType());
-            String alias = geoCodeAlias.getAlias();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeAlias.getGeoCode());
+            var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeAlias.getGeoCodeScope());
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeTransfer(userVisit, geoCodeAlias.getGeoCodeAliasType());
+            var alias = geoCodeAlias.getAlias();
             
             geoCodeAliasTransfer = new GeoCodeAliasTransfer(geoCode, geoCodeScope, geoCodeAliasType, alias);
             put(geoCodeAlias, geoCodeAliasTransfer);

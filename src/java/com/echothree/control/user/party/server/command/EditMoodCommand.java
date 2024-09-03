@@ -19,20 +19,11 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.edit.MoodEdit;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
 import com.echothree.control.user.party.common.form.EditMoodForm;
-import com.echothree.control.user.party.common.result.EditMoodResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.MoodSpec;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.icon.server.entity.Icon;
-import com.echothree.model.data.icon.server.entity.IconUsage;
-import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.party.server.entity.Mood;
-import com.echothree.model.data.party.server.entity.MoodDescription;
-import com.echothree.model.data.party.server.entity.MoodDetail;
-import com.echothree.model.data.party.server.value.MoodDescriptionValue;
-import com.echothree.model.data.party.server.value.MoodDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -73,20 +64,20 @@ public class EditMoodCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditMoodResult result = PartyResultFactory.getEditMoodResult();
+        var result = PartyResultFactory.getEditMoodResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String moodName = spec.getMoodName();
-            Mood mood = partyControl.getMoodByName(moodName);
+            var moodName = spec.getMoodName();
+            var mood = partyControl.getMoodByName(moodName);
             
             if(mood != null) {
                 result.setMood(partyControl.getMoodTransfer(getUserVisit(), mood));
                 
                 if(lockEntity(mood)) {
-                    MoodDescription moodDescription = partyControl.getMoodDescription(mood, getPreferredLanguage());
-                    MoodEdit edit = PartyEditFactory.getMoodEdit();
-                    MoodDetail moodDetail = mood.getLastDetail();
-                    Icon icon = moodDetail.getIcon();
+                    var moodDescription = partyControl.getMoodDescription(mood, getPreferredLanguage());
+                    var edit = PartyEditFactory.getMoodEdit();
+                    var moodDetail = mood.getLastDetail();
+                    var icon = moodDetail.getIcon();
                     
                     result.setEdit(edit);
                     edit.setMoodName(moodDetail.getMoodName());
@@ -105,22 +96,22 @@ public class EditMoodCommand
                 addExecutionError(ExecutionErrors.UnknownMoodName.name(), moodName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String moodName = spec.getMoodName();
-            Mood mood = partyControl.getMoodByNameForUpdate(moodName);
+            var moodName = spec.getMoodName();
+            var mood = partyControl.getMoodByNameForUpdate(moodName);
             
             if(mood != null) {
                 moodName = edit.getMoodName();
-                Mood duplicateMood = partyControl.getMoodByName(moodName);
+                var duplicateMood = partyControl.getMoodByName(moodName);
                 
                 if(duplicateMood == null || mood.equals(duplicateMood)) {
                     var iconControl = Session.getModelController(IconControl.class);
-                    String iconName = edit.getIconName();
-                    Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
+                    var iconName = edit.getIconName();
+                    var icon = iconName == null? null: iconControl.getIconByName(iconName);
 
                     if(iconName == null || icon != null) {
                         if(icon != null) {
-                            IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_MOOD);
-                            IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, icon);
+                            var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_MOOD);
+                            var iconUsage = iconControl.getIconUsage(iconUsageType, icon);
 
                             if(iconUsage == null) {
                                 addExecutionError(ExecutionErrors.UnknownIconUsage.name());
@@ -131,9 +122,9 @@ public class EditMoodCommand
                             if(lockEntityForUpdate(mood)) {
                                 try {
                                     var partyPK = getPartyPK();
-                                    MoodDetailValue moodDetailValue = partyControl.getMoodDetailValueForUpdate(mood);
-                                    MoodDescription moodDescription = partyControl.getMoodDescriptionForUpdate(mood, getPreferredLanguage());
-                                    String description = edit.getDescription();
+                                    var moodDetailValue = partyControl.getMoodDetailValueForUpdate(mood);
+                                    var moodDescription = partyControl.getMoodDescriptionForUpdate(mood, getPreferredLanguage());
+                                    var description = edit.getDescription();
 
                                     moodDetailValue.setMoodName(edit.getMoodName());
                                     moodDetailValue.setIconPK(icon == null? null: icon.getPrimaryKey());
@@ -147,7 +138,7 @@ public class EditMoodCommand
                                     } else if(moodDescription != null && description == null) {
                                         partyControl.deleteMoodDescription(moodDescription, partyPK);
                                     } else if(moodDescription != null && description != null) {
-                                        MoodDescriptionValue moodDescriptionValue = partyControl.getMoodDescriptionValue(moodDescription);
+                                        var moodDescriptionValue = partyControl.getMoodDescriptionValue(moodDescription);
 
                                         moodDescriptionValue.setDescription(description);
                                         partyControl.updateMoodDescriptionFromValue(moodDescriptionValue, partyPK);

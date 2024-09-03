@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionTypeDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.TransactionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class TransactionTypeDescriptionTransferCache
     
     @Override
     public TransactionTypeDescriptionTransfer getTransfer(TransactionTypeDescription transactionTypeDescription) {
-        TransactionTypeDescriptionTransfer transactionTypeDescriptionTransfer = get(transactionTypeDescription);
+        var transactionTypeDescriptionTransfer = get(transactionTypeDescription);
         
         if(transactionTypeDescriptionTransfer == null) {
-            TransactionTypeTransferCache transactionTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
-            TransactionTypeTransfer transactionTypeTransfer = transactionTypeTransferCache.getTransfer(transactionTypeDescription.getTransactionType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTypeDescription.getLanguage());
+            var transactionTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
+            var transactionTypeTransfer = transactionTypeTransferCache.getTransfer(transactionTypeDescription.getTransactionType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTypeDescription.getLanguage());
             
             transactionTypeDescriptionTransfer = new TransactionTypeDescriptionTransfer(languageTransfer, transactionTypeTransfer, transactionTypeDescription.getDescription());
             put(transactionTypeDescription, transactionTypeDescriptionTransfer);

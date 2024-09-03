@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.forum.forumforumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.edit.ForumForumThreadEdit;
-import com.echothree.control.user.forum.common.form.EditForumForumThreadForm;
 import com.echothree.control.user.forum.common.result.EditForumForumThreadResult;
-import com.echothree.control.user.forum.common.spec.ForumForumThreadSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -59,12 +54,12 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        EditActionForm actionForm = (EditActionForm)form;
-        EditForumForumThreadForm commandForm = ForumUtil.getHome().getEditForumForumThreadForm();
-        ForumForumThreadSpec spec = ForumUtil.getHome().getForumForumThreadSpec();
+        String forwardKey;
+        var forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var actionForm = (EditActionForm)form;
+        var commandForm = ForumUtil.getHome().getEditForumForumThreadForm();
+        var spec = ForumUtil.getHome().getForumForumThreadSpec();
         
         if(forumName == null)
             forumName = actionForm.getForumName();
@@ -76,21 +71,21 @@ public class EditAction
         spec.setForumThreadName(forumThreadName);
         
         if(wasPost(request)) {
-            ForumForumThreadEdit edit = ForumUtil.getHome().getForumForumThreadEdit();
+            var edit = ForumUtil.getHome().getForumForumThreadEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
             
             edit.setIsDefault(actionForm.getIsDefault().toString());
             edit.setSortOrder(actionForm.getSortOrder());
-            
-            CommandResult commandResult = ForumUtil.getHome().editForumForumThread(getUserVisitPK(request), commandForm);
+
+            var commandResult = ForumUtil.getHome().editForumForumThread(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditForumForumThreadResult result = (EditForumForumThreadResult)executionResult.getResult();
+                    var result = (EditForumForumThreadResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -103,13 +98,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = ForumUtil.getHome().editForumForumThread(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditForumForumThreadResult result = (EditForumForumThreadResult)executionResult.getResult();
+
+            var commandResult = ForumUtil.getHome().editForumForumThread(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditForumForumThreadResult)executionResult.getResult();
             
             if(result != null) {
-                ForumForumThreadEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setForumName(forumName);
@@ -125,8 +120,8 @@ public class EditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_THREAD_NAME, forumThreadName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

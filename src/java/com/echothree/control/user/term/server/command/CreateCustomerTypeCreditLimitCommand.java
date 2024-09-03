@@ -20,9 +20,6 @@ import com.echothree.control.user.term.common.form.CreateCustomerTypeCreditLimit
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,23 +53,23 @@ public class CreateCustomerTypeCreditLimitCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = form.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = form.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
                 var termControl = Session.getModelController(TermControl.class);
-                CustomerTypeCreditLimit customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency);
+                var customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency);
                 
                 if(customerTypeCreditLimit == null) {
-                    String strCreditLimit = form.getCreditLimit();
-                    Long creditLimit = strCreditLimit == null? null: Long.valueOf(strCreditLimit);
-                    String strPotentialCreditLimit = form.getPotentialCreditLimit();
-                    Long potentialCreditLimit = strPotentialCreditLimit == null? null: Long.valueOf(strPotentialCreditLimit);
+                    var strCreditLimit = form.getCreditLimit();
+                    var creditLimit = strCreditLimit == null? null: Long.valueOf(strCreditLimit);
+                    var strPotentialCreditLimit = form.getPotentialCreditLimit();
+                    var potentialCreditLimit = strPotentialCreditLimit == null? null: Long.valueOf(strPotentialCreditLimit);
                     
                     if(creditLimit != null || potentialCreditLimit != null) {
                         termControl.createCustomerTypeCreditLimit(customerType, currency, creditLimit, potentialCreditLimit,

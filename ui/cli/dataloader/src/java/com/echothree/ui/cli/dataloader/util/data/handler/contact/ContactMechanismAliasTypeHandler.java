@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
-import com.echothree.control.user.contact.common.form.CreateContactMechanismAliasTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,9 +49,9 @@ public class ContactMechanismAliasTypeHandler
         if(localName.equals("contactMechanismAliasTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class ContactMechanismAliasTypeHandler
             }
             
             try {
-                CreateContactMechanismAliasTypeDescriptionForm createContactMechanismAliasTypeDescriptionForm = ContactFormFactory.getCreateContactMechanismAliasTypeDescriptionForm();
+                var createContactMechanismAliasTypeDescriptionForm = ContactFormFactory.getCreateContactMechanismAliasTypeDescriptionForm();
                 
                 createContactMechanismAliasTypeDescriptionForm.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
                 createContactMechanismAliasTypeDescriptionForm.setLanguageIsoName(languageIsoName);

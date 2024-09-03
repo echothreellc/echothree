@@ -18,25 +18,18 @@ package com.echothree.model.control.offer.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.transfer.OfferUseTransferCache;
-import com.echothree.model.data.offer.common.pk.OfferPK;
-import com.echothree.model.data.offer.common.pk.OfferUsePK;
-import com.echothree.model.data.offer.common.pk.UsePK;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.OfferUseDetail;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.factory.OfferUseDetailFactory;
 import com.echothree.model.data.offer.server.factory.OfferUseFactory;
 import com.echothree.model.data.offer.server.value.OfferUseDetailValue;
-import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,8 +48,8 @@ public class OfferUseControl
     // --------------------------------------------------------------------------------
 
     public OfferUse createOfferUse(Offer offer, Use use, Sequence salesOrderSequence, BasePK createdBy) {
-        OfferUse offerUse = OfferUseFactory.getInstance().create();
-        OfferUseDetail offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUse, offer, use, salesOrderSequence,
+        var offerUse = OfferUseFactory.getInstance().create();
+        var offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUse, offer, use, salesOrderSequence,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -103,7 +96,7 @@ public class OfferUseControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = OfferUseFactory.getInstance().prepareStatement(query);
+        var ps = OfferUseFactory.getInstance().prepareStatement(query);
 
         return OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -117,7 +110,7 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferUse> offerUses = null;
+        List<OfferUse> offerUses;
 
         try {
             String query = null;
@@ -135,7 +128,7 @@ public class OfferUseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = OfferUseFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
 
@@ -156,7 +149,7 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesByUse(Use use, EntityPermission entityPermission) {
-        List<OfferUse> offerUses = null;
+        List<OfferUse> offerUses;
 
         try {
             String query = null;
@@ -174,7 +167,7 @@ public class OfferUseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = OfferUseFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, use.getPrimaryKey().getEntityId());
 
@@ -195,7 +188,7 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesBySalesOrderSequence(Sequence salesOrderSequence, EntityPermission entityPermission) {
-        List<OfferUse> offerUses = null;
+        List<OfferUse> offerUses;
 
         try {
             String query = null;
@@ -213,7 +206,7 @@ public class OfferUseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = OfferUseFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, salesOrderSequence.getPrimaryKey().getEntityId());
 
@@ -234,7 +227,7 @@ public class OfferUseControl
     }
 
     public OfferUse getOfferUse(Offer offer, Use use, EntityPermission entityPermission) {
-        OfferUse offerUse = null;
+        OfferUse offerUse;
 
         try {
             String query = null;
@@ -250,7 +243,7 @@ public class OfferUseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = OfferUseFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, use.getPrimaryKey().getEntityId());
@@ -281,7 +274,7 @@ public class OfferUseControl
 
     public List<OfferUseTransfer> getOfferUseTransfers(UserVisit userVisit, Collection<OfferUse> offerUses) {
         List<OfferUseTransfer> offerUseTransfers = new ArrayList<>(offerUses.size());
-        OfferUseTransferCache offerUseTransferCache = getOfferTransferCaches(userVisit).getOfferUseTransferCache();
+        var offerUseTransferCache = getOfferTransferCaches(userVisit).getOfferUseTransferCache();
 
         offerUses.forEach((offerUse) ->
                 offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(offerUse))
@@ -300,17 +293,17 @@ public class OfferUseControl
 
     public void updateOfferUseFromValue(OfferUseDetailValue offerUseDetailValue, BasePK updatedBy) {
         if(offerUseDetailValue.hasBeenModified()) {
-            OfferUse offerUse = OfferUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerUse = OfferUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     offerUseDetailValue.getOfferUsePK());
-            OfferUseDetail offerUseDetail = offerUse.getActiveDetailForUpdate();
+            var offerUseDetail = offerUse.getActiveDetailForUpdate();
 
             offerUseDetail.setThruTime(session.START_TIME_LONG);
             offerUseDetail.store();
 
-            OfferUsePK offerUsePK = offerUseDetail.getOfferUsePK();
-            OfferPK offerPK = offerUseDetail.getOfferPK();
-            UsePK usePK = offerUseDetail.getUsePK();
-            SequencePK sequencePK = offerUseDetailValue.getSalesOrderSequencePK();
+            var offerUsePK = offerUseDetail.getOfferUsePK();
+            var offerPK = offerUseDetail.getOfferPK();
+            var usePK = offerUseDetail.getUsePK();
+            var sequencePK = offerUseDetailValue.getSalesOrderSequencePK();
 
             offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUsePK, offerPK, usePK, sequencePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -327,7 +320,7 @@ public class OfferUseControl
 
         sourceControl.deleteSourcesByOfferUse(offerUse, deletedBy);
 
-        OfferUseDetail offerUseDetail = offerUse.getLastDetailForUpdate();
+        var offerUseDetail = offerUse.getLastDetailForUpdate();
         offerUseDetail.setThruTime(session.START_TIME_LONG);
         offerUse.setActiveDetail(null);
         offerUse.store();

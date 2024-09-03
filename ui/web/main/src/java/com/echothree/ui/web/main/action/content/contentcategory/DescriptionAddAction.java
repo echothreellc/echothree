@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.content.contentcategory;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.CreateContentCategoryDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,17 +54,17 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
-        String contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
-        String parentContentCategoryName = request.getParameter(ParameterConstants.PARENT_CONTENT_CATEGORY_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
+        var contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
+        var parentContentCategoryName = request.getParameter(ParameterConstants.PARENT_CONTENT_CATEGORY_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateContentCategoryDescriptionForm commandForm = ContentUtil.getHome().getCreateContentCategoryDescriptionForm();
+                    var commandForm = ContentUtil.getHome().getCreateContentCategoryDescriptionForm();
                     
                     if(contentCollectionName == null)
                         contentCollectionName = actionForm.getContentCollectionName();
@@ -82,8 +80,8 @@ public class DescriptionAddAction
                     commandForm.setContentCategoryName(contentCategoryName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ContentUtil.getHome().createContentCategoryDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContentUtil.getHome().createContentCategoryDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -102,8 +100,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_CATALOG_NAME, contentCatalogName);

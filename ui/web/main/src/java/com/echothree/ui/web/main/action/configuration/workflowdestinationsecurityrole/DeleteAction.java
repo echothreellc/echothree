@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestinationsecurityrole;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.DeleteWorkflowDestinationSecurityRoleForm;
-import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationSecurityRoleForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationSecurityRoleResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -66,17 +63,17 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkflowDestinationSecurityRoleForm commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSecurityRoleForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSecurityRoleForm();
         
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowStepName(actionForm.getWorkflowStepName());
         commandForm.setWorkflowDestinationName(actionForm.getWorkflowDestinationName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestinationSecurityRole(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowDestinationSecurityRoleResult result = (GetWorkflowDestinationSecurityRoleResult)executionResult.getResult();
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowDestinationSecurityRole(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowDestinationSecurityRoleResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION_SECURITY_ROLE, result.getWorkflowDestinationSecurityRole());
     }
@@ -84,7 +81,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteWorkflowDestinationSecurityRoleForm commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationSecurityRoleForm();
+        var commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationSecurityRoleForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowStepName(actionForm.getWorkflowStepName());

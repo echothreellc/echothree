@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contactlist;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
 import com.echothree.control.user.contactlist.common.ContactListService;
 import com.echothree.control.user.contactlist.common.form.ContactListFormFactory;
-import com.echothree.control.user.contactlist.common.form.CreateContactListTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -47,7 +46,7 @@ public class ContactListTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contactListType")) {
-            CreateContactListTypeForm commandForm = ContactListFormFactory.getCreateContactListTypeForm();
+            var commandForm = ContactListFormFactory.getCreateContactListTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
             

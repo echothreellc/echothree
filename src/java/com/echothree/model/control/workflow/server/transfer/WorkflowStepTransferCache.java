@@ -18,14 +18,10 @@ package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.model.control.workflow.common.WorkflowProperties;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowStepTypeTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.model.data.workflow.server.entity.WorkflowStepDetail;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class WorkflowStepTransferCache
         extends BaseWorkflowTransferCache<WorkflowStep, WorkflowStepTransfer> {
@@ -63,17 +59,17 @@ public class WorkflowStepTransferCache
     }
     
     public WorkflowStepTransfer getWorkflowStepTransfer(WorkflowStep workflowStep) {
-        WorkflowStepTransfer workflowStepTransfer = get(workflowStep);
+        var workflowStepTransfer = get(workflowStep);
         
         if(workflowStepTransfer == null) {
-            WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetail();
-            WorkflowTransfer workflow = filterWorkflow ? null : workflowControl.getWorkflowTransfer(userVisit, workflowStepDetail.getWorkflow());
-            String workflowStepName = filterWorkflowStepName ? null : workflowStepDetail.getWorkflowStepName();
-            WorkflowStepTypeTransfer workflowStepType = filterWorkflowStepType ? null : workflowControl.getWorkflowStepTypeTransfer(userVisit, workflowStepDetail.getWorkflowStepType());
-            Boolean isDefault = filterIsDefault ? null : workflowStepDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : workflowStepDetail.getSortOrder();
-            Boolean hasDestinations = filterHasDestinations ? null : workflowControl.countWorkflowDestinationsByWorkflowStep(workflowStep) > 0;
-            String description = filterDescription ? null : workflowControl.getBestWorkflowStepDescription(workflowStep, getLanguage());
+            var workflowStepDetail = workflowStep.getLastDetail();
+            var workflow = filterWorkflow ? null : workflowControl.getWorkflowTransfer(userVisit, workflowStepDetail.getWorkflow());
+            var workflowStepName = filterWorkflowStepName ? null : workflowStepDetail.getWorkflowStepName();
+            var workflowStepType = filterWorkflowStepType ? null : workflowControl.getWorkflowStepTypeTransfer(userVisit, workflowStepDetail.getWorkflowStepType());
+            var isDefault = filterIsDefault ? null : workflowStepDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : workflowStepDetail.getSortOrder();
+            var hasDestinations = filterHasDestinations ? null : workflowControl.countWorkflowDestinationsByWorkflowStep(workflowStep) > 0;
+            var description = filterDescription ? null : workflowControl.getBestWorkflowStepDescription(workflowStep, getLanguage());
             
             workflowStepTransfer = new WorkflowStepTransfer(workflow, workflowStepName, workflowStepType, isDefault, sortOrder,
                     hasDestinations, description);

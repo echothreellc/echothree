@@ -16,25 +16,17 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.financial.common.FinancialOptions;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountRoleTransfer;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.financial.server.entity.FinancialAccount;
-import com.echothree.model.data.financial.server.entity.FinancialAccountDetail;
-import com.echothree.model.data.financial.server.entity.FinancialAccountStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
-import java.util.List;
-import java.util.Set;
 
 public class FinancialAccountTransferCache
         extends BaseFinancialTransferCache<FinancialAccount, FinancialAccountTransfer> {
@@ -59,31 +51,31 @@ public class FinancialAccountTransferCache
     }
     
     public FinancialAccountTransfer getFinancialAccountTransfer(FinancialAccount financialAccount) {
-        FinancialAccountTransfer financialAccountTransfer = get(financialAccount);
+        var financialAccountTransfer = get(financialAccount);
         
         if(financialAccountTransfer == null) {
-            FinancialAccountDetail financialAccountDetail = financialAccount.getLastDetail();
-            FinancialAccountTypeTransfer financialAccountType = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountDetail.getFinancialAccountType());
-            String financialAccountName = financialAccountDetail.getFinancialAccountName();
-            Currency currency = financialAccountDetail.getCurrency();
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
-            GlAccountTransfer glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountDetail.getGlAccount());
-            String reference = financialAccountDetail.getReference();
-            String description = financialAccountDetail.getDescription();
-            FinancialAccountStatus financialAccountStatus = financialControl.createFinancialAccountStatus(financialAccount);
-            Long unformattedActualBalance = financialAccountStatus.getActualBalance();
-            AmountUtils amountUtils = AmountUtils.getInstance();
-            String actualBalance = amountUtils.formatPriceLine(currency, unformattedActualBalance);
-            Long unformattedAvailableBalance = financialAccountStatus.getAvailableBalance();
-            String availableBalance = amountUtils.formatPriceLine(currency, unformattedAvailableBalance);
+            var financialAccountDetail = financialAccount.getLastDetail();
+            var financialAccountType = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountDetail.getFinancialAccountType());
+            var financialAccountName = financialAccountDetail.getFinancialAccountName();
+            var currency = financialAccountDetail.getCurrency();
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            var glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountDetail.getGlAccount());
+            var reference = financialAccountDetail.getReference();
+            var description = financialAccountDetail.getDescription();
+            var financialAccountStatus = financialControl.createFinancialAccountStatus(financialAccount);
+            var unformattedActualBalance = financialAccountStatus.getActualBalance();
+            var amountUtils = AmountUtils.getInstance();
+            var actualBalance = amountUtils.formatPriceLine(currency, unformattedActualBalance);
+            var unformattedAvailableBalance = financialAccountStatus.getAvailableBalance();
+            var availableBalance = amountUtils.formatPriceLine(currency, unformattedAvailableBalance);
             
             financialAccountTransfer = new FinancialAccountTransfer(financialAccountType, financialAccountName, currencyTransfer, glAccountTransfer, reference,
                     description, unformattedActualBalance, actualBalance, unformattedAvailableBalance, availableBalance);
             put(financialAccount, financialAccountTransfer);
             
             if(includeRoles) {
-                List<FinancialAccountRoleTransfer> financialAccountRoleTransfers = financialControl.getFinancialAccountRoleTransfersByFinancialAccount(userVisit, financialAccount);
-                MapWrapper<FinancialAccountRoleTransfer> financialAccountRolesMap = new MapWrapper<>(financialAccountRoleTransfers.size());
+                var financialAccountRoleTransfers = financialControl.getFinancialAccountRoleTransfersByFinancialAccount(userVisit, financialAccount);
+                var financialAccountRolesMap = new MapWrapper<FinancialAccountRoleTransfer>(financialAccountRoleTransfers.size());
 
                 financialAccountRoleTransfers.forEach((financialAccountRoleTransfer) -> {
                     financialAccountRolesMap.put(financialAccountRoleTransfer.getFinancialAccountRoleType().getFinancialAccountRoleTypeName(), financialAccountRoleTransfer);

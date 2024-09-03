@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.service;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateServiceDescriptionForm;
-import com.echothree.control.user.core.common.form.GetServiceForm;
 import com.echothree.control.user.core.common.result.GetServiceResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetServiceForm commandForm = CoreUtil.getHome().getGetServiceForm();
+        var commandForm = CoreUtil.getHome().getGetServiceForm();
 
         commandForm.setServiceName(actionForm.getServiceName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getService(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getService(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetServiceResult result = (GetServiceResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetServiceResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SERVICE, result.getService());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateServiceDescriptionForm commandForm = CoreUtil.getHome().getCreateServiceDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateServiceDescriptionForm();
 
         commandForm.setServiceName( actionForm.getServiceName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

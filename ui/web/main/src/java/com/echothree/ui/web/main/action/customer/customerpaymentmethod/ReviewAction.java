@@ -17,21 +17,16 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPartyPaymentMethodForm;
 import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodResult;
 import com.echothree.model.control.comment.common.CommentOptions;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -60,16 +55,16 @@ public class ReviewAction
 
     public void setupCustomerTransfer(HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -80,9 +75,9 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetPartyPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPartyPaymentMethodForm();
-        String partyPaymentMethodName = request.getParameter(ParameterConstants.PARTY_PAYMENT_METHOD_NAME);
+        String forwardKey;
+        var commandForm = PaymentUtil.getHome().getGetPartyPaymentMethodForm();
+        var partyPaymentMethodName = request.getParameter(ParameterConstants.PARTY_PAYMENT_METHOD_NAME);
 
         commandForm.setPartyPaymentMethodName(partyPaymentMethodName);
 
@@ -93,12 +88,12 @@ public class ReviewAction
         options.add(PaymentOptions.PartyPaymentMethodIncludePartyPaymentMethodContactMechanisms);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
         PartyPaymentMethodTransfer partyPaymentMethod = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyPaymentMethodResult result = (GetPartyPaymentMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyPaymentMethodResult)executionResult.getResult();
             partyPaymentMethod = result.getPartyPaymentMethod();
         }
 

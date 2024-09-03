@@ -17,12 +17,10 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyTypeLockoutPolicyTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
-import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicyDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -41,17 +39,17 @@ public class PartyTypeLockoutPolicyTransferCache
     }
 
     public PartyTypeLockoutPolicyTransfer getPartyTypeLockoutPolicyTransfer(PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
-        PartyTypeLockoutPolicyTransfer partyTypeLockoutPolicyTransfer = get(partyTypeLockoutPolicy);
+        var partyTypeLockoutPolicyTransfer = get(partyTypeLockoutPolicy);
 
         if(partyTypeLockoutPolicyTransfer == null) {
-            PartyTypeLockoutPolicyDetail partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getLastDetail();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeLockoutPolicyDetail.getPartyType());
-            Integer lockoutFailureCount = partyTypeLockoutPolicyDetail.getLockoutFailureCount();
-            Long unformattedResetFailureCountTime = partyTypeLockoutPolicyDetail.getResetFailureCountTime();
-            String resetFailureCountTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedResetFailureCountTime);
-            Boolean manualLockoutReset = partyTypeLockoutPolicyDetail.getManualLockoutReset();
-            Long unformattedLockoutInactiveTime = partyTypeLockoutPolicyDetail.getLockoutInactiveTime();
-            String lockoutInactiveTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedLockoutInactiveTime);
+            var partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getLastDetail();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeLockoutPolicyDetail.getPartyType());
+            var lockoutFailureCount = partyTypeLockoutPolicyDetail.getLockoutFailureCount();
+            var unformattedResetFailureCountTime = partyTypeLockoutPolicyDetail.getResetFailureCountTime();
+            var resetFailureCountTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedResetFailureCountTime);
+            var manualLockoutReset = partyTypeLockoutPolicyDetail.getManualLockoutReset();
+            var unformattedLockoutInactiveTime = partyTypeLockoutPolicyDetail.getLockoutInactiveTime();
+            var lockoutInactiveTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedLockoutInactiveTime);
 
             partyTypeLockoutPolicyTransfer = new PartyTypeLockoutPolicyTransfer(partyTypeTransfer, lockoutFailureCount, unformattedResetFailureCountTime,
                     resetFailureCountTime, manualLockoutReset, unformattedLockoutInactiveTime, lockoutInactiveTime);

@@ -17,11 +17,8 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionAnswerTransfer;
-import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionQuestionTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassAnswerTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionAnswer;
-import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PartyTrainingClassSessionAnswerTransferCache
@@ -33,17 +30,17 @@ public class PartyTrainingClassSessionAnswerTransferCache
     }
     
     public PartyTrainingClassSessionAnswerTransfer getPartyTrainingClassSessionAnswerTransfer(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
-        PartyTrainingClassSessionAnswerTransfer partyTrainingClassSessionAnswerTransfer = get(partyTrainingClassSessionAnswer);
+        var partyTrainingClassSessionAnswerTransfer = get(partyTrainingClassSessionAnswer);
         
         if(partyTrainingClassSessionAnswerTransfer == null) {
-            PartyTrainingClassSessionQuestionTransfer partyTrainingClassSessionQuestionTransfer = trainingControl.getPartyTrainingClassSessionQuestionTransfer(userVisit, partyTrainingClassSessionAnswer.getPartyTrainingClassSessionQuestion());
-            Integer partyTrainingClassSessionAnswerSequence = partyTrainingClassSessionAnswer.getPartyTrainingClassSessionAnswerSequence();
-            TrainingClassAnswer trainingClassAnswer = partyTrainingClassSessionAnswer.getTrainingClassAnswer();
-            TrainingClassAnswerTransfer trainingClassAnswerTransfer = trainingClassAnswer == null ? null : trainingControl.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswer);
-            Long unformattedQuestionStartTime = partyTrainingClassSessionAnswer.getQuestionStartTime();
-            String questionStartTime = unformattedQuestionStartTime == null ? null : formatTypicalDateTime(unformattedQuestionStartTime);
-            Long unformattedQuestionEndTime = partyTrainingClassSessionAnswer.getQuestionEndTime();
-            String questionEndTime = unformattedQuestionEndTime == null ? null : formatTypicalDateTime(unformattedQuestionEndTime);
+            var partyTrainingClassSessionQuestionTransfer = trainingControl.getPartyTrainingClassSessionQuestionTransfer(userVisit, partyTrainingClassSessionAnswer.getPartyTrainingClassSessionQuestion());
+            var partyTrainingClassSessionAnswerSequence = partyTrainingClassSessionAnswer.getPartyTrainingClassSessionAnswerSequence();
+            var trainingClassAnswer = partyTrainingClassSessionAnswer.getTrainingClassAnswer();
+            var trainingClassAnswerTransfer = trainingClassAnswer == null ? null : trainingControl.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswer);
+            var unformattedQuestionStartTime = partyTrainingClassSessionAnswer.getQuestionStartTime();
+            var questionStartTime = unformattedQuestionStartTime == null ? null : formatTypicalDateTime(unformattedQuestionStartTime);
+            var unformattedQuestionEndTime = partyTrainingClassSessionAnswer.getQuestionEndTime();
+            var questionEndTime = unformattedQuestionEndTime == null ? null : formatTypicalDateTime(unformattedQuestionEndTime);
 
             partyTrainingClassSessionAnswerTransfer = new PartyTrainingClassSessionAnswerTransfer(partyTrainingClassSessionQuestionTransfer,
                     partyTrainingClassSessionAnswerSequence, trainingClassAnswerTransfer, unformattedQuestionStartTime, questionStartTime,

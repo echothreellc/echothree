@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.geocodescope;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeScopeForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeScopeResult;
 import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetGeoCodeScopeForm commandForm = GeoUtil.getHome().getGetGeoCodeScopeForm();
+        String forwardKey;
+        var commandForm = GeoUtil.getHome().getGetGeoCodeScopeForm();
 
         commandForm.setGeoCodeScopeName(request.getParameter(ParameterConstants.GEO_CODE_SCOPE_NAME));
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCodeScope(getUserVisitPK(request), commandForm);
         GeoCodeScopeTransfer geoCodeScope = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeScopeResult result = (GetGeoCodeScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeScopeResult)executionResult.getResult();
             
             geoCodeScope = result.getGeoCodeScope();
         }

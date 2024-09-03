@@ -20,9 +20,6 @@ import com.echothree.control.user.item.common.form.CreateItemInventoryTypeDescri
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.item.server.entity.ItemInventoryType;
-import com.echothree.model.data.item.server.entity.ItemInventoryTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,16 +59,16 @@ public class CreateItemInventoryTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemInventoryTypeName = form.getItemInventoryTypeName();
-        ItemInventoryType itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
+        var itemInventoryTypeName = form.getItemInventoryTypeName();
+        var itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
         
         if(itemInventoryType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemInventoryTypeDescription itemInventoryTypeDescription = itemControl.getItemInventoryTypeDescription(itemInventoryType, language);
+                var itemInventoryTypeDescription = itemControl.getItemInventoryTypeDescription(itemInventoryType, language);
                 
                 if(itemInventoryTypeDescription == null) {
                     var description = form.getDescription();

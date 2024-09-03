@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.GetPartyTrainingClassStatusChoicesForm;
 import com.echothree.control.user.training.common.result.GetPartyTrainingClassStatusChoicesResult;
 import com.echothree.model.control.training.common.choice.PartyTrainingClassStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class StatusActionForm
     public void setupPartyTrainingClassStatusChoices() {
         if(partyTrainingClassStatusChoices == null) {
             try {
-                GetPartyTrainingClassStatusChoicesForm form = TrainingUtil.getHome().getGetPartyTrainingClassStatusChoicesForm();
+                var form = TrainingUtil.getHome().getGetPartyTrainingClassStatusChoicesForm();
                 
                 form.setPartyTrainingClassName(partyTrainingClassName);
                 form.setDefaultPartyTrainingClassStatusChoice(partyTrainingClassStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClassStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyTrainingClassStatusChoicesResult result = (GetPartyTrainingClassStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = TrainingUtil.getHome().getPartyTrainingClassStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPartyTrainingClassStatusChoicesResult)executionResult.getResult();
                 partyTrainingClassStatusChoices = result.getPartyTrainingClassStatusChoices();
                 
                 if(partyTrainingClassStatusChoice == null) {

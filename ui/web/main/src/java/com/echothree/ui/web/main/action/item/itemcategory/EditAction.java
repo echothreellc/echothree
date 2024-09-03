@@ -20,7 +20,6 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.edit.ItemCategoryEdit;
 import com.echothree.control.user.item.common.form.EditItemCategoryForm;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
-import com.echothree.control.user.item.common.spec.ItemCategorySpec;
 import com.echothree.control.user.item.common.spec.ItemCategoryUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -51,7 +50,7 @@ public class EditAction
     @Override
     protected ItemCategoryUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemCategoryUniversalSpec spec = ItemUtil.getHome().getItemCategoryUniversalSpec();
+        var spec = ItemUtil.getHome().getItemCategoryUniversalSpec();
         
         spec.setItemCategoryName(findParameter(request, ParameterConstants.ORIGINAL_ITEM_CATEGORY_NAME, actionForm.getOriginalItemCategoryName()));
         
@@ -61,7 +60,7 @@ public class EditAction
     @Override
     protected ItemCategoryEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemCategoryEdit edit = ItemUtil.getHome().getItemCategoryEdit();
+        var edit = ItemUtil.getHome().getItemCategoryEdit();
 
         edit.setItemCategoryName(actionForm.getItemCategoryName());
         edit.setParentItemCategoryName(actionForm.getParentItemCategoryChoice());

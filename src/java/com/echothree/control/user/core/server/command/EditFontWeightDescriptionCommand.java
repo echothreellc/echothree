@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.core.server.entity.FontWeightDescription;
-import com.echothree.model.data.core.server.value.FontWeightDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,13 +86,13 @@ public class EditFontWeightDescriptionCommand
     public FontWeightDescription getEntity(EditFontWeightDescriptionResult result) {
         var coreControl = getCoreControl();
         FontWeightDescription fontWeightDescription = null;
-        String fontWeightName = spec.getFontWeightName();
-        FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
+        var fontWeightName = spec.getFontWeightName();
+        var fontWeight = coreControl.getFontWeightByName(fontWeightName);
 
         if(fontWeight != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +134,7 @@ public class EditFontWeightDescriptionCommand
     @Override
     public void doUpdate(FontWeightDescription fontWeightDescription) {
         var coreControl = getCoreControl();
-        FontWeightDescriptionValue fontWeightDescriptionValue = coreControl.getFontWeightDescriptionValue(fontWeightDescription);
+        var fontWeightDescriptionValue = coreControl.getFontWeightDescriptionValue(fontWeightDescription);
         fontWeightDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateFontWeightDescriptionFromValue(fontWeightDescriptionValue, getPartyPK());

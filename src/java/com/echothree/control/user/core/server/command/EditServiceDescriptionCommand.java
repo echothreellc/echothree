@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Service;
 import com.echothree.model.data.core.server.entity.ServiceDescription;
-import com.echothree.model.data.core.server.value.ServiceDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,13 +86,13 @@ public class EditServiceDescriptionCommand
     public ServiceDescription getEntity(EditServiceDescriptionResult result) {
         var coreControl = getCoreControl();
         ServiceDescription serviceDescription = null;
-        String serviceName = spec.getServiceName();
-        Service service = coreControl.getServiceByName(serviceName);
+        var serviceName = spec.getServiceName();
+        var service = coreControl.getServiceByName(serviceName);
 
         if(service != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +134,7 @@ public class EditServiceDescriptionCommand
     @Override
     public void doUpdate(ServiceDescription serviceDescription) {
         var coreControl = getCoreControl();
-        ServiceDescriptionValue serviceDescriptionValue = coreControl.getServiceDescriptionValue(serviceDescription);
+        var serviceDescriptionValue = coreControl.getServiceDescriptionValue(serviceDescription);
         serviceDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateServiceDescriptionFromValue(serviceDescriptionValue, getPartyPK());

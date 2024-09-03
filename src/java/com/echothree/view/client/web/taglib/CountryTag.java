@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -116,7 +113,7 @@ public class CountryTag
     public int doStartTag()
             throws JspException {
         try {
-            GetCountryForm commandForm = GeoUtil.getHome().getGetCountryForm();
+            var commandForm = GeoUtil.getHome().getGetCountryForm();
 
             commandForm.setGeoCodeName(geoCodeName);
             commandForm.setCountryName(countryName);
@@ -128,7 +125,7 @@ public class CountryTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(), commandForm);
+            var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -136,8 +133,8 @@ public class CountryTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCountryResult result = (GetCountryResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCountryResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getCountry(), scope);
             }

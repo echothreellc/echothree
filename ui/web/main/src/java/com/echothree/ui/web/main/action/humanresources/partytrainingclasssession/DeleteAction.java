@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclasssession;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.DeletePartyTrainingClassSessionForm;
-import com.echothree.control.user.training.common.form.GetPartyTrainingClassSessionForm;
 import com.echothree.control.user.training.common.result.GetPartyTrainingClassSessionResult;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -66,15 +62,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyTrainingClassSessionForm commandForm = TrainingUtil.getHome().getGetPartyTrainingClassSessionForm();
+        var commandForm = TrainingUtil.getHome().getGetPartyTrainingClassSessionForm();
         
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
         commandForm.setPartyTrainingClassSessionSequence(actionForm.getPartyTrainingClassSessionSequence());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClassSession(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTrainingClassSessionResult result = (GetPartyTrainingClassSessionResult)executionResult.getResult();
-        PartyTrainingClassSessionTransfer partyTrainingClassSession = result.getPartyTrainingClassSession();
+
+        var commandResult = TrainingUtil.getHome().getPartyTrainingClassSession(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTrainingClassSessionResult)executionResult.getResult();
+        var partyTrainingClassSession = result.getPartyTrainingClassSession();
         
         request.setAttribute(AttributeConstants.PARTY_TRAINING_CLASS_SESSION, result.getPartyTrainingClassSession());
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request),
@@ -84,7 +80,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyTrainingClassSessionForm commandForm = TrainingUtil.getHome().getDeletePartyTrainingClassSessionForm();
+        var commandForm = TrainingUtil.getHome().getDeletePartyTrainingClassSessionForm();
 
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
         commandForm.setPartyTrainingClassSessionSequence(actionForm.getPartyTrainingClassSessionSequence());

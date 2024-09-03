@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowstep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.SetDefaultWorkflowStepForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,15 +49,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-        SetDefaultWorkflowStepForm commandForm = WorkflowUtil.getHome().getSetDefaultWorkflowStepForm();
+        var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+        var commandForm = WorkflowUtil.getHome().getSetDefaultWorkflowStepForm();
 
         commandForm.setWorkflowName(workflowName);
         commandForm.setWorkflowStepName(request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME));
 
         WorkflowUtil.getHome().setDefaultWorkflowStep(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.WORKFLOW_NAME, workflowName);

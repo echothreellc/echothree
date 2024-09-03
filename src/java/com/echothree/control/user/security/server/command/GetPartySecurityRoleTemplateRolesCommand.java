@@ -17,15 +17,12 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateRolesForm;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateRolesResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,13 +62,13 @@ public class GetPartySecurityRoleTemplateRolesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartySecurityRoleTemplateRolesResult result = SecurityResultFactory.getGetPartySecurityRoleTemplateRolesResult();
+        var result = SecurityResultFactory.getGetPartySecurityRoleTemplateRolesResult();
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setPartySecurityRoleTemplate(securityControl.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplate));
             result.setPartySecurityRoleTemplateRoles(securityControl.getPartySecurityRoleTemplateRoleTransfers(userVisit, partySecurityRoleTemplate));

@@ -19,7 +19,6 @@ package com.echothree.ui.web.main.action.humanresources.employee;
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.SetEmployeeStatusForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -67,8 +66,8 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, StatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
 
         if(returnUrl == null) {
             returnUrl = actionForm.getReturnUrl();
@@ -81,7 +80,7 @@ public class StatusAction
             CommandResult commandResult = null;
 
             if(!wasCanceled(request)) {
-                SetEmployeeStatusForm commandForm = PartyUtil.getHome().getSetEmployeeStatusForm();
+                var commandForm = PartyUtil.getHome().getSetEmployeeStatusForm();
 
                 commandForm.setEmployeeName(employeeName);
                 commandForm.setEmployeeStatusChoice(actionForm.getEmployeeStatusChoice());

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.glaccount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountDescriptionsForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountDescriptionsResult;
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
-            GetGlAccountDescriptionsForm commandForm = AccountingUtil.getHome().getGetGlAccountDescriptionsForm();
+            var glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlAccountDescriptionsForm();
             
             commandForm.setGlAccountName(glAccountName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountDescriptionsResult result = (GetGlAccountDescriptionsResult)executionResult.getResult();
-            GlAccountTransfer glAccountTransfer = result.getGlAccount();
+
+            var commandResult = AccountingUtil.getHome().getGlAccountDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlAccountDescriptionsResult)executionResult.getResult();
+            var glAccountTransfer = result.getGlAccount();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT, glAccountTransfer);
             request.setAttribute(AttributeConstants.GL_ACCOUNT_NAME, glAccountTransfer.getGlAccountName());

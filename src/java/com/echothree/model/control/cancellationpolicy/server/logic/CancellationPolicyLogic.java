@@ -204,13 +204,13 @@ public class CancellationPolicyLogic
             final CancellationPolicy cancellationPolicies[]) {
         CancellationPolicy cancellationPolicy = null;
 
-        for(int i = 0 ; cancellationPolicy == null && i < cancellationPolicies.length ; i++) {
+        for(var i = 0; cancellationPolicy == null && i < cancellationPolicies.length ; i++) {
             cancellationPolicy = cancellationPolicies[i];
         }
 
         if(cancellationPolicy == null) {
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
             if(cancellationKind != null) {
                 cancellationPolicy = cancellationPolicyControl.getDefaultCancellationPolicy(cancellationKind);
@@ -230,7 +230,7 @@ public class CancellationPolicyLogic
         var orderControl = Session.getModelController(OrderControl.class);
 
         // Both CUSTOMERs and VENDORs use Orders and OrderLines, so check for CancellationPolicy use there first.
-        boolean inUse = orderControl.countOrdersByCancellationPolicy(cancellationPolicy) != 0;
+        var inUse = orderControl.countOrdersByCancellationPolicy(cancellationPolicy) != 0;
 
         if(!inUse) {
             var orderLineControl = Session.getModelController(OrderLineControl.class);
@@ -239,7 +239,7 @@ public class CancellationPolicyLogic
         }
 
         if(!inUse) {
-            String cancellationKindName = cancellationPolicy.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName();
+            var cancellationKindName = cancellationPolicy.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName();
             
             if(cancellationKindName.equals(CancellationKinds.CUSTOMER_CANCELLATION.name())) {
                 var itemControl = Session.getModelController(ItemControl.class);

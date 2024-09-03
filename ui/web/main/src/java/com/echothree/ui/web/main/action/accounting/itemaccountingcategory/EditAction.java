@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.itemaccountingcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.edit.ItemAccountingCategoryEdit;
-import com.echothree.control.user.accounting.common.form.EditItemAccountingCategoryForm;
 import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,12 +53,12 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalItemAccountingCategoryName = request.getParameter(ParameterConstants.ORIGINAL_ITEM_ACCOUNTING_CATEGORY_NAME);
+        var originalItemAccountingCategoryName = request.getParameter(ParameterConstants.ORIGINAL_ITEM_ACCOUNTING_CATEGORY_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditItemAccountingCategoryForm commandForm = AccountingUtil.getHome().getEditItemAccountingCategoryForm();
+                var actionForm = (EditActionForm)form;
+                var commandForm = AccountingUtil.getHome().getEditItemAccountingCategoryForm();
                 var spec = AccountingUtil.getHome().getItemAccountingCategoryUniversalSpec();
                 
                 if(originalItemAccountingCategoryName == null)
@@ -72,7 +68,7 @@ public class EditAction
                 spec.setItemAccountingCategoryName(originalItemAccountingCategoryName);
                 
                 if(wasPost(request)) {
-                    ItemAccountingCategoryEdit edit = AccountingUtil.getHome().getItemAccountingCategoryEdit();
+                    var edit = AccountingUtil.getHome().getItemAccountingCategoryEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +78,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editItemAccountingCategory(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().editItemAccountingCategory(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditItemAccountingCategoryResult result = (EditItemAccountingCategoryResult)executionResult.getResult();
+                            var result = (EditItemAccountingCategoryResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +98,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editItemAccountingCategory(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditItemAccountingCategoryResult result = (EditItemAccountingCategoryResult)executionResult.getResult();
+
+                    var commandResult = AccountingUtil.getHome().editItemAccountingCategory(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditItemAccountingCategoryResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ItemAccountingCategoryEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalItemAccountingCategoryName(edit.getItemAccountingCategoryName());

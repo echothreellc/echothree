@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.payment;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
-import com.echothree.control.user.payment.common.form.CreatePaymentMethodForm;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.control.user.payment.common.result.CreatePaymentMethodResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -48,16 +45,16 @@ public class PaymentMethodsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("paymentMethod")) {
-            CreatePaymentMethodForm commandForm = PaymentFormFactory.getCreatePaymentMethodForm();
+            var commandForm = PaymentFormFactory.getCreatePaymentMethodForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = paymentService.createPaymentMethod(initialDataParser.getUserVisit(), commandForm);
+
+            var commandResult = paymentService.createPaymentMethod(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreatePaymentMethodResult result = (CreatePaymentMethodResult)executionResult.getResult();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreatePaymentMethodResult)executionResult.getResult();
+                var entityRef = result.getEntityRef();
 
                 initialDataParser.pushHandler(new PaymentMethodHandler(initialDataParser, this, commandForm.getPaymentMethodName(), entityRef));
             }

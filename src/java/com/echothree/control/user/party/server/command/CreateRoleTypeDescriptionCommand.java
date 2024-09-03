@@ -18,9 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateRoleTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.RoleType;
-import com.echothree.model.data.party.server.entity.RoleTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,15 +49,15 @@ public class CreateRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String roleTypeName = form.getRoleTypeName();
-        RoleType roleType = partyControl.getRoleTypeByName(roleTypeName);
+        var roleTypeName = form.getRoleTypeName();
+        var roleType = partyControl.getRoleTypeByName(roleTypeName);
         
         if(roleType != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                RoleTypeDescription roleTypeDescription = partyControl.getRoleTypeDescription(roleType, language);
+                var roleTypeDescription = partyControl.getRoleTypeDescription(roleType, language);
                 
                 if(roleTypeDescription == null) {
                     var description = form.getDescription();

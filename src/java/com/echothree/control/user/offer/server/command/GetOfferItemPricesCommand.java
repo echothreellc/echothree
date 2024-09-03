@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferItemPricesForm;
-import com.echothree.control.user.offer.common.result.GetOfferItemPricesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
@@ -30,7 +29,6 @@ import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -77,14 +75,14 @@ public class GetOfferItemPricesCommand
     @Override
     protected Collection<OfferItemPrice> getEntities() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
+        var offerName = form.getOfferName();
         Collection<OfferItemPrice> offerItemPrices = null;
         
         offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
+            var itemName = form.getItemName();
            
             item = itemControl.getItemByName(itemName);
             
@@ -110,13 +108,13 @@ public class GetOfferItemPricesCommand
     
     @Override
     protected BaseResult getResult(Collection<OfferItemPrice> entities) {
-        GetOfferItemPricesResult result = OfferResultFactory.getGetOfferItemPricesResult();
+        var result = OfferResultFactory.getGetOfferItemPricesResult();
         
         if (entities != null) {
             var offerControl = Session.getModelController(OfferControl.class);
             var offerItemControl = Session.getModelController(OfferItemControl.class);
             var itemControl = Session.getModelController(ItemControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
             result.setItem(itemControl.getItemTransfer(userVisit, item));

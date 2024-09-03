@@ -17,12 +17,10 @@
 package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.form.GetWorkEffortForm;
-import com.echothree.control.user.workeffort.common.result.GetWorkEffortResult;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workeffort.server.entity.WorkEffort;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,9 +50,9 @@ public class GetWorkEffortCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkEffortResult result = WorkEffortResultFactory.getGetWorkEffortResult();
-        String workEffortName = form.getWorkEffortName();
-        WorkEffort workEffort = workEffortControl.getWorkEffortByName(workEffortName);
+        var result = WorkEffortResultFactory.getGetWorkEffortResult();
+        var workEffortName = form.getWorkEffortName();
+        var workEffort = workEffortControl.getWorkEffortByName(workEffortName);
         
         if(workEffort != null) {
             result.setWorkEffort(workEffortControl.getWorkEffortTransfer(getUserVisit(), workEffort));

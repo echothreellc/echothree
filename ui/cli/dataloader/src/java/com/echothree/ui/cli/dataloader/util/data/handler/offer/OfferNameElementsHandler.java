@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.OfferService;
-import com.echothree.control.user.offer.common.form.CreateOfferNameElementForm;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,9 +48,9 @@ public class OfferNameElementsHandler
             String offset = null;
             String length = null;
             String validationPattern = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("offerNameElementName"))
                     offerNameElementName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("offset"))
@@ -63,7 +62,7 @@ public class OfferNameElementsHandler
             }
             
             try {
-                CreateOfferNameElementForm form = OfferFormFactory.getCreateOfferNameElementForm();
+                var form = OfferFormFactory.getCreateOfferNameElementForm();
                 
                 form.setOfferNameElementName(offerNameElementName);
                 form.setOffset(offset);

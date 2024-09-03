@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.recoveryquestion;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.edit.RecoveryQuestionDescriptionEdit;
-import com.echothree.control.user.user.common.form.EditRecoveryQuestionDescriptionForm;
 import com.echothree.control.user.user.common.result.EditRecoveryQuestionDescriptionResult;
-import com.echothree.control.user.user.common.spec.RecoveryQuestionDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditRecoveryQuestionDescriptionForm commandForm = UserUtil.getHome().getEditRecoveryQuestionDescriptionForm();
-                RecoveryQuestionDescriptionSpec spec = UserUtil.getHome().getRecoveryQuestionDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = UserUtil.getHome().getEditRecoveryQuestionDescriptionForm();
+                var spec = UserUtil.getHome().getRecoveryQuestionDescriptionSpec();
                 
                 if(recoveryQuestionName == null)
                     recoveryQuestionName = actionForm.getRecoveryQuestionName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    RecoveryQuestionDescriptionEdit edit = UserUtil.getHome().getRecoveryQuestionDescriptionEdit();
+                    var edit = UserUtil.getHome().getRecoveryQuestionDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = UserUtil.getHome().editRecoveryQuestionDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UserUtil.getHome().editRecoveryQuestionDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditRecoveryQuestionDescriptionResult result = (EditRecoveryQuestionDescriptionResult)executionResult.getResult();
+                            var result = (EditRecoveryQuestionDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = UserUtil.getHome().editRecoveryQuestionDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditRecoveryQuestionDescriptionResult result = (EditRecoveryQuestionDescriptionResult)executionResult.getResult();
+
+                    var commandResult = UserUtil.getHome().editRecoveryQuestionDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditRecoveryQuestionDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        RecoveryQuestionDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setRecoveryQuestionName(recoveryQuestionName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RECOVERY_QUESTION_NAME, recoveryQuestionName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

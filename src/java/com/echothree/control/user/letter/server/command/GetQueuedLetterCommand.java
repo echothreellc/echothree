@@ -17,15 +17,12 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.GetQueuedLetterForm;
-import com.echothree.control.user.letter.common.result.GetQueuedLetterResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainInstance;
-import com.echothree.model.data.letter.server.entity.QueuedLetter;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,15 +65,15 @@ public class GetQueuedLetterCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetQueuedLetterResult result = LetterResultFactory.getGetQueuedLetterResult();
-        String chainInstanceName = form.getChainInstanceName();
-        ChainInstance chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
+        var result = LetterResultFactory.getGetQueuedLetterResult();
+        var chainInstanceName = form.getChainInstanceName();
+        var chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
         
         if(chainInstance != null) {
             var letterControl = Session.getModelController(LetterControl.class);
-            String strQueuedLetterSequence = form.getQueuedLetterSequence();
-            Integer queuedLetterSequence = Integer.valueOf(strQueuedLetterSequence);
-            QueuedLetter queuedLetter = letterControl.getQueuedLetter(chainInstance, queuedLetterSequence);
+            var strQueuedLetterSequence = form.getQueuedLetterSequence();
+            var queuedLetterSequence = Integer.valueOf(strQueuedLetterSequence);
+            var queuedLetter = letterControl.getQueuedLetter(chainInstance, queuedLetterSequence);
 
             if(queuedLetter != null) {
                 result.setQueuedLetter(letterControl.getQueuedLetterTransfer(getUserVisit(), queuedLetter));

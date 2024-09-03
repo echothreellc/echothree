@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.chain;
 import com.echothree.control.user.chain.common.ChainUtil;
 import com.echothree.control.user.chain.common.ChainService;
 import com.echothree.control.user.chain.common.form.ChainFormFactory;
-import com.echothree.control.user.chain.common.form.CreateChainEntityRoleTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -54,7 +53,7 @@ public class ChainEntityRoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainEntityRoleTypeDescription")) {
-            CreateChainEntityRoleTypeDescriptionForm commandForm = ChainFormFactory.getCreateChainEntityRoleTypeDescriptionForm();
+            var commandForm = ChainFormFactory.getCreateChainEntityRoleTypeDescriptionForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.setChainTypeName(chainTypeName);

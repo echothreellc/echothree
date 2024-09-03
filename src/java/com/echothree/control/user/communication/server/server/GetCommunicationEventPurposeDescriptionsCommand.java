@@ -18,9 +18,7 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.GetCommunicationEventPurposeDescriptionsForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
-import com.echothree.control.user.communication.common.result.GetCommunicationEventPurposeDescriptionsResult;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetCommunicationEventPurposeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        GetCommunicationEventPurposeDescriptionsResult result = CommunicationResultFactory.getGetCommunicationEventPurposeDescriptionsResult();
-        String communicationEventPurposeName = form.getCommunicationEventPurposeName();
-        CommunicationEventPurpose communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
+        var result = CommunicationResultFactory.getGetCommunicationEventPurposeDescriptionsResult();
+        var communicationEventPurposeName = form.getCommunicationEventPurposeName();
+        var communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
         
         if(communicationEventPurpose != null) {
             result.setCommunicationEventPurpose(communicationControl.getCommunicationEventPurposeTransfer(getUserVisit(), communicationEventPurpose));

@@ -17,13 +17,11 @@
 package com.echothree.control.user.purchase.server.command;
 
 import com.echothree.control.user.purchase.common.form.GetPurchaseInvoiceStatusChoicesForm;
-import com.echothree.control.user.purchase.common.result.GetPurchaseInvoiceStatusChoicesResult;
 import com.echothree.control.user.purchase.common.result.PurchaseResultFactory;
 import com.echothree.model.control.invoice.server.logic.PurchaseInvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,14 +62,14 @@ public class GetPurchaseInvoiceStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PurchaseInvoiceLogic purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
-        GetPurchaseInvoiceStatusChoicesResult result = PurchaseResultFactory.getGetPurchaseInvoiceStatusChoicesResult();
-        String invoiceName = form.getInvoiceName();
-        Invoice invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
+        var purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
+        var result = PurchaseResultFactory.getGetPurchaseInvoiceStatusChoicesResult();
+        var invoiceName = form.getInvoiceName();
+        var invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
         
         if(invoiceName == null || invoice != null) {
-            String defaultInvoiceStatusChoice = form.getDefaultInvoiceStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultInvoiceStatusChoice = form.getDefaultInvoiceStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setPurchaseInvoiceStatusChoices(purchaseInvoiceLogic.getPurchaseInvoiceStatusChoices(defaultInvoiceStatusChoice, getPreferredLanguage(), allowNullChoice, invoice,
                     getPartyPK()));

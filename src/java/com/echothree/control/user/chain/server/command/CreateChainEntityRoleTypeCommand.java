@@ -21,11 +21,6 @@ import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -73,25 +68,25 @@ public class CreateChainEntityRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainEntityRoleTypeName = form.getChainEntityRoleTypeName();
-                ChainEntityRoleType chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
+                var chainEntityRoleTypeName = form.getChainEntityRoleTypeName();
+                var chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
                 if(chainEntityRoleType == null) {
                     var coreControl = getCoreControl();
-                    String componentVendorName = form.getComponentVendorName();
-                    ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                    var componentVendorName = form.getComponentVendorName();
+                    var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                     
                     if(componentVendor != null) {
-                        String entityTypeName = form.getEntityTypeName();
-                        EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                        var entityTypeName = form.getEntityTypeName();
+                        var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                         
                         if(entityType != null) {
                             var partyPK = getPartyPK();

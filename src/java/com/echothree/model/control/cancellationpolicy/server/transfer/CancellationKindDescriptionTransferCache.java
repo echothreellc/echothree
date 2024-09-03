@@ -17,9 +17,7 @@
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindDescriptionTransfer;
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class CancellationKindDescriptionTransferCache
     }
     
     public CancellationKindDescriptionTransfer getCancellationKindDescriptionTransfer(CancellationKindDescription cancellationKindDescription) {
-        CancellationKindDescriptionTransfer cancellationKindDescriptionTransfer = get(cancellationKindDescription);
+        var cancellationKindDescriptionTransfer = get(cancellationKindDescription);
         
         if(cancellationKindDescriptionTransfer == null) {
-            CancellationKindTransfer cancellationKindTransfer = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationKindDescription.getCancellationKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationKindDescription.getLanguage());
+            var cancellationKindTransfer = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationKindDescription.getCancellationKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationKindDescription.getLanguage());
             
             cancellationKindDescriptionTransfer = new CancellationKindDescriptionTransfer(languageTransfer, cancellationKindTransfer, cancellationKindDescription.getDescription());
             put(cancellationKindDescription, cancellationKindDescriptionTransfer);

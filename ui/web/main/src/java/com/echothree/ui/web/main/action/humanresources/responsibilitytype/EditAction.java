@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.responsibilitytype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.edit.ResponsibilityTypeEdit;
-import com.echothree.control.user.employee.common.form.EditResponsibilityTypeForm;
 import com.echothree.control.user.employee.common.result.EditResponsibilityTypeResult;
-import com.echothree.control.user.employee.common.spec.ResponsibilityTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalResponsibilityTypeName = request.getParameter(ParameterConstants.ORIGINAL_RESPONSIBILITY_TYPE_NAME);
+        var originalResponsibilityTypeName = request.getParameter(ParameterConstants.ORIGINAL_RESPONSIBILITY_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditResponsibilityTypeForm commandForm = EmployeeUtil.getHome().getEditResponsibilityTypeForm();
-                ResponsibilityTypeSpec spec = EmployeeUtil.getHome().getResponsibilityTypeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = EmployeeUtil.getHome().getEditResponsibilityTypeForm();
+                var spec = EmployeeUtil.getHome().getResponsibilityTypeSpec();
                 
                 if(originalResponsibilityTypeName == null)
                     originalResponsibilityTypeName = actionForm.getOriginalResponsibilityTypeName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setResponsibilityTypeName(originalResponsibilityTypeName);
                 
                 if(wasPost(request)) {
-                    ResponsibilityTypeEdit edit = EmployeeUtil.getHome().getResponsibilityTypeEdit();
+                    var edit = EmployeeUtil.getHome().getResponsibilityTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +77,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editResponsibilityType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().editResponsibilityType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditResponsibilityTypeResult result = (EditResponsibilityTypeResult)executionResult.getResult();
+                            var result = (EditResponsibilityTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +97,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editResponsibilityType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditResponsibilityTypeResult result = (EditResponsibilityTypeResult)executionResult.getResult();
+
+                    var commandResult = EmployeeUtil.getHome().editResponsibilityType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditResponsibilityTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ResponsibilityTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalResponsibilityTypeName(edit.getResponsibilityTypeName());

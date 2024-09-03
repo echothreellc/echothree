@@ -64,7 +64,7 @@ public class SessionEntityCacheStatistics {
     }
 
     public void dumpStats() {
-        Log myLog = getLog();
+        var myLog = getLog();
 
         myLog.info("ReadOnlyUpgradedToReadWrite = " + readOnlyUpgradedToReadWrite);
         myLog.info("PutReadOnlyEntity = " + putReadOnlyEntity);

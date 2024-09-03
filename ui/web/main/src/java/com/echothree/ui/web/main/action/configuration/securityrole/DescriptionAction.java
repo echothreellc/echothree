@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.securityrole;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetSecurityRoleDescriptionsForm;
 import com.echothree.control.user.security.common.result.GetSecurityRoleDescriptionsResult;
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,17 +50,17 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetSecurityRoleDescriptionsForm commandForm = SecurityUtil.getHome().getGetSecurityRoleDescriptionsForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleDescriptionsForm();
 
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
         commandForm.setSecurityRoleName(request.getParameter(ParameterConstants.SECURITY_ROLE_NAME));
 
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().getSecurityRoleDescriptions(getUserVisitPK(request), commandForm);
         GetSecurityRoleDescriptionsResult result = null;
         SecurityRoleTransfer securityRole = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetSecurityRoleDescriptionsResult) executionResult.getResult();
             securityRole = result.getSecurityRole();

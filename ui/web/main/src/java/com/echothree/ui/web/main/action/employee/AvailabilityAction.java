@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.SetEmployeeAvailabilityForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.util.common.command.CommandResult;
@@ -49,13 +48,13 @@ public class AvailabilityAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        AvailabilityActionForm actionForm = (AvailabilityActionForm)form;
+        var actionForm = (AvailabilityActionForm)form;
 
         if(wasPost(request)) {
             CommandResult commandResult = null;
 
             if(!wasCanceled(request)) {
-                SetEmployeeAvailabilityForm commandForm = PartyUtil.getHome().getSetEmployeeAvailabilityForm();
+                var commandForm = PartyUtil.getHome().getSetEmployeeAvailabilityForm();
 
                 commandForm.setEmployeeAvailabilityChoice(actionForm.getEmployeeAvailabilityChoice());
 

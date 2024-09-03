@@ -19,18 +19,10 @@ package com.echothree.control.user.message.server.command;
 import com.echothree.control.user.message.common.edit.MessageDescriptionEdit;
 import com.echothree.control.user.message.common.edit.MessageEditFactory;
 import com.echothree.control.user.message.common.form.EditMessageDescriptionForm;
-import com.echothree.control.user.message.common.result.EditMessageDescriptionResult;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.control.user.message.common.spec.MessageDescriptionSpec;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.message.server.entity.Message;
-import com.echothree.model.data.message.server.entity.MessageDescription;
-import com.echothree.model.data.message.server.entity.MessageType;
-import com.echothree.model.data.message.server.value.MessageDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,37 +62,37 @@ public class EditMessageDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditMessageDescriptionResult result = MessageResultFactory.getEditMessageDescriptionResult();
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = MessageResultFactory.getEditMessageDescriptionResult();
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);
-                String messageTypeName = spec.getMessageTypeName();
-                MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+                var messageTypeName = spec.getMessageTypeName();
+                var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType != null) {
-                    String messageName = spec.getMessageName();
-                    Message message = messageControl.getMessageByName(messageType, messageName);
+                    var messageName = spec.getMessageName();
+                    var message = messageControl.getMessageByName(messageType, messageName);
                     
                     if(message != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK)) {
-                                MessageDescription messageDescription = messageControl.getMessageDescription(message, language);
+                                var messageDescription = messageControl.getMessageDescription(message, language);
                                 
                                 if(messageDescription != null) {
                                     result.setMessageDescription(messageControl.getMessageDescriptionTransfer(getUserVisit(), messageDescription));
                                     
                                     if(lockEntity(message)) {
-                                        MessageDescriptionEdit edit = MessageEditFactory.getMessageDescriptionEdit();
+                                        var edit = MessageEditFactory.getMessageDescriptionEdit();
                                         
                                         result.setEdit(edit);
                                         edit.setDescription(messageDescription.getDescription());
@@ -113,12 +105,12 @@ public class EditMessageDescriptionCommand
                                     addExecutionError(ExecutionErrors.UnknownMessageDescription.name());
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
-                                MessageDescriptionValue messageDescriptionValue = messageControl.getMessageDescriptionValueForUpdate(message, language);
+                                var messageDescriptionValue = messageControl.getMessageDescriptionValueForUpdate(message, language);
                                 
                                 if(messageDescriptionValue != null) {
                                     if(lockEntityForUpdate(message)) {
                                         try {
-                                            String description = edit.getDescription();
+                                            var description = edit.getDescription();
                                             
                                             messageDescriptionValue.setDescription(description);
                                             

@@ -18,10 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumForumThreadForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumForumThread;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.forum.server.entity.ForumType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,19 +51,19 @@ public class CreateForumForumThreadCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            String forumThreadName = form.getForumThreadName();
-            ForumThread forumThread = forumControl.getForumThreadByName(forumThreadName);
+            var forumThreadName = form.getForumThreadName();
+            var forumThread = forumControl.getForumThreadByName(forumThreadName);
             
             if(forumThread != null) {
-                ForumForumThread defaultForumForumThread = forumControl.getDefaultForumForumThread(forumThread);
-                ForumType forumType = forum.getLastDetail().getForumType();
+                var defaultForumForumThread = forumControl.getDefaultForumForumThread(forumThread);
+                var forumType = forum.getLastDetail().getForumType();
 
                 if(defaultForumForumThread.getForum().getLastDetail().getForumType().equals(forumType)) {
-                    ForumForumThread forumForumThread = forumControl.getForumForumThread(forum, forumThread);
+                    var forumForumThread = forumControl.getForumForumThread(forum, forumThread);
 
                     if(forumForumThread == null) {
                         var isDefault = Boolean.valueOf(form.getIsDefault());

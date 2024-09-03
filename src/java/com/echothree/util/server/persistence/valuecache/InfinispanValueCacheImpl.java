@@ -36,15 +36,15 @@ public class InfinispanValueCacheImpl
     }
 
     private String getFqn(BasePK basePK) {
-        return new StringBuilder(FQN_PREFIX)
-                .append('/').append(basePK.getComponentVendorName())
-                .append('/').append(basePK.getEntityTypeName())
-                .append('/').append(basePK.getEntityId()).toString();
+        return FQN_PREFIX +
+                '/' + basePK.getComponentVendorName() +
+                '/' + basePK.getEntityTypeName() +
+                '/' + basePK.getEntityId();
     }
 
     @Override
     public void put(BaseValue baseValue) {
-        BasePK basePK = baseValue.getPrimaryKey();
+        var basePK = baseValue.getPrimaryKey();
 
         dataCache.getAdvancedCache().withFlags(Flag.IGNORE_RETURN_VALUES).put(getFqn(basePK) + "/" + VALUE, baseValue);
     }

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.searchtype;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.CreateSearchTypeDescriptionForm;
-import com.echothree.control.user.search.common.form.GetSearchTypeForm;
 import com.echothree.control.user.search.common.result.GetSearchTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,15 +54,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchTypeForm commandForm = SearchUtil.getHome().getGetSearchTypeForm();
+        var commandForm = SearchUtil.getHome().getGetSearchTypeForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchTypeName(actionForm.getSearchTypeName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchType(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().getSearchType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchTypeResult result = (GetSearchTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SEARCH_TYPE, result.getSearchType());
         }
@@ -74,7 +71,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSearchTypeDescriptionForm commandForm = SearchUtil.getHome().getCreateSearchTypeDescriptionForm();
+        var commandForm = SearchUtil.getHome().getCreateSearchTypeDescriptionForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchTypeName(actionForm.getSearchTypeName());

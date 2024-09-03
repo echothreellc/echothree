@@ -26,7 +26,6 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.security.server.entity.SecurityRole;
-import com.echothree.model.data.security.server.entity.SecurityRoleDetail;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import org.apache.lucene.analysis.Analyzer;
@@ -57,8 +56,8 @@ public class SecurityRoleIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final SecurityRole securityRole) {
-        SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
-        String description = securityControl.getBestSecurityRoleDescription(securityRole, language);
+        var securityRoleDetail = securityRole.getLastDetail();
+        var description = securityControl.getBestSecurityRoleDescription(securityRole, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, securityRole.getPrimaryKey());
 

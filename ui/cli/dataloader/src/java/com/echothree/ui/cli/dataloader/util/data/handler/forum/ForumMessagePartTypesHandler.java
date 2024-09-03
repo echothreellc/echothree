@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.ForumService;
-import com.echothree.control.user.forum.common.form.CreateForumMessagePartTypeForm;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,9 +47,9 @@ public class ForumMessagePartTypesHandler
             String forumMessagePartTypeName = null;
             String sortOrder = null;
             String mimeTypeUsageTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumMessagePartTypeName"))
                     forumMessagePartTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("sortOrder"))
@@ -60,7 +59,7 @@ public class ForumMessagePartTypesHandler
             }
             
             try {
-                CreateForumMessagePartTypeForm form = ForumFormFactory.getCreateForumMessagePartTypeForm();
+                var form = ForumFormFactory.getCreateForumMessagePartTypeForm();
                 
                 form.setForumMessagePartTypeName(forumMessagePartTypeName);
                 form.setSortOrder(sortOrder);

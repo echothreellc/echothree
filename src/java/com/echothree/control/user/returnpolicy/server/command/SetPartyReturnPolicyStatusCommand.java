@@ -23,10 +23,6 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.control.returnpolicy.server.logic.PartyReturnPolicyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.returnpolicy.server.entity.PartyReturnPolicy;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -71,23 +67,23 @@ public class SetPartyReturnPolicyStatusCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-            String returnKindName = form.getReturnKindName();
-            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+            var returnKindName = form.getReturnKindName();
+            var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
             if(returnKind != null) {
-                String returnPolicyName = form.getReturnPolicyName();
-                ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+                var returnPolicyName = form.getReturnPolicyName();
+                var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
                 if(returnPolicy != null) {
-                    PartyReturnPolicy partyReturnPolicy = returnPolicyControl.createPartyReturnPolicy(party, returnPolicy, getPartyPK());
+                    var partyReturnPolicy = returnPolicyControl.createPartyReturnPolicy(party, returnPolicy, getPartyPK());
 
                     if(partyReturnPolicy != null) {
-                        String partyReturnPolicyStatusChoice = form.getPartyReturnPolicyStatusChoice();
+                        var partyReturnPolicyStatusChoice = form.getPartyReturnPolicyStatusChoice();
 
                         PartyReturnPolicyLogic.getInstance().setPartyReturnPolicyStatus(this, partyReturnPolicy, partyReturnPolicyStatusChoice, getPartyPK());
                     } else {

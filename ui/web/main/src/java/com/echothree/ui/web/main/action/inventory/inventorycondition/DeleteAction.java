@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.inventorycondition;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteInventoryConditionForm commandForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
-            String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+            var commandForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
+            var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
             
             commandForm.setInventoryConditionName(inventoryConditionName);
             

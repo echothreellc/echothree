@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
-import com.echothree.control.user.geo.common.form.CreateGeoCodeAliasTypeDescriptionForm;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,9 +50,9 @@ public class GeoCodeAliasTypeHandler
         if(localName.equals("geoCodeAliasTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +60,7 @@ public class GeoCodeAliasTypeHandler
             }
             
             try {
-                CreateGeoCodeAliasTypeDescriptionForm createGeoCodeAliasTypeDescriptionForm = GeoFormFactory.getCreateGeoCodeAliasTypeDescriptionForm();
+                var createGeoCodeAliasTypeDescriptionForm = GeoFormFactory.getCreateGeoCodeAliasTypeDescriptionForm();
                 
                 createGeoCodeAliasTypeDescriptionForm.setGeoCodeTypeName(geoCodeTypeName);
                 createGeoCodeAliasTypeDescriptionForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);

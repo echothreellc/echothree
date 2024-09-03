@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.filter.filterstepelement;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.edit.FilterStepElementEdit;
-import com.echothree.control.user.filter.common.form.EditFilterStepElementForm;
 import com.echothree.control.user.filter.common.result.EditFilterStepElementResult;
-import com.echothree.control.user.filter.common.spec.FilterStepElementSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,17 +56,17 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
-        String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
-        String filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
-        String originalFilterStepElementName = request.getParameter(ParameterConstants.ORIGINAL_FILTER_STEP_ELEMENT_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+        var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+        var filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
+        var originalFilterStepElementName = request.getParameter(ParameterConstants.ORIGINAL_FILTER_STEP_ELEMENT_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditFilterStepElementForm commandForm = FilterUtil.getHome().getEditFilterStepElementForm();
-                FilterStepElementSpec spec = FilterUtil.getHome().getFilterStepElementSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = FilterUtil.getHome().getEditFilterStepElementForm();
+                var spec = FilterUtil.getHome().getFilterStepElementSpec();
                 
                 if(filterKindName == null)
                     filterKindName = actionForm.getFilterKindName();
@@ -92,7 +87,7 @@ public class EditAction
                 spec.setFilterStepElementName(originalFilterStepElementName);
                 
                 if(wasPost(request)) {
-                    FilterStepElementEdit edit = FilterUtil.getHome().getFilterStepElementEdit();
+                    var edit = FilterUtil.getHome().getFilterStepElementEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -101,14 +96,14 @@ public class EditAction
                     edit.setFilterItemSelectorName(actionForm.getFilterItemSelectorChoice());
                     edit.setFilterAdjustmentName(actionForm.getFilterAdjustmentChoice());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = FilterUtil.getHome().editFilterStepElement(getUserVisitPK(request), commandForm);
+
+                    var commandResult = FilterUtil.getHome().editFilterStepElement(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditFilterStepElementResult result = (EditFilterStepElementResult)executionResult.getResult();
+                            var result = (EditFilterStepElementResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -121,13 +116,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = FilterUtil.getHome().editFilterStepElement(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditFilterStepElementResult result = (EditFilterStepElementResult)executionResult.getResult();
+
+                    var commandResult = FilterUtil.getHome().editFilterStepElement(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditFilterStepElementResult)executionResult.getResult();
                     
                     if(result != null) {
-                        FilterStepElementEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setFilterKindName(filterKindName);
@@ -152,8 +147,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FILTER_KIND_NAME, filterKindName);
             request.setAttribute(AttributeConstants.FILTER_TYPE_NAME, filterTypeName);

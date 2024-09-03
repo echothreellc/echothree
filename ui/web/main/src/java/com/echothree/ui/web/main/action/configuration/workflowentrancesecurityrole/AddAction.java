@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancesecurityrole;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceSecurityRoleForm;
-import com.echothree.control.user.workflow.common.form.GetWorkflowEntrancePartyTypeForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowEntrancePartyTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,15 +55,15 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkflowEntrancePartyTypeForm commandForm = WorkflowUtil.getHome().getGetWorkflowEntrancePartyTypeForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowEntrancePartyTypeForm();
         
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowEntranceName(actionForm.getWorkflowEntranceName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
 
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowEntrancePartyType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowEntrancePartyTypeResult result = (GetWorkflowEntrancePartyTypeResult)executionResult.getResult();
+        var commandResult = WorkflowUtil.getHome().getWorkflowEntrancePartyType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowEntrancePartyTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE_PARTY_TYPE, result.getWorkflowEntrancePartyType());
     }
@@ -74,7 +71,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateWorkflowEntranceSecurityRoleForm commandForm = WorkflowUtil.getHome().getCreateWorkflowEntranceSecurityRoleForm();
+        var commandForm = WorkflowUtil.getHome().getCreateWorkflowEntranceSecurityRoleForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowEntranceName(actionForm.getWorkflowEntranceName());

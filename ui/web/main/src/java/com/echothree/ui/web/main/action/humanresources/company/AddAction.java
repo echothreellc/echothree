@@ -17,9 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.AddEmployeeToCompanyForm;
-import com.echothree.control.user.party.common.form.AddEmployeeToDepartmentForm;
-import com.echothree.control.user.party.common.form.AddEmployeeToDivisionForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -77,19 +74,19 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        String companyName = actionForm.getCompanyName();
-        String divisionName = actionForm.getDivisionName();
+        var companyName = actionForm.getCompanyName();
+        var divisionName = actionForm.getDivisionName();
         CommandResult commandResult;
 
         if(companyName == null) {
-            AddEmployeeToCompanyForm commandForm = PartyUtil.getHome().getAddEmployeeToCompanyForm();
+            var commandForm = PartyUtil.getHome().getAddEmployeeToCompanyForm();
 
             commandForm.setPartyName(actionForm.getPartyName());
             commandForm.setCompanyName(actionForm.getCompanyChoice());
 
             commandResult = PartyUtil.getHome().addEmployeeToCompany(getUserVisitPK(request), commandForm);
         } else if(divisionName == null) {
-            AddEmployeeToDivisionForm commandForm = PartyUtil.getHome().getAddEmployeeToDivisionForm();
+            var commandForm = PartyUtil.getHome().getAddEmployeeToDivisionForm();
 
             commandForm.setPartyName(actionForm.getPartyName());
             commandForm.setCompanyName(actionForm.getCompanyName());
@@ -97,7 +94,7 @@ public class AddAction
 
             commandResult = PartyUtil.getHome().addEmployeeToDivision(getUserVisitPK(request), commandForm);
         } else {
-            AddEmployeeToDepartmentForm commandForm = PartyUtil.getHome().getAddEmployeeToDepartmentForm();
+            var commandForm = PartyUtil.getHome().getAddEmployeeToDepartmentForm();
 
             commandForm.setPartyName(actionForm.getPartyName());
             commandForm.setCompanyName(actionForm.getCompanyName());

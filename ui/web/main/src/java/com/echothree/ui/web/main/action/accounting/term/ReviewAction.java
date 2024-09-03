@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.term;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.GetTermForm;
 import com.echothree.control.user.term.common.result.GetTermResult;
-import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetTermForm commandForm = TermUtil.getHome().getGetTermForm();
-            String termName = request.getParameter(ParameterConstants.TERM_NAME);
+            var commandForm = TermUtil.getHome().getGetTermForm();
+            var termName = request.getParameter(ParameterConstants.TERM_NAME);
             
             commandForm.setTermName(termName);
-            
-            CommandResult commandResult = TermUtil.getHome().getTerm(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTermResult result = (GetTermResult)executionResult.getResult();
-            TermTransfer term = result.getTerm();
+
+            var commandResult = TermUtil.getHome().getTerm(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTermResult)executionResult.getResult();
+            var term = result.getTerm();
             
             if(term == null) {
                 forwardKey = ForwardConstants.ERROR_404;

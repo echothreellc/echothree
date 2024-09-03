@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.rating.common.transfer.RatingTypeDescriptionTransfer;
-import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.RatingTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,12 +30,12 @@ public class RatingTypeDescriptionTransferCache
     }
     
     public RatingTypeDescriptionTransfer getRatingTypeDescriptionTransfer(RatingTypeDescription ratingTypeDescription) {
-        RatingTypeDescriptionTransfer ratingTypeDescriptionTransfer = get(ratingTypeDescription);
+        var ratingTypeDescriptionTransfer = get(ratingTypeDescription);
         
         if(ratingTypeDescriptionTransfer == null) {
-            RatingTypeTransferCache ratingTypeTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
-            RatingTypeTransfer ratingTypeTransfer = ratingTypeTransferCache.getRatingTypeTransfer(ratingTypeDescription.getRatingType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeDescription.getLanguage());
+            var ratingTypeTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
+            var ratingTypeTransfer = ratingTypeTransferCache.getRatingTypeTransfer(ratingTypeDescription.getRatingType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeDescription.getLanguage());
             
             ratingTypeDescriptionTransfer = new RatingTypeDescriptionTransfer(languageTransfer, ratingTypeTransfer, ratingTypeDescription.getDescription());
             put(ratingTypeDescription, ratingTypeDescriptionTransfer);

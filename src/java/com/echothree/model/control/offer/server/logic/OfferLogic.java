@@ -28,7 +28,6 @@ import com.echothree.model.control.offer.common.exception.UnknownOfferNameExcept
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.factory.OfferFactory;
@@ -64,7 +63,7 @@ public class OfferLogic
             final Party departmentParty, final Selector offerItemSelector, final Filter offerItemPriceFilter, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
         var offerControl = Session.getModelController(OfferControl.class);
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offer = offerControl.getOfferByName(offerName);
 
         if(offer == null) {
             offer = offerControl.createOffer(offerName, salesOrderSequence, departmentParty, offerItemSelector,
@@ -83,7 +82,7 @@ public class OfferLogic
     public Offer getOfferByName(final ExecutionErrorAccumulator eea, final String offerName,
             final EntityPermission entityPermission) {
         var offerControl = Session.getModelController(OfferControl.class);
-        Offer offer = offerControl.getOfferByName(offerName, entityPermission);
+        var offer = offerControl.getOfferByName(offerName, entityPermission);
 
         if(offer == null) {
             handleExecutionError(UnknownOfferNameException.class, eea, ExecutionErrors.UnknownOfferName.name(), offerName);
@@ -104,7 +103,7 @@ public class OfferLogic
             final OfferUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         Offer offer = null;
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = universalSpec.getOfferName();
+        var offerName = universalSpec.getOfferName();
         var parameterCount = (offerName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

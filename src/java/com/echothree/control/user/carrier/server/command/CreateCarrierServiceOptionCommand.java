@@ -24,14 +24,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.carrier.server.entity.CarrierOption;
-import com.echothree.model.data.carrier.server.entity.CarrierService;
-import com.echothree.model.data.carrier.server.entity.CarrierServiceOption;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -85,30 +78,30 @@ public class CreateCarrierServiceOptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = form.getCarrierServiceName();
-            CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = form.getCarrierServiceName();
+            var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
             
             if(carrierService != null) {
-                String carrierOptionName = form.getCarrierOptionName();
-                CarrierOption carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+                var carrierOptionName = form.getCarrierOptionName();
+                var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
                 
                 if(carrierOption != null) {
-                    CarrierServiceOption carrierServiceOption = carrierControl.getCarrierServiceOption(carrierService, carrierOption);
+                    var carrierServiceOption = carrierControl.getCarrierServiceOption(carrierService, carrierOption);
                     
                     if(carrierServiceOption == null) {
                         var selectorControl = Session.getModelController(SelectorControl.class);
-                        SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
+                        var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                         if(selectorKind != null) {
-                            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
+                            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
 
                             if(selectorType != null) {
-                                String recommendedGeoCodeSelectorName = form.getRecommendedGeoCodeSelectorName();
+                                var recommendedGeoCodeSelectorName = form.getRecommendedGeoCodeSelectorName();
                                 Selector recommendedGeoCodeSelector = null;
 
                                 if(recommendedGeoCodeSelectorName != null) {
@@ -116,7 +109,7 @@ public class CreateCarrierServiceOptionCommand
                                 }
 
                                 if(recommendedGeoCodeSelectorName == null || recommendedGeoCodeSelector != null) {
-                                    String requiredGeoCodeSelectorName = form.getRequiredGeoCodeSelectorName();
+                                    var requiredGeoCodeSelectorName = form.getRequiredGeoCodeSelectorName();
                                     Selector requiredGeoCodeSelector = null;
 
                                     if(requiredGeoCodeSelectorName != null) {
@@ -130,7 +123,7 @@ public class CreateCarrierServiceOptionCommand
                                             selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
 
                                             if(selectorType != null) {
-                                                String recommendedItemSelectorName = form.getRecommendedItemSelectorName();
+                                                var recommendedItemSelectorName = form.getRecommendedItemSelectorName();
                                                 Selector recommendedItemSelector = null;
 
                                                 if(recommendedItemSelectorName != null) {
@@ -138,7 +131,7 @@ public class CreateCarrierServiceOptionCommand
                                                 }
 
                                                 if(recommendedItemSelectorName == null || recommendedItemSelector != null) {
-                                                    String requiredItemSelectorName = form.getRequiredItemSelectorName();
+                                                    var requiredItemSelectorName = form.getRequiredItemSelectorName();
                                                     Selector requiredItemSelector = null;
 
                                                     if(requiredItemSelectorName != null) {
@@ -152,7 +145,7 @@ public class CreateCarrierServiceOptionCommand
                                                             selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
 
                                                             if(selectorType != null) {
-                                                                String recommendedOrderSelectorName = form.getRecommendedOrderSelectorName();
+                                                                var recommendedOrderSelectorName = form.getRecommendedOrderSelectorName();
                                                                 Selector recommendedOrderSelector = null;
 
                                                                 if(recommendedOrderSelectorName != null) {
@@ -160,7 +153,7 @@ public class CreateCarrierServiceOptionCommand
                                                                 }
 
                                                                 if(recommendedOrderSelectorName == null || recommendedOrderSelector != null) {
-                                                                    String requiredOrderSelectorName = form.getRequiredOrderSelectorName();
+                                                                    var requiredOrderSelectorName = form.getRequiredOrderSelectorName();
                                                                     Selector requiredOrderSelector = null;
 
                                                                     if(requiredOrderSelectorName != null) {
@@ -174,7 +167,7 @@ public class CreateCarrierServiceOptionCommand
                                                                             selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
 
                                                                             if(selectorType != null) {
-                                                                                String recommendedShipmentSelectorName = form.getRecommendedShipmentSelectorName();
+                                                                                var recommendedShipmentSelectorName = form.getRecommendedShipmentSelectorName();
                                                                                 Selector recommendedShipmentSelector = null;
 
                                                                                 if(recommendedShipmentSelectorName != null) {
@@ -182,7 +175,7 @@ public class CreateCarrierServiceOptionCommand
                                                                                 }
 
                                                                                 if(recommendedShipmentSelectorName == null || recommendedShipmentSelector != null) {
-                                                                                    String requiredShipmentSelectorName = form.getRequiredShipmentSelectorName();
+                                                                                    var requiredShipmentSelectorName = form.getRequiredShipmentSelectorName();
                                                                                     Selector requiredShipmentSelector = null;
 
                                                                                     if(requiredShipmentSelectorName != null) {
@@ -190,8 +183,8 @@ public class CreateCarrierServiceOptionCommand
                                                                                     }
 
                                                                                     if(requiredShipmentSelectorName == null || requiredShipmentSelector != null) {
-                                                                                        Boolean isRecommended = Boolean.valueOf(form.getIsRecommended());
-                                                                                        Boolean isRequired = Boolean.valueOf(form.getIsRequired());
+                                                                                        var isRecommended = Boolean.valueOf(form.getIsRecommended());
+                                                                                        var isRequired = Boolean.valueOf(form.getIsRequired());
 
                                                                                         carrierControl.createCarrierServiceOption(carrierService,
                                                                                                 carrierOption, isRecommended, isRequired,

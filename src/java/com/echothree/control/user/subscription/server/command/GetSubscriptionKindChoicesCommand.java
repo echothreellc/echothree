@@ -17,7 +17,6 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.GetSubscriptionKindChoicesForm;
-import com.echothree.control.user.subscription.common.result.GetSubscriptionKindChoicesResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetSubscriptionKindChoicesCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        GetSubscriptionKindChoicesResult result = SubscriptionResultFactory.getGetSubscriptionKindChoicesResult();
-        String defaultSubscriptionKindChoice = form.getDefaultSubscriptionKindChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SubscriptionResultFactory.getGetSubscriptionKindChoicesResult();
+        var defaultSubscriptionKindChoice = form.getDefaultSubscriptionKindChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSubscriptionKindChoices(subscriptionControl.getSubscriptionKindChoices(defaultSubscriptionKindChoice, getPreferredLanguage(),
                 allowNullChoice));

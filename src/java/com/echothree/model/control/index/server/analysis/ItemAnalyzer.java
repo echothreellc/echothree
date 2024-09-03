@@ -24,7 +24,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -64,7 +63,7 @@ public class ItemAnalyzer
         var itemControl = Session.getModelController(ItemControl.class);
         
         itemControl.getItemDescriptionTypes().stream().map((itemDescriptionType) -> itemDescriptionType.getLastDetail()).forEach((itemDescriptionTypeDetail) -> {
-            MimeTypeUsageType mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
+            var mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
             if (mimeTypeUsageType == null || mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.TEXT.name())) {
                 fieldAnalyzers.put(itemDescriptionTypeDetail.getItemDescriptionTypeName() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name(),
                         new DictionaryAnalyzer());

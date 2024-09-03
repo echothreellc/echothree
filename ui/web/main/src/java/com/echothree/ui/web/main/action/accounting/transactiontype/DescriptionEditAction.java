@@ -19,16 +19,13 @@ package com.echothree.ui.web.main.action.accounting.transactiontype;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.edit.TransactionTypeDescriptionEdit;
 import com.echothree.control.user.accounting.common.form.EditTransactionTypeDescriptionForm;
-import com.echothree.control.user.accounting.common.form.GetTransactionTypeForm;
 import com.echothree.control.user.accounting.common.result.EditTransactionTypeDescriptionResult;
 import com.echothree.control.user.accounting.common.result.GetTransactionTypeResult;
 import com.echothree.control.user.accounting.common.spec.TransactionTypeDescriptionSpec;
-import com.echothree.model.control.accounting.common.transfer.TransactionTypeDescriptionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,7 +52,7 @@ public class DescriptionEditAction
     @Override
     protected TransactionTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        TransactionTypeDescriptionSpec spec = AccountingUtil.getHome().getTransactionTypeDescriptionSpec();
+        var spec = AccountingUtil.getHome().getTransactionTypeDescriptionSpec();
         
         spec.setTransactionTypeName(findParameter(request, ParameterConstants.TRANSACTION_TYPE_NAME, actionForm.getTransactionTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -66,7 +63,7 @@ public class DescriptionEditAction
     @Override
     protected TransactionTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        TransactionTypeDescriptionEdit edit = AccountingUtil.getHome().getTransactionTypeDescriptionEdit();
+        var edit = AccountingUtil.getHome().getTransactionTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 
@@ -89,11 +86,11 @@ public class DescriptionEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditTransactionTypeDescriptionForm commandForm)
             throws Exception {
-        CommandResult commandResult = AccountingUtil.getHome().editTransactionTypeDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditTransactionTypeDescriptionResult result = (EditTransactionTypeDescriptionResult)executionResult.getResult();
+        var commandResult = AccountingUtil.getHome().editTransactionTypeDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditTransactionTypeDescriptionResult)executionResult.getResult();
 
-        TransactionTypeDescriptionTransfer transactionTypeDescription = result.getTransactionTypeDescription();
+        var transactionTypeDescription = result.getTransactionTypeDescription();
         if(transactionTypeDescription != null) {
             request.setAttribute(AttributeConstants.TRANSACTION_TYPE, transactionTypeDescription.getTransactionType());
         }
@@ -109,14 +106,14 @@ public class DescriptionEditAction
     @Override
     public void setupTransfer(DescriptionEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionTypeForm commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionTypeResult result = (GetTransactionTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_TYPE, result.getTransactionType());
         }

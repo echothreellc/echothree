@@ -19,18 +19,13 @@ package com.echothree.ui.cli.dataloader.util.data.handler.index;
 import com.echothree.control.user.index.common.IndexUtil;
 import com.echothree.control.user.index.common.IndexService;
 import com.echothree.control.user.index.common.edit.IndexFieldDescriptionEdit;
-import com.echothree.control.user.index.common.form.CreateIndexFieldDescriptionForm;
-import com.echothree.control.user.index.common.form.EditIndexFieldDescriptionForm;
 import com.echothree.control.user.index.common.form.IndexFormFactory;
 import com.echothree.control.user.index.common.result.EditIndexFieldDescriptionResult;
-import com.echothree.control.user.index.common.spec.IndexFieldDescriptionSpec;
 import com.echothree.control.user.index.common.spec.IndexSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -61,8 +56,8 @@ public class IndexFieldHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("indexFieldDescription")) {
-            IndexFieldDescriptionSpec spec = IndexSpecFactory.getIndexFieldDescriptionSpec();
-            EditIndexFieldDescriptionForm editForm = IndexFormFactory.getEditIndexFieldDescriptionForm();
+            var spec = IndexSpecFactory.getIndexFieldDescriptionSpec();
+            var editForm = IndexFormFactory.getEditIndexFieldDescriptionForm();
 
             spec.setIndexTypeName(indexTypeName);
             spec.setIndexFieldName(indexFieldName);
@@ -70,12 +65,12 @@ public class IndexFieldHandler
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = indexService.editIndexFieldDescription(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = indexService.editIndexFieldDescription(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownIndexFieldDescription.name())) {
-                    CreateIndexFieldDescriptionForm createForm = IndexFormFactory.getCreateIndexFieldDescriptionForm();
+                    var createForm = IndexFormFactory.getCreateIndexFieldDescriptionForm();
 
                     createForm.setIndexTypeName(indexTypeName);
                     createForm.setIndexFieldName(indexFieldName);
@@ -90,13 +85,13 @@ public class IndexFieldHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditIndexFieldDescriptionResult result = (EditIndexFieldDescriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditIndexFieldDescriptionResult)executionResult.getResult();
 
                 if(result != null) {
-                    IndexFieldDescriptionEdit edit = (IndexFieldDescriptionEdit)result.getEdit();
-                    String description = attrs.getValue("description");
-                    boolean changed = false;
+                    var edit = (IndexFieldDescriptionEdit)result.getEdit();
+                    var description = attrs.getValue("description");
+                    var changed = false;
                     
                     if(!edit.getDescription().equals(description)) {
                         edit.setDescription(description);

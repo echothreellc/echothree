@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestinationpartytype;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.DeleteWorkflowDestinationPartyTypeForm;
-import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationPartyTypeForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationPartyTypeResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -65,16 +62,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkflowDestinationPartyTypeForm commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationPartyTypeForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationPartyTypeForm();
         
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowStepName(actionForm.getWorkflowStepName());
         commandForm.setWorkflowDestinationName(actionForm.getWorkflowDestinationName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestinationPartyType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowDestinationPartyTypeResult result = (GetWorkflowDestinationPartyTypeResult)executionResult.getResult();
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowDestinationPartyType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowDestinationPartyTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION_PARTY_TYPE, result.getWorkflowDestinationPartyType());
     }
@@ -82,7 +79,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteWorkflowDestinationPartyTypeForm commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationPartyTypeForm();
+        var commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationPartyTypeForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowStepName(actionForm.getWorkflowStepName());

@@ -39,7 +39,7 @@ public class MD5Utils {
         byte[] md5Hash = null;
         
         try {
-            MessageDigest md5Encoder = MessageDigest.getInstance("MD5");
+            var md5Encoder = MessageDigest.getInstance("MD5");
             
             md5Encoder.update(string.getBytes(Charsets.UTF_8));
             md5Hash = md5Encoder.digest();

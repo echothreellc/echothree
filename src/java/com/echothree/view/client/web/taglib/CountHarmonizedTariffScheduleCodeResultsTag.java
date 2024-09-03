@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.CountHarmonizedTariffScheduleCodeResultsForm;
 import com.echothree.control.user.search.common.result.CountHarmonizedTariffScheduleCodeResultsResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -79,11 +76,11 @@ public class CountHarmonizedTariffScheduleCodeResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountHarmonizedTariffScheduleCodeResultsForm commandForm = SearchUtil.getHome().getCountHarmonizedTariffScheduleCodeResultsForm();
+            var commandForm = SearchUtil.getHome().getCountHarmonizedTariffScheduleCodeResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countHarmonizedTariffScheduleCodeResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countHarmonizedTariffScheduleCodeResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +88,8 @@ public class CountHarmonizedTariffScheduleCodeResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountHarmonizedTariffScheduleCodeResultsResult result = (CountHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

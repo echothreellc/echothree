@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.employeecontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCountryChoicesForm;
 import com.echothree.control.user.geo.common.result.GetCountryChoicesResult;
 import com.echothree.model.control.geo.common.choice.CountryChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,14 +37,14 @@ public class Step2ActionForm
     private void setupCountryChoices() {
         if(countryChoices == null) {
             try {
-                GetCountryChoicesForm commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
+                var commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
 
                 commandForm.setDefaultCountryChoice(countryChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCountryChoicesResult result = (GetCountryChoicesResult)executionResult.getResult();
+                var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCountryChoicesResult)executionResult.getResult();
                 countryChoices = result.getCountryChoices();
 
                 if(countryChoice == null) {

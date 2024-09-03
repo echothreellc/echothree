@@ -17,10 +17,8 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreatePersonalTitleForm;
-import com.echothree.control.user.party.common.result.CreatePersonalTitleResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -51,13 +49,13 @@ public class CreatePersonalTitleCommand
     
     @Override
     protected BaseResult execute() {
-        CreatePersonalTitleResult result = PartyResultFactory.getCreatePersonalTitleResult();
+        var result = PartyResultFactory.getCreatePersonalTitleResult();
         var description = form.getDescription();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var partyControl = Session.getModelController(PartyControl.class);
-        
-        PersonalTitle personalTitle = partyControl.createPersonalTitle(description, isDefault, sortOrder, getPartyPK());
+
+        var personalTitle = partyControl.createPersonalTitle(description, isDefault, sortOrder, getPartyPK());
         result.setPersonalTitleId(personalTitle.getPrimaryKey().getEntityId().toString());
         
         return result;

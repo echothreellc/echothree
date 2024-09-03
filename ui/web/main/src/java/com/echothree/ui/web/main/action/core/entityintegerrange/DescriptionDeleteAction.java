@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entityintegerrange;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteEntityIntegerRangeDescriptionForm;
-import com.echothree.control.user.core.common.form.GetEntityIntegerRangeDescriptionForm;
 import com.echothree.control.user.core.common.result.GetEntityIntegerRangeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -66,18 +63,18 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityIntegerRangeDescriptionForm commandForm = CoreUtil.getHome().getGetEntityIntegerRangeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetEntityIntegerRangeDescriptionForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityIntegerRangeName(actionForm.getEntityIntegerRangeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityIntegerRangeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityIntegerRangeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityIntegerRangeDescriptionResult result = (GetEntityIntegerRangeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityIntegerRangeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_INTEGER_RANGE_DESCRIPTION, result.getEntityIntegerRangeDescription());
         }
@@ -86,7 +83,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityIntegerRangeDescriptionForm commandForm = CoreUtil.getHome().getDeleteEntityIntegerRangeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityIntegerRangeDescriptionForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

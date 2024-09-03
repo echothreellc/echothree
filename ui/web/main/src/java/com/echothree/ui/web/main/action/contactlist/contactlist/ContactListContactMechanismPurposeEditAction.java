@@ -51,7 +51,7 @@ public class ContactListContactMechanismPurposeEditAction
     @Override
     protected ContactListContactMechanismPurposeSpec getSpec(HttpServletRequest request, ContactListContactMechanismPurposeEditActionForm actionForm)
             throws NamingException {
-        ContactListContactMechanismPurposeSpec spec = ContactListUtil.getHome().getContactListContactMechanismPurposeSpec();
+        var spec = ContactListUtil.getHome().getContactListContactMechanismPurposeSpec();
         
         spec.setContactListName(findParameter(request, ParameterConstants.CONTACT_LIST_NAME, actionForm.getContactListName()));
         spec.setContactMechanismPurposeName(findParameter(request, ParameterConstants.CONTACT_MECHANISM_PURPOSE_NAME, actionForm.getContactMechanismPurposeName()));
@@ -62,7 +62,7 @@ public class ContactListContactMechanismPurposeEditAction
     @Override
     protected ContactListContactMechanismPurposeEdit getEdit(HttpServletRequest request, ContactListContactMechanismPurposeEditActionForm actionForm)
             throws NamingException {
-        ContactListContactMechanismPurposeEdit edit = ContactListUtil.getHome().getContactListContactMechanismPurposeEdit();
+        var edit = ContactListUtil.getHome().getContactListContactMechanismPurposeEdit();
 
         edit.setIsDefault(actionForm.getIsDefault().toString());
         edit.setSortOrder(actionForm.getSortOrder());

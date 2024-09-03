@@ -21,10 +21,6 @@ import com.echothree.control.user.picklist.server.command.util.PicklistAliasUtil
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.picklist.server.entity.Picklist;
-import com.echothree.model.data.picklist.server.entity.PicklistAlias;
-import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
-import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,19 +61,19 @@ public class DeletePicklistAliasCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistName = form.getPicklistName();
-            Picklist picklist = picklistControl.getPicklistByName(picklistType, picklistName);
+            var picklistName = form.getPicklistName();
+            var picklist = picklistControl.getPicklistByName(picklistType, picklistName);
 
             if(picklist != null) {
-                String picklistAliasTypeName = form.getPicklistAliasTypeName();
-                PicklistAliasType picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
+                var picklistAliasTypeName = form.getPicklistAliasTypeName();
+                var picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
                 if(picklistAliasType != null) {
-                    PicklistAlias picklistAlias = picklistControl.getPicklistAliasForUpdate(picklist, picklistAliasType);
+                    var picklistAlias = picklistControl.getPicklistAliasForUpdate(picklist, picklistAliasType);
 
                     if(picklistAlias != null) {
                         picklistControl.deletePicklistAlias(picklistAlias, getPartyPK());

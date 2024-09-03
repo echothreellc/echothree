@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.club;
 import com.echothree.control.user.club.common.ClubUtil;
 import com.echothree.control.user.club.common.ClubService;
 import com.echothree.control.user.club.common.form.ClubFormFactory;
-import com.echothree.control.user.club.common.form.CreateClubItemTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,9 +49,9 @@ public class ClubItemTypeHandler
         if(localName.equals("clubItemTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class ClubItemTypeHandler
             }
             
             try {
-                CreateClubItemTypeDescriptionForm commandForm = ClubFormFactory.getCreateClubItemTypeDescriptionForm();
+                var commandForm = ClubFormFactory.getCreateClubItemTypeDescriptionForm();
                 
                 commandForm.setClubItemTypeName(clubItemTypeName);
                 commandForm.setLanguageIsoName(languageIsoName);

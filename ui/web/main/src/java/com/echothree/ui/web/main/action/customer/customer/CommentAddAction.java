@@ -17,20 +17,15 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.CreateCommentForm;
-import com.echothree.control.user.comment.common.form.GetCommentTypeForm;
 import com.echothree.control.user.comment.common.result.GetCommentTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -62,14 +57,14 @@ public class CommentAddAction
     
     public String getCustomerEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-        CustomerTransfer customer = result.getCustomer();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
+        var customer = result.getCustomer();
         
         request.setAttribute(AttributeConstants.CUSTOMER, customer);
         
@@ -78,15 +73,15 @@ public class CommentAddAction
     
     public void setupCommentTypeTransfer(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommentTypeForm commandForm = CommentUtil.getHome().getGetCommentTypeForm();
+        var commandForm = CommentUtil.getHome().getGetCommentTypeForm();
         
         commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
         commandForm.setEntityTypeName(EntityTypes.Party.name());
         commandForm.setCommentTypeName(actionForm.getCommentTypeName());
 
-        CommandResult commandResult = CommentUtil.getHome().getCommentType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommentTypeResult result = (GetCommentTypeResult)executionResult.getResult();
+        var commandResult = CommentUtil.getHome().getCommentType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommentTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COMMENT_TYPE, result.getCommentType());
     }
@@ -104,7 +99,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getCustomerEntityRef(actionForm, request));
         commandForm.setCommentTypeName(actionForm.getCommentTypeName());

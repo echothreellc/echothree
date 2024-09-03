@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonDescriptionTransfer;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class ReturnReasonDescriptionTransferCache
     }
     
     public ReturnReasonDescriptionTransfer getReturnReasonDescriptionTransfer(ReturnReasonDescription returnReasonDescription) {
-        ReturnReasonDescriptionTransfer returnReasonDescriptionTransfer = get(returnReasonDescription);
+        var returnReasonDescriptionTransfer = get(returnReasonDescription);
         
         if(returnReasonDescriptionTransfer == null) {
-            ReturnReasonTransfer returnReasonTransfer = returnPolicyControl.getReturnReasonTransfer(userVisit, returnReasonDescription.getReturnReason());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, returnReasonDescription.getLanguage());
+            var returnReasonTransfer = returnPolicyControl.getReturnReasonTransfer(userVisit, returnReasonDescription.getReturnReason());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnReasonDescription.getLanguage());
             
             returnReasonDescriptionTransfer = new ReturnReasonDescriptionTransfer(languageTransfer, returnReasonTransfer, returnReasonDescription.getDescription());
             put(returnReasonDescription, returnReasonDescriptionTransfer);

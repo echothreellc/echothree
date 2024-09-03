@@ -17,7 +17,6 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.GetItemTaxClassificationsForm;
-import com.echothree.control.user.tax.common.result.GetItemTaxClassificationsResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -25,8 +24,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,9 +65,9 @@ public class GetItemTaxClassificationsCommand
     
     @Override
     protected BaseResult execute() {
-        GetItemTaxClassificationsResult result = TaxResultFactory.getGetItemTaxClassificationsResult();
-        String itemName = form.getItemName();
-        String countryName = form.getCountryName();
+        var result = TaxResultFactory.getGetItemTaxClassificationsResult();
+        var itemName = form.getItemName();
+        var countryName = form.getCountryName();
         var parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1);
 
         if(parameterCount == 1) {
@@ -78,7 +75,7 @@ public class GetItemTaxClassificationsCommand
 
             if(itemName != null) {
                 var itemControl = Session.getModelController(ItemControl.class);
-                Item item = itemControl.getItemByName(itemName);
+                var item = itemControl.getItemByName(itemName);
 
                 if(item != null) {
                     result.setItem(itemControl.getItemTransfer(getUserVisit(), item));
@@ -88,7 +85,7 @@ public class GetItemTaxClassificationsCommand
                 }
             } else {
                 var geoControl = Session.getModelController(GeoControl.class);
-                GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+                var countryGeoCode = geoControl.getCountryByAlias(countryName);
 
                 if(countryGeoCode != null) {
                     result.setCountry(geoControl.getCountryTransfer(getUserVisit(), countryGeoCode));

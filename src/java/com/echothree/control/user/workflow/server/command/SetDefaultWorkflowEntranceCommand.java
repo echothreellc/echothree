@@ -22,8 +22,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.value.WorkflowEntranceDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -64,12 +62,12 @@ public class SetDefaultWorkflowEntranceCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntranceDetailValue workflowEntranceDetailValue = workflowControl.getWorkflowEntranceDetailValueByNameForUpdate(workflow, workflowEntranceName);
+            var workflowEntranceName = form.getWorkflowEntranceName();
+            var workflowEntranceDetailValue = workflowControl.getWorkflowEntranceDetailValueByNameForUpdate(workflow, workflowEntranceName);
             
             if(workflowEntranceDetailValue != null) {
                 workflowEntranceDetailValue.setIsDefault(Boolean.TRUE);

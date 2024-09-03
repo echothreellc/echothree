@@ -17,22 +17,16 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class PartyTrainingClassTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClass, PartyTrainingClassTransfer> {
@@ -55,20 +49,20 @@ public class PartyTrainingClassTransferCache
     }
     
     public PartyTrainingClassTransfer getPartyTrainingClassTransfer(PartyTrainingClass partyTrainingClass) {
-        PartyTrainingClassTransfer partyTrainingClassTransfer = get(partyTrainingClass);
+        var partyTrainingClassTransfer = get(partyTrainingClass);
 
         if(partyTrainingClassTransfer == null) {
-            PartyTrainingClassDetail partyTrainingClassDetail = partyTrainingClass.getLastDetail();
-            String partyTrainingClassName = partyTrainingClassDetail.getPartyTrainingClassName();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyTrainingClassDetail.getParty());
-            TrainingClassTransfer trainingClassTransfer = trainingControl.getTrainingClassTransfer(userVisit, partyTrainingClassDetail.getTrainingClass());
-            Long unformattedCompletedTime = partyTrainingClassDetail.getCompletedTime();
-            String completedTime = unformattedCompletedTime == null ? null : formatTypicalDateTime(unformattedCompletedTime);
-            Long unformattedValidUntilTime = partyTrainingClassDetail.getValidUntilTime();
-            String validUntilTime = unformattedValidUntilTime == null ? null : formatTypicalDateTime(unformattedValidUntilTime);
+            var partyTrainingClassDetail = partyTrainingClass.getLastDetail();
+            var partyTrainingClassName = partyTrainingClassDetail.getPartyTrainingClassName();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyTrainingClassDetail.getParty());
+            var trainingClassTransfer = trainingControl.getTrainingClassTransfer(userVisit, partyTrainingClassDetail.getTrainingClass());
+            var unformattedCompletedTime = partyTrainingClassDetail.getCompletedTime();
+            var completedTime = unformattedCompletedTime == null ? null : formatTypicalDateTime(unformattedCompletedTime);
+            var unformattedValidUntilTime = partyTrainingClassDetail.getValidUntilTime();
+            var validUntilTime = unformattedValidUntilTime == null ? null : formatTypicalDateTime(unformattedValidUntilTime);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
-            WorkflowEntityStatusTransfer partyTrainingClassStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
+            var partyTrainingClassStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, entityInstance);
 
             partyTrainingClassTransfer = new PartyTrainingClassTransfer(partyTrainingClassName, partyTransfer, trainingClassTransfer,

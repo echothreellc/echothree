@@ -18,7 +18,6 @@ package com.echothree.control.user.queue.common;
 
 import com.echothree.control.user.queue.server.QueueLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class QueueUtil {
@@ -30,7 +29,7 @@ public class QueueUtil {
     public static QueueLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (QueueLocal)ctx.lookup("ejb:echothree/echothree-server/QueueBean!com.echothree.control.user.queue.server.QueueLocal");
         }
@@ -42,7 +41,7 @@ public class QueueUtil {
     public static QueueRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (QueueRemote)ctx.lookup("ejb:echothree/echothree-server/QueueBean!com.echothree.control.user.queue.common.QueueRemote");
         }

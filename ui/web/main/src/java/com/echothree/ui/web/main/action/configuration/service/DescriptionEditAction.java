@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected ServiceDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ServiceDescriptionSpec spec = CoreUtil.getHome().getServiceDescriptionSpec();
+        var spec = CoreUtil.getHome().getServiceDescriptionSpec();
         
         spec.setServiceName(findParameter(request, ParameterConstants.SERVICE_NAME, actionForm.getServiceName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected ServiceDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ServiceDescriptionEdit edit = CoreUtil.getHome().getServiceDescriptionEdit();
+        var edit = CoreUtil.getHome().getServiceDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

@@ -27,10 +27,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.carrier.server.entity.CarrierType;
-import com.echothree.model.data.carrier.server.entity.CarrierTypeDescription;
-import com.echothree.model.data.carrier.server.entity.CarrierTypeDetail;
-import com.echothree.model.data.carrier.server.value.CarrierTypeDescriptionValue;
-import com.echothree.model.data.carrier.server.value.CarrierTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,8 +86,8 @@ public class EditCarrierTypeCommand
     @Override
     public CarrierType getEntity(EditCarrierTypeResult result) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        CarrierType carrierType = null;
-        String carrierTypeName = spec.getCarrierTypeName();
+        CarrierType carrierType;
+        var carrierTypeName = spec.getCarrierTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
@@ -123,8 +119,8 @@ public class EditCarrierTypeCommand
     @Override
     public void doLock(CarrierTypeEdit edit, CarrierType carrierType) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        CarrierTypeDescription carrierTypeDescription = carrierControl.getCarrierTypeDescription(carrierType, getPreferredLanguage());
-        CarrierTypeDetail carrierTypeDetail = carrierType.getLastDetail();
+        var carrierTypeDescription = carrierControl.getCarrierTypeDescription(carrierType, getPreferredLanguage());
+        var carrierTypeDetail = carrierType.getLastDetail();
 
         edit.setCarrierTypeName(carrierTypeDetail.getCarrierTypeName());
         edit.setIsDefault(carrierTypeDetail.getIsDefault().toString());
@@ -138,8 +134,8 @@ public class EditCarrierTypeCommand
     @Override
     public void canUpdate(CarrierType carrierType) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierTypeName = edit.getCarrierTypeName();
-        CarrierType duplicateCarrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
+        var carrierTypeName = edit.getCarrierTypeName();
+        var duplicateCarrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
 
         if(duplicateCarrierType != null && !carrierType.equals(duplicateCarrierType)) {
             addExecutionError(ExecutionErrors.DuplicateCarrierTypeName.name(), carrierTypeName);
@@ -150,9 +146,9 @@ public class EditCarrierTypeCommand
     public void doUpdate(CarrierType carrierType) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
-        CarrierTypeDetailValue carrierTypeDetailValue = carrierControl.getCarrierTypeDetailValueForUpdate(carrierType);
-        CarrierTypeDescription carrierTypeDescription = carrierControl.getCarrierTypeDescriptionForUpdate(carrierType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var carrierTypeDetailValue = carrierControl.getCarrierTypeDetailValueForUpdate(carrierType);
+        var carrierTypeDescription = carrierControl.getCarrierTypeDescriptionForUpdate(carrierType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         carrierTypeDetailValue.setCarrierTypeName(edit.getCarrierTypeName());
         carrierTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +161,7 @@ public class EditCarrierTypeCommand
         } else if(carrierTypeDescription != null && description == null) {
             carrierControl.deleteCarrierTypeDescription(carrierTypeDescription, partyPK);
         } else if(carrierTypeDescription != null && description != null) {
-            CarrierTypeDescriptionValue carrierTypeDescriptionValue = carrierControl.getCarrierTypeDescriptionValue(carrierTypeDescription);
+            var carrierTypeDescriptionValue = carrierControl.getCarrierTypeDescriptionValue(carrierTypeDescription);
 
             carrierTypeDescriptionValue.setDescription(description);
             carrierControl.updateCarrierTypeDescriptionFromValue(carrierTypeDescriptionValue, partyPK);

@@ -18,13 +18,9 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetServerServiceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetServerServiceResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Server;
-import com.echothree.model.data.core.server.entity.ServerService;
-import com.echothree.model.data.core.server.entity.Service;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,16 +61,16 @@ public class GetServerServiceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServerServiceResult result = CoreResultFactory.getGetServerServiceResult();
-        String serverName = form.getServerName();
-        Server server = coreControl.getServerByName(serverName);
+        var result = CoreResultFactory.getGetServerServiceResult();
+        var serverName = form.getServerName();
+        var server = coreControl.getServerByName(serverName);
 
         if(server != null) {
-            String serviceName = form.getServiceName();
-            Service service = coreControl.getServiceByName(serviceName);
+            var serviceName = form.getServiceName();
+            var service = coreControl.getServiceByName(serviceName);
 
             if(service != null) {
-                ServerService serverService = coreControl.getServerService(server, service);
+                var serverService = coreControl.getServerService(server, service);
 
                 if(serverService != null) {
                     result.setServerService(coreControl.getServerServiceTransfer(getUserVisit(), serverService));

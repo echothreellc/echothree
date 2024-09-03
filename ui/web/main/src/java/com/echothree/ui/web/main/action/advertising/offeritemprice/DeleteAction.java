@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offeritemprice;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.DeleteOfferItemPriceForm;
-import com.echothree.control.user.offer.common.form.GetOfferItemPriceForm;
 import com.echothree.control.user.offer.common.result.GetOfferItemPriceResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -66,7 +63,7 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetOfferItemPriceForm commandForm = OfferUtil.getHome().getGetOfferItemPriceForm();
+        var commandForm = OfferUtil.getHome().getGetOfferItemPriceForm();
 
         commandForm.setOfferName(actionForm.getOfferName());
         commandForm.setItemName(actionForm.getItemName());
@@ -74,9 +71,9 @@ public class DeleteAction
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
         commandForm.setCurrencyIsoName(actionForm.getCurrencyIsoName());
 
-        CommandResult commandResult = OfferUtil.getHome().getOfferItemPrice(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetOfferItemPriceResult result = (GetOfferItemPriceResult)executionResult.getResult();
+        var commandResult = OfferUtil.getHome().getOfferItemPrice(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetOfferItemPriceResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.OFFER_ITEM_PRICE, result.getOfferItemPrice());
     }
@@ -84,7 +81,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteOfferItemPriceForm commandForm = OfferUtil.getHome().getDeleteOfferItemPriceForm();
+        var commandForm = OfferUtil.getHome().getDeleteOfferItemPriceForm();
 
         commandForm.setOfferName(actionForm.getOfferName());
         commandForm.setItemName(actionForm.getItemName());

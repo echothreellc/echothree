@@ -20,10 +20,8 @@ import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormatDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import java.util.Set;
 
 public class PostalAddressFormatTransferCache
         extends BaseContactTransferCache<PostalAddressFormat, PostalAddressFormatTransfer> {
@@ -43,14 +41,14 @@ public class PostalAddressFormatTransferCache
     }
     
     public PostalAddressFormatTransfer getPostalAddressFormatTransfer(PostalAddressFormat postalAddressFormat) {
-        PostalAddressFormatTransfer postalAddressFormatTransfer = get(postalAddressFormat);
+        var postalAddressFormatTransfer = get(postalAddressFormat);
         
         if(postalAddressFormatTransfer == null) {
-            PostalAddressFormatDetail postalAddressFormatDetail = postalAddressFormat.getLastDetail();
-            String postalAddressFormatName = postalAddressFormatDetail.getPostalAddressFormatName();
-            Boolean isDefault = postalAddressFormatDetail.getIsDefault();
-            Integer sortOrder = postalAddressFormatDetail.getSortOrder();
-            String description = contactControl.getBestPostalAddressFormatDescription(postalAddressFormat, getLanguage());
+            var postalAddressFormatDetail = postalAddressFormat.getLastDetail();
+            var postalAddressFormatName = postalAddressFormatDetail.getPostalAddressFormatName();
+            var isDefault = postalAddressFormatDetail.getIsDefault();
+            var sortOrder = postalAddressFormatDetail.getSortOrder();
+            var description = contactControl.getBestPostalAddressFormatDescription(postalAddressFormat, getLanguage());
             
             postalAddressFormatTransfer = new PostalAddressFormatTransfer(postalAddressFormatName, isDefault, sortOrder, description);
             put(postalAddressFormat, postalAddressFormatTransfer);

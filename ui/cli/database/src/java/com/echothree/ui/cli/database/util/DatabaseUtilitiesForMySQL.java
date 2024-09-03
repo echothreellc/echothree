@@ -17,36 +17,31 @@
 package com.echothree.ui.cli.database.util;
 
 import com.echothree.ui.cli.database.util.current.CurrentColumn;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.Locale;
 
 public class DatabaseUtilitiesForMySQL
         extends DatabaseUtilities {
     
-    /** Creates new DatabaseUtilitiesForMySQL */
     /** Creates a new instance of DatabaseUtilitiesForMySQL */
     public DatabaseUtilitiesForMySQL(boolean verbose, Database theDatabase, String connectionClass, String connectionUrl,
-            String connectionUser, String connectionPassword, String connectionCharacterSet, String connectionCollation)
-            throws Exception {
+            String connectionUser, String connectionPassword, String connectionCharacterSet, String connectionCollation) {
         super(verbose, theDatabase, connectionClass, connectionUrl, connectionUser, connectionPassword, connectionCharacterSet,
                 connectionCollation);
     }
     
     @Override
     void doEmptyDatabase() throws Exception {
-        try(Statement stmt = myConnection.createStatement()) {
-            DatabaseMetaData dmd = myConnection.getMetaData();
+        try(var stmt = myConnection.createStatement()) {
+            var dmd = myConnection.getMetaData();
             
-            try(ResultSet rs = dmd.getTables(null, null, null, new String[] {"TABLE"})) {
+            try(var rs = dmd.getTables(null, null, null, new String[] {"TABLE"})) {
                 while(rs.next()) {
-                    String tableName = rs.getString("TABLE_NAME");
+                    var tableName = rs.getString("TABLE_NAME");
                     
-                    try(ResultSet ik = dmd.getImportedKeys(null, null, tableName)) {
+                    try(var ik = dmd.getImportedKeys(null, null, tableName)) {
                         while(ik.next()) {
-                            String importedKeyName = ik.getString("FK_NAME");
+                            var importedKeyName = ik.getString("FK_NAME");
                             
                             stmt.execute("ALTER TABLE " + tableName + " DROP FOREIGN KEY " + importedKeyName);
                         }
@@ -55,7 +50,7 @@ public class DatabaseUtilitiesForMySQL
                 
                 rs.first();
                 while(rs.next()) {
-                    String tableName = rs.getString("TABLE_NAME");
+                    var tableName = rs.getString("TABLE_NAME");
                     
                     stmt.execute("DROP TABLE " + tableName);
                 }
@@ -66,7 +61,7 @@ public class DatabaseUtilitiesForMySQL
     @Override
     void doSetDatabaseCharacterSetAndCollection()
             throws Exception {
-        try(Statement stmt = myConnection.createStatement()) {
+        try(var stmt = myConnection.createStatement()) {
             stmt.execute("ALTER DATABASE CHARACTER SET " + connectionCharacterSet + " COLLATE " + connectionCollation);
         }
     }
@@ -74,12 +69,12 @@ public class DatabaseUtilitiesForMySQL
     @Override
     void doSetTableCharacterSetAndCollection()
             throws Exception {
-        try(Statement stmt = myConnection.createStatement()) {
-            DatabaseMetaData dmd = myConnection.getMetaData();
+        try(var stmt = myConnection.createStatement()) {
+            var dmd = myConnection.getMetaData();
             
-            try(ResultSet rs = dmd.getTables(null, null, null, new String[] {"TABLE"})) {
+            try(var rs = dmd.getTables(null, null, null, new String[] {"TABLE"})) {
                 while(rs.next()) {
-                    String tableName = rs.getString("TABLE_NAME");
+                    var tableName = rs.getString("TABLE_NAME");
                     
                     stmt.execute("ALTER TABLE " + tableName + " DEFAULT CHARSET=" + connectionCharacterSet + " COLLATE=" + connectionCollation);
                 }
@@ -90,24 +85,24 @@ public class DatabaseUtilitiesForMySQL
     @Override
     void doSetColumnCharacterSetAndCollection()
             throws Exception {
-        try(Statement stmt = myConnection.createStatement()) {
-            DatabaseMetaData dmd = myConnection.getMetaData();
+        try(var stmt = myConnection.createStatement()) {
+            var dmd = myConnection.getMetaData();
             
-            try(ResultSet trs = dmd.getTables(null, null, null, new String[] {"TABLE"})) {
+            try(var trs = dmd.getTables(null, null, null, new String[] {"TABLE"})) {
                 while(trs.next()) {
-                    String tableName = trs.getString("TABLE_NAME");
+                    var tableName = trs.getString("TABLE_NAME");
                     
-                    try(ResultSet c = dmd.getColumns(null, null, tableName, null)) {
+                    try(var c = dmd.getColumns(null, null, tableName, null)) {
                         while(c.next()) {
-                            String columnName = c.getString("COLUMN_NAME");
-                            int type = c.getInt("DATA_TYPE");
+                            var columnName = c.getString("COLUMN_NAME");
+                            var type = c.getInt("DATA_TYPE");
 
                             switch(type) {
                                 case Types.VARCHAR:
                                 case Types.LONGVARCHAR:
-                                    Table myTable = myDatabase.getTableLowerCase(tableName);
+                                    var myTable = myDatabase.getTableLowerCase(tableName);
 
-                                    for (Column foundColumn : myTable.getColumns()) {
+                                    for (var foundColumn : myTable.getColumns()) {
                                         if (foundColumn.getDbColumnName().equals(columnName)) {
                                             stmt.execute("ALTER TABLE " + tableName + " MODIFY " + getColumnDefinition(foundColumn));
                                             break;
@@ -129,8 +124,8 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getIntegerDefinition(String columnName, Column theColumn, Column theFKColumn) {
-        String result = columnName + " INT";
-        Column nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
+        var result = columnName + " INT";
+        var nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
         
         if(!nullTestColumn.getNullAllowed())
             result += " NOT NULL";
@@ -140,8 +135,8 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getLongDefinition(String columnName, Column theColumn, Column theFKColumn) {
-        String result = columnName + " BIGINT";
-        Column nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
+        var result = columnName + " BIGINT";
+        var nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
         
         if(!nullTestColumn.getNullAllowed())
             result += " NOT NULL";
@@ -151,8 +146,8 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getStringDefinition(String columnName, Column theColumn, Column theFKColumn) {
-        String result = columnName + " ";
-        long maxLength = theColumn.getMaxLength();
+        var result = columnName + " ";
+        var maxLength = theColumn.getMaxLength();
         
         if(maxLength < 256)
             result += "VARCHAR(" + maxLength + ")";
@@ -167,8 +162,8 @@ public class DatabaseUtilitiesForMySQL
         result += connectionCharacterSet;
         result += " COLLATE ";
         result += connectionCollation;
-        
-        Column nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
+
+        var nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
         if(!nullTestColumn.getNullAllowed())
             result += " NOT NULL";
         
@@ -176,8 +171,8 @@ public class DatabaseUtilitiesForMySQL
     }
     
     boolean checkColumnDefinition(CurrentColumn cc, Column theColumn, boolean fkCheck) throws Exception {
-        int columnRealType = theColumn.getType();
-        boolean result = true;
+        var columnRealType = theColumn.getType();
+        var result = true;
 
         switch (columnRealType) {
             case ColumnType.columnEID:
@@ -193,7 +188,7 @@ public class DatabaseUtilitiesForMySQL
                 result = cc.getType() == Types.INTEGER && cc.getColumnSize() == 10;
                 break;
             case ColumnType.columnString:
-                long maxLength = theColumn.getMaxLength();
+                var maxLength = theColumn.getMaxLength();
 
                 if(maxLength < 256) {
                     result = cc.getType() == Types.VARCHAR && cc.getColumnSize() == maxLength;
@@ -208,7 +203,7 @@ public class DatabaseUtilitiesForMySQL
                 result = cc.getType() == Types.LONGVARBINARY && cc.getColumnSize() == 2147483647;
                 break;
             case ColumnType.columnForeignKey:
-                Column destinationColumn = myDatabase.getTable(theColumn.getDestinationTable()).getColumn(theColumn.getDestinationColumn());
+                var destinationColumn = myDatabase.getTable(theColumn.getDestinationTable()).getColumn(theColumn.getDestinationColumn());
 
                 result = checkColumnDefinition(cc, destinationColumn, true);
                 break;
@@ -235,8 +230,8 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getBooleanDefinition(String columnName, Column theColumn, Column theFKColumn) {
-        String result = columnName + " BIT(1)";
-        Column nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
+        var result = columnName + " BIT(1)";
+        var nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
         if(!nullTestColumn.getNullAllowed())
             result += " NOT NULL";
         
@@ -245,8 +240,8 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getDateDefinition(String columnName, Column theColumn, Column theFKColumn) {
-        String result = columnName + " INT(8) UNSIGNED ZEROFILL";
-        Column nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
+        var result = columnName + " INT(8) UNSIGNED ZEROFILL";
+        var nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
         if(!nullTestColumn.getNullAllowed())
             result += " NOT NULL";
         
@@ -255,7 +250,7 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getCLOBDefinition(String columnName, Column theColumn) {
-        String result = columnName + " LONGTEXT";
+        var result = columnName + " LONGTEXT";
         
         result += " CHARACTER SET ";
         result += connectionCharacterSet;
@@ -270,7 +265,7 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getBLOBDefinition(String columnName, Column theColumn) {
-        String result = columnName + " LONGBLOB";
+        var result = columnName + " LONGBLOB";
         if(!theColumn.getNullAllowed())
             result += " NOT NULL";
         
@@ -279,28 +274,24 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getPrimaryKeyIndex(Index theIndex) throws Exception {
-        String result = "PRIMARY KEY (" + getIndexColumnList(theIndex) + ")";
-        return result;
+        return "PRIMARY KEY (" + getIndexColumnList(theIndex) + ")";
     }
     
     @Override
     String getUniqueIndex(Index theIndex) throws Exception {
-        String result = "UNIQUE KEY " + getIndexName(theIndex) + " ("
+        return "UNIQUE KEY " + getIndexName(theIndex) + " ("
                 + getIndexColumnList(theIndex) + ")";
-        return result;
     }
     
     @Override
     String getMultipleIndex(Index theIndex) throws Exception {
-        String result = "KEY " + getIndexName(theIndex) + " ("
+        return "KEY " + getIndexName(theIndex) + " ("
                 + getIndexColumnList(theIndex) + ")";
-        return result;
     }
     
     @Override
-    String getForeignKeyDefinition(Column theFK, Table sourceTable, String sourceColumnName, Table destinationTable, String destinationColumnName)
-            throws Exception {
-        String result = "CONSTRAINT " + sourceColumnName + "_fk FOREIGN KEY (" + sourceColumnName + ") REFERENCES "
+    String getForeignKeyDefinition(Column theFK, Table sourceTable, String sourceColumnName, Table destinationTable, String destinationColumnName) {
+        var result = "CONSTRAINT " + sourceColumnName + "_fk FOREIGN KEY (" + sourceColumnName + ") REFERENCES "
                 + destinationTable.getNamePlural().toLowerCase(Locale.getDefault()) + "("
                 + destinationColumnName + ") ON DELETE ";
         switch(theFK.getOnParentDelete()) {

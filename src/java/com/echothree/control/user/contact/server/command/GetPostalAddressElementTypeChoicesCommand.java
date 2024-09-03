@@ -18,7 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetPostalAddressElementTypeChoicesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetPostalAddressElementTypeChoicesResult;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,9 +49,9 @@ public class GetPostalAddressElementTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetPostalAddressElementTypeChoicesResult result = ContactResultFactory.getGetPostalAddressElementTypeChoicesResult();
-        String defaultPostalAddressElementTypeChoice = form.getDefaultPostalAddressElementTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ContactResultFactory.getGetPostalAddressElementTypeChoicesResult();
+        var defaultPostalAddressElementTypeChoice = form.getDefaultPostalAddressElementTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPostalAddressElementTypeChoices(contactControl.getPostalAddressElementTypeChoices(defaultPostalAddressElementTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

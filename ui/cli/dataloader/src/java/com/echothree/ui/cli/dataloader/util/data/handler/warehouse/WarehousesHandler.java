@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.WarehouseService;
-import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -50,15 +47,15 @@ public class WarehousesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException, NamingException {
         if(localName.equals("warehouse")) {
-            CreateWarehouseForm commandForm = WarehouseFormFactory.getCreateWarehouseForm();
+            var commandForm = WarehouseFormFactory.getCreateWarehouseForm();
 
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = warehouseService.createWarehouse(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = warehouseService.createWarehouse(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateWarehouseResult result = (CreateWarehouseResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateWarehouseResult)executionResult.getResult();
 
                 initialDataParser.pushHandler(new WarehouseHandler(initialDataParser, this, result.getPartyName(), result.getWarehouseName(), result.getEntityRef()));
             }

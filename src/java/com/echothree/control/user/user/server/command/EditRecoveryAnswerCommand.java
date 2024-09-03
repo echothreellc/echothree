@@ -24,13 +24,9 @@ import com.echothree.control.user.user.common.result.EditRecoveryAnswerResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryAnswer;
-import com.echothree.model.data.user.server.entity.RecoveryAnswerDetail;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
-import com.echothree.model.data.user.server.value.RecoveryAnswerDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -75,13 +71,13 @@ public class EditRecoveryAnswerCommand
     @Override
     public RecoveryAnswer getEntity(EditRecoveryAnswerResult result) {
         RecoveryAnswer recoveryAnswer = null;
-        Party party = PartyLogic.getInstance().getPartyByName(this, spec.getPartyName());
+        var party = PartyLogic.getInstance().getPartyByName(this, spec.getPartyName());
 
         if(!hasExecutionErrors()) {
             PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
 
             if(!hasExecutionErrors()) {
-                UserControl userControl = getUserControl();
+                var userControl = getUserControl();
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     recoveryAnswer = userControl.getRecoveryAnswer(party);
@@ -105,14 +101,14 @@ public class EditRecoveryAnswerCommand
 
     @Override
     public void fillInResult(EditRecoveryAnswerResult result, RecoveryAnswer recoveryAnswer) {
-        UserControl userControl = getUserControl();
+        var userControl = getUserControl();
 
         result.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(getUserVisit(), recoveryAnswer));
     }
 
     @Override
     public void doLock(RecoveryAnswerEdit edit, RecoveryAnswer recoveryAnswer) {
-        RecoveryAnswerDetail recoveryAnswerDetail = recoveryAnswer.getLastDetail();
+        var recoveryAnswerDetail = recoveryAnswer.getLastDetail();
         
         edit.setRecoveryQuestionName(recoveryAnswerDetail.getRecoveryQuestion().getLastDetail().getRecoveryQuestionName());
         edit.setAnswer(recoveryAnswerDetail.getAnswer());
@@ -122,8 +118,8 @@ public class EditRecoveryAnswerCommand
     
     @Override
     public void canUpdate(RecoveryAnswer recoveryAnswer) {
-        UserControl userControl = getUserControl();
-        String recoveryQuestionName = edit.getRecoveryQuestionName();
+        var userControl = getUserControl();
+        var recoveryQuestionName = edit.getRecoveryQuestionName();
         
         recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
@@ -134,8 +130,8 @@ public class EditRecoveryAnswerCommand
 
     @Override
     public void doUpdate(RecoveryAnswer recoveryAnswer) {
-        UserControl userControl = getUserControl();
-        RecoveryAnswerDetailValue recoveryAnswerDetailValue = userControl.getRecoveryAnswerDetailValueForUpdate(recoveryAnswer);
+        var userControl = getUserControl();
+        var recoveryAnswerDetailValue = userControl.getRecoveryAnswerDetailValueForUpdate(recoveryAnswer);
         
         recoveryAnswerDetailValue.setRecoveryQuestionPK(recoveryQuestion.getPrimaryKey());
         recoveryAnswerDetailValue.setAnswer(edit.getAnswer());

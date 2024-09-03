@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.SequenceService;
-import com.echothree.control.user.sequence.common.form.CreateSequenceChecksumTypeDescriptionForm;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,7 +49,7 @@ public class SequenceChecksumTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceChecksumTypeDescription")) {
-            CreateSequenceChecksumTypeDescriptionForm commandForm = SequenceFormFactory.getCreateSequenceChecksumTypeDescriptionForm();
+            var commandForm = SequenceFormFactory.getCreateSequenceChecksumTypeDescriptionForm();
 
             commandForm.setSequenceChecksumTypeName(sequenceChecksumTypeName);
             commandForm.set(getAttrsMap(attrs));

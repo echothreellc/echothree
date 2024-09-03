@@ -19,7 +19,6 @@ package com.echothree.model.control.document.server.transfer;
 import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsageTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class DocumentTypeUsageTypeTransferCache
@@ -33,14 +32,14 @@ public class DocumentTypeUsageTypeTransferCache
     }
     
     public DocumentTypeUsageTypeTransfer getDocumentTypeUsageTypeTransfer(DocumentTypeUsageType documentTypeUsageType) {
-        DocumentTypeUsageTypeTransfer documentTypeUsageTypeTransfer = get(documentTypeUsageType);
+        var documentTypeUsageTypeTransfer = get(documentTypeUsageType);
         
         if(documentTypeUsageTypeTransfer == null) {
-            DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
-            String documentTypeUsageTypeName = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
-            Boolean isDefault = documentTypeUsageTypeDetail.getIsDefault();
-            Integer sortOrder = documentTypeUsageTypeDetail.getSortOrder();
-            String description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage());
+            var documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
+            var documentTypeUsageTypeName = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
+            var isDefault = documentTypeUsageTypeDetail.getIsDefault();
+            var sortOrder = documentTypeUsageTypeDetail.getSortOrder();
+            var description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage());
             
             documentTypeUsageTypeTransfer = new DocumentTypeUsageTypeTransfer(documentTypeUsageTypeName, isDefault, sortOrder, description);
             put(documentTypeUsageType, documentTypeUsageTypeTransfer);

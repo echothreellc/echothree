@@ -18,7 +18,6 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetGeoCodeTypeChoicesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetGeoCodeTypeChoicesResult;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetGeoCodeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeTypeChoicesResult result = GeoResultFactory.getGetGeoCodeTypeChoicesResult();
-        String defaultGeoCodeTypeChoice = form.getDefaultGeoCodeTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = GeoResultFactory.getGetGeoCodeTypeChoicesResult();
+        var defaultGeoCodeTypeChoice = form.getDefaultGeoCodeTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setGeoCodeTypeChoices(geoControl.getGeoCodeTypeChoices(defaultGeoCodeTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

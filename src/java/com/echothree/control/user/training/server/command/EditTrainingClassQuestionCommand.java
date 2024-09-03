@@ -29,13 +29,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
-import com.echothree.model.data.training.server.entity.TrainingClassQuestionDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassQuestionTranslation;
 import com.echothree.model.data.training.server.entity.TrainingClassSection;
-import com.echothree.model.data.training.server.value.TrainingClassQuestionDetailValue;
-import com.echothree.model.data.training.server.value.TrainingClassQuestionTranslationValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -102,16 +97,16 @@ public class EditTrainingClassQuestionCommand
     public TrainingClassQuestion getEntity(EditTrainingClassQuestionResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassQuestion trainingClassQuestion = null;
-        String trainingClassName = spec.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = spec.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = spec.getTrainingClassSectionName();
+            var trainingClassSectionName = spec.getTrainingClassSectionName();
             
             trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = spec.getTrainingClassQuestionName();
+                var trainingClassQuestionName = spec.getTrainingClassQuestionName();
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
@@ -151,8 +146,8 @@ public class EditTrainingClassQuestionCommand
     @Override
     public void doLock(TrainingClassQuestionEdit edit, TrainingClassQuestion trainingClassQuestion) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassQuestionTranslation trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslation(trainingClassQuestion, getPreferredLanguage());
-        TrainingClassQuestionDetail trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
+        var trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslation(trainingClassQuestion, getPreferredLanguage());
+        var trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
 
         edit.setTrainingClassQuestionName(trainingClassQuestionDetail.getTrainingClassQuestionName());
         edit.setAskingRequired(trainingClassQuestionDetail.getAskingRequired().toString());
@@ -168,15 +163,15 @@ public class EditTrainingClassQuestionCommand
     @Override
     public void canUpdate(TrainingClassQuestion trainingClassQuestion) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassQuestionName = edit.getTrainingClassQuestionName();
-        TrainingClassQuestion duplicateTrainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+        var trainingClassQuestionName = edit.getTrainingClassQuestionName();
+        var duplicateTrainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
         if(duplicateTrainingClassQuestion != null && !trainingClassQuestion.equals(duplicateTrainingClassQuestion)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassQuestionName.name(), trainingClassQuestionName);
         } else {
-            MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-            String questionMimeTypeName = edit.getQuestionMimeTypeName();
-            String question = edit.getQuestion();
+            var mimeTypeLogic = MimeTypeLogic.getInstance();
+            var questionMimeTypeName = edit.getQuestionMimeTypeName();
+            var question = edit.getQuestion();
 
             questionMimeType = mimeTypeLogic.checkMimeType(this, questionMimeTypeName, question, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredQuestionMimeTypeName.name(), ExecutionErrors.MissingRequiredQuestion.name(),
@@ -188,9 +183,9 @@ public class EditTrainingClassQuestionCommand
     public void doUpdate(TrainingClassQuestion trainingClassQuestion) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
-        TrainingClassQuestionDetailValue trainingClassQuestionDetailValue = trainingControl.getTrainingClassQuestionDetailValueForUpdate(trainingClassQuestion);
-        TrainingClassQuestionTranslation trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslationForUpdate(trainingClassQuestion, getPreferredLanguage());
-        String question = edit.getQuestion();
+        var trainingClassQuestionDetailValue = trainingControl.getTrainingClassQuestionDetailValueForUpdate(trainingClassQuestion);
+        var trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslationForUpdate(trainingClassQuestion, getPreferredLanguage());
+        var question = edit.getQuestion();
 
         trainingClassQuestionDetailValue.setTrainingClassQuestionName(edit.getTrainingClassQuestionName());
         trainingClassQuestionDetailValue.setAskingRequired(Boolean.valueOf(edit.getAskingRequired()));
@@ -204,7 +199,7 @@ public class EditTrainingClassQuestionCommand
         } else if(trainingClassQuestionTranslation != null && (question == null)) {
             trainingControl.deleteTrainingClassQuestionTranslation(trainingClassQuestionTranslation, partyPK);
         } else if(trainingClassQuestionTranslation != null && (question != null)) {
-            TrainingClassQuestionTranslationValue trainingClassQuestionTranslationValue = trainingControl.getTrainingClassQuestionTranslationValue(trainingClassQuestionTranslation);
+            var trainingClassQuestionTranslationValue = trainingControl.getTrainingClassQuestionTranslationValue(trainingClassQuestionTranslation);
 
             trainingClassQuestionTranslationValue.setQuestionMimeTypePK(questionMimeType == null? null: questionMimeType.getPrimaryKey());
             trainingClassQuestionTranslationValue.setQuestion(question);

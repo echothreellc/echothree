@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumTypeChoicesForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumTypeChoicesResult;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,9 +49,9 @@ public class GetForumTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumTypeChoicesResult result = ForumResultFactory.getGetForumTypeChoicesResult();
-        String defaultForumTypeChoice = form.getDefaultForumTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ForumResultFactory.getGetForumTypeChoicesResult();
+        var defaultForumTypeChoice = form.getDefaultForumTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setForumTypeChoices(forumControl.getForumTypeChoices(defaultForumTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

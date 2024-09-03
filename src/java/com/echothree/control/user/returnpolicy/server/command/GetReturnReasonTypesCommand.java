@@ -17,15 +17,11 @@
 package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.form.GetReturnReasonTypesForm;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnReasonTypesResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,18 +65,18 @@ public class GetReturnReasonTypesCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnReasonTypesResult result = ReturnPolicyResultFactory.getGetReturnReasonTypesResult();
-        String returnReasonName = form.getReturnReasonName();
-        String returnTypeName = form.getReturnTypeName();
+        var result = ReturnPolicyResultFactory.getGetReturnReasonTypesResult();
+        var returnReasonName = form.getReturnReasonName();
+        var returnTypeName = form.getReturnTypeName();
         var parameterCount = (returnReasonName != null? 1: 0) + (returnTypeName != null? 1: 0);
         
         if(parameterCount == 1) {
-            String returnKindName = form.getReturnKindName();
-            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+            var returnKindName = form.getReturnKindName();
+            var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
             
             if(returnKind != null) {
                 if(returnReasonName != null) {
-                    ReturnReason returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+                    var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
                     
                     if(returnReason != null) {
                         result.setReturnReason(returnPolicyControl.getReturnReasonTransfer(getUserVisit(), returnReason));
@@ -89,7 +85,7 @@ public class GetReturnReasonTypesCommand
                         addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);
                     }
                 } else if(returnTypeName != null) {
-                    ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+                    var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
                     
                     if(returnType != null) {
                         result.setReturnType(returnPolicyControl.getReturnTypeTransfer(getUserVisit(), returnType));

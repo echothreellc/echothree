@@ -76,7 +76,6 @@ package com.echothree.view.client.web.struts.sslext.taglib;
 import com.echothree.view.client.web.struts.sslext.util.SecureRequestUtils;
 import java.net.MalformedURLException;
 import java.util.HashMap;
-import java.util.Map;
 import javax.servlet.jsp.JspException;
 import org.apache.struts.taglib.TagUtils;
 import org.apache.struts.taglib.html.LinkTag;
@@ -95,20 +94,20 @@ public class SecureLinkTag
      */
     @Override
     protected String calculateURL() throws JspException {
-        TagUtils tagUtils = TagUtils.getInstance();
+        var tagUtils = TagUtils.getInstance();
         
         // Identify the parameters we will add to the completed URL
-        Map params = tagUtils.computeParameters(pageContext, paramId, paramName, paramProperty, paramScope, name, property, scope, transaction);
+        var params = tagUtils.computeParameters(pageContext, paramId, paramName, paramProperty, paramScope, name, property, scope, transaction);
         
         // if "indexed=true", add "index=x" parameter to query string
         if(indexed) {
             // look for outer iterate tag
-            IterateTag iterateTag = (IterateTag) findAncestorWithClass(this, IterateTag.class);
+            var iterateTag = (IterateTag) findAncestorWithClass(this, IterateTag.class);
             
             if(iterateTag == null) {
                 // This tag should only be nested in an iterate tag
                 // If it's not, throw exception
-                JspException e = new JspException(messages.getMessage("indexed.noEnclosingIterate"));
+                var e = new JspException(messages.getMessage("indexed.noEnclosingIterate"));
                 tagUtils.saveException(pageContext, e);
                 throw e;
             }
@@ -126,7 +125,7 @@ public class SecureLinkTag
             }
         }
         
-        String url = null;
+        String url;
         try {
             url = SecureRequestUtils.computeURL(pageContext, forward, href, page, action, params, anchor, false);
         } catch (MalformedURLException e) {

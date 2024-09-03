@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetContentCategoryResultsForm;
 import com.echothree.control.user.search.common.result.GetContentCategoryResultsResult;
 import com.echothree.model.data.search.common.SearchResultConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -114,7 +111,7 @@ public class GetContentCategoryResultsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetContentCategoryResultsForm commandForm = SearchUtil.getHome().getGetContentCategoryResultsForm();
+            var commandForm = SearchUtil.getHome().getGetContentCategoryResultsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setSearchTypeName(searchTypeName);
@@ -127,8 +124,8 @@ public class GetContentCategoryResultsTag
                 limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit(contentCategoryResultCount, contentCategoryResultOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = SearchUtil.getHome().getContentCategoryResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getContentCategoryResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -136,8 +133,8 @@ public class GetContentCategoryResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCategoryResultsResult result = (GetContentCategoryResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCategoryResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getContentCategoryResults()), scope);
 

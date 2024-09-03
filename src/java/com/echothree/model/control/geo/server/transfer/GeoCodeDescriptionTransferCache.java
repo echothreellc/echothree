@@ -17,9 +17,7 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeDescriptionTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.geo.server.entity.GeoCodeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class GeoCodeDescriptionTransferCache
     }
     
     public GeoCodeDescriptionTransfer getGeoCodeDescriptionTransfer(GeoCodeDescription geoCodeDescription) {
-        GeoCodeDescriptionTransfer geoCodeDescriptionTransfer = get(geoCodeDescription);
+        var geoCodeDescriptionTransfer = get(geoCodeDescription);
         
         if(geoCodeDescriptionTransfer == null) {
-            GeoCodeTransfer geoCodeTransfer = geoControl.getGeoCodeTransfer(userVisit, geoCodeDescription.getGeoCode());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeDescription.getLanguage());
+            var geoCodeTransfer = geoControl.getGeoCodeTransfer(userVisit, geoCodeDescription.getGeoCode());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeDescription.getLanguage());
             
             geoCodeDescriptionTransfer = new GeoCodeDescriptionTransfer(languageTransfer, geoCodeTransfer, geoCodeDescription.getDescription());
             put(geoCodeDescription, geoCodeDescriptionTransfer);

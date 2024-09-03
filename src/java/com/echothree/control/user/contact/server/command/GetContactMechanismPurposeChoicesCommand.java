@@ -18,12 +18,9 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismType;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -57,20 +54,20 @@ public class GetContactMechanismPurposeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetContactMechanismPurposeChoicesResult result = ContactResultFactory.getGetContactMechanismPurposeChoicesResult();
-        String contactMechanismName = form.getContactMechanismName();
-        String contactMechanismTypeName = form.getContactMechanismTypeName();
-        String contactListName = form.getContactListName();
+        var result = ContactResultFactory.getGetContactMechanismPurposeChoicesResult();
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanismTypeName = form.getContactMechanismTypeName();
+        var contactListName = form.getContactListName();
         var parameterCount = (contactMechanismName == null ? 0 : 1) + (contactMechanismTypeName == null ? 0 : 1) + (contactListName == null ? 0 : 1);
         
         if(parameterCount < 2) {
             var contactControl = Session.getModelController(ContactControl.class);
             ContactMechanismType contactMechanismType = null;
-            String defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             if(contactMechanismName != null) {
-                ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+                var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
                 
                 if(contactMechanism != null) {
                     contactMechanismType = contactMechanism.getLastDetail().getContactMechanismType();
@@ -84,7 +81,7 @@ public class GetContactMechanismPurposeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownContactMechanismTypeName.name(), contactMechanismTypeName);
                 }
             } else if(contactListName != null) {
-                ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+                var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
                 
                 if(!hasExecutionErrors()) {
                     result.setContactMechanismPurposeChoices(contactControl.getContactMechanismPurposeChoicesByContactList(defaultContactMechanismPurposeChoice,

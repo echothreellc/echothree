@@ -17,8 +17,6 @@
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyReasonTransfer;
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationReasonTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,13 +30,13 @@ public class CancellationPolicyReasonTransferCache
     }
     
     public CancellationPolicyReasonTransfer getCancellationPolicyReasonTransfer(CancellationPolicyReason cancellationPolicyReason) {
-        CancellationPolicyReasonTransfer cancellationPolicyReasonTransfer = get(cancellationPolicyReason);
+        var cancellationPolicyReasonTransfer = get(cancellationPolicyReason);
         
         if(cancellationPolicyReasonTransfer == null) {
-            CancellationPolicyTransfer cancellationPolicy = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicyReason.getCancellationPolicy());
-            CancellationReasonTransfer cancellationReason = cancellationPolicyControl.getCancellationReasonTransfer(userVisit, cancellationPolicyReason.getCancellationReason());
-            Boolean isDefault = cancellationPolicyReason.getIsDefault();
-            Integer sortOrder = cancellationPolicyReason.getSortOrder();
+            var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicyReason.getCancellationPolicy());
+            var cancellationReason = cancellationPolicyControl.getCancellationReasonTransfer(userVisit, cancellationPolicyReason.getCancellationReason());
+            var isDefault = cancellationPolicyReason.getIsDefault();
+            var sortOrder = cancellationPolicyReason.getSortOrder();
             
             cancellationPolicyReasonTransfer = new CancellationPolicyReasonTransfer(cancellationPolicy, cancellationReason, isDefault, sortOrder);
             put(cancellationPolicyReason, cancellationPolicyReasonTransfer);

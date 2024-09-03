@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.order;
 
 import com.echothree.control.user.order.common.OrderUtil;
 import com.echothree.control.user.order.common.OrderService;
-import com.echothree.control.user.order.common.form.CreateOrderRoleTypeForm;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,7 +45,7 @@ public class OrderRoleTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("orderRoleType")) {
-            CreateOrderRoleTypeForm commandForm = OrderFormFactory.getCreateOrderRoleTypeForm();
+            var commandForm = OrderFormFactory.getCreateOrderRoleTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

@@ -54,29 +54,6 @@ import com.echothree.model.control.accounting.common.transfer.TransactionTypeTra
 import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS;
 import com.echothree.model.control.accounting.server.transfer.AccountingTransferCaches;
-import com.echothree.model.control.accounting.server.transfer.CurrencyDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlAccountCategoryDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlAccountCategoryTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlAccountClassDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlAccountClassTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlAccountDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlAccountTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlAccountTypeTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlResourceTypeDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.GlResourceTypeTransferCache;
-import com.echothree.model.control.accounting.server.transfer.ItemAccountingCategoryDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.SymbolPositionDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.SymbolPositionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTypeDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTypeTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionGlAccountCategoryDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionGlAccountCategoryTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionGlEntryTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionGroupTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionTypeDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.TransactionTypeTransferCache;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
@@ -93,49 +70,35 @@ import com.echothree.model.data.accounting.common.pk.GlAccountTypePK;
 import com.echothree.model.data.accounting.common.pk.GlResourceTypePK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.common.pk.SymbolPositionPK;
-import com.echothree.model.data.accounting.common.pk.TransactionEntityRoleTypePK;
-import com.echothree.model.data.accounting.common.pk.TransactionGlAccountCategoryPK;
-import com.echothree.model.data.accounting.common.pk.TransactionTypePK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.CurrencyDescription;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDescription;
-import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDetail;
 import com.echothree.model.data.accounting.server.entity.GlAccountClass;
 import com.echothree.model.data.accounting.server.entity.GlAccountClassDescription;
-import com.echothree.model.data.accounting.server.entity.GlAccountClassDetail;
 import com.echothree.model.data.accounting.server.entity.GlAccountDescription;
-import com.echothree.model.data.accounting.server.entity.GlAccountDetail;
 import com.echothree.model.data.accounting.server.entity.GlAccountSummary;
 import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.accounting.server.entity.GlAccountTypeDescription;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.accounting.server.entity.GlResourceTypeDescription;
-import com.echothree.model.data.accounting.server.entity.GlResourceTypeDetail;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
-import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDetail;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDescription;
-import com.echothree.model.data.accounting.server.entity.SymbolPositionDetail;
 import com.echothree.model.data.accounting.server.entity.Transaction;
-import com.echothree.model.data.accounting.server.entity.TransactionDetail;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRole;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDescription;
-import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDetail;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccount;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategoryDescription;
-import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategoryDetail;
 import com.echothree.model.data.accounting.server.entity.TransactionGlEntry;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
-import com.echothree.model.data.accounting.server.entity.TransactionGroupDetail;
 import com.echothree.model.data.accounting.server.entity.TransactionStatus;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.accounting.server.entity.TransactionTypeDescription;
-import com.echothree.model.data.accounting.server.entity.TransactionTypeDetail;
 import com.echothree.model.data.accounting.server.factory.CurrencyDescriptionFactory;
 import com.echothree.model.data.accounting.server.factory.CurrencyFactory;
 import com.echothree.model.data.accounting.server.factory.GlAccountCategoryDescriptionFactory;
@@ -196,18 +159,13 @@ import com.echothree.model.data.accounting.server.value.TransactionGlAccountValu
 import com.echothree.model.data.accounting.server.value.TransactionGroupDetailValue;
 import com.echothree.model.data.accounting.server.value.TransactionTypeDescriptionValue;
 import com.echothree.model.data.accounting.server.value.TransactionTypeDetailValue;
-import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.period.server.entity.Period;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -215,14 +173,12 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -259,15 +215,15 @@ public class AccountingControl
             String fractionSeparator, Integer defaultFractionDigits, Integer priceUnitFractionDigits, Integer priceLineFractionDigits,
             Integer costUnitFractionDigits, Integer costLineFractionDigits, String minusSign, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        Currency defaultCurrency = getDefaultCurrencyForUpdate();
+        var defaultCurrency = getDefaultCurrencyForUpdate();
         
         if(defaultCurrency == null) {
             isDefault = Boolean.TRUE;
         } else if(isDefault) {
             defaultCurrency.setIsDefault(Boolean.FALSE);
         }
-        
-        Currency currency = CurrencyFactory.getInstance().create(currencyIsoName, symbol, symbolPosition, symbolOnListStart,
+
+        var currency = CurrencyFactory.getInstance().create(currencyIsoName, symbol, symbolPosition, symbolOnListStart,
                 symbolOnListMember, symbolOnSubtotal, symbolOnTotal, groupingSeparator, groupingSize, fractionSeparator,
                 defaultFractionDigits, priceUnitFractionDigits, priceLineFractionDigits, costUnitFractionDigits,
                 costLineFractionDigits, minusSign, isDefault, sortOrder);
@@ -299,7 +255,7 @@ public class AccountingControl
     }
 
     public List<Currency> getCurrencies() {
-        PreparedStatement ps = CurrencyFactory.getInstance().prepareStatement(
+        var ps = CurrencyFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM currencies " +
                 "ORDER BY cur_sortorder, cur_currencyisoname " +
@@ -321,8 +277,8 @@ public class AccountingControl
                     "WHERE cur_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CurrencyFactory.getInstance().prepareStatement(query);
+
+        var ps = CurrencyFactory.getInstance().prepareStatement(query);
         
         return CurrencyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -351,8 +307,8 @@ public class AccountingControl
                         "WHERE cur_currencyisoname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CurrencyFactory.getInstance().prepareStatement(query);
+
+            var ps = CurrencyFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, currencyIsoName);
             
@@ -373,7 +329,7 @@ public class AccountingControl
     }
     
     public CurrencyChoicesBean getCurrencyChoices(String defaultCurrencyChoice, Language language, boolean allowNullChoice) {
-        List<Currency> currencies = getCurrencies();
+        var currencies = getCurrencies();
         var size = currencies.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -430,7 +386,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public CurrencyDescription createCurrencyDescription(Currency currency, Language language, String description, BasePK createdBy) {
-        CurrencyDescription currencyDescription = CurrencyDescriptionFactory.getInstance().create(currency, language, description);
+        var currencyDescription = CurrencyDescriptionFactory.getInstance().create(currency, language, description);
         
         sendEvent(currency.getPrimaryKey(), EventTypes.MODIFY, currencyDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -441,7 +397,7 @@ public class AccountingControl
         CurrencyDescription currencyDescription;
         
         try {
-            PreparedStatement ps = CurrencyDescriptionFactory.getInstance().prepareStatement(
+            var ps = CurrencyDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM currencydescriptions " +
                     "WHERE curd_cur_currencyid = ? AND curd_lang_languageid = ?");
@@ -474,8 +430,8 @@ public class AccountingControl
                         "WHERE curd_cur_currencyid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CurrencyDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CurrencyDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -498,7 +454,7 @@ public class AccountingControl
     
     public String getBestCurrencyDescription(Currency currency, Language language) {
         String description;
-        CurrencyDescription currencyDescription = getCurrencyDescription(currency, language);
+        var currencyDescription = getCurrencyDescription(currency, language);
         
         if(currencyDescription == null && !language.getIsDefault()) {
             currencyDescription = getCurrencyDescription(currency, getPartyControl().getDefaultLanguage());
@@ -514,9 +470,9 @@ public class AccountingControl
     }
     
     public List<CurrencyDescriptionTransfer> getCurrencyDescriptionTransfers(UserVisit userVisit, Currency currency) {
-        List<CurrencyDescription> currencyDescriptions = getCurrencyDescriptionsByCurrency(currency);
+        var currencyDescriptions = getCurrencyDescriptionsByCurrency(currency);
         List<CurrencyDescriptionTransfer> currencyDescriptionTransfers = new ArrayList<>(currencyDescriptions.size());
-        CurrencyDescriptionTransferCache currencyDescriptionTransferCache = getAccountingTransferCaches(userVisit).getCurrencyDescriptionTransferCache();
+        var currencyDescriptionTransferCache = getAccountingTransferCaches(userVisit).getCurrencyDescriptionTransferCache();
         
         currencyDescriptions.forEach((currencyDescription) ->
                 currencyDescriptionTransfers.add(currencyDescriptionTransferCache.getTransfer(currencyDescription))
@@ -533,20 +489,20 @@ public class AccountingControl
             ItemAccountingCategory parentItemAccountingCategory, GlAccount inventoryGlAccount, GlAccount salesGlAccount,
             GlAccount returnsGlAccount, GlAccount cogsGlAccount, GlAccount returnsCogsGlAccount, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ItemAccountingCategory defaultItemAccountingCategory = getDefaultItemAccountingCategory();
-        boolean defaultFound = defaultItemAccountingCategory != null;
+        var defaultItemAccountingCategory = getDefaultItemAccountingCategory();
+        var defaultFound = defaultItemAccountingCategory != null;
         
         if(defaultFound && isDefault) {
-            ItemAccountingCategoryDetailValue defaultItemAccountingCategoryDetailValue = getDefaultItemAccountingCategoryDetailValueForUpdate();
+            var defaultItemAccountingCategoryDetailValue = getDefaultItemAccountingCategoryDetailValueForUpdate();
             
             defaultItemAccountingCategoryDetailValue.setIsDefault(Boolean.FALSE);
             updateItemAccountingCategoryFromValue(defaultItemAccountingCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ItemAccountingCategory itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().create();
-        ItemAccountingCategoryDetail itemAccountingCategoryDetail = ItemAccountingCategoryDetailFactory.getInstance().create(session,
+
+        var itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().create();
+        var itemAccountingCategoryDetail = ItemAccountingCategoryDetailFactory.getInstance().create(session,
                 itemAccountingCategory, itemAccountingCategoryName, parentItemAccountingCategory, inventoryGlAccount,
                 salesGlAccount, returnsGlAccount, cogsGlAccount, returnsCogsGlAccount, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
@@ -745,7 +701,7 @@ public class AccountingControl
 
     public ItemAccountingCategoryChoicesBean getItemAccountingCategoryChoices(String defaultItemAccountingCategoryChoice,
             Language language, boolean allowNullChoice) {
-        List<ItemAccountingCategory> itemAccountingCategories = getItemAccountingCategories();
+        var itemAccountingCategories = getItemAccountingCategories();
         var size = itemAccountingCategories.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -761,7 +717,7 @@ public class AccountingControl
         }
         
         for(var itemAccountingCategory : itemAccountingCategories) {
-            ItemAccountingCategoryDetail itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
+            var itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
             
             var label = getBestItemAccountingCategoryDescription(itemAccountingCategory, language);
             var value = itemAccountingCategoryDetail.getItemAccountingCategoryName();
@@ -780,7 +736,7 @@ public class AccountingControl
     
     public boolean isParentItemAccountingCategorySafe(ItemAccountingCategory itemAccountingCategory,
             ItemAccountingCategory parentItemAccountingCategory) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentItemAccountingCategory != null) {
             Set<ItemAccountingCategory> parentItemAccountingCategories = new HashSet<>();
@@ -803,31 +759,31 @@ public class AccountingControl
     private void updateItemAccountingCategoryFromValue(ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemAccountingCategoryDetailValue.hasBeenModified()) {
-            ItemAccountingCategory itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemAccountingCategoryDetailValue.getItemAccountingCategoryPK());
-            ItemAccountingCategoryDetail itemAccountingCategoryDetail = itemAccountingCategory.getActiveDetailForUpdate();
+            var itemAccountingCategoryDetail = itemAccountingCategory.getActiveDetailForUpdate();
             
             itemAccountingCategoryDetail.setThruTime(session.START_TIME_LONG);
             itemAccountingCategoryDetail.store();
-            
-            ItemAccountingCategoryPK itemAccountingCategoryPK = itemAccountingCategoryDetail.getItemAccountingCategoryPK();
-            String itemAccountingCategoryName = itemAccountingCategoryDetailValue.getItemAccountingCategoryName();
-            ItemAccountingCategoryPK parentItemAccountingCategoryPK = itemAccountingCategoryDetailValue.getParentItemAccountingCategoryPK();
-            GlAccountPK inventoryGlAccountPK = itemAccountingCategoryDetailValue.getInventoryGlAccountPK();
-            GlAccountPK salesGlAccountPK = itemAccountingCategoryDetailValue.getSalesGlAccountPK();
-            GlAccountPK returnsGlAccountPK = itemAccountingCategoryDetailValue.getReturnsCogsGlAccountPK();
-            GlAccountPK cogsGlAccountPK = itemAccountingCategoryDetailValue.getCogsGlAccountPK();
-            GlAccountPK returnsCogsGlAccountPK = itemAccountingCategoryDetailValue.getReturnsCogsGlAccountPK();
-            Boolean isDefault = itemAccountingCategoryDetailValue.getIsDefault();
-            Integer sortOrder = itemAccountingCategoryDetailValue.getSortOrder();
+
+            var itemAccountingCategoryPK = itemAccountingCategoryDetail.getItemAccountingCategoryPK();
+            var itemAccountingCategoryName = itemAccountingCategoryDetailValue.getItemAccountingCategoryName();
+            var parentItemAccountingCategoryPK = itemAccountingCategoryDetailValue.getParentItemAccountingCategoryPK();
+            var inventoryGlAccountPK = itemAccountingCategoryDetailValue.getInventoryGlAccountPK();
+            var salesGlAccountPK = itemAccountingCategoryDetailValue.getSalesGlAccountPK();
+            var returnsGlAccountPK = itemAccountingCategoryDetailValue.getReturnsCogsGlAccountPK();
+            var cogsGlAccountPK = itemAccountingCategoryDetailValue.getCogsGlAccountPK();
+            var returnsCogsGlAccountPK = itemAccountingCategoryDetailValue.getReturnsCogsGlAccountPK();
+            var isDefault = itemAccountingCategoryDetailValue.getIsDefault();
+            var sortOrder = itemAccountingCategoryDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ItemAccountingCategory defaultItemAccountingCategory = getDefaultItemAccountingCategory();
-                boolean defaultFound = defaultItemAccountingCategory != null && !defaultItemAccountingCategory.equals(itemAccountingCategory);
+                var defaultItemAccountingCategory = getDefaultItemAccountingCategory();
+                var defaultFound = defaultItemAccountingCategory != null && !defaultItemAccountingCategory.equals(itemAccountingCategory);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ItemAccountingCategoryDetailValue defaultItemAccountingCategoryDetailValue = getDefaultItemAccountingCategoryDetailValueForUpdate();
+                    var defaultItemAccountingCategoryDetailValue = getDefaultItemAccountingCategoryDetailValueForUpdate();
                     
                     defaultItemAccountingCategoryDetailValue.setIsDefault(Boolean.FALSE);
                     updateItemAccountingCategoryFromValue(defaultItemAccountingCategoryDetailValue, false, updatedBy);
@@ -855,7 +811,7 @@ public class AccountingControl
     
     private void deleteItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, boolean checkDefault, BasePK deletedBy) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        ItemAccountingCategoryDetail itemAccountingCategoryDetail = itemAccountingCategory.getLastDetailForUpdate();
+        var itemAccountingCategoryDetail = itemAccountingCategory.getLastDetailForUpdate();
         
         deleteItemAccountingCategoriesByParentItemAccountingCategory(itemAccountingCategory, deletedBy);
         deleteItemAccountingCategoryDescriptionsByItemAccountingCategory(itemAccountingCategory, deletedBy);
@@ -867,17 +823,17 @@ public class AccountingControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ItemAccountingCategory defaultItemAccountingCategory = getDefaultItemAccountingCategory();
+            var defaultItemAccountingCategory = getDefaultItemAccountingCategory();
 
             if(defaultItemAccountingCategory == null) {
-                List<ItemAccountingCategory> itemAccountingCategories = getItemAccountingCategoriesForUpdate();
+                var itemAccountingCategories = getItemAccountingCategoriesForUpdate();
 
                 if(!itemAccountingCategories.isEmpty()) {
-                    Iterator<ItemAccountingCategory> iter = itemAccountingCategories.iterator();
+                    var iter = itemAccountingCategories.iterator();
                     if(iter.hasNext()) {
                         defaultItemAccountingCategory = iter.next();
                     }
-                    ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = Objects.requireNonNull(defaultItemAccountingCategory).getLastDetailForUpdate().getItemAccountingCategoryDetailValue().clone();
+                    var itemAccountingCategoryDetailValue = Objects.requireNonNull(defaultItemAccountingCategory).getLastDetailForUpdate().getItemAccountingCategoryDetailValue().clone();
 
                     itemAccountingCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, false, deletedBy);
@@ -910,7 +866,7 @@ public class AccountingControl
     
     public ItemAccountingCategoryDescription createItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
             Language language, String description, BasePK createdBy) {
-        ItemAccountingCategoryDescription itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description, session.START_TIME_LONG,
+        var itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY, itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -935,8 +891,8 @@ public class AccountingControl
                         "WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_lang_languageid = ? AND iactgcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAccountingCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAccountingCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -986,8 +942,8 @@ public class AccountingControl
                         "WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAccountingCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAccountingCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1010,7 +966,7 @@ public class AccountingControl
     
     public String getBestItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory, Language language) {
         String description;
-        ItemAccountingCategoryDescription itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, language);
+        var itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, language);
         
         if(itemAccountingCategoryDescription == null && !language.getIsDefault()) {
             itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, getPartyControl().getDefaultLanguage());
@@ -1032,9 +988,9 @@ public class AccountingControl
     
     public List<ItemAccountingCategoryDescriptionTransfer> getItemAccountingCategoryDescriptionTransfersByItemAccountingCategory(UserVisit userVisit,
             ItemAccountingCategory itemAccountingCategory) {
-        List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions = getItemAccountingCategoryDescriptionsByItemAccountingCategory(itemAccountingCategory);
+        var itemAccountingCategoryDescriptions = getItemAccountingCategoryDescriptionsByItemAccountingCategory(itemAccountingCategory);
         List<ItemAccountingCategoryDescriptionTransfer> itemAccountingCategoryDescriptionTransfers = new ArrayList<>(itemAccountingCategoryDescriptions.size());
-        ItemAccountingCategoryDescriptionTransferCache itemAccountingCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryDescriptionTransferCache();
+        var itemAccountingCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryDescriptionTransferCache();
         
         itemAccountingCategoryDescriptions.forEach((itemAccountingCategoryDescription) ->
                 itemAccountingCategoryDescriptionTransfers.add(itemAccountingCategoryDescriptionTransferCache.getTransfer(itemAccountingCategoryDescription))
@@ -1046,14 +1002,14 @@ public class AccountingControl
     public void updateItemAccountingCategoryDescriptionFromValue(ItemAccountingCategoryDescriptionValue itemAccountingCategoryDescriptionValue,
             BasePK updatedBy) {
         if(itemAccountingCategoryDescriptionValue.hasBeenModified()) {
-            ItemAccountingCategoryDescription itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemAccountingCategoryDescriptionValue.getPrimaryKey());
+            var itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemAccountingCategoryDescriptionValue.getPrimaryKey());
             
             itemAccountingCategoryDescription.setThruTime(session.START_TIME_LONG);
             itemAccountingCategoryDescription.store();
-            
-            ItemAccountingCategory itemAccountingCategory = itemAccountingCategoryDescription.getItemAccountingCategory();
-            Language language = itemAccountingCategoryDescription.getLanguage();
-            String description = itemAccountingCategoryDescriptionValue.getDescription();
+
+            var itemAccountingCategory = itemAccountingCategoryDescription.getItemAccountingCategory();
+            var language = itemAccountingCategoryDescription.getLanguage();
+            var description = itemAccountingCategoryDescriptionValue.getDescription();
             
             itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1072,7 +1028,7 @@ public class AccountingControl
     
     public void deleteItemAccountingCategoryDescriptionsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory,
             BasePK deletedBy) {
-        List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions = getItemAccountingCategoryDescriptionsByItemAccountingCategoryForUpdate(itemAccountingCategory);
+        var itemAccountingCategoryDescriptions = getItemAccountingCategoryDescriptionsByItemAccountingCategoryForUpdate(itemAccountingCategory);
         
         itemAccountingCategoryDescriptions.forEach((itemAccountingCategoryDescription) -> 
                 deleteItemAccountingCategoryDescription(itemAccountingCategoryDescription, deletedBy)
@@ -1148,7 +1104,7 @@ public class AccountingControl
     }
     
     public GlAccountTypeChoicesBean getGlAccountTypeChoices(String defaultGlAccountTypeChoice, Language language, boolean allowNullChoice) {
-        List<GlAccountType> glAccountTypes = getGlAccountTypes();
+        var glAccountTypes = getGlAccountTypes();
         var size = glAccountTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1184,7 +1140,7 @@ public class AccountingControl
 
     public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit, Collection<GlAccountType> glAccountTypes) {
         List<GlAccountTypeTransfer> glAccountTypeTransfers = new ArrayList<>(glAccountTypes.size());
-        GlAccountTypeTransferCache glAccountTypeTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache();
+        var glAccountTypeTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache();
 
         glAccountTypes.forEach((glAccountType) ->
                 glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(glAccountType))
@@ -1209,7 +1165,7 @@ public class AccountingControl
         GlAccountTypeDescription glAccountTypeDescription;
         
         try {
-            PreparedStatement ps = GlAccountTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = GlAccountTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM glaccounttypedescriptions " +
                     "WHERE glatypd_glatyp_glaccounttypeid = ? AND glatypd_lang_languageid = ?");
@@ -1227,7 +1183,7 @@ public class AccountingControl
     
     public String getBestGlAccountTypeDescription(GlAccountType glAccountType, Language language) {
         String description;
-        GlAccountTypeDescription glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, language);
+        var glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, language);
         
         if(glAccountTypeDescription == null && !language.getIsDefault()) {
             glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, getPartyControl().getDefaultLanguage());
@@ -1248,20 +1204,20 @@ public class AccountingControl
     
     public GlAccountClass createGlAccountClass(String glAccountClassName, GlAccountClass parentGlAccountClass, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        GlAccountClass defaultGlAccountClass = getDefaultGlAccountClass();
-        boolean defaultFound = defaultGlAccountClass != null;
+        var defaultGlAccountClass = getDefaultGlAccountClass();
+        var defaultFound = defaultGlAccountClass != null;
         
         if(defaultFound && isDefault) {
-            GlAccountClassDetailValue defaultGlAccountClassDetailValue = getDefaultGlAccountClassDetailValueForUpdate();
+            var defaultGlAccountClassDetailValue = getDefaultGlAccountClassDetailValueForUpdate();
             
             defaultGlAccountClassDetailValue.setIsDefault(Boolean.FALSE);
             updateGlAccountClassFromValue(defaultGlAccountClassDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GlAccountClass glAccountClass = GlAccountClassFactory.getInstance().create();
-        GlAccountClassDetail glAccountClassDetail = GlAccountClassDetailFactory.getInstance().create(session,
+
+        var glAccountClass = GlAccountClassFactory.getInstance().create();
+        var glAccountClassDetail = GlAccountClassDetailFactory.getInstance().create(session,
                 glAccountClass, glAccountClassName, parentGlAccountClass, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1443,7 +1399,7 @@ public class AccountingControl
 
     public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit, Collection<GlAccountClass> glAccountClasses) {
         List<GlAccountClassTransfer> glAccountClassTransfers = new ArrayList<>(glAccountClasses.size());
-        GlAccountClassTransferCache glAccountClassTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
+        var glAccountClassTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
 
         glAccountClasses.forEach((glAccountClass) ->
                 glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(glAccountClass))
@@ -1458,7 +1414,7 @@ public class AccountingControl
 
     public GlAccountClassChoicesBean getGlAccountClassChoices(String defaultGlAccountClassChoice, Language language,
             boolean allowNullChoice) {
-        List<GlAccountClass> glAccountClasses = getGlAccountClasses();
+        var glAccountClasses = getGlAccountClasses();
         var size = glAccountClasses.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1474,7 +1430,7 @@ public class AccountingControl
         }
         
         for(var glAccountClass : glAccountClasses) {
-            GlAccountClassDetail glAccountClassDetail = glAccountClass.getLastDetail();
+            var glAccountClassDetail = glAccountClass.getLastDetail();
             
             var label = getBestGlAccountClassDescription(glAccountClass, language);
             var value = glAccountClassDetail.getGlAccountClassName();
@@ -1492,7 +1448,7 @@ public class AccountingControl
     }
     
     public boolean isParentGlAccountClassSafe(GlAccountClass glAccountClass, GlAccountClass parentGlAccountClass) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentGlAccountClass != null) {
             Set<GlAccountClass> parentItemPurchasingCategories = new HashSet<>();
@@ -1515,26 +1471,26 @@ public class AccountingControl
     private void updateGlAccountClassFromValue(GlAccountClassDetailValue glAccountClassDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(glAccountClassDetailValue.hasBeenModified()) {
-            GlAccountClass glAccountClass = GlAccountClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var glAccountClass = GlAccountClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      glAccountClassDetailValue.getGlAccountClassPK());
-            GlAccountClassDetail glAccountClassDetail = glAccountClass.getActiveDetailForUpdate();
+            var glAccountClassDetail = glAccountClass.getActiveDetailForUpdate();
             
             glAccountClassDetail.setThruTime(session.START_TIME_LONG);
             glAccountClassDetail.store();
-            
-            GlAccountClassPK glAccountClassPK = glAccountClassDetail.getGlAccountClassPK();
-            String glAccountClassName = glAccountClassDetailValue.getGlAccountClassName();
-            GlAccountClassPK parentGlAccountClassPK = glAccountClassDetailValue.getParentGlAccountClassPK();
-            Boolean isDefault = glAccountClassDetailValue.getIsDefault();
-            Integer sortOrder = glAccountClassDetailValue.getSortOrder();
+
+            var glAccountClassPK = glAccountClassDetail.getGlAccountClassPK();
+            var glAccountClassName = glAccountClassDetailValue.getGlAccountClassName();
+            var parentGlAccountClassPK = glAccountClassDetailValue.getParentGlAccountClassPK();
+            var isDefault = glAccountClassDetailValue.getIsDefault();
+            var sortOrder = glAccountClassDetailValue.getSortOrder();
             
             if(checkDefault) {
-                GlAccountClass defaultGlAccountClass = getDefaultGlAccountClass();
-                boolean defaultFound = defaultGlAccountClass != null && !defaultGlAccountClass.equals(glAccountClass);
+                var defaultGlAccountClass = getDefaultGlAccountClass();
+                var defaultFound = defaultGlAccountClass != null && !defaultGlAccountClass.equals(glAccountClass);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GlAccountClassDetailValue defaultGlAccountClassDetailValue = getDefaultGlAccountClassDetailValueForUpdate();
+                    var defaultGlAccountClassDetailValue = getDefaultGlAccountClassDetailValueForUpdate();
                     
                     defaultGlAccountClassDetailValue.setIsDefault(Boolean.FALSE);
                     updateGlAccountClassFromValue(defaultGlAccountClassDetailValue, false, updatedBy);
@@ -1559,7 +1515,7 @@ public class AccountingControl
     }
     
     private void deleteGlAccountClass(GlAccountClass glAccountClass, boolean checkDefault, BasePK deletedBy) {
-        GlAccountClassDetail glAccountClassDetail = glAccountClass.getLastDetailForUpdate();
+        var glAccountClassDetail = glAccountClass.getLastDetailForUpdate();
 
         deleteGlAccountClassesByParentGlAccountClass(glAccountClass, deletedBy);
         deleteGlAccountsByGlAccountClass(glAccountClass, deletedBy);
@@ -1571,17 +1527,17 @@ public class AccountingControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            GlAccountClass defaultGlAccountClass = getDefaultGlAccountClass();
+            var defaultGlAccountClass = getDefaultGlAccountClass();
 
             if(defaultGlAccountClass == null) {
-                List<GlAccountClass> glAccountClasses = getGlAccountClassesForUpdate();
+                var glAccountClasses = getGlAccountClassesForUpdate();
 
                 if(!glAccountClasses.isEmpty()) {
-                    Iterator<GlAccountClass> iter = glAccountClasses.iterator();
+                    var iter = glAccountClasses.iterator();
                     if(iter.hasNext()) {
                         defaultGlAccountClass = iter.next();
                     }
-                    GlAccountClassDetailValue glAccountClassDetailValue = Objects.requireNonNull(defaultGlAccountClass).getLastDetailForUpdate().getGlAccountClassDetailValue().clone();
+                    var glAccountClassDetailValue = Objects.requireNonNull(defaultGlAccountClass).getLastDetailForUpdate().getGlAccountClassDetailValue().clone();
 
                     glAccountClassDetailValue.setIsDefault(Boolean.TRUE);
                     updateGlAccountClassFromValue(glAccountClassDetailValue, false, deletedBy);
@@ -1613,7 +1569,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public GlAccountClassDescription createGlAccountClassDescription(GlAccountClass glAccountClass, Language language, String description, BasePK createdBy) {
-        GlAccountClassDescription glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description, session.START_TIME_LONG,
+        var glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(glAccountClass.getPrimaryKey(), EventTypes.MODIFY, glAccountClassDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1637,8 +1593,8 @@ public class AccountingControl
                         "WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_lang_languageid = ? AND glaclsd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountClassDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountClassDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1685,8 +1641,8 @@ public class AccountingControl
                         "WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountClassDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountClassDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1709,7 +1665,7 @@ public class AccountingControl
     
     public String getBestGlAccountClassDescription(GlAccountClass glAccountClass, Language language) {
         String description;
-        GlAccountClassDescription glAccountClassDescription = getGlAccountClassDescription(glAccountClass, language);
+        var glAccountClassDescription = getGlAccountClassDescription(glAccountClass, language);
         
         if(glAccountClassDescription == null && !language.getIsDefault()) {
             glAccountClassDescription = getGlAccountClassDescription(glAccountClass, getPartyControl().getDefaultLanguage());
@@ -1729,9 +1685,9 @@ public class AccountingControl
     }
     
     public List<GlAccountClassDescriptionTransfer> getGlAccountClassDescriptionTransfersByGlAccountClass(UserVisit userVisit, GlAccountClass glAccountClass) {
-        List<GlAccountClassDescription> glAccountClassDescriptions = getGlAccountClassDescriptionsByGlAccountClass(glAccountClass);
+        var glAccountClassDescriptions = getGlAccountClassDescriptionsByGlAccountClass(glAccountClass);
         List<GlAccountClassDescriptionTransfer> glAccountClassDescriptionTransfers = new ArrayList<>(glAccountClassDescriptions.size());
-        GlAccountClassDescriptionTransferCache glAccountClassDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassDescriptionTransferCache();
+        var glAccountClassDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassDescriptionTransferCache();
         
         glAccountClassDescriptions.forEach((glAccountClassDescription) ->
                 glAccountClassDescriptionTransfers.add(glAccountClassDescriptionTransferCache.getTransfer(glAccountClassDescription))
@@ -1742,14 +1698,14 @@ public class AccountingControl
     
     public void updateGlAccountClassDescriptionFromValue(GlAccountClassDescriptionValue glAccountClassDescriptionValue, BasePK updatedBy) {
         if(glAccountClassDescriptionValue.hasBeenModified()) {
-            GlAccountClassDescription glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountClassDescriptionValue.getPrimaryKey());
+            var glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountClassDescriptionValue.getPrimaryKey());
             
             glAccountClassDescription.setThruTime(session.START_TIME_LONG);
             glAccountClassDescription.store();
-            
-            GlAccountClass glAccountClass = glAccountClassDescription.getGlAccountClass();
-            Language language = glAccountClassDescription.getLanguage();
-            String description = glAccountClassDescriptionValue.getDescription();
+
+            var glAccountClass = glAccountClassDescription.getGlAccountClass();
+            var language = glAccountClassDescription.getLanguage();
+            var description = glAccountClassDescriptionValue.getDescription();
             
             glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1766,7 +1722,7 @@ public class AccountingControl
     }
     
     public void deleteGlAccountClassDescriptionsByGlAccountClass(GlAccountClass glAccountClass, BasePK deletedBy) {
-        List<GlAccountClassDescription> glAccountClassDescriptions = getGlAccountClassDescriptionsByGlAccountClassForUpdate(glAccountClass);
+        var glAccountClassDescriptions = getGlAccountClassDescriptionsByGlAccountClassForUpdate(glAccountClass);
         
         glAccountClassDescriptions.forEach((glAccountClassDescription) -> 
                 deleteGlAccountClassDescription(glAccountClassDescription, deletedBy)
@@ -1779,20 +1735,20 @@ public class AccountingControl
     
     public GlAccountCategory createGlAccountCategory(String glAccountCategoryName, GlAccountCategory parentGlAccountCategory, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        GlAccountCategory defaultGlAccountCategory = getDefaultGlAccountCategory();
-        boolean defaultFound = defaultGlAccountCategory != null;
+        var defaultGlAccountCategory = getDefaultGlAccountCategory();
+        var defaultFound = defaultGlAccountCategory != null;
         
         if(defaultFound && isDefault) {
-            GlAccountCategoryDetailValue defaultGlAccountCategoryDetailValue = getDefaultGlAccountCategoryDetailValueForUpdate();
+            var defaultGlAccountCategoryDetailValue = getDefaultGlAccountCategoryDetailValueForUpdate();
             
             defaultGlAccountCategoryDetailValue.setIsDefault(Boolean.FALSE);
             updateGlAccountCategoryFromValue(defaultGlAccountCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GlAccountCategory glAccountCategory = GlAccountCategoryFactory.getInstance().create();
-        GlAccountCategoryDetail glAccountCategoryDetail = GlAccountCategoryDetailFactory.getInstance().create(session,
+
+        var glAccountCategory = GlAccountCategoryFactory.getInstance().create();
+        var glAccountCategoryDetail = GlAccountCategoryDetailFactory.getInstance().create(session,
                 glAccountCategory, glAccountCategoryName, parentGlAccountCategory, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1975,7 +1931,7 @@ public class AccountingControl
 
     public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit, Collection<GlAccountCategory> glAccountCategories) {
         List<GlAccountCategoryTransfer> glAccountCategoryTransfers = new ArrayList<>(glAccountCategories.size());
-        GlAccountCategoryTransferCache glAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
+        var glAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
 
         glAccountCategories.forEach((glAccountCategory) ->
                 glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(glAccountCategory))
@@ -1990,7 +1946,7 @@ public class AccountingControl
 
     public GlAccountCategoryChoicesBean getGlAccountCategoryChoices(String defaultGlAccountCategoryChoice, Language language,
             boolean allowNullChoice) {
-        List<GlAccountCategory> glAccountCategories = getGlAccountCategories();
+        var glAccountCategories = getGlAccountCategories();
         var size = glAccountCategories.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2006,7 +1962,7 @@ public class AccountingControl
         }
         
         for(var glAccountCategory : glAccountCategories) {
-            GlAccountCategoryDetail glAccountCategoryDetail = glAccountCategory.getLastDetail();
+            var glAccountCategoryDetail = glAccountCategory.getLastDetail();
             
             var label = getBestGlAccountCategoryDescription(glAccountCategory, language);
             var value = glAccountCategoryDetail.getGlAccountCategoryName();
@@ -2024,7 +1980,7 @@ public class AccountingControl
     }
     
     public boolean isParentGlAccountCategorySafe(GlAccountCategory glAccountCategory, GlAccountCategory parentGlAccountCategory) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentGlAccountCategory != null) {
             Set<GlAccountCategory> parentItemPurchasingCategories = new HashSet<>();
@@ -2047,26 +2003,26 @@ public class AccountingControl
     private void updateGlAccountCategoryFromValue(GlAccountCategoryDetailValue glAccountCategoryDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(glAccountCategoryDetailValue.hasBeenModified()) {
-            GlAccountCategory glAccountCategory = GlAccountCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var glAccountCategory = GlAccountCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      glAccountCategoryDetailValue.getGlAccountCategoryPK());
-            GlAccountCategoryDetail glAccountCategoryDetail = glAccountCategory.getActiveDetailForUpdate();
+            var glAccountCategoryDetail = glAccountCategory.getActiveDetailForUpdate();
             
             glAccountCategoryDetail.setThruTime(session.START_TIME_LONG);
             glAccountCategoryDetail.store();
-            
-            GlAccountCategoryPK glAccountCategoryPK = glAccountCategoryDetail.getGlAccountCategoryPK();
-            String glAccountCategoryName = glAccountCategoryDetailValue.getGlAccountCategoryName();
-            GlAccountCategoryPK parentGlAccountCategoryPK = glAccountCategoryDetailValue.getParentGlAccountCategoryPK();
-            Boolean isDefault = glAccountCategoryDetailValue.getIsDefault();
-            Integer sortOrder = glAccountCategoryDetailValue.getSortOrder();
+
+            var glAccountCategoryPK = glAccountCategoryDetail.getGlAccountCategoryPK();
+            var glAccountCategoryName = glAccountCategoryDetailValue.getGlAccountCategoryName();
+            var parentGlAccountCategoryPK = glAccountCategoryDetailValue.getParentGlAccountCategoryPK();
+            var isDefault = glAccountCategoryDetailValue.getIsDefault();
+            var sortOrder = glAccountCategoryDetailValue.getSortOrder();
             
             if(checkDefault) {
-                GlAccountCategory defaultGlAccountCategory = getDefaultGlAccountCategory();
-                boolean defaultFound = defaultGlAccountCategory != null && !defaultGlAccountCategory.equals(glAccountCategory);
+                var defaultGlAccountCategory = getDefaultGlAccountCategory();
+                var defaultFound = defaultGlAccountCategory != null && !defaultGlAccountCategory.equals(glAccountCategory);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GlAccountCategoryDetailValue defaultGlAccountCategoryDetailValue = getDefaultGlAccountCategoryDetailValueForUpdate();
+                    var defaultGlAccountCategoryDetailValue = getDefaultGlAccountCategoryDetailValueForUpdate();
                     
                     defaultGlAccountCategoryDetailValue.setIsDefault(Boolean.FALSE);
                     updateGlAccountCategoryFromValue(defaultGlAccountCategoryDetailValue, false, updatedBy);
@@ -2091,7 +2047,7 @@ public class AccountingControl
     }
     
     private void deleteGlAccountCategory(GlAccountCategory glAccountCategory, boolean checkDefault, BasePK deletedBy) {
-        GlAccountCategoryDetail glAccountCategoryDetail = glAccountCategory.getLastDetailForUpdate();
+        var glAccountCategoryDetail = glAccountCategory.getLastDetailForUpdate();
         
         deleteGlAccountCategoriesByParentGlAccountCategory(glAccountCategory, deletedBy);
         // TODO: deleteTransactionGlAccountCategoriesByGlAccountCategory(glAccountCategory, deletedBy);
@@ -2104,17 +2060,17 @@ public class AccountingControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            GlAccountCategory defaultGlAccountCategory = getDefaultGlAccountCategory();
+            var defaultGlAccountCategory = getDefaultGlAccountCategory();
 
             if(defaultGlAccountCategory == null) {
-                List<GlAccountCategory> glAccountCategories = getGlAccountCategoriesForUpdate();
+                var glAccountCategories = getGlAccountCategoriesForUpdate();
 
                 if(!glAccountCategories.isEmpty()) {
-                    Iterator<GlAccountCategory> iter = glAccountCategories.iterator();
+                    var iter = glAccountCategories.iterator();
                     if(iter.hasNext()) {
                         defaultGlAccountCategory = iter.next();
                     }
-                    GlAccountCategoryDetailValue glAccountCategoryDetailValue = Objects.requireNonNull(defaultGlAccountCategory).getLastDetailForUpdate().getGlAccountCategoryDetailValue().clone();
+                    var glAccountCategoryDetailValue = Objects.requireNonNull(defaultGlAccountCategory).getLastDetailForUpdate().getGlAccountCategoryDetailValue().clone();
 
                     glAccountCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateGlAccountCategoryFromValue(glAccountCategoryDetailValue, false, deletedBy);
@@ -2146,7 +2102,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public GlAccountCategoryDescription createGlAccountCategoryDescription(GlAccountCategory glAccountCategory, Language language, String description, BasePK createdBy) {
-        GlAccountCategoryDescription glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description, session.START_TIME_LONG,
+        var glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY, glAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2170,8 +2126,8 @@ public class AccountingControl
                         "WHERE glacd_glac_glaccountcategoryid = ? AND glacd_lang_languageid = ? AND glacd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2218,8 +2174,8 @@ public class AccountingControl
                         "WHERE glacd_glac_glaccountcategoryid = ? AND glacd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2242,7 +2198,7 @@ public class AccountingControl
     
     public String getBestGlAccountCategoryDescription(GlAccountCategory glAccountCategory, Language language) {
         String description;
-        GlAccountCategoryDescription glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, language);
+        var glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, language);
         
         if(glAccountCategoryDescription == null && !language.getIsDefault()) {
             glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, getPartyControl().getDefaultLanguage());
@@ -2262,9 +2218,9 @@ public class AccountingControl
     }
     
     public List<GlAccountCategoryDescriptionTransfer> getGlAccountCategoryDescriptionTransfersByGlAccountCategory(UserVisit userVisit, GlAccountCategory glAccountCategory) {
-        List<GlAccountCategoryDescription> glAccountCategoryDescriptions = getGlAccountCategoryDescriptionsByGlAccountCategory(glAccountCategory);
+        var glAccountCategoryDescriptions = getGlAccountCategoryDescriptionsByGlAccountCategory(glAccountCategory);
         List<GlAccountCategoryDescriptionTransfer> glAccountCategoryDescriptionTransfers = new ArrayList<>(glAccountCategoryDescriptions.size());
-        GlAccountCategoryDescriptionTransferCache glAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryDescriptionTransferCache();
+        var glAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryDescriptionTransferCache();
         
         glAccountCategoryDescriptions.forEach((glAccountCategoryDescription) ->
                 glAccountCategoryDescriptionTransfers.add(glAccountCategoryDescriptionTransferCache.getTransfer(glAccountCategoryDescription))
@@ -2275,14 +2231,14 @@ public class AccountingControl
     
     public void updateGlAccountCategoryDescriptionFromValue(GlAccountCategoryDescriptionValue glAccountCategoryDescriptionValue, BasePK updatedBy) {
         if(glAccountCategoryDescriptionValue.hasBeenModified()) {
-            GlAccountCategoryDescription glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountCategoryDescriptionValue.getPrimaryKey());
+            var glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountCategoryDescriptionValue.getPrimaryKey());
             
             glAccountCategoryDescription.setThruTime(session.START_TIME_LONG);
             glAccountCategoryDescription.store();
-            
-            GlAccountCategory glAccountCategory = glAccountCategoryDescription.getGlAccountCategory();
-            Language language = glAccountCategoryDescription.getLanguage();
-            String description = glAccountCategoryDescriptionValue.getDescription();
+
+            var glAccountCategory = glAccountCategoryDescription.getGlAccountCategory();
+            var language = glAccountCategoryDescription.getLanguage();
+            var description = glAccountCategoryDescriptionValue.getDescription();
             
             glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2299,7 +2255,7 @@ public class AccountingControl
     }
     
     public void deleteGlAccountCategoryDescriptionsByGlAccountCategory(GlAccountCategory glAccountCategory, BasePK deletedBy) {
-        List<GlAccountCategoryDescription> glAccountCategoryDescriptions = getGlAccountCategoryDescriptionsByGlAccountCategoryForUpdate(glAccountCategory);
+        var glAccountCategoryDescriptions = getGlAccountCategoryDescriptionsByGlAccountCategoryForUpdate(glAccountCategory);
         
         glAccountCategoryDescriptions.forEach((glAccountCategoryDescription) -> 
                 deleteGlAccountCategoryDescription(glAccountCategoryDescription, deletedBy)
@@ -2311,20 +2267,20 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public GlResourceType createGlResourceType(String glResourceTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        GlResourceType defaultGlResourceType = getDefaultGlResourceType();
-        boolean defaultFound = defaultGlResourceType != null;
+        var defaultGlResourceType = getDefaultGlResourceType();
+        var defaultFound = defaultGlResourceType != null;
         
         if(defaultFound && isDefault) {
-            GlResourceTypeDetailValue defaultGlResourceTypeDetailValue = getDefaultGlResourceTypeDetailValueForUpdate();
+            var defaultGlResourceTypeDetailValue = getDefaultGlResourceTypeDetailValueForUpdate();
             
             defaultGlResourceTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateGlResourceTypeFromValue(defaultGlResourceTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GlResourceType glResourceType = GlResourceTypeFactory.getInstance().create();
-        GlResourceTypeDetail glResourceTypeDetail = GlResourceTypeDetailFactory.getInstance().create(session,
+
+        var glResourceType = GlResourceTypeFactory.getInstance().create();
+        var glResourceTypeDetail = GlResourceTypeDetailFactory.getInstance().create(session,
                 glResourceType, glResourceTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2377,8 +2333,8 @@ public class AccountingControl
                         "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_glresourcetypename = ? AND glrtypdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, glResourceTypeName);
             ps.setLong(2, Session.MAX_TIME);
@@ -2423,8 +2379,8 @@ public class AccountingControl
                         "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_isdefault = 1 AND glrtypdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -2465,8 +2421,8 @@ public class AccountingControl
                         "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -2492,7 +2448,7 @@ public class AccountingControl
 
     public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit, Collection<GlResourceType> glResourceTypes) {
         List<GlResourceTypeTransfer> glResourceTypeTransfers = new ArrayList<>(glResourceTypes.size());
-        GlResourceTypeTransferCache glResourceTypeTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
+        var glResourceTypeTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
 
         glResourceTypes.forEach((glResourceType) ->
                 glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(glResourceType))
@@ -2507,7 +2463,7 @@ public class AccountingControl
 
     public GlResourceTypeChoicesBean getGlResourceTypeChoices(String defaultGlResourceTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<GlResourceType> glResourceTypes = getGlResourceTypes();
+        var glResourceTypes = getGlResourceTypes();
         var size = glResourceTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2523,7 +2479,7 @@ public class AccountingControl
         }
         
         for(var glResourceType : glResourceTypes) {
-            GlResourceTypeDetail glResourceTypeDetail = glResourceType.getLastDetail();
+            var glResourceTypeDetail = glResourceType.getLastDetail();
             
             var label = getBestGlResourceTypeDescription(glResourceType, language);
             var value = glResourceTypeDetail.getGlResourceTypeName();
@@ -2543,25 +2499,25 @@ public class AccountingControl
     private void updateGlResourceTypeFromValue(GlResourceTypeDetailValue glResourceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(glResourceTypeDetailValue.hasBeenModified()) {
-            GlResourceType glResourceType = GlResourceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var glResourceType = GlResourceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      glResourceTypeDetailValue.getGlResourceTypePK());
-            GlResourceTypeDetail glResourceTypeDetail = glResourceType.getActiveDetailForUpdate();
+            var glResourceTypeDetail = glResourceType.getActiveDetailForUpdate();
             
             glResourceTypeDetail.setThruTime(session.START_TIME_LONG);
             glResourceTypeDetail.store();
-            
-            GlResourceTypePK glResourceTypePK = glResourceTypeDetail.getGlResourceTypePK();
-            String glResourceTypeName = glResourceTypeDetailValue.getGlResourceTypeName();
-            Boolean isDefault = glResourceTypeDetailValue.getIsDefault();
-            Integer sortOrder = glResourceTypeDetailValue.getSortOrder();
+
+            var glResourceTypePK = glResourceTypeDetail.getGlResourceTypePK();
+            var glResourceTypeName = glResourceTypeDetailValue.getGlResourceTypeName();
+            var isDefault = glResourceTypeDetailValue.getIsDefault();
+            var sortOrder = glResourceTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                GlResourceType defaultGlResourceType = getDefaultGlResourceType();
-                boolean defaultFound = defaultGlResourceType != null && !defaultGlResourceType.equals(glResourceType);
+                var defaultGlResourceType = getDefaultGlResourceType();
+                var defaultFound = defaultGlResourceType != null && !defaultGlResourceType.equals(glResourceType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GlResourceTypeDetailValue defaultGlResourceTypeDetailValue = getDefaultGlResourceTypeDetailValueForUpdate();
+                    var defaultGlResourceTypeDetailValue = getDefaultGlResourceTypeDetailValueForUpdate();
                     
                     defaultGlResourceTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateGlResourceTypeFromValue(defaultGlResourceTypeDetailValue, false, updatedBy);
@@ -2588,23 +2544,23 @@ public class AccountingControl
     public void deleteGlResourceType(GlResourceType glResourceType, BasePK deletedBy) {
         deleteGlAccountsByGlResourceType(glResourceType, deletedBy);
         deleteGlResourceTypeDescriptionsByGlResourceType(glResourceType, deletedBy);
-        
-        GlResourceTypeDetail glResourceTypeDetail = glResourceType.getLastDetailForUpdate();
+
+        var glResourceTypeDetail = glResourceType.getLastDetailForUpdate();
         glResourceTypeDetail.setThruTime(session.START_TIME_LONG);
         glResourceTypeDetail.store();
         glResourceType.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        GlResourceType defaultGlResourceType = getDefaultGlResourceType();
+        var defaultGlResourceType = getDefaultGlResourceType();
         if(defaultGlResourceType == null) {
-            List<GlResourceType> glResourceTypes = getGlResourceTypesForUpdate();
+            var glResourceTypes = getGlResourceTypesForUpdate();
             
             if(!glResourceTypes.isEmpty()) {
-                Iterator<GlResourceType> iter = glResourceTypes.iterator();
+                var iter = glResourceTypes.iterator();
                 if(iter.hasNext()) {
                     defaultGlResourceType = iter.next();
                 }
-                GlResourceTypeDetailValue glResourceTypeDetailValue = Objects.requireNonNull(defaultGlResourceType).getLastDetailForUpdate().getGlResourceTypeDetailValue().clone();
+                var glResourceTypeDetailValue = Objects.requireNonNull(defaultGlResourceType).getLastDetailForUpdate().getGlResourceTypeDetailValue().clone();
                 
                 glResourceTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGlResourceTypeFromValue(glResourceTypeDetailValue, false, deletedBy);
@@ -2619,7 +2575,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public GlResourceTypeDescription createGlResourceTypeDescription(GlResourceType glResourceType, Language language, String description, BasePK createdBy) {
-        GlResourceTypeDescription glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description, session.START_TIME_LONG,
+        var glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(glResourceType.getPrimaryKey(), EventTypes.MODIFY, glResourceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2643,8 +2599,8 @@ public class AccountingControl
                         "WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_lang_languageid = ? AND glrtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlResourceTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GlResourceTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2691,8 +2647,8 @@ public class AccountingControl
                         "WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlResourceTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GlResourceTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2715,7 +2671,7 @@ public class AccountingControl
     
     public String getBestGlResourceTypeDescription(GlResourceType glResourceType, Language language) {
         String description;
-        GlResourceTypeDescription glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, language);
+        var glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, language);
         
         if(glResourceTypeDescription == null && !language.getIsDefault()) {
             glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, getPartyControl().getDefaultLanguage());
@@ -2735,9 +2691,9 @@ public class AccountingControl
     }
     
     public List<GlResourceTypeDescriptionTransfer> getGlResourceTypeDescriptionTransfersByGlResourceType(UserVisit userVisit, GlResourceType glResourceType) {
-        List<GlResourceTypeDescription> glResourceTypeDescriptions = getGlResourceTypeDescriptionsByGlResourceType(glResourceType);
+        var glResourceTypeDescriptions = getGlResourceTypeDescriptionsByGlResourceType(glResourceType);
         List<GlResourceTypeDescriptionTransfer> glResourceTypeDescriptionTransfers = new ArrayList<>(glResourceTypeDescriptions.size());
-        GlResourceTypeDescriptionTransferCache glResourceTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeDescriptionTransferCache();
+        var glResourceTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeDescriptionTransferCache();
         
         glResourceTypeDescriptions.forEach((glResourceTypeDescription) ->
                 glResourceTypeDescriptionTransfers.add(glResourceTypeDescriptionTransferCache.getTransfer(glResourceTypeDescription))
@@ -2748,14 +2704,14 @@ public class AccountingControl
     
     public void updateGlResourceTypeDescriptionFromValue(GlResourceTypeDescriptionValue glResourceTypeDescriptionValue, BasePK updatedBy) {
         if(glResourceTypeDescriptionValue.hasBeenModified()) {
-            GlResourceTypeDescription glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glResourceTypeDescriptionValue.getPrimaryKey());
+            var glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glResourceTypeDescriptionValue.getPrimaryKey());
             
             glResourceTypeDescription.setThruTime(session.START_TIME_LONG);
             glResourceTypeDescription.store();
-            
-            GlResourceType glResourceType = glResourceTypeDescription.getGlResourceType();
-            Language language = glResourceTypeDescription.getLanguage();
-            String description = glResourceTypeDescriptionValue.getDescription();
+
+            var glResourceType = glResourceTypeDescription.getGlResourceType();
+            var language = glResourceTypeDescription.getLanguage();
+            var description = glResourceTypeDescriptionValue.getDescription();
             
             glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2772,7 +2728,7 @@ public class AccountingControl
     }
     
     public void deleteGlResourceTypeDescriptionsByGlResourceType(GlResourceType glResourceType, BasePK deletedBy) {
-        List<GlResourceTypeDescription> glResourceTypeDescriptions = getGlResourceTypeDescriptionsByGlResourceTypeForUpdate(glResourceType);
+        var glResourceTypeDescriptions = getGlResourceTypeDescriptionsByGlResourceTypeForUpdate(glResourceType);
         
         glResourceTypeDescriptions.forEach((glResourceTypeDescription) -> 
                 deleteGlResourceTypeDescription(glResourceTypeDescription, deletedBy)
@@ -2788,11 +2744,11 @@ public class AccountingControl
             Boolean isDefault, BasePK createdBy) {
         
         if(glAccountCategory != null) {
-            GlAccount defaultGlAccount = getDefaultGlAccount(glAccountCategory);
-            boolean defaultFound = defaultGlAccount != null;
+            var defaultGlAccount = getDefaultGlAccount(glAccountCategory);
+            var defaultFound = defaultGlAccount != null;
             
             if(defaultFound && isDefault) {
-                GlAccountDetailValue defaultGlAccountDetailValue = getDefaultGlAccountDetailValueForUpdate(glAccountCategory);
+                var defaultGlAccountDetailValue = getDefaultGlAccountDetailValueForUpdate(glAccountCategory);
                 
                 defaultGlAccountDetailValue.setIsDefault(Boolean.FALSE);
                 updateGlAccountFromValue(defaultGlAccountDetailValue, false, createdBy);
@@ -2802,9 +2758,9 @@ public class AccountingControl
         } else {
             isDefault = null;
         }
-        
-        GlAccount glAccount = GlAccountFactory.getInstance().create();
-        GlAccountDetail glAccountDetail = GlAccountDetailFactory.getInstance().create(glAccount, glAccountName,
+
+        var glAccount = GlAccountFactory.getInstance().create();
+        var glAccountDetail = GlAccountDetailFactory.getInstance().create(glAccount, glAccountName,
                 parentGlAccount, glAccountType, glAccountClass, glAccountCategory, glResourceType, currency, isDefault,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -2890,8 +2846,8 @@ public class AccountingControl
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glaccountname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, glAccountName);
             
@@ -2931,8 +2887,8 @@ public class AccountingControl
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? AND gladt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccountCategoryPK.getEntityId());
             
@@ -2991,8 +2947,8 @@ public class AccountingControl
                     "WHERE gla_activedetailid = gladt_glaccountdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+
+        var ps = GlAccountFactory.getInstance().prepareStatement(query);
         
         return GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -3024,7 +2980,7 @@ public class AccountingControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+            var ps = GlAccountFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, glAccountType.getPrimaryKey().getEntityId());
 
@@ -3063,7 +3019,7 @@ public class AccountingControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+            var ps = GlAccountFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
 
@@ -3101,8 +3057,8 @@ public class AccountingControl
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccountCategoryPK.getEntityId());
             
@@ -3152,8 +3108,8 @@ public class AccountingControl
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
             
@@ -3212,7 +3168,7 @@ public class AccountingControl
     
     public List<GlAccountTransfer> getGlAccountTransfers(UserVisit userVisit, Collection<GlAccount> glAccounts) {
         List<GlAccountTransfer> glAccountTransfers = new ArrayList<>(glAccounts.size());
-        GlAccountTransferCache glAccountTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
+        var glAccountTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
         
         glAccounts.forEach((glAccount) ->
                 glAccountTransfers.add(glAccountTransferCache.getTransfer(glAccount))
@@ -3238,7 +3194,7 @@ public class AccountingControl
     }
     
     public GlAccountChoicesBean getGlAccountChoices(String defaultGlAccountChoice, Language language, boolean allowNullChoice) {
-        List<GlAccount> glAccounts = getGlAccounts();
+        var glAccounts = getGlAccounts();
         var size = glAccounts.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3254,7 +3210,7 @@ public class AccountingControl
         }
         
         for(var glAccount : glAccounts) {
-            GlAccountDetail glAccountDetail = glAccount.getLastDetail();
+            var glAccountDetail = glAccount.getLastDetail();
             
             var label = getBestGlAccountDescription(glAccount, language);
             var value = glAccountDetail.getGlAccountName();
@@ -3273,7 +3229,7 @@ public class AccountingControl
     
     public GlAccountChoicesBean getGlAccountChoicesByGlAccountCategory(String defaultGlAccountChoice, Language language,
             GlAccountCategory glAccountCategory, boolean allowNullChoice) {
-        List<GlAccount> glAccounts = getGlAccountsByGlAccountCategory(glAccountCategory);
+        var glAccounts = getGlAccountsByGlAccountCategory(glAccountCategory);
         var size = glAccounts.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3289,7 +3245,7 @@ public class AccountingControl
         }
         
         for(var glAccount : glAccounts) {
-            GlAccountDetail glAccountDetail = glAccount.getLastDetail();
+            var glAccountDetail = glAccount.getLastDetail();
             
             var label = getBestGlAccountDescription(glAccount, language);
             var value = glAccountDetail.getGlAccountName();
@@ -3307,7 +3263,7 @@ public class AccountingControl
     }
     
     public boolean isParentGlAccountSafe(GlAccount glAccount, GlAccount parentGlAccount) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentGlAccount != null) {
             Set<GlAccount> parentItemPurchasingCategories = new HashSet<>();
@@ -3328,17 +3284,17 @@ public class AccountingControl
     }
     
     private void pickDefaultGlAccount(final GlAccountCategoryPK glAccountCategoryPK, final BasePK updatedBy) {
-        GlAccount defaultGlAccount = getDefaultGlAccount(glAccountCategoryPK);
+        var defaultGlAccount = getDefaultGlAccount(glAccountCategoryPK);
             
         if(defaultGlAccount == null) {
-            List<GlAccount> glAccounts = getGlAccountsByGlAccountCategoryForUpdate(glAccountCategoryPK);
+            var glAccounts = getGlAccountsByGlAccountCategoryForUpdate(glAccountCategoryPK);
             
             if(!glAccounts.isEmpty()) {
-                Iterator<GlAccount> iter = glAccounts.iterator();
+                var iter = glAccounts.iterator();
                 if(iter.hasNext()) {
                     defaultGlAccount = iter.next();
                 }
-                GlAccountDetailValue glAccountDetailValue = Objects.requireNonNull(defaultGlAccount).getLastDetailForUpdate().getGlAccountDetailValue().clone();
+                var glAccountDetailValue = Objects.requireNonNull(defaultGlAccount).getLastDetailForUpdate().getGlAccountDetailValue().clone();
                 
                 glAccountDetailValue.setIsDefault(Boolean.TRUE);
                 updateGlAccountFromValue(glAccountDetailValue, false, updatedBy);
@@ -3349,31 +3305,31 @@ public class AccountingControl
     private void updateGlAccountFromValue(GlAccountDetailValue glAccountDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(glAccountDetailValue.hasBeenModified()) {
-            GlAccount glAccount = GlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var glAccount = GlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      glAccountDetailValue.getGlAccountPK());
-            GlAccountDetail glAccountDetail = glAccount.getActiveDetailForUpdate();
+            var glAccountDetail = glAccount.getActiveDetailForUpdate();
             
             glAccountDetail.setThruTime(session.START_TIME_LONG);
             glAccountDetail.store();
-            
-            GlAccountPK glAccountPK = glAccountDetail.getGlAccountPK(); // Not updated
-            String glAccountName = glAccountDetailValue.getGlAccountName();
-            GlAccountPK parentGlAccountPK = glAccountDetailValue.getParentGlAccountPK();
-            GlAccountTypePK glAccountTypePK = glAccountDetail.getGlAccountTypePK(); // Not updated
-            GlAccountClassPK glAccountClassPK = glAccountDetailValue.getGlAccountClassPK();
-            GlAccountCategoryPK glAccountCategoryPK = glAccountDetailValue.getGlAccountCategoryPK();
-            GlResourceTypePK glResourceTypePK = glAccountDetailValue.getGlResourceTypePK();
-            CurrencyPK currencyPK = glAccountDetail.getCurrencyPK(); // Not updated
-            Boolean isDefault = glAccountDetailValue.getIsDefault();
+
+            var glAccountPK = glAccountDetail.getGlAccountPK(); // Not updated
+            var glAccountName = glAccountDetailValue.getGlAccountName();
+            var parentGlAccountPK = glAccountDetailValue.getParentGlAccountPK();
+            var glAccountTypePK = glAccountDetail.getGlAccountTypePK(); // Not updated
+            var glAccountClassPK = glAccountDetailValue.getGlAccountClassPK();
+            var glAccountCategoryPK = glAccountDetailValue.getGlAccountCategoryPK();
+            var glResourceTypePK = glAccountDetailValue.getGlResourceTypePK();
+            var currencyPK = glAccountDetail.getCurrencyPK(); // Not updated
+            var isDefault = glAccountDetailValue.getIsDefault();
             
             if(checkDefault) {
                 if(glAccountCategoryPK != null) {
-                    GlAccount defaultGlAccount = getDefaultGlAccount(glAccountCategoryPK);
-                    boolean defaultFound = defaultGlAccount != null && !defaultGlAccount.equals(glAccount);
+                    var defaultGlAccount = getDefaultGlAccount(glAccountCategoryPK);
+                    var defaultFound = defaultGlAccount != null && !defaultGlAccount.equals(glAccount);
                     
                     if(isDefault && defaultFound) {
                         // If I'm the default, and a default already existed...
-                        GlAccountDetailValue defaultGlAccountDetailValue = getDefaultGlAccountDetailValueForUpdate(glAccountCategoryPK);
+                        var defaultGlAccountDetailValue = getDefaultGlAccountDetailValueForUpdate(glAccountCategoryPK);
                         
                         defaultGlAccountDetailValue.setIsDefault(Boolean.FALSE);
                         updateGlAccountFromValue(defaultGlAccountDetailValue, false, updatedBy);
@@ -3408,22 +3364,22 @@ public class AccountingControl
     }
     
     private void deleteGlAccount(GlAccount glAccount, boolean checkDefault, BasePK deletedBy) {
-        FinancialControl financialControl  = Session.getModelController(FinancialControl.class);
+        var financialControl  = Session.getModelController(FinancialControl.class);
         
         deleteGlAccountsByParentGlAccount(glAccount, deletedBy);
         deleteTransactionGlAccountByGlAccount(glAccount, deletedBy);
         // TODO: deleteTransactionGlAccountByGlAccount(glAccount, deletedBy);
         deleteGlAccountDescriptionsByGlAccount(glAccount, deletedBy);
         financialControl.deleteFinancialAccountsByGlAccount(glAccount, deletedBy);
-        
-        GlAccountDetail glAccountDetail = glAccount.getLastDetailForUpdate();
+
+        var glAccountDetail = glAccount.getLastDetailForUpdate();
         glAccountDetail.setThruTime(session.START_TIME_LONG);
         glAccount.setActiveDetail(null);
         glAccount.store();
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            GlAccountCategoryPK glAccountCategoryPK = glAccountDetail.getGlAccountCategoryPK();
+            var glAccountCategoryPK = glAccountDetail.getGlAccountCategoryPK();
 
             if(glAccountCategoryPK != null) {
                 pickDefaultGlAccount(glAccountCategoryPK, deletedBy);
@@ -3466,7 +3422,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public GlAccountDescription createGlAccountDescription(GlAccount glAccount, Language language, String description, BasePK createdBy) {
-        GlAccountDescription glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description, session.START_TIME_LONG,
+        var glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(glAccount.getPrimaryKey(), EventTypes.MODIFY, glAccountDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3490,8 +3446,8 @@ public class AccountingControl
                         "WHERE glad_gla_glaccountid = ? AND glad_lang_languageid = ? AND glad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3538,8 +3494,8 @@ public class AccountingControl
                         "WHERE glad_gla_glaccountid = ? AND glad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3562,7 +3518,7 @@ public class AccountingControl
     
     public String getBestGlAccountDescription(GlAccount glAccount, Language language) {
         String description;
-        GlAccountDescription glAccountDescription = getGlAccountDescription(glAccount, language);
+        var glAccountDescription = getGlAccountDescription(glAccount, language);
         
         if(glAccountDescription == null && !language.getIsDefault()) {
             glAccountDescription = getGlAccountDescription(glAccount, getPartyControl().getDefaultLanguage());
@@ -3582,9 +3538,9 @@ public class AccountingControl
     }
     
     public List<GlAccountDescriptionTransfer> getGlAccountDescriptionTransfersByGlAccount(UserVisit userVisit, GlAccount glAccount) {
-        List<GlAccountDescription> glAccountDescriptions = getGlAccountDescriptionsByGlAccount(glAccount);
+        var glAccountDescriptions = getGlAccountDescriptionsByGlAccount(glAccount);
         List<GlAccountDescriptionTransfer> glAccountDescriptionTransfers = new ArrayList<>(glAccountDescriptions.size());
-        GlAccountDescriptionTransferCache glAccountDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountDescriptionTransferCache();
+        var glAccountDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountDescriptionTransferCache();
         
         glAccountDescriptions.forEach((glAccountDescription) ->
                 glAccountDescriptionTransfers.add(glAccountDescriptionTransferCache.getTransfer(glAccountDescription))
@@ -3595,14 +3551,14 @@ public class AccountingControl
     
     public void updateGlAccountDescriptionFromValue(GlAccountDescriptionValue glAccountDescriptionValue, BasePK updatedBy) {
         if(glAccountDescriptionValue.hasBeenModified()) {
-            GlAccountDescription glAccountDescription = GlAccountDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountDescriptionValue.getPrimaryKey());
+            var glAccountDescription = GlAccountDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountDescriptionValue.getPrimaryKey());
             
             glAccountDescription.setThruTime(session.START_TIME_LONG);
             glAccountDescription.store();
-            
-            GlAccount glAccount = glAccountDescription.getGlAccount();
-            Language language = glAccountDescription.getLanguage();
-            String description = glAccountDescriptionValue.getDescription();
+
+            var glAccount = glAccountDescription.getGlAccount();
+            var language = glAccountDescription.getLanguage();
+            var description = glAccountDescriptionValue.getDescription();
             
             glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3618,7 +3574,7 @@ public class AccountingControl
     }
     
     public void deleteGlAccountDescriptionsByGlAccount(GlAccount glAccount, BasePK deletedBy) {
-        List<GlAccountDescription> glAccountDescriptions = getGlAccountDescriptionsByGlAccountForUpdate(glAccount);
+        var glAccountDescriptions = getGlAccountDescriptionsByGlAccountForUpdate(glAccount);
         
         glAccountDescriptions.forEach((glAccountDescription) -> 
                 deleteGlAccountDescription(glAccountDescription, deletedBy)
@@ -3649,8 +3605,8 @@ public class AccountingControl
                         "WHERE glasmy_gla_glaccountid = ? AND glasmy_grouppartyid = ? AND glasmy_prd_periodid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GlAccountSummaryFactory.getInstance().prepareStatement(query);
+
+            var ps = GlAccountSummaryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, groupParty.getPrimaryKey().getEntityId());
@@ -3677,8 +3633,8 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public TransactionType createTransactionType(String transactionTypeName, Integer sortOrder, BasePK createdBy) {
-        TransactionType transactionType = TransactionTypeFactory.getInstance().create();
-        TransactionTypeDetail transactionTypeDetail = TransactionTypeDetailFactory.getInstance().create(transactionType, transactionTypeName, sortOrder, session.START_TIME_LONG,
+        var transactionType = TransactionTypeFactory.getInstance().create();
+        var transactionTypeDetail = TransactionTypeDetailFactory.getInstance().create(transactionType, transactionTypeName, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3708,8 +3664,8 @@ public class AccountingControl
                         "WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid AND trxtypdt_transactiontypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, transactionTypeName);
             
@@ -3751,8 +3707,8 @@ public class AccountingControl
                     "WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TransactionTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = TransactionTypeFactory.getInstance().prepareStatement(query);
         
         return TransactionTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -3771,7 +3727,7 @@ public class AccountingControl
     
     public List<TransactionTypeTransfer> getTransactionTypeTransfers(UserVisit userVisit, Collection<TransactionType> transactionTypes) {
         List<TransactionTypeTransfer> transactionTypeTransfers = new ArrayList<>(transactionTypes.size());
-        TransactionTypeTransferCache transactionTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
+        var transactionTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
         
         transactionTypes.forEach((transactionType) ->
                 transactionTypeTransfers.add(transactionTypeTransferCache.getTransfer(transactionType))
@@ -3785,16 +3741,16 @@ public class AccountingControl
     }
     
     public void updateTransactionTypeFromValue(TransactionTypeDetailValue transactionTypeDetailValue, BasePK updatedBy) {
-        TransactionType transactionType = TransactionTypeFactory.getInstance().getEntityFromPK(session,
+        var transactionType = TransactionTypeFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, transactionTypeDetailValue.getTransactionTypePK());
-        TransactionTypeDetail transactionTypeDetail = transactionType.getActiveDetailForUpdate();
+        var transactionTypeDetail = transactionType.getActiveDetailForUpdate();
 
         transactionTypeDetail.setThruTime(session.START_TIME_LONG);
         transactionTypeDetail.store();
 
-        TransactionTypePK transactionTypePK = transactionTypeDetail.getTransactionTypePK(); // Not updated
-        String transactionTypeName = transactionTypeDetailValue.getTransactionTypeName();
-        Integer sortOrder = transactionTypeDetailValue.getSortOrder();
+        var transactionTypePK = transactionTypeDetail.getTransactionTypePK(); // Not updated
+        var transactionTypeName = transactionTypeDetailValue.getTransactionTypeName();
+        var sortOrder = transactionTypeDetailValue.getSortOrder();
 
         transactionTypeDetail = TransactionTypeDetailFactory.getInstance().create(transactionTypePK, transactionTypeName, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -3808,8 +3764,8 @@ public class AccountingControl
         deleteTransactionGlAccountCategoriesByTransactionType(transactionType, deletedBy);
         deleteTransactionEntityRoleTypesByTransactionType(transactionType, deletedBy);
         deleteTransactionTypeDescriptionsByTransactionType(transactionType, deletedBy);
-        
-        TransactionTypeDetail transactionTypeDetail = transactionType.getLastDetailForUpdate();
+
+        var transactionTypeDetail = transactionType.getLastDetailForUpdate();
         transactionTypeDetail.setThruTime(session.START_TIME_LONG);
         transactionType.setActiveDetail(null);
         transactionType.store();
@@ -3828,7 +3784,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public TransactionTypeDescription createTransactionTypeDescription(TransactionType transactionType, Language language, String description, BasePK createdBy) {
-        TransactionTypeDescription transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description, session.START_TIME_LONG,
+        var transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(transactionType.getPrimaryKey(), EventTypes.MODIFY, transactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3852,8 +3808,8 @@ public class AccountingControl
                         "WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_lang_languageid = ? AND trxtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3900,8 +3856,8 @@ public class AccountingControl
                         "WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3924,7 +3880,7 @@ public class AccountingControl
     
     public String getBestTransactionTypeDescription(TransactionType transactionType, Language language) {
         String description;
-        TransactionTypeDescription transactionTypeDescription = getTransactionTypeDescription(transactionType, language);
+        var transactionTypeDescription = getTransactionTypeDescription(transactionType, language);
         
         if(transactionTypeDescription == null && !language.getIsDefault()) {
             transactionTypeDescription = getTransactionTypeDescription(transactionType, getPartyControl().getDefaultLanguage());
@@ -3944,9 +3900,9 @@ public class AccountingControl
     }
     
     public List<TransactionTypeDescriptionTransfer> getTransactionTypeDescriptionTransfersByTransactionType(UserVisit userVisit, TransactionType transactionType) {
-        List<TransactionTypeDescription> transactionTypeDescriptions = getTransactionTypeDescriptionsByTransactionType(transactionType);
+        var transactionTypeDescriptions = getTransactionTypeDescriptionsByTransactionType(transactionType);
         List<TransactionTypeDescriptionTransfer> transactionTypeDescriptionTransfers = new ArrayList<>(transactionTypeDescriptions.size());
-        TransactionTypeDescriptionTransferCache transactionTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeDescriptionTransferCache();
+        var transactionTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeDescriptionTransferCache();
         
         transactionTypeDescriptions.forEach((transactionTypeDescription) ->
                 transactionTypeDescriptionTransfers.add(transactionTypeDescriptionTransferCache.getTransfer(transactionTypeDescription))
@@ -3957,14 +3913,14 @@ public class AccountingControl
     
     public void updateTransactionTypeDescriptionFromValue(TransactionTypeDescriptionValue transactionTypeDescriptionValue, BasePK updatedBy) {
         if(transactionTypeDescriptionValue.hasBeenModified()) {
-            TransactionTypeDescription transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionTypeDescriptionValue.getPrimaryKey());
+            var transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionTypeDescriptionValue.getPrimaryKey());
             
             transactionTypeDescription.setThruTime(session.START_TIME_LONG);
             transactionTypeDescription.store();
-            
-            TransactionType transactionType = transactionTypeDescription.getTransactionType();
-            Language language = transactionTypeDescription.getLanguage();
-            String description = transactionTypeDescriptionValue.getDescription();
+
+            var transactionType = transactionTypeDescription.getTransactionType();
+            var language = transactionTypeDescription.getLanguage();
+            var description = transactionTypeDescriptionValue.getDescription();
             
             transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3981,7 +3937,7 @@ public class AccountingControl
     }
     
     public void deleteTransactionTypeDescriptionsByTransactionType(TransactionType transactionType, BasePK deletedBy) {
-        List<TransactionTypeDescription> transactionTypeDescriptions = getTransactionTypeDescriptionsByTransactionTypeForUpdate(transactionType);
+        var transactionTypeDescriptions = getTransactionTypeDescriptionsByTransactionTypeForUpdate(transactionType);
         
         transactionTypeDescriptions.forEach((transactionTypeDescription) -> 
                 deleteTransactionTypeDescription(transactionTypeDescription, deletedBy)
@@ -3994,8 +3950,8 @@ public class AccountingControl
     
     public TransactionGlAccountCategory createTransactionGlAccountCategory(TransactionType transactionType, String transactionGlAccountCategoryName, GlAccountCategory glAccountCategory,
             Integer sortOrder, BasePK createdBy) {
-        TransactionGlAccountCategory transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().create();
-        TransactionGlAccountCategoryDetail transactionGlAccountCategoryDetail = TransactionGlAccountCategoryDetailFactory.getInstance().create(transactionGlAccountCategory, transactionType,
+        var transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().create();
+        var transactionGlAccountCategoryDetail = TransactionGlAccountCategoryDetailFactory.getInstance().create(transactionGlAccountCategory, transactionType,
                 transactionGlAccountCategoryName, glAccountCategory, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -4025,8 +3981,8 @@ public class AccountingControl
                         "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? AND trxglacdt_transactionglaccountcategoryname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             ps.setString(2, transactionGlAccountCategoryName);
@@ -4069,8 +4025,8 @@ public class AccountingControl
                     "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
+
+        var ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
         
         return TransactionGlAccountCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -4100,8 +4056,8 @@ public class AccountingControl
                     "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? " +
                     "FOR UPDATE";
         }
-            
-            PreparedStatement ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             
@@ -4127,7 +4083,7 @@ public class AccountingControl
     
     public List<TransactionGlAccountCategoryTransfer> getTransactionGlAccountCategoryTransfers(UserVisit userVisit, Collection<TransactionGlAccountCategory> transactionGlAccountCategories) {
         List<TransactionGlAccountCategoryTransfer> transactionGlAccountCategoryTransfers = new ArrayList<>(transactionGlAccountCategories.size());
-        TransactionGlAccountCategoryTransferCache transactionGlAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
+        var transactionGlAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
         
         transactionGlAccountCategories.forEach((transactionGlAccountCategory) ->
                 transactionGlAccountCategoryTransfers.add(transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategory))
@@ -4145,18 +4101,18 @@ public class AccountingControl
     }
     
     public void updateTransactionGlAccountCategoryFromValue(TransactionGlAccountCategoryDetailValue transactionGlAccountCategoryDetailValue, BasePK updatedBy) {
-        TransactionGlAccountCategory transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(session,
+        var transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, transactionGlAccountCategoryDetailValue.getTransactionGlAccountCategoryPK());
-        TransactionGlAccountCategoryDetail transactionGlAccountCategoryDetail = transactionGlAccountCategory.getActiveDetailForUpdate();
+        var transactionGlAccountCategoryDetail = transactionGlAccountCategory.getActiveDetailForUpdate();
 
         transactionGlAccountCategoryDetail.setThruTime(session.START_TIME_LONG);
         transactionGlAccountCategoryDetail.store();
 
-        TransactionGlAccountCategoryPK transactionGlAccountCategoryPK = transactionGlAccountCategoryDetail.getTransactionGlAccountCategoryPK(); // Not updated
-        TransactionTypePK transactionTypePK = transactionGlAccountCategoryDetail.getTransactionTypePK(); // Not updated
-        String transactionGlAccountCategoryName = transactionGlAccountCategoryDetailValue.getTransactionGlAccountCategoryName();
-        GlAccountCategoryPK glAccountCategoryPK = transactionGlAccountCategoryDetailValue.getGlAccountCategoryPK();
-        Integer sortOrder = transactionGlAccountCategoryDetailValue.getSortOrder();
+        var transactionGlAccountCategoryPK = transactionGlAccountCategoryDetail.getTransactionGlAccountCategoryPK(); // Not updated
+        var transactionTypePK = transactionGlAccountCategoryDetail.getTransactionTypePK(); // Not updated
+        var transactionGlAccountCategoryName = transactionGlAccountCategoryDetailValue.getTransactionGlAccountCategoryName();
+        var glAccountCategoryPK = transactionGlAccountCategoryDetailValue.getGlAccountCategoryPK();
+        var sortOrder = transactionGlAccountCategoryDetailValue.getSortOrder();
 
         transactionGlAccountCategoryDetail = TransactionGlAccountCategoryDetailFactory.getInstance().create(transactionGlAccountCategoryPK, transactionTypePK,
                 transactionGlAccountCategoryName, glAccountCategoryPK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4170,8 +4126,8 @@ public class AccountingControl
     public void deleteTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, BasePK deletedBy) {
         // TODO: deleteTransactionGlAccountByTransactionGlAccountCategory(transactionGlAccountCategory, deletedBy);
         deleteTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(transactionGlAccountCategory, deletedBy);
-        
-        TransactionGlAccountCategoryDetail transactionGlAccountCategoryDetail = transactionGlAccountCategory.getLastDetailForUpdate();
+
+        var transactionGlAccountCategoryDetail = transactionGlAccountCategory.getLastDetailForUpdate();
         transactionGlAccountCategoryDetail.setThruTime(session.START_TIME_LONG);
         transactionGlAccountCategory.setActiveDetail(null);
         transactionGlAccountCategory.store();
@@ -4195,7 +4151,7 @@ public class AccountingControl
     
      public TransactionGlAccountCategoryDescription createTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language, String description,
              BasePK createdBy) {
-        TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory,
+         var transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4219,8 +4175,8 @@ public class AccountingControl
                         "WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_lang_languageid = ? AND trxglacd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionGlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionGlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -4267,8 +4223,8 @@ public class AccountingControl
                         "WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionGlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionGlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4291,7 +4247,7 @@ public class AccountingControl
     
     public String getBestTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language) {
         String description;
-        TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, language);
+        var transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, language);
         
         if(transactionGlAccountCategoryDescription == null && !language.getIsDefault()) {
             transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getPartyControl().getDefaultLanguage());
@@ -4311,9 +4267,9 @@ public class AccountingControl
     }
     
     public List<TransactionGlAccountCategoryDescriptionTransfer> getTransactionGlAccountCategoryDescriptionTransfersByTransactionGlAccountCategory(UserVisit userVisit, TransactionGlAccountCategory transactionGlAccountCategory) {
-        List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions = getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(transactionGlAccountCategory);
+        var transactionGlAccountCategoryDescriptions = getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(transactionGlAccountCategory);
         List<TransactionGlAccountCategoryDescriptionTransfer> transactionGlAccountCategoryDescriptionTransfers = new ArrayList<>(transactionGlAccountCategoryDescriptions.size());
-        TransactionGlAccountCategoryDescriptionTransferCache transactionGlAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryDescriptionTransferCache();
+        var transactionGlAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryDescriptionTransferCache();
         
         transactionGlAccountCategoryDescriptions.forEach((transactionGlAccountCategoryDescription) ->
                 transactionGlAccountCategoryDescriptionTransfers.add(transactionGlAccountCategoryDescriptionTransferCache.getTransfer(transactionGlAccountCategoryDescription))
@@ -4324,14 +4280,14 @@ public class AccountingControl
     
     public void updateTransactionGlAccountCategoryDescriptionFromValue(TransactionGlAccountCategoryDescriptionValue transactionGlAccountCategoryDescriptionValue, BasePK updatedBy) {
         if(transactionGlAccountCategoryDescriptionValue.hasBeenModified()) {
-            TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountCategoryDescriptionValue.getPrimaryKey());
+            var transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountCategoryDescriptionValue.getPrimaryKey());
             
             transactionGlAccountCategoryDescription.setThruTime(session.START_TIME_LONG);
             transactionGlAccountCategoryDescription.store();
-            
-            TransactionGlAccountCategory transactionGlAccountCategory = transactionGlAccountCategoryDescription.getTransactionGlAccountCategory();
-            Language language = transactionGlAccountCategoryDescription.getLanguage();
-            String description = transactionGlAccountCategoryDescriptionValue.getDescription();
+
+            var transactionGlAccountCategory = transactionGlAccountCategoryDescription.getTransactionGlAccountCategory();
+            var language = transactionGlAccountCategoryDescription.getLanguage();
+            var description = transactionGlAccountCategoryDescriptionValue.getDescription();
             
             transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4348,7 +4304,7 @@ public class AccountingControl
     }
     
     public void deleteTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, BasePK deletedBy) {
-        List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions = getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategoryForUpdate(transactionGlAccountCategory);
+        var transactionGlAccountCategoryDescriptions = getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategoryForUpdate(transactionGlAccountCategory);
         
         transactionGlAccountCategoryDescriptions.forEach((transactionGlAccountCategoryDescription) -> 
                 deleteTransactionGlAccountCategoryDescription(transactionGlAccountCategoryDescription, deletedBy)
@@ -4361,8 +4317,8 @@ public class AccountingControl
     
      public TransactionEntityRoleType createTransactionEntityRoleType(TransactionType transactionType, String transactionEntityRoleTypeName, EntityType entityType,
             Integer sortOrder, BasePK createdBy) {
-        TransactionEntityRoleType transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().create();
-        TransactionEntityRoleTypeDetail transactionEntityRoleTypeDetail = TransactionEntityRoleTypeDetailFactory.getInstance().create(transactionEntityRoleType, transactionType,
+         var transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().create();
+         var transactionEntityRoleTypeDetail = TransactionEntityRoleTypeDetailFactory.getInstance().create(transactionEntityRoleType, transactionType,
                 transactionEntityRoleTypeName, entityType, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -4392,8 +4348,8 @@ public class AccountingControl
                         "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? AND trxertypdt_transactionentityroletypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             ps.setString(2, transactionEntityRoleTypeName);
@@ -4436,8 +4392,8 @@ public class AccountingControl
                     "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
         
         return TransactionEntityRoleTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -4467,8 +4423,8 @@ public class AccountingControl
                     "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? " +
                     "FOR UPDATE";
         }
-            
-            PreparedStatement ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             
@@ -4506,8 +4462,8 @@ public class AccountingControl
                     "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? " +
                     "FOR UPDATE";
         }
-            
-            PreparedStatement ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
@@ -4533,7 +4489,7 @@ public class AccountingControl
     
     public List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypeTransfers(UserVisit userVisit, Collection<TransactionEntityRoleType> transactionEntityRoleTypes) {
         List<TransactionEntityRoleTypeTransfer> transactionEntityRoleTypeTransfers = new ArrayList<>(transactionEntityRoleTypes.size());
-        TransactionEntityRoleTypeTransferCache transactionEntityRoleTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
+        var transactionEntityRoleTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
         
         transactionEntityRoleTypes.forEach((transactionEntityRoleType) ->
                 transactionEntityRoleTypeTransfers.add(transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleType))
@@ -4555,18 +4511,18 @@ public class AccountingControl
     }
     
     public void updateTransactionEntityRoleTypeFromValue(TransactionEntityRoleTypeDetailValue transactionEntityRoleTypeDetailValue, BasePK updatedBy) {
-        TransactionEntityRoleType transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(session,
+        var transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, transactionEntityRoleTypeDetailValue.getTransactionEntityRoleTypePK());
-        TransactionEntityRoleTypeDetail transactionEntityRoleTypeDetail = transactionEntityRoleType.getActiveDetailForUpdate();
+        var transactionEntityRoleTypeDetail = transactionEntityRoleType.getActiveDetailForUpdate();
 
         transactionEntityRoleTypeDetail.setThruTime(session.START_TIME_LONG);
         transactionEntityRoleTypeDetail.store();
 
-        TransactionEntityRoleTypePK transactionEntityRoleTypePK = transactionEntityRoleTypeDetail.getTransactionEntityRoleTypePK(); // Not updated
-        TransactionTypePK transactionTypePK = transactionEntityRoleTypeDetail.getTransactionTypePK(); // Not updated
-        String transactionEntityRoleTypeName = transactionEntityRoleTypeDetailValue.getTransactionEntityRoleTypeName();
-        EntityTypePK entityTypePK = transactionEntityRoleTypeDetailValue.getEntityTypePK();
-        Integer sortOrder = transactionEntityRoleTypeDetailValue.getSortOrder();
+        var transactionEntityRoleTypePK = transactionEntityRoleTypeDetail.getTransactionEntityRoleTypePK(); // Not updated
+        var transactionTypePK = transactionEntityRoleTypeDetail.getTransactionTypePK(); // Not updated
+        var transactionEntityRoleTypeName = transactionEntityRoleTypeDetailValue.getTransactionEntityRoleTypeName();
+        var entityTypePK = transactionEntityRoleTypeDetailValue.getEntityTypePK();
+        var sortOrder = transactionEntityRoleTypeDetailValue.getSortOrder();
 
         transactionEntityRoleTypeDetail = TransactionEntityRoleTypeDetailFactory.getInstance().create(transactionEntityRoleTypePK, transactionTypePK,
                 transactionEntityRoleTypeName, entityTypePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4579,8 +4535,8 @@ public class AccountingControl
     
     public void deleteTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType, BasePK deletedBy) {
         deleteTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(transactionEntityRoleType, deletedBy);
-        
-        TransactionEntityRoleTypeDetail transactionEntityRoleTypeDetail = transactionEntityRoleType.getLastDetailForUpdate();
+
+        var transactionEntityRoleTypeDetail = transactionEntityRoleType.getLastDetailForUpdate();
         transactionEntityRoleTypeDetail.setThruTime(session.START_TIME_LONG);
         transactionEntityRoleType.setActiveDetail(null);
         transactionEntityRoleType.store();
@@ -4607,7 +4563,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public TransactionEntityRoleTypeDescription createTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language, String description, BasePK createdBy) {
-        TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language,
+        var transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4631,8 +4587,8 @@ public class AccountingControl
                         "WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_lang_languageid = ? AND trxertypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionEntityRoleTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionEntityRoleTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -4679,8 +4635,8 @@ public class AccountingControl
                         "WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionEntityRoleTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionEntityRoleTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4703,7 +4659,7 @@ public class AccountingControl
     
     public String getBestTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language) {
         String description;
-        TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, language);
+        var transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, language);
         
         if(transactionEntityRoleTypeDescription == null && !language.getIsDefault()) {
             transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, getPartyControl().getDefaultLanguage());
@@ -4723,9 +4679,9 @@ public class AccountingControl
     }
     
     public List<TransactionEntityRoleTypeDescriptionTransfer> getTransactionEntityRoleTypeDescriptionTransfersByTransactionEntityRoleType(UserVisit userVisit, TransactionEntityRoleType transactionEntityRoleType) {
-        List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions = getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(transactionEntityRoleType);
+        var transactionEntityRoleTypeDescriptions = getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(transactionEntityRoleType);
         List<TransactionEntityRoleTypeDescriptionTransfer> transactionEntityRoleTypeDescriptionTransfers = new ArrayList<>(transactionEntityRoleTypeDescriptions.size());
-        TransactionEntityRoleTypeDescriptionTransferCache transactionEntityRoleTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeDescriptionTransferCache();
+        var transactionEntityRoleTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeDescriptionTransferCache();
         
         transactionEntityRoleTypeDescriptions.forEach((transactionEntityRoleTypeDescription) ->
                 transactionEntityRoleTypeDescriptionTransfers.add(transactionEntityRoleTypeDescriptionTransferCache.getTransfer(transactionEntityRoleTypeDescription))
@@ -4736,14 +4692,14 @@ public class AccountingControl
     
     public void updateTransactionEntityRoleTypeDescriptionFromValue(TransactionEntityRoleTypeDescriptionValue transactionEntityRoleTypeDescriptionValue, BasePK updatedBy) {
         if(transactionEntityRoleTypeDescriptionValue.hasBeenModified()) {
-            TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionEntityRoleTypeDescriptionValue.getPrimaryKey());
+            var transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionEntityRoleTypeDescriptionValue.getPrimaryKey());
             
             transactionEntityRoleTypeDescription.setThruTime(session.START_TIME_LONG);
             transactionEntityRoleTypeDescription.store();
-            
-            TransactionEntityRoleType transactionEntityRoleType = transactionEntityRoleTypeDescription.getTransactionEntityRoleType();
-            Language language = transactionEntityRoleTypeDescription.getLanguage();
-            String description = transactionEntityRoleTypeDescriptionValue.getDescription();
+
+            var transactionEntityRoleType = transactionEntityRoleTypeDescription.getTransactionEntityRoleType();
+            var language = transactionEntityRoleTypeDescription.getLanguage();
+            var description = transactionEntityRoleTypeDescriptionValue.getDescription();
             
             transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4760,7 +4716,7 @@ public class AccountingControl
     }
     
     public void deleteTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType, BasePK deletedBy) {
-        List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions = getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleTypeForUpdate(transactionEntityRoleType);
+        var transactionEntityRoleTypeDescriptions = getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleTypeForUpdate(transactionEntityRoleType);
         
         transactionEntityRoleTypeDescriptions.forEach((transactionEntityRoleTypeDescription) -> 
                 deleteTransactionEntityRoleTypeDescription(transactionEntityRoleTypeDescription, deletedBy)
@@ -4772,7 +4728,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
      public TransactionGlAccount createTransactionGlAccount(TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, BasePK createdBy) {
-        TransactionGlAccount transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategory, glAccount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+         var transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategory, glAccount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4798,8 +4754,8 @@ public class AccountingControl
                         "WHERE trxgla_gla_glaccountid = ? AND trxgla_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionGlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionGlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4836,8 +4792,8 @@ public class AccountingControl
                         "WHERE trxgla_trxglac_transactionglaccountcategoryid = ? AND trxgla_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionGlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionGlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4872,13 +4828,13 @@ public class AccountingControl
     
     public void updateTransactionGlAccountFromValue(TransactionGlAccountValue transactionGlAccountValue, BasePK updatedBy) {
         if(transactionGlAccountValue.hasBeenModified()) {
-            TransactionGlAccount transactionGlAccount = TransactionGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountValue.getPrimaryKey());
+            var transactionGlAccount = TransactionGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountValue.getPrimaryKey());
             
             transactionGlAccount.setThruTime(session.START_TIME_LONG);
             transactionGlAccount.store();
-            
-            TransactionGlAccountCategoryPK transactionGlAccountCategoryPK = transactionGlAccount.getTransactionGlAccountCategoryPK();
-            GlAccountPK glAccountPK = transactionGlAccountValue.getGlAccountPK();
+
+            var transactionGlAccountCategoryPK = transactionGlAccount.getTransactionGlAccountCategoryPK();
+            var glAccountPK = transactionGlAccountValue.getGlAccountPK();
             
             transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategoryPK, glAccountPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -4893,7 +4849,7 @@ public class AccountingControl
     }
     
     public void deleteTransactionGlAccountByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, BasePK deletedBy) {
-        TransactionGlAccount transactionGlAccount = getTransactionGlAccount(transactionGlAccountCategory);
+        var transactionGlAccount = getTransactionGlAccount(transactionGlAccountCategory);
         
         if(transactionGlAccount != null) {
             deleteTransactionGlAccount(transactionGlAccount, deletedBy);
@@ -4915,15 +4871,15 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public TransactionGroup getActiveTransactionGroup(BasePK createdBy) {
-        WorkflowStep workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
+        var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
                 WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE);
         TransactionGroup transactionGroup = null;
         
         if(workflowStep != null) {
-            List<TransactionGroup> transactionGroups = null;
+            List<TransactionGroup> transactionGroups;
             
             try {
-                PreparedStatement ps = TransactionGroupFactory.getInstance().prepareStatement(
+                var ps = TransactionGroupFactory.getInstance().prepareStatement(
                         "SELECT _ALL_ " +
                         "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
                         "transactiongroups, transactiongroupdetails, workflowentitystatuses, entitytimes " +
@@ -4959,20 +4915,20 @@ public class AccountingControl
     
     public TransactionGroup createTransactionGroup(BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION_GROUP.name());
-        String transactionGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
-        
-        TransactionGroup transactionGroup = createTransactionGroup(transactionGroupName, createdBy);
-        
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION_GROUP.name());
+        var transactionGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+
+        var transactionGroup = createTransactionGroup(transactionGroupName, createdBy);
+
+        var entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, Workflow_TRANSACTION_GROUP_STATUS, entityInstance, null, null,createdBy);
         
         return transactionGroup;
     }
     
     public TransactionGroup createTransactionGroup(String transactionGroupName, BasePK createdBy) {
-        TransactionGroup transactionGroup = TransactionGroupFactory.getInstance().create();
-        TransactionGroupDetail transactionGroupDetail = TransactionGroupDetailFactory.getInstance().create(transactionGroup,
+        var transactionGroup = TransactionGroupFactory.getInstance().create();
+        var transactionGroupDetail = TransactionGroupDetailFactory.getInstance().create(transactionGroup,
                 transactionGroupName, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -4996,7 +4952,7 @@ public class AccountingControl
         
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM transactiongroups, transactiongroupdetails " +
@@ -5007,8 +4963,8 @@ public class AccountingControl
                         "WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid AND trxgrpdt_transactiongroupname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionGroupFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, transactionGroupName);
             
@@ -5019,7 +4975,7 @@ public class AccountingControl
         
         return transactionGroup;
     }
-    
+
     public TransactionGroup getTransactionGroupByName(String transactionGroupName) {
         return getTransactionGroupByName(transactionGroupName, EntityPermission.READ_ONLY);
     }
@@ -5046,8 +5002,8 @@ public class AccountingControl
                     "WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TransactionGroupFactory.getInstance().prepareStatement(query);
+
+        var ps = TransactionGroupFactory.getInstance().prepareStatement(query);
         
         return TransactionGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -5066,7 +5022,7 @@ public class AccountingControl
     
     public List<TransactionGroupTransfer> getTransactionGroupTransfers(UserVisit userVisit, Collection<TransactionGroup> transactionGroups) {
         List<TransactionGroupTransfer> transactionGroupTransfers = new ArrayList<>(transactionGroups.size());
-        TransactionGroupTransferCache transactionGroupTransferCache = getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache();
+        var transactionGroupTransferCache = getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache();
         
         transactionGroups.forEach((transactionGroup) ->
                 transactionGroupTransfers.add(transactionGroupTransferCache.getTransfer(transactionGroup))
@@ -5082,14 +5038,14 @@ public class AccountingControl
     public TransactionGroupStatusChoicesBean getTransactionGroupStatusChoices(String defaultTransactionGroupStatusChoice, Language language, boolean allowNullChoice,
             TransactionGroup transactionGroup, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        TransactionGroupStatusChoicesBean transactionGroupStatusChoicesBean = new TransactionGroupStatusChoicesBean();
+        var transactionGroupStatusChoicesBean = new TransactionGroupStatusChoicesBean();
         
         if(transactionGroup == null) {
             workflowControl.getWorkflowEntranceChoices(transactionGroupStatusChoicesBean, defaultTransactionGroupStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_TRANSACTION_GROUP_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(transactionGroupStatusChoicesBean, defaultTransactionGroupStatusChoice, language, allowNullChoice,
@@ -5101,9 +5057,9 @@ public class AccountingControl
     
     public void setTransactionGroupStatus(ExecutionErrorAccumulator eea, TransactionGroup transactionGroup, String transactionGroupStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
-        WorkflowDestination workflowDestination = transactionGroupStatusChoice == null? null:
+        var entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
+        var workflowDestination = transactionGroupStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), transactionGroupStatusChoice);
         
         if(workflowDestination != null || transactionGroupStatusChoice == null) {
@@ -5124,16 +5080,16 @@ public class AccountingControl
     public Transaction createTransaction(Party groupParty, TransactionGroup transactionGroup, TransactionType transactionType, Long postingTime,
             BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.name());
-        String transactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.name());
+        var transactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createTransaction(transactionName, groupParty, transactionGroup, transactionType, postingTime, createdBy);
     }
     
     public Transaction createTransaction(String transactionName, Party groupParty, TransactionGroup transactionGroup,
             TransactionType transactionType, Long postingTime, BasePK createdBy) {
-        Transaction transaction = TransactionFactory.getInstance().create();
-        TransactionDetail transactionDetail = TransactionDetailFactory.getInstance().create(transaction, transactionName,
+        var transaction = TransactionFactory.getInstance().create();
+        var transactionDetail = TransactionDetailFactory.getInstance().create(transaction, transactionName,
                 groupParty, transactionGroup, transactionType, postingTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -5154,7 +5110,7 @@ public class AccountingControl
         Transaction transaction;
         
         try {
-            PreparedStatement ps = TransactionFactory.getInstance().prepareStatement(
+            var ps = TransactionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM transactions, transactiondetails " +
                     "WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_transactionname = ?");
@@ -5173,7 +5129,7 @@ public class AccountingControl
         List<Transaction> transactions;
         
         try {
-            PreparedStatement ps = TransactionFactory.getInstance().prepareStatement(
+            var ps = TransactionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM transactions, transactiondetails " +
                     "WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxgrp_transactiongroupid = ? " +
@@ -5193,7 +5149,7 @@ public class AccountingControl
         List<Transaction> transactions;
         
         try {
-            PreparedStatement ps = TransactionFactory.getInstance().prepareStatement(
+            var ps = TransactionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM transactions, transactiondetails " +
                     "WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxtyp_transactiontypeid = ? " +
@@ -5215,7 +5171,7 @@ public class AccountingControl
     
     public List<TransactionTransfer> getTransactionTransfers(UserVisit userVisit, Collection<Transaction> transactions) {
         List<TransactionTransfer> transactionTransfers = new ArrayList<>(transactions.size());
-        TransactionTransferCache transactionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTransferCache();
+        var transactionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTransferCache();
         
         transactions.forEach((transaction) ->
                 transactionTransfers.add(transactionTransferCache.getTransfer(transaction))
@@ -5252,8 +5208,8 @@ public class AccountingControl
                         "WHERE trxst_trx_transactionid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             
@@ -5274,7 +5230,7 @@ public class AccountingControl
     }
     
     public void removeTransactionStatusByTransaction(Transaction transaction) {
-        TransactionStatus transactionStatus = getTransactionStatusForUpdate(transaction);
+        var transactionStatus = getTransactionStatusForUpdate(transaction);
         
         if(transactionStatus != null) {
             transactionStatus.remove();
@@ -5287,7 +5243,7 @@ public class AccountingControl
     
     public TransactionGlEntry createTransactionGlEntry(Transaction transaction, Integer transactionGlEntrySequence, TransactionGlEntry parentTransactionGlEntry, Party groupParty,
             TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, Currency originalCurrency, Long originalAmount, Long amount, BasePK createdBy) {
-        TransactionGlEntry transactionGlEntry = TransactionGlEntryFactory.getInstance().create(transaction, transactionGlEntrySequence, parentTransactionGlEntry, groupParty,
+        var transactionGlEntry = TransactionGlEntryFactory.getInstance().create(transaction, transactionGlEntrySequence, parentTransactionGlEntry, groupParty,
                 transactionGlAccountCategory, glAccount, originalCurrency, originalAmount, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionGlEntry.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5299,7 +5255,7 @@ public class AccountingControl
         List<TransactionGlEntry> transactionGlEntries;
         
         try {
-            PreparedStatement ps = TransactionGlEntryFactory.getInstance().prepareStatement(
+            var ps = TransactionGlEntryFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM transactionglentries " +
                     "WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ? " +
@@ -5321,7 +5277,7 @@ public class AccountingControl
         List<TransactionGlEntry> transactionGlEntries;
         
         try {
-            PreparedStatement ps = TransactionGlEntryFactory.getInstance().prepareStatement(
+            var ps = TransactionGlEntryFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM transactionglentries, transactionglaccounts " +
                     "WHERE trxgla_gla_glaccountid = ? AND trxglent_thrutime = ? " +
@@ -5346,7 +5302,7 @@ public class AccountingControl
     
     public List<TransactionGlEntryTransfer> getTransactionGlEntryTransfers(UserVisit userVisit, Collection<TransactionGlEntry> transactionGlEntries) {
         List<TransactionGlEntryTransfer> transactionGlEntryTransfers = new ArrayList<>(transactionGlEntries.size());
-        TransactionGlEntryTransferCache transactionGlEntryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache();
+        var transactionGlEntryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache();
         
         transactionGlEntries.forEach((transactionGlEntry) ->
                 transactionGlEntryTransfers.add(transactionGlEntryTransferCache.getTransfer(transactionGlEntry))
@@ -5364,7 +5320,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public TransactionEntityRole createTransactionEntityRole(Transaction transaction, TransactionEntityRoleType transactionEntityRoleType, EntityInstance entityInstance, BasePK createdBy) {
-        TransactionEntityRole transactionEntityRole = TransactionEntityRoleFactory.getInstance().create(transaction, transactionEntityRoleType, entityInstance, session.START_TIME_LONG,
+        var transactionEntityRole = TransactionEntityRoleFactory.getInstance().create(transaction, transactionEntityRoleType, entityInstance, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5376,7 +5332,7 @@ public class AccountingControl
         TransactionEntityRole transactionEntityRole;
         
         try {
-            PreparedStatement ps = TransactionEntityRoleFactory.getInstance().prepareStatement(
+            var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM transactionentityroles " +
                     "WHERE trxer_trx_transactionid = ? AND trxer_trxertyp_transactionentityroletypeid = ? AND trxer_thrutime = ?");
@@ -5412,8 +5368,8 @@ public class AccountingControl
                         "WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionEntityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5451,8 +5407,8 @@ public class AccountingControl
                         "WHERE trxer_eni_entityinstanceid = ? AND trxer_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TransactionEntityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5480,7 +5436,7 @@ public class AccountingControl
     
     public List<TransactionEntityRoleTransfer> getTransactionEntityRoleTransfers(UserVisit userVisit, Collection<TransactionEntityRole> transactionEntityRoles) {
         List<TransactionEntityRoleTransfer> transactionEntityRoleTransfers = new ArrayList<>(transactionEntityRoles.size());
-        TransactionEntityRoleTransferCache transactionEntityRoleTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache();
+        var transactionEntityRoleTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache();
         
         transactionEntityRoles.forEach((transactionEntityRole) ->
                 transactionEntityRoleTransfers.add(transactionEntityRoleTransferCache.getTransfer(transactionEntityRole))
@@ -5518,20 +5474,20 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public SymbolPosition createSymbolPosition(String symbolPositionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SymbolPosition defaultSymbolPosition = getDefaultSymbolPosition();
-        boolean defaultFound = defaultSymbolPosition != null;
+        var defaultSymbolPosition = getDefaultSymbolPosition();
+        var defaultFound = defaultSymbolPosition != null;
         
         if(defaultFound && isDefault) {
-            SymbolPositionDetailValue defaultSymbolPositionDetailValue = getDefaultSymbolPositionDetailValueForUpdate();
+            var defaultSymbolPositionDetailValue = getDefaultSymbolPositionDetailValueForUpdate();
             
             defaultSymbolPositionDetailValue.setIsDefault(Boolean.FALSE);
             updateSymbolPositionFromValue(defaultSymbolPositionDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        SymbolPosition symbolPosition = SymbolPositionFactory.getInstance().create();
-        SymbolPositionDetail symbolPositionDetail = SymbolPositionDetailFactory.getInstance().create(session,
+
+        var symbolPosition = SymbolPositionFactory.getInstance().create();
+        var symbolPositionDetail = SymbolPositionDetailFactory.getInstance().create(session,
                 symbolPosition, symbolPositionName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -5583,8 +5539,8 @@ public class AccountingControl
                         "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_symbolpositionname = ? AND symposdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SymbolPositionFactory.getInstance().prepareStatement(query);
+
+            var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, symbolPositionName);
             ps.setLong(2, Session.MAX_TIME);
@@ -5629,8 +5585,8 @@ public class AccountingControl
                         "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_isdefault = 1 AND symposdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SymbolPositionFactory.getInstance().prepareStatement(query);
+
+            var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -5672,8 +5628,8 @@ public class AccountingControl
                         "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SymbolPositionFactory.getInstance().prepareStatement(query);
+
+            var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -5699,7 +5655,7 @@ public class AccountingControl
     
     public List<SymbolPositionTransfer> getSymbolPositionTransfers(UserVisit userVisit, Collection<SymbolPosition> symbolPositions) {
         List<SymbolPositionTransfer> symbolPositionTransfers = new ArrayList<>(symbolPositions.size());
-        SymbolPositionTransferCache symbolPositionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
+        var symbolPositionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
         
         symbolPositions.forEach((symbolPosition) ->
                 symbolPositionTransfers.add(symbolPositionTransferCache.getTransfer(symbolPosition))
@@ -5714,7 +5670,7 @@ public class AccountingControl
     
     public SymbolPositionChoicesBean getSymbolPositionChoices(String defaultSymbolPositionChoice, Language language,
             boolean allowNullChoice) {
-        List<SymbolPosition> symbolPositions = getSymbolPositions();
+        var symbolPositions = getSymbolPositions();
         var size = symbolPositions.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -5730,7 +5686,7 @@ public class AccountingControl
         }
         
         for(var symbolPosition : symbolPositions) {
-            SymbolPositionDetail symbolPositionDetail = symbolPosition.getLastDetail();
+            var symbolPositionDetail = symbolPosition.getLastDetail();
             
             var label = getBestSymbolPositionDescription(symbolPosition, language);
             var value = symbolPositionDetail.getSymbolPositionName();
@@ -5750,25 +5706,25 @@ public class AccountingControl
     private void updateSymbolPositionFromValue(SymbolPositionDetailValue symbolPositionDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(symbolPositionDetailValue.hasBeenModified()) {
-            SymbolPosition symbolPosition = SymbolPositionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var symbolPosition = SymbolPositionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      symbolPositionDetailValue.getSymbolPositionPK());
-            SymbolPositionDetail symbolPositionDetail = symbolPosition.getActiveDetailForUpdate();
+            var symbolPositionDetail = symbolPosition.getActiveDetailForUpdate();
             
             symbolPositionDetail.setThruTime(session.START_TIME_LONG);
             symbolPositionDetail.store();
-            
-            SymbolPositionPK symbolPositionPK = symbolPositionDetail.getSymbolPositionPK();
-            String symbolPositionName = symbolPositionDetailValue.getSymbolPositionName();
-            Boolean isDefault = symbolPositionDetailValue.getIsDefault();
-            Integer sortOrder = symbolPositionDetailValue.getSortOrder();
+
+            var symbolPositionPK = symbolPositionDetail.getSymbolPositionPK();
+            var symbolPositionName = symbolPositionDetailValue.getSymbolPositionName();
+            var isDefault = symbolPositionDetailValue.getIsDefault();
+            var sortOrder = symbolPositionDetailValue.getSortOrder();
             
             if(checkDefault) {
-                SymbolPosition defaultSymbolPosition = getDefaultSymbolPosition();
-                boolean defaultFound = defaultSymbolPosition != null && !defaultSymbolPosition.equals(symbolPosition);
+                var defaultSymbolPosition = getDefaultSymbolPosition();
+                var defaultFound = defaultSymbolPosition != null && !defaultSymbolPosition.equals(symbolPosition);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SymbolPositionDetailValue defaultSymbolPositionDetailValue = getDefaultSymbolPositionDetailValueForUpdate();
+                    var defaultSymbolPositionDetailValue = getDefaultSymbolPositionDetailValueForUpdate();
                     
                     defaultSymbolPositionDetailValue.setIsDefault(Boolean.FALSE);
                     updateSymbolPositionFromValue(defaultSymbolPositionDetailValue, false, updatedBy);
@@ -5794,23 +5750,23 @@ public class AccountingControl
     
     public void deleteSymbolPosition(SymbolPosition symbolPosition, BasePK deletedBy) {
         deleteSymbolPositionDescriptionsBySymbolPosition(symbolPosition, deletedBy);
-        
-        SymbolPositionDetail symbolPositionDetail = symbolPosition.getLastDetailForUpdate();
+
+        var symbolPositionDetail = symbolPosition.getLastDetailForUpdate();
         symbolPositionDetail.setThruTime(session.START_TIME_LONG);
         symbolPositionDetail.store();
         symbolPosition.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        SymbolPosition defaultSymbolPosition = getDefaultSymbolPosition();
+        var defaultSymbolPosition = getDefaultSymbolPosition();
         if(defaultSymbolPosition == null) {
-            List<SymbolPosition> symbolPositions = getSymbolPositionsForUpdate();
+            var symbolPositions = getSymbolPositionsForUpdate();
             
             if(!symbolPositions.isEmpty()) {
-                Iterator<SymbolPosition> iter = symbolPositions.iterator();
+                var iter = symbolPositions.iterator();
                 if(iter.hasNext()) {
                     defaultSymbolPosition = iter.next();
                 }
-                SymbolPositionDetailValue symbolPositionDetailValue = Objects.requireNonNull(defaultSymbolPosition).getLastDetailForUpdate().getSymbolPositionDetailValue().clone();
+                var symbolPositionDetailValue = Objects.requireNonNull(defaultSymbolPosition).getLastDetailForUpdate().getSymbolPositionDetailValue().clone();
                 
                 symbolPositionDetailValue.setIsDefault(Boolean.TRUE);
                 updateSymbolPositionFromValue(symbolPositionDetailValue, false, deletedBy);
@@ -5825,7 +5781,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public SymbolPositionDescription createSymbolPositionDescription(SymbolPosition symbolPosition, Language language, String description, BasePK createdBy) {
-        SymbolPositionDescription symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description, session.START_TIME_LONG,
+        var symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(symbolPosition.getPrimaryKey(), EventTypes.MODIFY, symbolPositionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5849,8 +5805,8 @@ public class AccountingControl
                         "WHERE symposd_sympos_symbolpositionid = ? AND symposd_lang_languageid = ? AND symposd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SymbolPositionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SymbolPositionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, symbolPosition.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -5897,8 +5853,8 @@ public class AccountingControl
                         "WHERE symposd_sympos_symbolpositionid = ? AND symposd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SymbolPositionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SymbolPositionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, symbolPosition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5921,7 +5877,7 @@ public class AccountingControl
     
     public String getBestSymbolPositionDescription(SymbolPosition symbolPosition, Language language) {
         String description;
-        SymbolPositionDescription symbolPositionDescription = getSymbolPositionDescription(symbolPosition, language);
+        var symbolPositionDescription = getSymbolPositionDescription(symbolPosition, language);
         
         if(symbolPositionDescription == null && !language.getIsDefault()) {
             symbolPositionDescription = getSymbolPositionDescription(symbolPosition, getPartyControl().getDefaultLanguage());
@@ -5941,9 +5897,9 @@ public class AccountingControl
     }
     
     public List<SymbolPositionDescriptionTransfer> getSymbolPositionDescriptionTransfersBySymbolPosition(UserVisit userVisit, SymbolPosition symbolPosition) {
-        List<SymbolPositionDescription> symbolPositionDescriptions = getSymbolPositionDescriptionsBySymbolPosition(symbolPosition);
+        var symbolPositionDescriptions = getSymbolPositionDescriptionsBySymbolPosition(symbolPosition);
         List<SymbolPositionDescriptionTransfer> symbolPositionDescriptionTransfers = new ArrayList<>(symbolPositionDescriptions.size());
-        SymbolPositionDescriptionTransferCache symbolPositionDescriptionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionDescriptionTransferCache();
+        var symbolPositionDescriptionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionDescriptionTransferCache();
         
         symbolPositionDescriptions.forEach((symbolPositionDescription) ->
                 symbolPositionDescriptionTransfers.add(symbolPositionDescriptionTransferCache.getTransfer(symbolPositionDescription))
@@ -5954,14 +5910,14 @@ public class AccountingControl
     
     public void updateSymbolPositionDescriptionFromValue(SymbolPositionDescriptionValue symbolPositionDescriptionValue, BasePK updatedBy) {
         if(symbolPositionDescriptionValue.hasBeenModified()) {
-            SymbolPositionDescription symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, symbolPositionDescriptionValue.getPrimaryKey());
+            var symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, symbolPositionDescriptionValue.getPrimaryKey());
             
             symbolPositionDescription.setThruTime(session.START_TIME_LONG);
             symbolPositionDescription.store();
-            
-            SymbolPosition symbolPosition = symbolPositionDescription.getSymbolPosition();
-            Language language = symbolPositionDescription.getLanguage();
-            String description = symbolPositionDescriptionValue.getDescription();
+
+            var symbolPosition = symbolPositionDescription.getSymbolPosition();
+            var language = symbolPositionDescription.getLanguage();
+            var description = symbolPositionDescriptionValue.getDescription();
             
             symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -5978,7 +5934,7 @@ public class AccountingControl
     }
     
     public void deleteSymbolPositionDescriptionsBySymbolPosition(SymbolPosition symbolPosition, BasePK deletedBy) {
-        List<SymbolPositionDescription> symbolPositionDescriptions = getSymbolPositionDescriptionsBySymbolPositionForUpdate(symbolPosition);
+        var symbolPositionDescriptions = getSymbolPositionDescriptionsBySymbolPositionForUpdate(symbolPosition);
         
         symbolPositionDescriptions.forEach((symbolPositionDescription) -> 
                 deleteSymbolPositionDescription(symbolPositionDescription, deletedBy)

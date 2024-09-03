@@ -17,7 +17,6 @@
 package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.GetPicklistTypeChoicesForm;
-import com.echothree.control.user.picklist.common.result.GetPicklistTypeChoicesResult;
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
@@ -63,9 +62,9 @@ public class GetPicklistTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistTypeChoicesResult result = PicklistResultFactory.getGetPicklistTypeChoicesResult();
-        String defaultPicklistTypeChoice = form.getDefaultPicklistTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PicklistResultFactory.getGetPicklistTypeChoicesResult();
+        var defaultPicklistTypeChoice = form.getDefaultPicklistTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPicklistTypeChoices(picklistControl.getPicklistTypeChoices(defaultPicklistTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

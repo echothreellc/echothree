@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.core.entitycollectionattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateEntityCollectionAttributeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,15 +49,15 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
 
         try {
-            String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            AddActionForm actionForm = (AddActionForm)form;
+            var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var actionForm = (AddActionForm)form;
 
             if(wasPost(request)) {
-                CreateEntityCollectionAttributeForm commandForm = CoreUtil.getHome().getCreateEntityCollectionAttributeForm();
+                var commandForm = CoreUtil.getHome().getCreateEntityCollectionAttributeForm();
 
                 if(entityRef == null) {
                     entityRef = actionForm.getEntityRef();
@@ -75,7 +73,7 @@ public class AddAction
                 commandForm.setEntityAttributeName(entityAttributeName);
                 commandForm.setEntityRefAttribute(actionForm.getEntityRefAttribute());
 
-                CommandResult commandResult = CoreUtil.getHome().createEntityCollectionAttribute(getUserVisitPK(request), commandForm);
+                var commandResult = CoreUtil.getHome().createEntityCollectionAttribute(getUserVisitPK(request), commandForm);
 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);

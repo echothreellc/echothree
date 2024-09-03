@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseTypeForm;
-import com.echothree.control.user.offer.common.result.GetUseTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
@@ -69,7 +68,7 @@ public class GetUseTypeCommand
     
     @Override
     protected UseType getEntity() {
-        UseType useType = UseTypeLogic.getInstance().getUseTypeByUniversalSpec(this, form, true);
+        var useType = UseTypeLogic.getInstance().getUseTypeByUniversalSpec(this, form, true);
 
         if(useType != null) {
             sendEvent(useType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,7 +80,7 @@ public class GetUseTypeCommand
     @Override
     protected BaseResult getResult(UseType useType) {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
-        GetUseTypeResult result = OfferResultFactory.getGetUseTypeResult();
+        var result = OfferResultFactory.getGetUseTypeResult();
 
         if(useType != null) {
             result.setUseType(useTypeControl.getUseTypeTransfer(getUserVisit(), useType));

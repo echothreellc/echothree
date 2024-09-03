@@ -20,9 +20,6 @@ import com.echothree.control.user.term.common.form.DeletePartyCreditLimitForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.term.server.entity.PartyCreditLimit;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,17 +51,17 @@ public class DeletePartyCreditLimitCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = form.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = form.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
                 var termControl = Session.getModelController(TermControl.class);
-                PartyCreditLimit partyCreditLimit = termControl.getPartyCreditLimitForUpdate(party, currency);
+                var partyCreditLimit = termControl.getPartyCreditLimitForUpdate(party, currency);
                 
                 if(partyCreditLimit != null) {
                     termControl.deletePartyCreditLimit(partyCreditLimit, getPartyPK());

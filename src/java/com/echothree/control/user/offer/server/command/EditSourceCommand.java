@@ -27,8 +27,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.SourceDetail;
-import com.echothree.model.data.offer.server.value.SourceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -86,7 +84,7 @@ public class EditSourceCommand
     public Source getEntity(EditSourceResult result) {
         var sourceControl = Session.getModelController(SourceControl.class);
         Source source;
-        String sourceName = spec.getSourceName();
+        var sourceName = spec.getSourceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             source = sourceControl.getSourceByName(sourceName);
@@ -117,7 +115,7 @@ public class EditSourceCommand
 
     @Override
     public void doLock(SourceEdit edit, Source source) {
-        SourceDetail sourceDetail = source.getLastDetail();
+        var sourceDetail = source.getLastDetail();
 
         edit.setSourceName(sourceDetail.getSourceName());
         edit.setIsDefault(sourceDetail.getIsDefault().toString());
@@ -127,8 +125,8 @@ public class EditSourceCommand
     @Override
     public void canUpdate(Source source) {
         var sourceControl = Session.getModelController(SourceControl.class);
-        String sourceName = edit.getSourceName();
-        Source duplicateSource = sourceControl.getSourceByName(sourceName);
+        var sourceName = edit.getSourceName();
+        var duplicateSource = sourceControl.getSourceByName(sourceName);
 
         if(duplicateSource != null && !source.equals(duplicateSource)) {
             addExecutionError(ExecutionErrors.DuplicateSourceName.name(), sourceName);
@@ -139,7 +137,7 @@ public class EditSourceCommand
     public void doUpdate(Source source) {
         var sourceControl = Session.getModelController(SourceControl.class);
         var partyPK = getPartyPK();
-        SourceDetailValue sourceDetailValue = sourceControl.getSourceDetailValueForUpdate(source);
+        var sourceDetailValue = sourceControl.getSourceDetailValueForUpdate(source);
 
         sourceDetailValue.setSourceName(edit.getSourceName());
         sourceDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

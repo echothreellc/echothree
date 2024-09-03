@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.accounting;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.AccountingService;
 import com.echothree.control.user.accounting.common.form.AccountingFormFactory;
-import com.echothree.control.user.accounting.common.form.CreateGlAccountTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -49,7 +48,7 @@ public class GlAccountTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("glAccountTypeDescription")) {
-            CreateGlAccountTypeDescriptionForm commandForm = AccountingFormFactory.getCreateGlAccountTypeDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateGlAccountTypeDescriptionForm();
             
             commandForm.setGlAccountTypeName(glAccountTypeName);
             commandForm.set(getAttrsMap(attrs));

@@ -1646,7 +1646,26 @@ public class CoreBean
     public CommandResult deleteEntityCollectionAttribute(UserVisitPK userVisitPK, DeleteEntityCollectionAttributeForm form) {
         return new DeleteEntityCollectionAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Workflow Attributes
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityWorkflowAttribute(UserVisitPK userVisitPK, CreateEntityWorkflowAttributeForm form) {
+        return new CreateEntityWorkflowAttributeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setEntityWorkflowAttributeStatus(UserVisitPK userVisitPK, SetEntityWorkflowAttributeStatusForm form) {
+        return new SetEntityWorkflowAttributeStatusCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityWorkflowAttribute(UserVisitPK userVisitPK, DeleteEntityWorkflowAttributeForm form) {
+        return new DeleteEntityWorkflowAttributeCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Party Entity Types
     // -------------------------------------------------------------------------

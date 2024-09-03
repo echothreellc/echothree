@@ -19,7 +19,6 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.GetAssociateProgramChoicesForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
-import com.echothree.control.user.associate.common.result.GetAssociateProgramChoicesResult;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +50,9 @@ public class GetAssociateProgramChoicesCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociateProgramChoicesResult result = AssociateResultFactory.getGetAssociateProgramChoicesResult();
-        String defaultAssociateProgramChoice = form.getDefaultAssociateProgramChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AssociateResultFactory.getGetAssociateProgramChoicesResult();
+        var defaultAssociateProgramChoice = form.getDefaultAssociateProgramChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setAssociateProgramChoices(associateControl.getAssociateProgramChoices(defaultAssociateProgramChoice,
                 getPreferredLanguage(), allowNullChoice));

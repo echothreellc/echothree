@@ -27,12 +27,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -79,13 +75,13 @@ public class CreateOfferUseCommand
         var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getCreateOfferUseResult();
         OfferUse offerUse = null;
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var useControl = Session.getModelController(UseControl.class);
-            String useName = form.getUseName();
-            Use use = useControl.getUseByName(useName);
+            var useName = form.getUseName();
+            var use = useControl.getUseByName(useName);
             
             if(use != null) {
                 var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -93,12 +89,12 @@ public class CreateOfferUseCommand
                 offerUse = offerUseControl.getOfferUse(offer, use);
                 
                 if(offerUse == null) {
-                    String salesOrderSequenceName = form.getSalesOrderSequenceName();
+                    var salesOrderSequenceName = form.getSalesOrderSequenceName();
                     Sequence salesOrderSequence = null;
                     
                     if(salesOrderSequenceName != null) {
                         var sequenceControl = Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
                         
                         if(sequenceType != null) {
                             salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
@@ -109,8 +105,8 @@ public class CreateOfferUseCommand
                     
                     if(salesOrderSequenceName == null || salesOrderSequence != null) {
                         var sourceControl = Session.getModelController(SourceControl.class);
-                        String sourceName = new StringBuilder(offerName).append(useName).toString();
-                        Source source = sourceControl.getSourceByName(sourceName);
+                        var sourceName = offerName + useName;
+                        var source = sourceControl.getSourceByName(sourceName);
                         
                         if(source == null) {
                             BasePK partyPK = getPartyPK();

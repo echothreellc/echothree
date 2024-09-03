@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.color;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateColorDescriptionForm;
-import com.echothree.control.user.core.common.form.GetColorForm;
 import com.echothree.control.user.core.common.result.GetColorResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetColorForm commandForm = CoreUtil.getHome().getGetColorForm();
+        var commandForm = CoreUtil.getHome().getGetColorForm();
 
         commandForm.setColorName(actionForm.getColorName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getColor(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getColor(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorResult result = (GetColorResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetColorResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COLOR, result.getColor());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateColorDescriptionForm commandForm = CoreUtil.getHome().getCreateColorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateColorDescriptionForm();
 
         commandForm.setColorName( actionForm.getColorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

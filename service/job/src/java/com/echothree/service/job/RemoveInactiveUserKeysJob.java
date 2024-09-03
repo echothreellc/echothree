@@ -17,7 +17,6 @@
 package com.echothree.service.job;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.form.RemoveInactiveUserKeysForm;
 import com.echothree.model.control.job.common.Jobs;
 import com.echothree.util.common.service.job.BaseScheduledJob;
 import javax.ejb.Schedule;
@@ -45,7 +44,7 @@ public class RemoveInactiveUserKeysJob
     @Override
     public void execute()
             throws NamingException {
-        RemoveInactiveUserKeysForm commandForm = AuthenticationUtil.getHome().getRemoveInactiveUserKeysForm();
+        var commandForm = AuthenticationUtil.getHome().getRemoveInactiveUserKeysForm();
         
         commandForm.setInactiveTime(Long.toString(INACTIVE_TIME));
         

@@ -17,12 +17,9 @@
 package com.echothree.model.control.item.server.transfer;
 
 
-import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.transfer.ItemKitMemberTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemKitMember;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -41,16 +38,16 @@ public class ItemKitMemberTransferCache
     
     @Override
     public ItemKitMemberTransfer getTransfer(ItemKitMember itemKitMember) {
-        ItemKitMemberTransfer itemKitMemberTransfer = get(itemKitMember);
+        var itemKitMemberTransfer = get(itemKitMember);
         
         if(itemKitMemberTransfer == null) {
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemKitMember.getItem());
-            InventoryConditionTransfer inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemKitMember.getInventoryCondition());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemKitMember.getUnitOfMeasureType());
-            ItemTransfer memberItem = itemControl.getItemTransfer(userVisit, itemKitMember.getMemberItem());
-            InventoryConditionTransfer memberInventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemKitMember.getMemberInventoryCondition());
-            UnitOfMeasureTypeTransfer memberUnitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemKitMember.getMemberUnitOfMeasureType());
-            String quantity = itemKitMember.getQuantity().toString();
+            var item = itemControl.getItemTransfer(userVisit, itemKitMember.getItem());
+            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemKitMember.getInventoryCondition());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemKitMember.getUnitOfMeasureType());
+            var memberItem = itemControl.getItemTransfer(userVisit, itemKitMember.getMemberItem());
+            var memberInventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemKitMember.getMemberInventoryCondition());
+            var memberUnitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemKitMember.getMemberUnitOfMeasureType());
+            var quantity = itemKitMember.getQuantity().toString();
             
             itemKitMemberTransfer = new ItemKitMemberTransfer(item, inventoryCondition, unitOfMeasureType, memberItem, memberInventoryCondition,
                     memberUnitOfMeasureType, quantity);

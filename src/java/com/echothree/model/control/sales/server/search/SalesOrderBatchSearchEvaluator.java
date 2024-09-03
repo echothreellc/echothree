@@ -70,10 +70,10 @@ public class SalesOrderBatchSearchEvaluator
 
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
-        EntityInstancePKHolder resultSet = super.executeSearch(eea);
+        var resultSet = super.executeSearch(eea);
             
         if(paymentMethod != null && (resultSet == null || resultSet.size() > 0)) {
-            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByPaymentMethod(paymentMethod);
+            var entityInstancePKHolder = getEntityInstancePKHolderByPaymentMethod(paymentMethod);
 
             if(resultSet == null) {
                 resultSet = entityInstancePKHolder;

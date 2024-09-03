@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected ScaleTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ScaleTypeDescriptionSpec spec = ScaleUtil.getHome().getScaleTypeDescriptionSpec();
+        var spec = ScaleUtil.getHome().getScaleTypeDescriptionSpec();
         
         spec.setScaleTypeName(findParameter(request, ParameterConstants.SCALE_TYPE_NAME, actionForm.getScaleTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected ScaleTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ScaleTypeDescriptionEdit edit = ScaleUtil.getHome().getScaleTypeDescriptionEdit();
+        var edit = ScaleUtil.getHome().getScaleTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

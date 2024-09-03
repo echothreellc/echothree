@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.purchasing.vendortype;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorTypeDescriptionsForm;
 import com.echothree.control.user.vendor.common.result.GetVendorTypeDescriptionsResult;
-import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
-            GetVendorTypeDescriptionsForm commandForm = VendorUtil.getHome().getGetVendorTypeDescriptionsForm();
+            var vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
+            var commandForm = VendorUtil.getHome().getGetVendorTypeDescriptionsForm();
             
             commandForm.setVendorTypeName(vendorTypeName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getVendorTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorTypeDescriptionsResult result = (GetVendorTypeDescriptionsResult)executionResult.getResult();
-            VendorTypeTransfer vendorTypeTransfer = result.getVendorType();
+
+            var commandResult = VendorUtil.getHome().getVendorTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorTypeDescriptionsResult)executionResult.getResult();
+            var vendorTypeTransfer = result.getVendorType();
             
             request.setAttribute(AttributeConstants.VENDOR_TYPE, vendorTypeTransfer);
             request.setAttribute(AttributeConstants.VENDOR_TYPE_NAME, vendorTypeTransfer.getVendorTypeName());

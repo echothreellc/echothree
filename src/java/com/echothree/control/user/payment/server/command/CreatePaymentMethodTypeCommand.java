@@ -18,12 +18,10 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.CreatePaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.CreatePaymentMethodTypeResult;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,13 +63,13 @@ public class CreatePaymentMethodTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CreatePaymentMethodTypeResult result = PaymentResultFactory.getCreatePaymentMethodTypeResult();
-        String paymentMethodTypeName = form.getPaymentMethodTypeName();
+        var result = PaymentResultFactory.getCreatePaymentMethodTypeResult();
+        var paymentMethodTypeName = form.getPaymentMethodTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().createPaymentMethodType(this,
+        var paymentMethodType = PaymentMethodTypeLogic.getInstance().createPaymentMethodType(this,
                 paymentMethodTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(paymentMethodType != null && !hasExecutionErrors()) {

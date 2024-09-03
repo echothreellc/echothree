@@ -16,21 +16,13 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountType;
-import com.echothree.model.data.financial.server.entity.FinancialAccountTypeDetail;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.server.persistence.Session;
 
 public class FinancialAccountTypeTransferCache
@@ -48,25 +40,25 @@ public class FinancialAccountTypeTransferCache
     }
     
     public FinancialAccountTypeTransfer getFinancialAccountTypeTransfer(FinancialAccountType financialAccountType) {
-        FinancialAccountTypeTransfer financialAccountTypeTransfer = get(financialAccountType);
+        var financialAccountTypeTransfer = get(financialAccountType);
         
         if(financialAccountTypeTransfer == null) {
-            FinancialAccountTypeDetail financialAccountTypeDetail = financialAccountType.getLastDetail();
-            String financialAccountTypeName = financialAccountTypeDetail.getFinancialAccountTypeName();
-            FinancialAccountType parentFinancialAccountType = financialAccountTypeDetail.getParentFinancialAccountType();
-            FinancialAccountTypeTransfer parentFinancialAccountTypeTransfer = parentFinancialAccountType == null? null: getFinancialAccountTypeTransfer(parentFinancialAccountType);
-            GlAccountTransfer defaultGlAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTypeDetail.getDefaultGlAccount());
-            SequenceType financialAccountSequenceType = financialAccountTypeDetail.getFinancialAccountSequenceType();
-            SequenceTypeTransfer financialAccountSequenceTypeTransfer = financialAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, financialAccountSequenceType);
-            SequenceType financialAccountTransactionSequenceType = financialAccountTypeDetail.getFinancialAccountTransactionSequenceType();
-            SequenceTypeTransfer financialAccountTransactionSequenceTypeTransfer = financialAccountTransactionSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, financialAccountTransactionSequenceType);
-            Workflow financialAccountWorkflow = financialAccountTypeDetail.getFinancialAccountWorkflow();
-            WorkflowTransfer financialAccountWorkflowTransfer = financialAccountWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, financialAccountWorkflow);
-            WorkflowEntrance financialAccountWorkflowEntrance = financialAccountTypeDetail.getFinancialAccountWorkflowEntrance();
-            WorkflowEntranceTransfer financialAccountWorkflowEntranceTransfer = financialAccountWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, financialAccountWorkflowEntrance);
-            Boolean isDefault = financialAccountTypeDetail.getIsDefault();
-            Integer sortOrder = financialAccountTypeDetail.getSortOrder();
-            String description = financialControl.getBestFinancialAccountTypeDescription(financialAccountType, getLanguage());
+            var financialAccountTypeDetail = financialAccountType.getLastDetail();
+            var financialAccountTypeName = financialAccountTypeDetail.getFinancialAccountTypeName();
+            var parentFinancialAccountType = financialAccountTypeDetail.getParentFinancialAccountType();
+            var parentFinancialAccountTypeTransfer = parentFinancialAccountType == null? null: getFinancialAccountTypeTransfer(parentFinancialAccountType);
+            var defaultGlAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTypeDetail.getDefaultGlAccount());
+            var financialAccountSequenceType = financialAccountTypeDetail.getFinancialAccountSequenceType();
+            var financialAccountSequenceTypeTransfer = financialAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, financialAccountSequenceType);
+            var financialAccountTransactionSequenceType = financialAccountTypeDetail.getFinancialAccountTransactionSequenceType();
+            var financialAccountTransactionSequenceTypeTransfer = financialAccountTransactionSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, financialAccountTransactionSequenceType);
+            var financialAccountWorkflow = financialAccountTypeDetail.getFinancialAccountWorkflow();
+            var financialAccountWorkflowTransfer = financialAccountWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, financialAccountWorkflow);
+            var financialAccountWorkflowEntrance = financialAccountTypeDetail.getFinancialAccountWorkflowEntrance();
+            var financialAccountWorkflowEntranceTransfer = financialAccountWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, financialAccountWorkflowEntrance);
+            var isDefault = financialAccountTypeDetail.getIsDefault();
+            var sortOrder = financialAccountTypeDetail.getSortOrder();
+            var description = financialControl.getBestFinancialAccountTypeDescription(financialAccountType, getLanguage());
             
             financialAccountTypeTransfer = new FinancialAccountTypeTransfer(financialAccountTypeName, parentFinancialAccountTypeTransfer,
                     defaultGlAccountTransfer, financialAccountSequenceTypeTransfer, financialAccountTransactionSequenceTypeTransfer,

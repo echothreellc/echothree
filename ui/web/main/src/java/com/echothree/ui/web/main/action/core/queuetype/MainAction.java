@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.form.GetQueueTypesForm;
 import com.echothree.control.user.queue.common.result.GetQueueTypesResult;
 import com.echothree.model.control.queue.common.QueueOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,18 +51,18 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetQueueTypesForm commandForm = QueueUtil.getHome().getGetQueueTypesForm();
+        var commandForm = QueueUtil.getHome().getGetQueueTypesForm();
 
         Set<String> options = new HashSet<>();
         options.add(QueueOptions.QueueTypeIncludeQueuedEntitiesCount);
         options.add(QueueOptions.QueueTypeIncludeOldestQueuedEntityTime);
         options.add(QueueOptions.QueueTypeIncludeLatestQueuedEntityTime);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = QueueUtil.getHome().getQueueTypes(getUserVisitPK(request), commandForm);
+
+        var commandResult = QueueUtil.getHome().getQueueTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetQueueTypesResult result = (GetQueueTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetQueueTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.QUEUE_TYPES, result.getQueueTypes());
             forwardKey = ForwardConstants.DISPLAY;

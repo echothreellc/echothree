@@ -29,12 +29,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
-import com.echothree.model.data.geo.server.entity.GeoCodeScope;
-import com.echothree.model.data.geo.server.entity.GeoCodeType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -103,59 +98,59 @@ public class CreateCountryCommand
         var result = GeoResultFactory.getCreateCountryResult();
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
-        GeoCodeType geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
+        var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
 
         if(!hasExecutionErrors()) {
             var geoCodeScopeLogic = GeoCodeScopeLogic.getInstance();
-            GeoCodeScope geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
+            var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
 
             if(!hasExecutionErrors()) {
                 var geoCodeLogic = GeoCodeLogic.getInstance();
-                String iso3Number = form.getIso3Number();
+                var iso3Number = form.getIso3Number();
 
                 geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, iso3Number);
 
                 if(geoCode == null && !hasExecutionErrors()) {
-                    String iso3Letter = form.getIso3Letter();
+                    var iso3Letter = form.getIso3Letter();
 
                     geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_LETTER, iso3Letter);
 
                     if(geoCode == null && !hasExecutionErrors()) {
-                        String iso2Letter = form.getIso2Letter();
+                        var iso2Letter = form.getIso2Letter();
 
                         geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_2_LETTER, iso2Letter);
 
                         if(geoCode == null && !hasExecutionErrors()) {
-                            String countryName = form.getCountryName();
+                            var countryName = form.getCountryName();
 
                             geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_COUNTRY_NAME, countryName);
 
                             if(geoCode == null && !hasExecutionErrors()) {
                                 var contactControl = Session.getModelController(ContactControl.class);
-                                String postalAddressFormatName = form.getPostalAddressFormatName();
-                                PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+                                var postalAddressFormatName = form.getPostalAddressFormatName();
+                                var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
 
                                 if(postalAddressFormat != null) {
                                     BasePK createdBy = getPartyPK();
-                                    String geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
-                                    String telephoneCode = form.getTelephoneCode();
-                                    String areaCodePattern = form.getAreaCodePattern();
-                                    Boolean areaCodeRequired = Boolean.valueOf(form.getAreaCodeRequired());
-                                    String areaCodeExample = form.getAreaCodeExample();
-                                    String telephoneNumberPattern = form.getTelephoneNumberPattern();
-                                    String telephoneNumberExample = form.getTelephoneNumberExample();
-                                    Boolean cityRequired = Boolean.valueOf(form.getCityRequired());
-                                    Boolean cityGeoCodeRequired = Boolean.valueOf(form.getCityGeoCodeRequired());
-                                    Boolean stateRequired = Boolean.valueOf(form.getStateRequired());
-                                    Boolean stateGeoCodeRequired = Boolean.valueOf(form.getStateGeoCodeRequired());
-                                    String postalCodePattern = form.getPostalCodePattern();
-                                    Boolean postalCodeRequired = Boolean.valueOf(form.getPostalCodeRequired());
-                                    Boolean postalCodeGeoCodeRequired = Boolean.valueOf(form.getPostalCodeGeoCodeRequired());
-                                    String strPostalCodeLength = form.getPostalCodeLength();
-                                    Integer postalCodeLength = strPostalCodeLength == null ? null : Integer.valueOf(strPostalCodeLength);
-                                    String strPostalCodeGeoCodeLength = form.getPostalCodeGeoCodeLength();
-                                    Integer postalCodeGeoCodeLength = strPostalCodeGeoCodeLength == null ? null : Integer.valueOf(strPostalCodeGeoCodeLength);
-                                    String postalCodeExample = form.getPostalCodeExample();
+                                    var geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
+                                    var telephoneCode = form.getTelephoneCode();
+                                    var areaCodePattern = form.getAreaCodePattern();
+                                    var areaCodeRequired = Boolean.valueOf(form.getAreaCodeRequired());
+                                    var areaCodeExample = form.getAreaCodeExample();
+                                    var telephoneNumberPattern = form.getTelephoneNumberPattern();
+                                    var telephoneNumberExample = form.getTelephoneNumberExample();
+                                    var cityRequired = Boolean.valueOf(form.getCityRequired());
+                                    var cityGeoCodeRequired = Boolean.valueOf(form.getCityGeoCodeRequired());
+                                    var stateRequired = Boolean.valueOf(form.getStateRequired());
+                                    var stateGeoCodeRequired = Boolean.valueOf(form.getStateGeoCodeRequired());
+                                    var postalCodePattern = form.getPostalCodePattern();
+                                    var postalCodeRequired = Boolean.valueOf(form.getPostalCodeRequired());
+                                    var postalCodeGeoCodeRequired = Boolean.valueOf(form.getPostalCodeGeoCodeRequired());
+                                    var strPostalCodeLength = form.getPostalCodeLength();
+                                    var postalCodeLength = strPostalCodeLength == null ? null : Integer.valueOf(strPostalCodeLength);
+                                    var strPostalCodeGeoCodeLength = form.getPostalCodeGeoCodeLength();
+                                    var postalCodeGeoCodeLength = strPostalCodeGeoCodeLength == null ? null : Integer.valueOf(strPostalCodeGeoCodeLength);
+                                    var postalCodeExample = form.getPostalCodeExample();
                                     var isDefault = Boolean.valueOf(form.getIsDefault());
                                     var sortOrder = Integer.valueOf(form.getSortOrder());
                                     var description = form.getDescription();
@@ -166,7 +161,7 @@ public class CreateCountryCommand
                                             stateRequired, stateGeoCodeRequired, postalCodePattern, postalCodeRequired, postalCodeGeoCodeRequired,
                                             postalCodeLength, postalCodeGeoCodeLength, postalCodeExample, createdBy);
 
-                                    GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
+                                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
                                     geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, iso3Number, createdBy);
                                     geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
                                     geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, iso3Letter, createdBy);
@@ -176,7 +171,7 @@ public class CreateCountryCommand
                                     geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, countryName, createdBy);
 
                                     if(description != null) {
-                                        Language language = getPreferredLanguage();
+                                        var language = getPreferredLanguage();
 
                                         geoControl.createGeoCodeDescription(geoCode, language, description, createdBy);
                                     }

@@ -18,11 +18,8 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetPartySkillsForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetPartySkillsResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.employee.server.entity.SkillType;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,9 +50,9 @@ public class GetPartySkillsCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartySkillsResult result = EmployeeResultFactory.getGetPartySkillsResult();
-        String partyName = form.getPartyName();
-        String skillTypeName = form.getSkillTypeName();
+        var result = EmployeeResultFactory.getGetPartySkillsResult();
+        var partyName = form.getPartyName();
+        var skillTypeName = form.getSkillTypeName();
         var parameterCount = (partyName == null ? 0 : 1) + (skillTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -63,7 +60,7 @@ public class GetPartySkillsCommand
             
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
                     result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
@@ -72,7 +69,7 @@ public class GetPartySkillsCommand
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(skillTypeName != null) {
-                SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+                var skillType = employeeControl.getSkillTypeByName(skillTypeName);
                 
                 if(skillType != null) {
                     result.setSkillType(employeeControl.getSkillTypeTransfer(getUserVisit(), skillType));

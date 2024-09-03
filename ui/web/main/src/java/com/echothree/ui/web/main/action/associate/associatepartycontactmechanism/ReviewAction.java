@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.associate.associatepartycontactmechanism;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.form.GetAssociatePartyContactMechanismForm;
 import com.echothree.control.user.associate.common.result.GetAssociatePartyContactMechanismResult;
-import com.echothree.model.control.associate.common.transfer.AssociatePartyContactMechanismTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,22 +49,22 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            String associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
-            String associatePartyContactMechanismName = request.getParameter(ParameterConstants.ASSOCIATE_PARTY_CONTACT_MECHANISM_NAME);
-            GetAssociatePartyContactMechanismForm commandForm = AssociateUtil.getHome().getGetAssociatePartyContactMechanismForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
+            var associatePartyContactMechanismName = request.getParameter(ParameterConstants.ASSOCIATE_PARTY_CONTACT_MECHANISM_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociatePartyContactMechanismForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociatePartyContactMechanism(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociatePartyContactMechanismResult result = (GetAssociatePartyContactMechanismResult)executionResult.getResult();
-            AssociatePartyContactMechanismTransfer associatePartyContactMechanismTransfer = result.getAssociatePartyContactMechanism();
+
+            var commandResult = AssociateUtil.getHome().getAssociatePartyContactMechanism(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociatePartyContactMechanismResult)executionResult.getResult();
+            var associatePartyContactMechanismTransfer = result.getAssociatePartyContactMechanism();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_PARTY_CONTACT_MECHANISM, associatePartyContactMechanismTransfer);
             forwardKey = ForwardConstants.DISPLAY;

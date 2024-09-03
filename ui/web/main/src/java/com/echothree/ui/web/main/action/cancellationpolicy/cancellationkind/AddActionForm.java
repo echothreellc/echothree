@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationkind;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceTypeChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceTypeChoicesResult;
 import com.echothree.model.control.sequence.common.choice.SequenceTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +42,14 @@ public class AddActionForm
     public void setupCancellationSequenceTypeChoices() {
         if(cancellationSequenceTypeChoices == null) {
             try {
-                GetSequenceTypeChoicesForm form = SequenceUtil.getHome().getGetSequenceTypeChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceTypeChoicesForm();
                 
                 form.setDefaultSequenceTypeChoice(cancellationSequenceTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceTypeChoicesResult result = (GetSequenceTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceTypeChoicesResult)executionResult.getResult();
                 cancellationSequenceTypeChoices = result.getSequenceTypeChoices();
                 
                 if(cancellationSequenceTypeChoice == null)

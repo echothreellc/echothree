@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeDescriptionsForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeDescriptionsResult;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
-        GetMimeTypeDescriptionsForm commandForm = CoreUtil.getHome().getGetMimeTypeDescriptionsForm();
+        var mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
+        var commandForm = CoreUtil.getHome().getGetMimeTypeDescriptionsForm();
 
         commandForm.setMimeTypeName(mimeTypeName);
 
-        CommandResult commandResult = CoreUtil.getHome().getMimeTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getMimeTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeDescriptionsResult result = (GetMimeTypeDescriptionsResult) executionResult.getResult();
-            MimeTypeTransfer mimeTypeTransfer = result.getMimeType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeDescriptionsResult) executionResult.getResult();
+            var mimeTypeTransfer = result.getMimeType();
 
             request.setAttribute(AttributeConstants.MIME_TYPE, mimeTypeTransfer);
             request.setAttribute(AttributeConstants.MIME_TYPE_DESCRIPTIONS, result.getMimeTypeDescriptions());

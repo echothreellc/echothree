@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.searchtype;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetSearchTypesForm;
 import com.echothree.control.user.search.common.result.GetSearchTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,16 +48,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetSearchTypesForm commandForm = SearchUtil.getHome().getGetSearchTypesForm();
+        String forwardKey;
+        var commandForm = SearchUtil.getHome().getGetSearchTypesForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
 
-        CommandResult commandResult = SearchUtil.getHome().getSearchTypes(getUserVisitPK(request), commandForm);
+        var commandResult = SearchUtil.getHome().getSearchTypes(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchTypesResult result = (GetSearchTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchTypesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SEARCH_KIND, result.getSearchKind());
             request.setAttribute(AttributeConstants.SEARCH_TYPES, result.getSearchTypes());

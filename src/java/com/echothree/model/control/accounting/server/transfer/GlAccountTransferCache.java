@@ -16,16 +16,9 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountClassTransfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountTypeTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlResourceTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
-import com.echothree.model.data.accounting.server.entity.GlAccountDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class GlAccountTransferCache
@@ -40,21 +33,21 @@ public class GlAccountTransferCache
     
     @Override
     public GlAccountTransfer getTransfer(GlAccount glAccount) {
-        GlAccountTransfer glAccountTransfer = get(glAccount);
+        var glAccountTransfer = get(glAccount);
         
         if(glAccountTransfer == null) {
-            GlAccountDetail glAccountDetail = glAccount.getLastDetail();
-            String glAccountName = glAccountDetail.getGlAccountName();
-            GlAccount parentGlAccount = glAccountDetail.getParentGlAccount();
-            GlAccountTransfer parentGlAccountTransfer = parentGlAccount == null? null: getTransfer(parentGlAccount);
-            GlAccountTypeTransfer glAccountTypeTransfer = accountingControl.getGlAccountTypeTransfer(userVisit, glAccountDetail.getGlAccountType());
-            GlAccountClassTransfer glAccountClassTransfer = accountingControl.getGlAccountClassTransfer(userVisit, glAccountDetail.getGlAccountClass());
-            GlAccountCategory glAccountCategory = glAccountDetail.getGlAccountCategory();
-            GlAccountCategoryTransfer glAccountCategoryTransfer = glAccountCategory == null? null: accountingControl.getGlAccountCategoryTransfer(userVisit, glAccountCategory);
-            GlResourceTypeTransfer glResourceTypeTransfer = accountingControl.getGlResourceTypeTransfer(userVisit, glAccountDetail.getGlResourceType());
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, glAccountDetail.getCurrency());
-            Boolean isDefault = glAccountDetail.getIsDefault();
-            String description = accountingControl.getBestGlAccountDescription(glAccount, getLanguage());
+            var glAccountDetail = glAccount.getLastDetail();
+            var glAccountName = glAccountDetail.getGlAccountName();
+            var parentGlAccount = glAccountDetail.getParentGlAccount();
+            var parentGlAccountTransfer = parentGlAccount == null? null: getTransfer(parentGlAccount);
+            var glAccountTypeTransfer = accountingControl.getGlAccountTypeTransfer(userVisit, glAccountDetail.getGlAccountType());
+            var glAccountClassTransfer = accountingControl.getGlAccountClassTransfer(userVisit, glAccountDetail.getGlAccountClass());
+            var glAccountCategory = glAccountDetail.getGlAccountCategory();
+            var glAccountCategoryTransfer = glAccountCategory == null? null: accountingControl.getGlAccountCategoryTransfer(userVisit, glAccountCategory);
+            var glResourceTypeTransfer = accountingControl.getGlResourceTypeTransfer(userVisit, glAccountDetail.getGlResourceType());
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, glAccountDetail.getCurrency());
+            var isDefault = glAccountDetail.getIsDefault();
+            var description = accountingControl.getBestGlAccountDescription(glAccount, getLanguage());
             
             glAccountTransfer = new GlAccountTransfer(glAccountName, parentGlAccountTransfer, glAccountTypeTransfer,
                     glAccountClassTransfer, glAccountCategoryTransfer, glResourceTypeTransfer, currencyTransfer, isDefault,

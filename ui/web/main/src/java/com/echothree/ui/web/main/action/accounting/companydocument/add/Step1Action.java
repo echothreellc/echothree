@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.companydocument.add;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.GetPartyTypeDocumentTypeUsageTypesForm;
 import com.echothree.control.user.document.common.result.GetPartyTypeDocumentTypeUsageTypesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.ui.web.main.action.accounting.companydocument.BaseCompanyDocumentAction;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,13 +48,13 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPartyTypeDocumentTypeUsageTypesForm commandForm = DocumentUtil.getHome().getGetPartyTypeDocumentTypeUsageTypesForm();
+        var commandForm = DocumentUtil.getHome().getGetPartyTypeDocumentTypeUsageTypesForm();
 
         commandForm.setPartyTypeName(PartyTypes.COMPANY.name());
 
-        CommandResult commandResult = DocumentUtil.getHome().getPartyTypeDocumentTypeUsageTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTypeDocumentTypeUsageTypesResult result = (GetPartyTypeDocumentTypeUsageTypesResult)executionResult.getResult();
+        var commandResult = DocumentUtil.getHome().getPartyTypeDocumentTypeUsageTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTypeDocumentTypeUsageTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_TYPE_DOCUMENT_TYPE_USAGE_TYPES, result.getPartyTypeDocumentTypeUsageTypes());
 

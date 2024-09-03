@@ -30,36 +30,19 @@ import com.echothree.model.control.carrier.common.transfer.CarrierTypeDescriptio
 import com.echothree.model.control.carrier.common.transfer.CarrierTypeTransfer;
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierAccountTransfer;
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierTransfer;
-import com.echothree.model.control.carrier.server.transfer.CarrierOptionDescriptionTransferCache;
-import com.echothree.model.control.carrier.server.transfer.CarrierOptionTransferCache;
-import com.echothree.model.control.carrier.server.transfer.CarrierServiceDescriptionTransferCache;
-import com.echothree.model.control.carrier.server.transfer.CarrierServiceOptionTransferCache;
-import com.echothree.model.control.carrier.server.transfer.CarrierServiceTransferCache;
 import com.echothree.model.control.carrier.server.transfer.CarrierTransferCaches;
-import com.echothree.model.control.carrier.server.transfer.CarrierTypeDescriptionTransferCache;
-import com.echothree.model.control.carrier.server.transfer.CarrierTypeTransferCache;
-import com.echothree.model.control.carrier.server.transfer.PartyCarrierAccountTransferCache;
-import com.echothree.model.control.carrier.server.transfer.PartyCarrierTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.carrier.common.pk.CarrierOptionPK;
-import com.echothree.model.data.carrier.common.pk.CarrierServicePK;
-import com.echothree.model.data.carrier.common.pk.CarrierTypePK;
-import com.echothree.model.data.carrier.common.pk.PartyCarrierAccountPK;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.model.data.carrier.server.entity.CarrierOptionDescription;
-import com.echothree.model.data.carrier.server.entity.CarrierOptionDetail;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
 import com.echothree.model.data.carrier.server.entity.CarrierServiceDescription;
-import com.echothree.model.data.carrier.server.entity.CarrierServiceDetail;
 import com.echothree.model.data.carrier.server.entity.CarrierServiceOption;
 import com.echothree.model.data.carrier.server.entity.CarrierType;
 import com.echothree.model.data.carrier.server.entity.CarrierTypeDescription;
-import com.echothree.model.data.carrier.server.entity.CarrierTypeDetail;
 import com.echothree.model.data.carrier.server.entity.PartyCarrier;
 import com.echothree.model.data.carrier.server.entity.PartyCarrierAccount;
-import com.echothree.model.data.carrier.server.entity.PartyCarrierAccountDetail;
 import com.echothree.model.data.carrier.server.factory.CarrierFactory;
 import com.echothree.model.data.carrier.server.factory.CarrierOptionDescriptionFactory;
 import com.echothree.model.data.carrier.server.factory.CarrierOptionDetailFactory;
@@ -83,11 +66,8 @@ import com.echothree.model.data.carrier.server.value.CarrierTypeDescriptionValue
 import com.echothree.model.data.carrier.server.value.CarrierTypeDetailValue;
 import com.echothree.model.data.carrier.server.value.CarrierValue;
 import com.echothree.model.data.carrier.server.value.PartyCarrierAccountDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyGroup;
-import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
@@ -95,13 +75,11 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -133,11 +111,11 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
 
     public CarrierType createCarrierType(String carrierTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        CarrierType defaultCarrierType = getDefaultCarrierType();
-        boolean defaultFound = defaultCarrierType != null;
+        var defaultCarrierType = getDefaultCarrierType();
+        var defaultFound = defaultCarrierType != null;
 
         if(defaultFound && isDefault) {
-            CarrierTypeDetailValue defaultCarrierTypeDetailValue = getDefaultCarrierTypeDetailValueForUpdate();
+            var defaultCarrierTypeDetailValue = getDefaultCarrierTypeDetailValueForUpdate();
 
             defaultCarrierTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateCarrierTypeFromValue(defaultCarrierTypeDetailValue, false, createdBy);
@@ -145,8 +123,8 @@ public class CarrierControl
             isDefault = Boolean.TRUE;
         }
 
-        CarrierType carrierType = CarrierTypeFactory.getInstance().create();
-        CarrierTypeDetail carrierTypeDetail = CarrierTypeDetailFactory.getInstance().create(carrierType,
+        var carrierType = CarrierTypeFactory.getInstance().create();
+        var carrierTypeDetail = CarrierTypeDetailFactory.getInstance().create(carrierType,
                 carrierTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -303,7 +281,7 @@ public class CarrierControl
 
     public List<CarrierTypeTransfer> getCarrierTypeTransfers(UserVisit userVisit, Collection<CarrierType> carrierTypes) {
         List<CarrierTypeTransfer> carrierTypeTransfers = new ArrayList<>(carrierTypes.size());
-        CarrierTypeTransferCache carrierTypeTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeTransferCache();
+        var carrierTypeTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeTransferCache();
 
         carrierTypes.forEach((carrierType) ->
                 carrierTypeTransfers.add(carrierTypeTransferCache.getCarrierTypeTransfer(carrierType))
@@ -322,7 +300,7 @@ public class CarrierControl
     }
 
     public CarrierTypeChoicesBean getCarrierTypeChoices(String defaultCarrierTypeChoice, Language language, boolean allowNullChoice) {
-        List<CarrierType> carrierTypes = getCarrierTypes();
+        var carrierTypes = getCarrierTypes();
         var size = carrierTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -338,7 +316,7 @@ public class CarrierControl
         }
 
         for(var carrierType : carrierTypes) {
-            CarrierTypeDetail carrierTypeDetail = carrierType.getLastDetail();
+            var carrierTypeDetail = carrierType.getLastDetail();
 
             var label = getBestCarrierTypeDescription(carrierType, language);
             var value = carrierTypeDetail.getCarrierTypeName();
@@ -358,25 +336,25 @@ public class CarrierControl
     private void updateCarrierTypeFromValue(CarrierTypeDetailValue carrierTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(carrierTypeDetailValue.hasBeenModified()) {
-            CarrierType carrierType = CarrierTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierType = CarrierTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierTypeDetailValue.getCarrierTypePK());
-            CarrierTypeDetail carrierTypeDetail = carrierType.getActiveDetailForUpdate();
+            var carrierTypeDetail = carrierType.getActiveDetailForUpdate();
 
             carrierTypeDetail.setThruTime(session.START_TIME_LONG);
             carrierTypeDetail.store();
 
-            CarrierTypePK carrierTypePK = carrierTypeDetail.getCarrierTypePK(); // Not updated
-            String carrierTypeName = carrierTypeDetailValue.getCarrierTypeName();
-            Boolean isDefault = carrierTypeDetailValue.getIsDefault();
-            Integer sortOrder = carrierTypeDetailValue.getSortOrder();
+            var carrierTypePK = carrierTypeDetail.getCarrierTypePK(); // Not updated
+            var carrierTypeName = carrierTypeDetailValue.getCarrierTypeName();
+            var isDefault = carrierTypeDetailValue.getIsDefault();
+            var sortOrder = carrierTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                CarrierType defaultCarrierType = getDefaultCarrierType();
-                boolean defaultFound = defaultCarrierType != null && !defaultCarrierType.equals(carrierType);
+                var defaultCarrierType = getDefaultCarrierType();
+                var defaultFound = defaultCarrierType != null && !defaultCarrierType.equals(carrierType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CarrierTypeDetailValue defaultCarrierTypeDetailValue = getDefaultCarrierTypeDetailValueForUpdate();
+                    var defaultCarrierTypeDetailValue = getDefaultCarrierTypeDetailValueForUpdate();
 
                     defaultCarrierTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateCarrierTypeFromValue(defaultCarrierTypeDetailValue, false, updatedBy);
@@ -404,22 +382,22 @@ public class CarrierControl
         deleteCarrierTypeDescriptionsByCarrierType(carrierType, deletedBy);
         // TODO: deleteCarriersByCarrierType(carrierType, deletedBy);
 
-        CarrierTypeDetail carrierTypeDetail = carrierType.getLastDetailForUpdate();
+        var carrierTypeDetail = carrierType.getLastDetailForUpdate();
         carrierTypeDetail.setThruTime(session.START_TIME_LONG);
         carrierType.setActiveDetail(null);
         carrierType.store();
 
         // Check for default, and pick one if necessary
-        CarrierType defaultCarrierType = getDefaultCarrierType();
+        var defaultCarrierType = getDefaultCarrierType();
         if(defaultCarrierType == null) {
-            List<CarrierType> carrierTypes = getCarrierTypesForUpdate();
+            var carrierTypes = getCarrierTypesForUpdate();
 
             if(!carrierTypes.isEmpty()) {
-                Iterator<CarrierType> iter = carrierTypes.iterator();
+                var iter = carrierTypes.iterator();
                 if(iter.hasNext()) {
                     defaultCarrierType = iter.next();
                 }
-                CarrierTypeDetailValue carrierTypeDetailValue = Objects.requireNonNull(defaultCarrierType).getLastDetailForUpdate().getCarrierTypeDetailValue().clone();
+                var carrierTypeDetailValue = Objects.requireNonNull(defaultCarrierType).getLastDetailForUpdate().getCarrierTypeDetailValue().clone();
 
                 carrierTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCarrierTypeFromValue(carrierTypeDetailValue, false, deletedBy);
@@ -435,7 +413,7 @@ public class CarrierControl
 
     public CarrierTypeDescription createCarrierTypeDescription(CarrierType carrierType,
             Language language, String description, BasePK createdBy) {
-        CarrierTypeDescription carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType,
+        var carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -517,7 +495,7 @@ public class CarrierControl
 
     public String getBestCarrierTypeDescription(CarrierType carrierType, Language language) {
         String description;
-        CarrierTypeDescription carrierTypeDescription = getCarrierTypeDescription(carrierType, language);
+        var carrierTypeDescription = getCarrierTypeDescription(carrierType, language);
 
         if(carrierTypeDescription == null && !language.getIsDefault()) {
             carrierTypeDescription = getCarrierTypeDescription(carrierType, getPartyControl().getDefaultLanguage());
@@ -537,9 +515,9 @@ public class CarrierControl
     }
 
     public List<CarrierTypeDescriptionTransfer> getCarrierTypeDescriptionTransfersByCarrierType(UserVisit userVisit, CarrierType carrierType) {
-        List<CarrierTypeDescription> carrierTypeDescriptions = getCarrierTypeDescriptionsByCarrierType(carrierType);
+        var carrierTypeDescriptions = getCarrierTypeDescriptionsByCarrierType(carrierType);
         List<CarrierTypeDescriptionTransfer> carrierTypeDescriptionTransfers = new ArrayList<>(carrierTypeDescriptions.size());
-        CarrierTypeDescriptionTransferCache carrierTypeDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeDescriptionTransferCache();
+        var carrierTypeDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeDescriptionTransferCache();
 
         carrierTypeDescriptions.forEach((carrierTypeDescription) ->
                 carrierTypeDescriptionTransfers.add(carrierTypeDescriptionTransferCache.getCarrierTypeDescriptionTransfer(carrierTypeDescription))
@@ -550,15 +528,15 @@ public class CarrierControl
 
     public void updateCarrierTypeDescriptionFromValue(CarrierTypeDescriptionValue carrierTypeDescriptionValue, BasePK updatedBy) {
         if(carrierTypeDescriptionValue.hasBeenModified()) {
-            CarrierTypeDescription carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     carrierTypeDescriptionValue.getPrimaryKey());
 
             carrierTypeDescription.setThruTime(session.START_TIME_LONG);
             carrierTypeDescription.store();
 
-            CarrierType carrierType = carrierTypeDescription.getCarrierType();
-            Language language = carrierTypeDescription.getLanguage();
-            String description = carrierTypeDescriptionValue.getDescription();
+            var carrierType = carrierTypeDescription.getCarrierType();
+            var language = carrierTypeDescription.getLanguage();
+            var description = carrierTypeDescriptionValue.getDescription();
 
             carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -575,7 +553,7 @@ public class CarrierControl
     }
 
     public void deleteCarrierTypeDescriptionsByCarrierType(CarrierType carrierType, BasePK deletedBy) {
-        List<CarrierTypeDescription> carrierTypeDescriptions = getCarrierTypeDescriptionsByCarrierTypeForUpdate(carrierType);
+        var carrierTypeDescriptions = getCarrierTypeDescriptionsByCarrierTypeForUpdate(carrierType);
 
         carrierTypeDescriptions.forEach((carrierTypeDescription) -> 
                 deleteCarrierTypeDescription(carrierTypeDescription, deletedBy)
@@ -588,19 +566,19 @@ public class CarrierControl
     
     public Carrier createCarrier(Party party, String carrierName, CarrierType carrierType, Selector geoCodeSelector, Selector itemSelector,
             String accountValidationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Carrier defaultCarrier = getDefaultCarrier();
-        boolean defaultFound = defaultCarrier != null;
+        var defaultCarrier = getDefaultCarrier();
+        var defaultFound = defaultCarrier != null;
         
         if(defaultFound && isDefault) {
-            CarrierValue defaultCarrierValue = getDefaultCarrierValueForUpdate();
+            var defaultCarrierValue = getDefaultCarrierValueForUpdate();
             
             defaultCarrierValue.setIsDefault(Boolean.FALSE);
             updateCarrierFromValue(defaultCarrierValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Carrier carrier = CarrierFactory.getInstance().create(party, carrierName, carrierType, geoCodeSelector, itemSelector, accountValidationPattern,
+
+        var carrier = CarrierFactory.getInstance().create(party, carrierName, carrierType, geoCodeSelector, itemSelector, accountValidationPattern,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, carrier.getPrimaryKey(), null, createdBy);
@@ -624,8 +602,8 @@ public class CarrierControl
                         "WHERE crr_par_partyid = ? AND crr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -666,8 +644,8 @@ public class CarrierControl
                         "WHERE crr_carriername = ? AND crr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, carrierName);
             ps.setLong(2, Session.MAX_TIME);
@@ -708,8 +686,8 @@ public class CarrierControl
                         "WHERE crr_isdefault = 1 AND crr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -750,8 +728,8 @@ public class CarrierControl
                         "WHERE crr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -780,7 +758,7 @@ public class CarrierControl
     }
     
     public List<CarrierTransfer> getCarrierTransfers(UserVisit userVisit) {
-        List<Carrier> carriers = getCarriers();
+        var carriers = getCarriers();
         List<CarrierTransfer> carrierTransfers = new ArrayList<>(carriers.size());
         
         carriers.forEach((carrier) -> {
@@ -791,7 +769,7 @@ public class CarrierControl
     }
     
     public CarrierChoicesBean getCarrierChoices(String defaultCarrierChoice, Language language, boolean allowNullChoice) {
-        List<Carrier> carriers = getCarriers();
+        var carriers = getCarriers();
         var size = carriers.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -807,7 +785,7 @@ public class CarrierControl
         }
 
         for(var carrier : carriers) {
-            PartyGroup partyGroup = getPartyControl().getPartyGroup(carrier.getParty());
+            var partyGroup = getPartyControl().getPartyGroup(carrier.getParty());
 
             var label = partyGroup.getName();
             var value = carrier.getCarrierName();
@@ -826,28 +804,28 @@ public class CarrierControl
 
     private void updateCarrierFromValue(CarrierValue carrierValue, boolean checkDefault, BasePK updatedBy) {
         if(carrierValue.hasBeenModified()) {
-            Carrier carrier = CarrierFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrier = CarrierFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     carrierValue.getPrimaryKey());
             
             carrier.setThruTime(session.START_TIME_LONG);
             carrier.store();
-            
-            PartyPK partyPK = carrier.getPartyPK();
-            String carrierName = carrierValue.getCarrierName();
-            CarrierTypePK carrierTypePK = carrier.getCarrierTypePK(); // Not updated
-            SelectorPK geoCodeSelectorPK = carrierValue.getGeoCodeSelectorPK();
-            SelectorPK itemSelectorPK = carrierValue.getItemSelectorPK();
-            String accountValidationPattern = carrierValue.getAccountValidationPattern();
-            Boolean isDefault = carrierValue.getIsDefault();
-            Integer sortOrder = carrierValue.getSortOrder();
+
+            var partyPK = carrier.getPartyPK();
+            var carrierName = carrierValue.getCarrierName();
+            var carrierTypePK = carrier.getCarrierTypePK(); // Not updated
+            var geoCodeSelectorPK = carrierValue.getGeoCodeSelectorPK();
+            var itemSelectorPK = carrierValue.getItemSelectorPK();
+            var accountValidationPattern = carrierValue.getAccountValidationPattern();
+            var isDefault = carrierValue.getIsDefault();
+            var sortOrder = carrierValue.getSortOrder();
             
             if(checkDefault) {
-                Carrier defaultCarrier = getDefaultCarrier();
-                boolean defaultFound = defaultCarrier != null && !defaultCarrier.equals(carrier);
+                var defaultCarrier = getDefaultCarrier();
+                var defaultFound = defaultCarrier != null && !defaultCarrier.equals(carrier);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CarrierValue defaultCarrierValue = getDefaultCarrierValueForUpdate();
+                    var defaultCarrierValue = getDefaultCarrierValueForUpdate();
                     
                     defaultCarrierValue.setIsDefault(Boolean.FALSE);
                     updateCarrierFromValue(defaultCarrierValue, false, updatedBy);
@@ -869,7 +847,7 @@ public class CarrierControl
     }
     
     public void deleteCarrier(Carrier carrier, BasePK deletedBy) {
-        Party party = carrier.getPartyForUpdate();
+        var party = carrier.getPartyForUpdate();
         
         deletePartyCarriersByCarrierParty(party, deletedBy);
         deletePartyCarrierAccountsByCarrierParty(party, deletedBy);
@@ -882,17 +860,17 @@ public class CarrierControl
         carrier.store();
         
         // Check for default, and pick one if necessary
-        Carrier defaultCarrier = getDefaultCarrier();
+        var defaultCarrier = getDefaultCarrier();
         if(defaultCarrier == null) {
-            List<Carrier> carriers = getCarriersForUpdate();
+            var carriers = getCarriersForUpdate();
             
             if(!carriers.isEmpty()) {
-                Iterator<Carrier> iter = carriers.iterator();
+                var iter = carriers.iterator();
                 if(iter.hasNext()) {
                     defaultCarrier = iter.next();
                 }
-                
-                CarrierValue defaultCarrierValue = defaultCarrier.getCarrierValue();
+
+                var defaultCarrierValue = defaultCarrier.getCarrierValue();
                 
                 defaultCarrierValue.setIsDefault(Boolean.TRUE);
                 updateCarrierFromValue(defaultCarrierValue, false, deletedBy);
@@ -908,20 +886,20 @@ public class CarrierControl
     
     public CarrierService createCarrierService(Party carrierParty, String carrierServiceName, Selector geoCodeSelector, Selector itemSelector,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        CarrierService defaultCarrierService = getDefaultCarrierService(carrierParty);
-        boolean defaultFound = defaultCarrierService != null;
+        var defaultCarrierService = getDefaultCarrierService(carrierParty);
+        var defaultFound = defaultCarrierService != null;
         
         if(defaultFound && isDefault) {
-            CarrierServiceDetailValue defaultCarrierServiceDetailValue = getDefaultCarrierServiceDetailValueForUpdate(carrierParty);
+            var defaultCarrierServiceDetailValue = getDefaultCarrierServiceDetailValueForUpdate(carrierParty);
             
             defaultCarrierServiceDetailValue.setIsDefault(Boolean.FALSE);
             updateCarrierServiceFromValue(defaultCarrierServiceDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CarrierService carrierService = CarrierServiceFactory.getInstance().create();
-        CarrierServiceDetail carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(session,
+
+        var carrierService = CarrierServiceFactory.getInstance().create();
+        var carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(session,
                 carrierService, carrierParty, carrierServiceName, geoCodeSelector, itemSelector, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -954,8 +932,8 @@ public class CarrierControl
                         "WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid AND crrsrvdt_carrierpartyid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierServiceFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             
@@ -993,8 +971,8 @@ public class CarrierControl
                         "AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierServiceFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             
@@ -1036,8 +1014,8 @@ public class CarrierControl
                         "AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_carrierservicename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierServiceFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             ps.setString(2, carrierServiceName);
@@ -1068,7 +1046,7 @@ public class CarrierControl
     
     public CarrierServiceChoicesBean getCarrierServiceChoices(String defaultCarrierServiceChoice, Language language,
             boolean allowNullChoice, Party carrierParty) {
-        List<CarrierService> carrierPartyPriorities = getCarrierServices(carrierParty);
+        var carrierPartyPriorities = getCarrierServices(carrierParty);
         var size = carrierPartyPriorities.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1084,7 +1062,7 @@ public class CarrierControl
         }
         
         for(var carrierService : carrierPartyPriorities) {
-            CarrierServiceDetail carrierServiceDetail = carrierService.getLastDetail();
+            var carrierServiceDetail = carrierService.getLastDetail();
             var label = getBestCarrierServiceDescription(carrierService, language);
             var value = carrierServiceDetail.getCarrierServiceName();
             
@@ -1105,9 +1083,9 @@ public class CarrierControl
     }
     
     public List<CarrierServiceTransfer> getCarrierServiceTransfers(UserVisit userVisit, Party carrierParty) {
-        List<CarrierService> carrierPartyPriorities = getCarrierServices(carrierParty);
+        var carrierPartyPriorities = getCarrierServices(carrierParty);
         List<CarrierServiceTransfer> carrierServiceTransfers = new ArrayList<>(carrierPartyPriorities.size());
-        CarrierServiceTransferCache carrierServiceTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceTransferCache();
+        var carrierServiceTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceTransferCache();
         
         carrierPartyPriorities.forEach((carrierService) ->
                 carrierServiceTransfers.add(carrierServiceTransferCache.getCarrierServiceTransfer(carrierService))
@@ -1119,29 +1097,29 @@ public class CarrierControl
     private void updateCarrierServiceFromValue(CarrierServiceDetailValue carrierServiceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(carrierServiceDetailValue.hasBeenModified()) {
-            CarrierService carrierService = CarrierServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierService = CarrierServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierServiceDetailValue.getCarrierServicePK());
-            CarrierServiceDetail carrierServiceDetail = carrierService.getActiveDetailForUpdate();
+            var carrierServiceDetail = carrierService.getActiveDetailForUpdate();
             
             carrierServiceDetail.setThruTime(session.START_TIME_LONG);
             carrierServiceDetail.store();
-            
-            CarrierServicePK carrierServicePK = carrierServiceDetail.getCarrierServicePK();
-            Party carrierParty = carrierServiceDetail.getCarrierParty();
-            PartyPK carrierPartyPK = carrierParty.getPrimaryKey();
-            String carrierServiceName = carrierServiceDetailValue.getCarrierServiceName();
-            SelectorPK geoCodeSelectorPK = carrierServiceDetailValue.getGeoCodeSelectorPK();
-            SelectorPK itemSelectorPK = carrierServiceDetailValue.getItemSelectorPK();
-            Boolean isDefault = carrierServiceDetailValue.getIsDefault();
-            Integer sortOrder = carrierServiceDetailValue.getSortOrder();
+
+            var carrierServicePK = carrierServiceDetail.getCarrierServicePK();
+            var carrierParty = carrierServiceDetail.getCarrierParty();
+            var carrierPartyPK = carrierParty.getPrimaryKey();
+            var carrierServiceName = carrierServiceDetailValue.getCarrierServiceName();
+            var geoCodeSelectorPK = carrierServiceDetailValue.getGeoCodeSelectorPK();
+            var itemSelectorPK = carrierServiceDetailValue.getItemSelectorPK();
+            var isDefault = carrierServiceDetailValue.getIsDefault();
+            var sortOrder = carrierServiceDetailValue.getSortOrder();
             
             if(checkDefault) {
-                CarrierService defaultCarrierService = getDefaultCarrierService(carrierParty);
-                boolean defaultFound = defaultCarrierService != null && !defaultCarrierService.equals(carrierService);
+                var defaultCarrierService = getDefaultCarrierService(carrierParty);
+                var defaultFound = defaultCarrierService != null && !defaultCarrierService.equals(carrierService);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CarrierServiceDetailValue defaultCarrierServiceDetailValue = getDefaultCarrierServiceDetailValueForUpdate(carrierParty);
+                    var defaultCarrierServiceDetailValue = getDefaultCarrierServiceDetailValueForUpdate(carrierParty);
                     
                     defaultCarrierServiceDetailValue.setIsDefault(Boolean.FALSE);
                     updateCarrierServiceFromValue(defaultCarrierServiceDetailValue, false, updatedBy);
@@ -1171,28 +1149,28 @@ public class CarrierControl
         deleteCarrierServiceDescriptionsByCarrierService(carrierService, deletedBy);
         deleteCarrierServiceOptionsByCarrierService(carrierService, deletedBy);
         shippingControl.deleteShippingMethodCarrierServicesByCarrierService(carrierService, deletedBy);
-        
-        CarrierServiceDetail carrierServiceDetail = carrierService.getLastDetailForUpdate();
+
+        var carrierServiceDetail = carrierService.getLastDetailForUpdate();
         carrierServiceDetail.setThruTime(session.START_TIME_LONG);
         carrierService.setActiveDetail(null);
         carrierService.store();
         
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Party carrierParty = carrierServiceDetail.getCarrierParty();
-            CarrierService defaultCarrierService = getDefaultCarrierService(carrierParty);
+            var carrierParty = carrierServiceDetail.getCarrierParty();
+            var defaultCarrierService = getDefaultCarrierService(carrierParty);
             
             if(defaultCarrierService == null) {
-                List<CarrierService> carrierPartyPriorities = getCarrierServicesForUpdate(carrierParty);
+                var carrierPartyPriorities = getCarrierServicesForUpdate(carrierParty);
                 
                 if(!carrierPartyPriorities.isEmpty()) {
-                    Iterator<CarrierService> iter = carrierPartyPriorities.iterator();
+                    var iter = carrierPartyPriorities.iterator();
                     
                     if(iter.hasNext()) {
                         defaultCarrierService = iter.next();
                     }
-                    
-                    CarrierServiceDetailValue carrierServiceDetailValue = Objects.requireNonNull(defaultCarrierService).getLastDetailForUpdate().getCarrierServiceDetailValue().clone();
+
+                    var carrierServiceDetailValue = Objects.requireNonNull(defaultCarrierService).getLastDetailForUpdate().getCarrierServiceDetailValue().clone();
                     
                     carrierServiceDetailValue.setIsDefault(Boolean.TRUE);
                     updateCarrierServiceFromValue(carrierServiceDetailValue, false, deletedBy);
@@ -1208,7 +1186,7 @@ public class CarrierControl
     }
     
     public void deleteCarrierServicesByCarrierParty(Party carrierParty, BasePK deletedBy) {
-        List<CarrierService> carrierPartyPriorities = getCarrierServicesForUpdate(carrierParty);
+        var carrierPartyPriorities = getCarrierServicesForUpdate(carrierParty);
         
         carrierPartyPriorities.forEach((carrierService) -> {
             deleteCarrierService(carrierService, false, deletedBy);
@@ -1221,7 +1199,7 @@ public class CarrierControl
     
     public CarrierServiceDescription createCarrierServiceDescription(CarrierService carrierService, Language language, String description,
             BasePK createdBy) {
-        CarrierServiceDescription carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService,
+        var carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
@@ -1246,8 +1224,8 @@ public class CarrierControl
                         "WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_lang_languageid = ? AND crrsrvd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierServiceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierServiceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1294,8 +1272,8 @@ public class CarrierControl
                         "WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierServiceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierServiceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1318,7 +1296,7 @@ public class CarrierControl
     
     public String getBestCarrierServiceDescription(CarrierService carrierService, Language language) {
         String description;
-        CarrierServiceDescription carrierServiceDescription = getCarrierServiceDescription(carrierService, language);
+        var carrierServiceDescription = getCarrierServiceDescription(carrierService, language);
         
         if(carrierServiceDescription == null && !language.getIsDefault()) {
             carrierServiceDescription = getCarrierServiceDescription(carrierService, getPartyControl().getDefaultLanguage());
@@ -1338,9 +1316,9 @@ public class CarrierControl
     }
     
     public List<CarrierServiceDescriptionTransfer> getCarrierServiceDescriptionTransfers(UserVisit userVisit, CarrierService carrierService) {
-        List<CarrierServiceDescription> carrierServiceDescriptions = getCarrierServiceDescriptionsByCarrierService(carrierService);
+        var carrierServiceDescriptions = getCarrierServiceDescriptionsByCarrierService(carrierService);
         List<CarrierServiceDescriptionTransfer> carrierServiceDescriptionTransfers = new ArrayList<>(carrierServiceDescriptions.size());
-        CarrierServiceDescriptionTransferCache carrierServiceDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceDescriptionTransferCache();
+        var carrierServiceDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceDescriptionTransferCache();
         
         carrierServiceDescriptions.forEach((carrierServiceDescription) ->
                 carrierServiceDescriptionTransfers.add(carrierServiceDescriptionTransferCache.getCarrierServiceDescriptionTransfer(carrierServiceDescription))
@@ -1351,15 +1329,15 @@ public class CarrierControl
     
     public void updateCarrierServiceDescriptionFromValue(CarrierServiceDescriptionValue carrierServiceDescriptionValue, BasePK updatedBy) {
         if(carrierServiceDescriptionValue.hasBeenModified()) {
-            CarrierServiceDescription carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierServiceDescriptionValue.getPrimaryKey());
             
             carrierServiceDescription.setThruTime(session.START_TIME_LONG);
             carrierServiceDescription.store();
-            
-            CarrierService carrierService = carrierServiceDescription.getCarrierService();
-            Language language = carrierServiceDescription.getLanguage();
-            String description = carrierServiceDescriptionValue.getDescription();
+
+            var carrierService = carrierServiceDescription.getCarrierService();
+            var language = carrierServiceDescription.getLanguage();
+            var description = carrierServiceDescriptionValue.getDescription();
             
             carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1377,7 +1355,7 @@ public class CarrierControl
     }
     
     public void deleteCarrierServiceDescriptionsByCarrierService(CarrierService carrierService, BasePK deletedBy) {
-        List<CarrierServiceDescription> carrierServiceDescriptions = getCarrierServiceDescriptionsByCarrierServiceForUpdate(carrierService);
+        var carrierServiceDescriptions = getCarrierServiceDescriptionsByCarrierServiceForUpdate(carrierService);
         
         carrierServiceDescriptions.forEach((carrierServiceDescription) -> 
                 deleteCarrierServiceDescription(carrierServiceDescription, deletedBy)
@@ -1392,20 +1370,20 @@ public class CarrierControl
             Selector recommendedGeoCodeSelector, Selector requiredGeoCodeSelector, Selector recommendedItemSelector, Selector requiredItemSelector,
             Selector recommendedOrderSelector, Selector requiredOrderSelector, Selector recommendedShipmentSelector, Selector requiredShipmentSelector,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        CarrierOption defaultCarrierOption = getDefaultCarrierOption(carrierParty);
-        boolean defaultFound = defaultCarrierOption != null;
+        var defaultCarrierOption = getDefaultCarrierOption(carrierParty);
+        var defaultFound = defaultCarrierOption != null;
         
         if(defaultFound && isDefault) {
-            CarrierOptionDetailValue defaultCarrierOptionDetailValue = getDefaultCarrierOptionDetailValueForUpdate(carrierParty);
+            var defaultCarrierOptionDetailValue = getDefaultCarrierOptionDetailValueForUpdate(carrierParty);
             
             defaultCarrierOptionDetailValue.setIsDefault(Boolean.FALSE);
             updateCarrierOptionFromValue(defaultCarrierOptionDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CarrierOption carrierOption = CarrierOptionFactory.getInstance().create();
-        CarrierOptionDetail carrierOptionDetail = CarrierOptionDetailFactory.getInstance().create(carrierOption, carrierParty, carrierOptionName, isRecommended,
+
+        var carrierOption = CarrierOptionFactory.getInstance().create();
+        var carrierOptionDetail = CarrierOptionDetailFactory.getInstance().create(carrierOption, carrierParty, carrierOptionName, isRecommended,
                 isRequired, recommendedGeoCodeSelector, requiredGeoCodeSelector, recommendedItemSelector, requiredItemSelector, recommendedOrderSelector,
                 requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1438,8 +1416,8 @@ public class CarrierControl
                         "WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid AND crroptdt_carrierpartyid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierOptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             
@@ -1477,8 +1455,8 @@ public class CarrierControl
                         "AND crroptdt_carrierpartyid = ? AND crroptdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierOptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             
@@ -1520,8 +1498,8 @@ public class CarrierControl
                         "AND crroptdt_carrierpartyid = ? AND crroptdt_carrieroptionname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierOptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             ps.setString(2, carrierOptionName);
@@ -1552,7 +1530,7 @@ public class CarrierControl
     
     public CarrierOptionChoicesBean getCarrierOptionChoices(String defaultCarrierOptionChoice, Language language,
             boolean allowNullChoice, Party carrierParty) {
-        List<CarrierOption> carrierPartyPriorities = getCarrierOptions(carrierParty);
+        var carrierPartyPriorities = getCarrierOptions(carrierParty);
         var size = carrierPartyPriorities.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1568,7 +1546,7 @@ public class CarrierControl
         }
         
         for(var carrierOption : carrierPartyPriorities) {
-            CarrierOptionDetail carrierOptionDetail = carrierOption.getLastDetail();
+            var carrierOptionDetail = carrierOption.getLastDetail();
             var label = getBestCarrierOptionDescription(carrierOption, language);
             var value = carrierOptionDetail.getCarrierOptionName();
             
@@ -1589,9 +1567,9 @@ public class CarrierControl
     }
     
     public List<CarrierOptionTransfer> getCarrierOptionTransfers(UserVisit userVisit, Party carrierParty) {
-        List<CarrierOption> carrierPartyPriorities = getCarrierOptions(carrierParty);
+        var carrierPartyPriorities = getCarrierOptions(carrierParty);
         List<CarrierOptionTransfer> carrierOptionTransfers = new ArrayList<>(carrierPartyPriorities.size());
-        CarrierOptionTransferCache carrierOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierOptionTransferCache();
+        var carrierOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierOptionTransferCache();
         
         carrierPartyPriorities.forEach((carrierOption) ->
                 carrierOptionTransfers.add(carrierOptionTransferCache.getCarrierOptionTransfer(carrierOption))
@@ -1603,37 +1581,37 @@ public class CarrierControl
     private void updateCarrierOptionFromValue(CarrierOptionDetailValue carrierOptionDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(carrierOptionDetailValue.hasBeenModified()) {
-            CarrierOption carrierOption = CarrierOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierOption = CarrierOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierOptionDetailValue.getCarrierOptionPK());
-            CarrierOptionDetail carrierOptionDetail = carrierOption.getActiveDetailForUpdate();
+            var carrierOptionDetail = carrierOption.getActiveDetailForUpdate();
             
             carrierOptionDetail.setThruTime(session.START_TIME_LONG);
             carrierOptionDetail.store();
-            
-            CarrierOptionPK carrierOptionPK = carrierOptionDetail.getCarrierOptionPK();
-            Party carrierParty = carrierOptionDetail.getCarrierParty();
-            PartyPK carrierPartyPK = carrierParty.getPrimaryKey();
-            String carrierOptionName = carrierOptionDetailValue.getCarrierOptionName();
-            Boolean isRecommended = carrierOptionDetailValue.getIsRecommended();
-            Boolean isRequired = carrierOptionDetailValue.getIsRequired();
-            SelectorPK recommendedGeoCodeSelectorPK = carrierOptionDetailValue.getRecommendedGeoCodeSelectorPK();
-            SelectorPK requiredGeoCodeSelectorPK = carrierOptionDetailValue.getRequiredGeoCodeSelectorPK();
-            SelectorPK recommendedItemSelectorPK = carrierOptionDetailValue.getRecommendedItemSelectorPK();
-            SelectorPK requiredItemSelectorPK = carrierOptionDetailValue.getRequiredItemSelectorPK();
-            SelectorPK recommendedOrderSelectorPK = carrierOptionDetailValue.getRecommendedOrderSelectorPK();
-            SelectorPK requiredOrderSelectorPK = carrierOptionDetailValue.getRequiredOrderSelectorPK();
-            SelectorPK recommendedShipmentSelectorPK = carrierOptionDetailValue.getRecommendedShipmentSelectorPK();
-            SelectorPK requiredShipmentSelectorPK = carrierOptionDetailValue.getRequiredItemSelectorPK();
-            Boolean isDefault = carrierOptionDetailValue.getIsDefault();
-            Integer sortOrder = carrierOptionDetailValue.getSortOrder();
+
+            var carrierOptionPK = carrierOptionDetail.getCarrierOptionPK();
+            var carrierParty = carrierOptionDetail.getCarrierParty();
+            var carrierPartyPK = carrierParty.getPrimaryKey();
+            var carrierOptionName = carrierOptionDetailValue.getCarrierOptionName();
+            var isRecommended = carrierOptionDetailValue.getIsRecommended();
+            var isRequired = carrierOptionDetailValue.getIsRequired();
+            var recommendedGeoCodeSelectorPK = carrierOptionDetailValue.getRecommendedGeoCodeSelectorPK();
+            var requiredGeoCodeSelectorPK = carrierOptionDetailValue.getRequiredGeoCodeSelectorPK();
+            var recommendedItemSelectorPK = carrierOptionDetailValue.getRecommendedItemSelectorPK();
+            var requiredItemSelectorPK = carrierOptionDetailValue.getRequiredItemSelectorPK();
+            var recommendedOrderSelectorPK = carrierOptionDetailValue.getRecommendedOrderSelectorPK();
+            var requiredOrderSelectorPK = carrierOptionDetailValue.getRequiredOrderSelectorPK();
+            var recommendedShipmentSelectorPK = carrierOptionDetailValue.getRecommendedShipmentSelectorPK();
+            var requiredShipmentSelectorPK = carrierOptionDetailValue.getRequiredItemSelectorPK();
+            var isDefault = carrierOptionDetailValue.getIsDefault();
+            var sortOrder = carrierOptionDetailValue.getSortOrder();
             
             if(checkDefault) {
-                CarrierOption defaultCarrierOption = getDefaultCarrierOption(carrierParty);
-                boolean defaultFound = defaultCarrierOption != null && !defaultCarrierOption.equals(carrierOption);
+                var defaultCarrierOption = getDefaultCarrierOption(carrierParty);
+                var defaultFound = defaultCarrierOption != null && !defaultCarrierOption.equals(carrierOption);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CarrierOptionDetailValue defaultCarrierOptionDetailValue = getDefaultCarrierOptionDetailValueForUpdate(carrierParty);
+                    var defaultCarrierOptionDetailValue = getDefaultCarrierOptionDetailValueForUpdate(carrierParty);
                     
                     defaultCarrierOptionDetailValue.setIsDefault(Boolean.FALSE);
                     updateCarrierOptionFromValue(defaultCarrierOptionDetailValue, false, updatedBy);
@@ -1662,28 +1640,28 @@ public class CarrierControl
     private void deleteCarrierOption(CarrierOption carrierOption, boolean checkDefault, BasePK deletedBy) {
         deleteCarrierOptionDescriptionsByCarrierOption(carrierOption, deletedBy);
         deleteCarrierServiceOptionsByCarrierOption(carrierOption, deletedBy);
-        
-        CarrierOptionDetail carrierOptionDetail = carrierOption.getLastDetailForUpdate();
+
+        var carrierOptionDetail = carrierOption.getLastDetailForUpdate();
         carrierOptionDetail.setThruTime(session.START_TIME_LONG);
         carrierOption.setActiveDetail(null);
         carrierOption.store();
         
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Party carrierParty = carrierOptionDetail.getCarrierParty();
-            CarrierOption defaultCarrierOption = getDefaultCarrierOption(carrierParty);
+            var carrierParty = carrierOptionDetail.getCarrierParty();
+            var defaultCarrierOption = getDefaultCarrierOption(carrierParty);
             
             if(defaultCarrierOption == null) {
-                List<CarrierOption> carrierPartyPriorities = getCarrierOptionsForUpdate(carrierParty);
+                var carrierPartyPriorities = getCarrierOptionsForUpdate(carrierParty);
                 
                 if(!carrierPartyPriorities.isEmpty()) {
-                    Iterator<CarrierOption> iter = carrierPartyPriorities.iterator();
+                    var iter = carrierPartyPriorities.iterator();
                     
                     if(iter.hasNext()) {
                         defaultCarrierOption = iter.next();
                     }
-                    
-                    CarrierOptionDetailValue carrierOptionDetailValue = Objects.requireNonNull(defaultCarrierOption).getLastDetailForUpdate().getCarrierOptionDetailValue().clone();
+
+                    var carrierOptionDetailValue = Objects.requireNonNull(defaultCarrierOption).getLastDetailForUpdate().getCarrierOptionDetailValue().clone();
                     
                     carrierOptionDetailValue.setIsDefault(Boolean.TRUE);
                     updateCarrierOptionFromValue(carrierOptionDetailValue, false, deletedBy);
@@ -1699,7 +1677,7 @@ public class CarrierControl
     }
     
     public void deleteCarrierOptionsByCarrierParty(Party carrierParty, BasePK deletedBy) {
-        List<CarrierOption> carrierPartyPriorities = getCarrierOptionsForUpdate(carrierParty);
+        var carrierPartyPriorities = getCarrierOptionsForUpdate(carrierParty);
         
         carrierPartyPriorities.forEach((carrierOption) -> {
             deleteCarrierOption(carrierOption, false, deletedBy);
@@ -1712,7 +1690,7 @@ public class CarrierControl
     
     public CarrierOptionDescription createCarrierOptionDescription(CarrierOption carrierOption, Language language, String description,
             BasePK createdBy) {
-        CarrierOptionDescription carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption,
+        var carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
@@ -1737,8 +1715,8 @@ public class CarrierControl
                         "WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_lang_languageid = ? AND crroptd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierOptionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierOptionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1785,8 +1763,8 @@ public class CarrierControl
                         "WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierOptionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierOptionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1809,7 +1787,7 @@ public class CarrierControl
     
     public String getBestCarrierOptionDescription(CarrierOption carrierOption, Language language) {
         String description;
-        CarrierOptionDescription carrierOptionDescription = getCarrierOptionDescription(carrierOption, language);
+        var carrierOptionDescription = getCarrierOptionDescription(carrierOption, language);
         
         if(carrierOptionDescription == null && !language.getIsDefault()) {
             carrierOptionDescription = getCarrierOptionDescription(carrierOption, getPartyControl().getDefaultLanguage());
@@ -1829,9 +1807,9 @@ public class CarrierControl
     }
     
     public List<CarrierOptionDescriptionTransfer> getCarrierOptionDescriptionTransfers(UserVisit userVisit, CarrierOption carrierOption) {
-        List<CarrierOptionDescription> carrierOptionDescriptions = getCarrierOptionDescriptionsByCarrierOption(carrierOption);
+        var carrierOptionDescriptions = getCarrierOptionDescriptionsByCarrierOption(carrierOption);
         List<CarrierOptionDescriptionTransfer> carrierOptionDescriptionTransfers = new ArrayList<>(carrierOptionDescriptions.size());
-        CarrierOptionDescriptionTransferCache carrierOptionDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierOptionDescriptionTransferCache();
+        var carrierOptionDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierOptionDescriptionTransferCache();
         
         carrierOptionDescriptions.forEach((carrierOptionDescription) ->
                 carrierOptionDescriptionTransfers.add(carrierOptionDescriptionTransferCache.getCarrierOptionDescriptionTransfer(carrierOptionDescription))
@@ -1842,15 +1820,15 @@ public class CarrierControl
     
     public void updateCarrierOptionDescriptionFromValue(CarrierOptionDescriptionValue carrierOptionDescriptionValue, BasePK updatedBy) {
         if(carrierOptionDescriptionValue.hasBeenModified()) {
-            CarrierOptionDescription carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierOptionDescriptionValue.getPrimaryKey());
             
             carrierOptionDescription.setThruTime(session.START_TIME_LONG);
             carrierOptionDescription.store();
-            
-            CarrierOption carrierOption = carrierOptionDescription.getCarrierOption();
-            Language language = carrierOptionDescription.getLanguage();
-            String description = carrierOptionDescriptionValue.getDescription();
+
+            var carrierOption = carrierOptionDescription.getCarrierOption();
+            var language = carrierOptionDescription.getLanguage();
+            var description = carrierOptionDescriptionValue.getDescription();
             
             carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1868,7 +1846,7 @@ public class CarrierControl
     }
     
     public void deleteCarrierOptionDescriptionsByCarrierOption(CarrierOption carrierOption, BasePK deletedBy) {
-        List<CarrierOptionDescription> carrierOptionDescriptions = getCarrierOptionDescriptionsByCarrierOptionForUpdate(carrierOption);
+        var carrierOptionDescriptions = getCarrierOptionDescriptionsByCarrierOptionForUpdate(carrierOption);
         
         carrierOptionDescriptions.forEach((carrierOptionDescription) -> 
                 deleteCarrierOptionDescription(carrierOptionDescription, deletedBy)
@@ -1883,7 +1861,7 @@ public class CarrierControl
             Boolean isRequired, Selector recommendedGeoCodeSelector, Selector requiredGeoCodeSelector, Selector recommendedItemSelector,
             Selector requiredItemSelector, Selector recommendedOrderSelector, Selector requiredOrderSelector, Selector recommendedShipmentSelector,
             Selector requiredShipmentSelector, BasePK createdBy) {
-        CarrierServiceOption carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierService, carrierOption, isRecommended, isRequired,
+        var carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierService, carrierOption, isRecommended, isRequired,
                 recommendedGeoCodeSelector, requiredGeoCodeSelector, recommendedItemSelector, requiredItemSelector, recommendedOrderSelector,
                 requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
@@ -1911,8 +1889,8 @@ public class CarrierControl
                         "WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, carrierOption.getPrimaryKey().getEntityId());
@@ -1960,8 +1938,8 @@ public class CarrierControl
                         "WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2000,8 +1978,8 @@ public class CarrierControl
                         "WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2028,7 +2006,7 @@ public class CarrierControl
     
     public List<CarrierServiceOptionTransfer> getCarrierServiceOptionTransfers(UserVisit userVisit, Collection<CarrierServiceOption> carrierServiceOptions) {
         List<CarrierServiceOptionTransfer> carrierServiceOptionTransfers = new ArrayList<>(carrierServiceOptions.size());
-        CarrierServiceOptionTransferCache carrierServiceOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceOptionTransferCache();
+        var carrierServiceOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceOptionTransferCache();
         
         carrierServiceOptions.forEach((carrierServiceOption) ->
                 carrierServiceOptionTransfers.add(carrierServiceOptionTransferCache.getCarrierServiceOptionTransfer(carrierServiceOption))
@@ -2049,24 +2027,24 @@ public class CarrierControl
     
     public void updateCarrierServiceOptionFromValue(CarrierServiceOptionValue carrierServiceOptionValue, BasePK updatedBy) {
         if(carrierServiceOptionValue.hasBeenModified()) {
-            CarrierServiceOption carrierServiceOption = CarrierServiceOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierServiceOption = CarrierServiceOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierServiceOptionValue.getPrimaryKey());
             
             carrierServiceOption.setThruTime(session.START_TIME_LONG);
             carrierServiceOption.store();
-            
-            CarrierServicePK carrierServicePK = carrierServiceOption.getCarrierServicePK();
-            CarrierOptionPK carrierOptionPK = carrierServiceOption.getCarrierOptionPK();
-            Boolean isRecommended = carrierServiceOptionValue.getIsRecommended();
-            Boolean isRequired = carrierServiceOptionValue.getIsRequired();
-            SelectorPK recommendedGeoCodeSelectorPK = carrierServiceOptionValue.getRecommendedGeoCodeSelectorPK();
-            SelectorPK requiredGeoCodeSelectorPK = carrierServiceOptionValue.getRequiredGeoCodeSelectorPK();
-            SelectorPK recommendedItemSelectorPK = carrierServiceOptionValue.getRecommendedItemSelectorPK();
-            SelectorPK requiredItemSelectorPK = carrierServiceOptionValue.getRequiredItemSelectorPK();
-            SelectorPK recommendedOrderSelectorPK = carrierServiceOptionValue.getRecommendedOrderSelectorPK();
-            SelectorPK requiredOrderSelectorPK = carrierServiceOptionValue.getRequiredOrderSelectorPK();
-            SelectorPK recommendedShipmentSelectorPK = carrierServiceOptionValue.getRecommendedShipmentSelectorPK();
-            SelectorPK requiredShipmentSelectorPK = carrierServiceOptionValue.getRequiredItemSelectorPK();
+
+            var carrierServicePK = carrierServiceOption.getCarrierServicePK();
+            var carrierOptionPK = carrierServiceOption.getCarrierOptionPK();
+            var isRecommended = carrierServiceOptionValue.getIsRecommended();
+            var isRequired = carrierServiceOptionValue.getIsRequired();
+            var recommendedGeoCodeSelectorPK = carrierServiceOptionValue.getRecommendedGeoCodeSelectorPK();
+            var requiredGeoCodeSelectorPK = carrierServiceOptionValue.getRequiredGeoCodeSelectorPK();
+            var recommendedItemSelectorPK = carrierServiceOptionValue.getRecommendedItemSelectorPK();
+            var requiredItemSelectorPK = carrierServiceOptionValue.getRequiredItemSelectorPK();
+            var recommendedOrderSelectorPK = carrierServiceOptionValue.getRecommendedOrderSelectorPK();
+            var requiredOrderSelectorPK = carrierServiceOptionValue.getRequiredOrderSelectorPK();
+            var recommendedShipmentSelectorPK = carrierServiceOptionValue.getRecommendedShipmentSelectorPK();
+            var requiredShipmentSelectorPK = carrierServiceOptionValue.getRequiredItemSelectorPK();
             
             carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierServicePK, carrierOptionPK, isRecommended, isRequired,
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,
@@ -2102,7 +2080,7 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     
     public PartyCarrier createPartyCarrier(Party party, Party carrierParty, BasePK createdBy) {
-        PartyCarrier partyCarrier = PartyCarrierFactory.getInstance().create(party, carrierParty, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyCarrier = PartyCarrierFactory.getInstance().create(party, carrierParty, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2133,8 +2111,8 @@ public class CarrierControl
                         "WHERE pcrr_par_partyid = ? AND pcrr_carrierpartyid = ? AND pcrr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCarrierFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, carrierParty.getPrimaryKey().getEntityId());
@@ -2174,8 +2152,8 @@ public class CarrierControl
                         "WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCarrierFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2214,8 +2192,8 @@ public class CarrierControl
                         "WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCarrierFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2245,7 +2223,7 @@ public class CarrierControl
     
     public List<PartyCarrierTransfer> getPartyCarrierTransfersByParty(UserVisit userVisit, List<PartyCarrier> partyCarriers) {
         List<PartyCarrierTransfer> partyCarrierTransfers = new ArrayList<>(partyCarriers.size());
-        PartyCarrierTransferCache partyCarrierTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierTransferCache();
+        var partyCarrierTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierTransferCache();
 
         partyCarriers.forEach((partyCarrier) ->
                 partyCarrierTransfers.add(partyCarrierTransferCache.getPartyCarrierTransfer(partyCarrier))
@@ -2287,8 +2265,8 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
 
     public PartyCarrierAccount createPartyCarrierAccount(Party party, Party carrierParty, String account, Boolean alwaysUseThirdPartyBilling, BasePK createdBy) {
-        PartyCarrierAccount partyCarrierAccount = PartyCarrierAccountFactory.getInstance().create();
-        PartyCarrierAccountDetail partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccount, party, carrierParty,
+        var partyCarrierAccount = PartyCarrierAccountFactory.getInstance().create();
+        var partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccount, party, carrierParty,
                 account, alwaysUseThirdPartyBilling, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2419,7 +2397,7 @@ public class CarrierControl
 
     public List<PartyCarrierAccountTransfer> getPartyCarrierAccountTransfers(UserVisit userVisit, Collection<PartyCarrierAccount> partyCarrierAccounts) {
         List<PartyCarrierAccountTransfer> partyCarrierAccountTransfers = new ArrayList<>(partyCarrierAccounts.size());
-        PartyCarrierAccountTransferCache partyCarrierAccountTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierAccountTransferCache();
+        var partyCarrierAccountTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierAccountTransferCache();
 
         partyCarrierAccounts.forEach((partyCarrierAccount) ->
                 partyCarrierAccountTransfers.add(partyCarrierAccountTransferCache.getPartyCarrierAccountTransfer(partyCarrierAccount))
@@ -2438,18 +2416,18 @@ public class CarrierControl
 
     public void updatePartyCarrierAccountFromValue(PartyCarrierAccountDetailValue partyCarrierAccountDetailValue, BasePK updatedBy) {
         if(partyCarrierAccountDetailValue.hasBeenModified()) {
-            PartyCarrierAccount partyCarrierAccount = PartyCarrierAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyCarrierAccount = PartyCarrierAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyCarrierAccountDetailValue.getPartyCarrierAccountPK());
-            PartyCarrierAccountDetail partyCarrierAccountDetail = partyCarrierAccount.getActiveDetailForUpdate();
+            var partyCarrierAccountDetail = partyCarrierAccount.getActiveDetailForUpdate();
 
             partyCarrierAccountDetail.setThruTime(session.START_TIME_LONG);
             partyCarrierAccountDetail.store();
 
-            PartyCarrierAccountPK partyCarrierAccountPK = partyCarrierAccountDetail.getPartyCarrierAccountPK(); // Not updated
-            PartyPK partyPK = partyCarrierAccountDetail.getPartyPK(); // Not updated
-            PartyPK carrierPartyPK = partyCarrierAccountDetail.getCarrierPartyPK(); // Not updated
-            String account = partyCarrierAccountDetailValue.getAccount();
-            Boolean alwaysUseThirdPartyBilling = partyCarrierAccountDetailValue.getAlwaysUseThirdPartyBilling();
+            var partyCarrierAccountPK = partyCarrierAccountDetail.getPartyCarrierAccountPK(); // Not updated
+            var partyPK = partyCarrierAccountDetail.getPartyPK(); // Not updated
+            var carrierPartyPK = partyCarrierAccountDetail.getCarrierPartyPK(); // Not updated
+            var account = partyCarrierAccountDetailValue.getAccount();
+            var alwaysUseThirdPartyBilling = partyCarrierAccountDetailValue.getAlwaysUseThirdPartyBilling();
 
             partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccountPK, partyPK, carrierPartyPK, account,
                     alwaysUseThirdPartyBilling, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2462,7 +2440,7 @@ public class CarrierControl
     }
 
     public void deletePartyCarrierAccount(PartyCarrierAccount partyCarrierAccount, BasePK deletedBy) {
-        PartyCarrierAccountDetail partyCarrierAccountDetail = partyCarrierAccount.getLastDetailForUpdate();
+        var partyCarrierAccountDetail = partyCarrierAccount.getLastDetailForUpdate();
 
         partyCarrierAccountDetail.setThruTime(session.START_TIME_LONG);
         partyCarrierAccount.setActiveDetail(null);

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.securityrolepartytype;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.DeleteSecurityRolePartyTypeForm;
-import com.echothree.control.user.security.common.form.GetSecurityRolePartyTypeForm;
 import com.echothree.control.user.security.common.result.GetSecurityRolePartyTypeResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,15 +61,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSecurityRolePartyTypeForm commandForm = SecurityUtil.getHome().getGetSecurityRolePartyTypeForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRolePartyTypeForm();
         
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
-        
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRolePartyType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSecurityRolePartyTypeResult result = (GetSecurityRolePartyTypeResult)executionResult.getResult();
+
+        var commandResult = SecurityUtil.getHome().getSecurityRolePartyType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSecurityRolePartyTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SECURITY_ROLE_PARTY_TYPE, result.getSecurityRolePartyType());
     }
@@ -80,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSecurityRolePartyTypeForm commandForm = SecurityUtil.getHome().getDeleteSecurityRolePartyTypeForm();
+        var commandForm = SecurityUtil.getHome().getDeleteSecurityRolePartyTypeForm();
 
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());

@@ -23,7 +23,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAlias;
-import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,7 +66,7 @@ public class GetEntityAliasCommand
 
     @Override
     protected EntityAlias getEntity() {
-        EntityAliasType entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
+        var entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
         EntityAlias entityAlias = null;
 
         if(!hasExecutionErrors()) {

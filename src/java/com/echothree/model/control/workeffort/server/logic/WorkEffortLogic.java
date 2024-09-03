@@ -24,8 +24,6 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDetail;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDetail;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -97,10 +95,10 @@ public class WorkEffortLogic {
 
     public PreparedWorkEffort prepareForWorkEffort(final ExecutionErrorAccumulator ema, final WorkEffortScope workEffortScope, Long scheduledTime,
             Long estimatedTimeAllowed, Long maximumTimeAllowed) {
-        PreparedWorkEffort preparedWorkEffort = new PreparedWorkEffort();
-        WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getLastDetail();
-        WorkEffortTypeDetail workEffortTypeDetail = workEffortScopeDetail.getWorkEffortType().getLastDetail();
-        Sequence workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();
+        var preparedWorkEffort = new PreparedWorkEffort();
+        var workEffortScopeDetail = workEffortScope.getLastDetail();
+        var workEffortTypeDetail = workEffortScopeDetail.getWorkEffortType().getLastDetail();
+        var workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();
 
         preparedWorkEffort.setWorkEffortScope(workEffortScope);
 
@@ -176,9 +174,9 @@ public class WorkEffortLogic {
 
     public WorkEffort createWorkEffort(final PreparedWorkEffort preparedWorkEffort, final EntityInstance owningEntityInstance, final BasePK createdBy) {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(preparedWorkEffort.getWorkEffortSequence());
-        
-        WorkEffort workEffort = workEffortControl.createWorkEffort(workEffortName, owningEntityInstance, preparedWorkEffort.getWorkEffortScope(),
+        var workEffortName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(preparedWorkEffort.getWorkEffortSequence());
+
+        var workEffort = workEffortControl.createWorkEffort(workEffortName, owningEntityInstance, preparedWorkEffort.getWorkEffortScope(),
                 preparedWorkEffort.getScheduledTime(), null, null, preparedWorkEffort.getEstimatedTimeAllowed(), preparedWorkEffort.getMaximumTimeAllowed(),
                 createdBy);
 

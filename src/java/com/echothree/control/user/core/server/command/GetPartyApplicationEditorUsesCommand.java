@@ -18,12 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetPartyApplicationEditorUsesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetPartyApplicationEditorUsesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -62,9 +60,9 @@ public class GetPartyApplicationEditorUsesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyApplicationEditorUsesResult result = CoreResultFactory.getGetPartyApplicationEditorUsesResult();
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
+        var result = CoreResultFactory.getGetPartyApplicationEditorUsesResult();
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();

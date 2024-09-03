@@ -22,9 +22,6 @@ import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
-import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactListGroup;
-import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,19 +65,19 @@ public class CreateCustomerTypeContactListGroupCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListGroupName = form.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = form.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
             
             if(contactListGroup != null) {
-                CustomerTypeContactListGroup customerTypeContactListGroup = contactListControl.getCustomerTypeContactListGroup(customerType, contactListGroup);
+                var customerTypeContactListGroup = contactListControl.getCustomerTypeContactListGroup(customerType, contactListGroup);
                 
                 if(customerTypeContactListGroup == null) {
-                    Boolean addWhenCreated = Boolean.valueOf(form.getAddWhenCreated());
+                    var addWhenCreated = Boolean.valueOf(form.getAddWhenCreated());
 
                     contactListControl.createCustomerTypeContactListGroup(customerType, contactListGroup, addWhenCreated, getPartyPK());
                 } else {

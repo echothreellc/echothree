@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.ServerServiceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.scale.common.transfer.ScaleTransfer;
-import com.echothree.model.control.scale.common.transfer.ScaleTypeTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.Scale;
-import com.echothree.model.data.scale.server.entity.ScaleDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,16 +36,16 @@ public class ScaleTransferCache
     }
     
     public ScaleTransfer getScaleTransfer(Scale scale) {
-        ScaleTransfer scaleTransfer = get(scale);
+        var scaleTransfer = get(scale);
         
         if(scaleTransfer == null) {
-            ScaleDetail scaleDetail = scale.getLastDetail();
-            String scaleName = scaleDetail.getScaleName();
-            ScaleTypeTransfer scaleType = scaleControl.getScaleTypeTransfer(userVisit, scaleDetail.getScaleType());
-            ServerServiceTransfer serverService = coreControl.getServerServiceTransfer(userVisit, scaleDetail.getServerService());
-            Boolean isDefault = scaleDetail.getIsDefault();
-            Integer sortOrder = scaleDetail.getSortOrder();
-            String description = scaleControl.getBestScaleDescription(scale, getLanguage());
+            var scaleDetail = scale.getLastDetail();
+            var scaleName = scaleDetail.getScaleName();
+            var scaleType = scaleControl.getScaleTypeTransfer(userVisit, scaleDetail.getScaleType());
+            var serverService = coreControl.getServerServiceTransfer(userVisit, scaleDetail.getServerService());
+            var isDefault = scaleDetail.getIsDefault();
+            var sortOrder = scaleDetail.getSortOrder();
+            var description = scaleControl.getBestScaleDescription(scale, getLanguage());
             
             scaleTransfer = new ScaleTransfer(scaleName, scaleType, serverService, isDefault, sortOrder, description);
             put(scale, scaleTransfer);

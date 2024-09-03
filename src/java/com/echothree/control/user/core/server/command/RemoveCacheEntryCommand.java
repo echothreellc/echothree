@@ -17,7 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.RemoveCacheEntryForm;
-import com.echothree.model.data.core.server.entity.CacheEntry;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -47,12 +46,12 @@ public class RemoveCacheEntryCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String cacheEntryKey = form.getCacheEntryKey();
+        var cacheEntryKey = form.getCacheEntryKey();
         
         if(cacheEntryKey == null) {
             coreControl.removeCacheEntries();
         } else {
-            CacheEntry cacheEntry = coreControl.getCacheEntryByCacheEntryKeyForUpdate(cacheEntryKey);
+            var cacheEntry = coreControl.getCacheEntryByCacheEntryKeyForUpdate(cacheEntryKey);
 
             if(cacheEntry != null) {
                 coreControl.removeCacheEntry(cacheEntry);

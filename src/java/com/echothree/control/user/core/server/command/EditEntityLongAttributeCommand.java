@@ -20,23 +20,17 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityLongAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityLongAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditEntityLongAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityLongAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeLong;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
-import com.echothree.model.data.core.server.value.EntityLongAttributeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -79,20 +73,20 @@ public class EditEntityLongAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        EditEntityLongAttributeResult result = CoreResultFactory.getEditEntityLongAttributeResult();
+        var result = CoreResultFactory.getEditEntityLongAttributeResult();
         var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = spec.getEntityAttributeName();
-                String entityAttributeUlid = spec.getEntityAttributeUlid();
+                var entityAttributeName = spec.getEntityAttributeName();
+                var entityAttributeUlid = spec.getEntityAttributeUlid();
                 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
@@ -100,7 +94,7 @@ public class EditEntityLongAttributeCommand
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                             var coreControl = getCoreControl();
                             EntityLongAttribute entityLongAttribute = null;
-                            BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                                 entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
@@ -110,7 +104,7 @@ public class EditEntityLongAttributeCommand
                                         result.setEntityLongAttribute(coreControl.getEntityLongAttributeTransfer(getUserVisit(), entityLongAttribute, entityInstance));
 
                                         if(lockEntity(basePK)) {
-                                            EntityLongAttributeEdit edit = CoreEditFactory.getEntityLongAttributeEdit();
+                                            var edit = CoreEditFactory.getEntityLongAttributeEdit();
 
                                             result.setEdit(edit);
                                             edit.setLongAttribute(entityLongAttribute.getLongAttribute().toString());
@@ -126,12 +120,12 @@ public class EditEntityLongAttributeCommand
                                             EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
-                                EntityAttributeLong entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
-                                Long longAttribute = Long.valueOf(edit.getLongAttribute());
+                                var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
+                                var longAttribute = Long.valueOf(edit.getLongAttribute());
 
                                 if(entityAttributeLong != null) {
-                                    Long upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
-                                    Long lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
+                                    var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
+                                    var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
 
                                     if(upperRangeLongValue != null && longAttribute > upperRangeLongValue){
                                         addExecutionError(ExecutionErrors.UpperRangeExceeded.name(),
@@ -151,7 +145,7 @@ public class EditEntityLongAttributeCommand
                                     if(entityLongAttribute != null) {
                                         if(lockEntityForUpdate(basePK)) {
                                             try {
-                                                EntityLongAttributeValue entityLongAttributeValue = coreControl.getEntityLongAttributeValueForUpdate(entityLongAttribute);
+                                                var entityLongAttributeValue = coreControl.getEntityLongAttributeValueForUpdate(entityLongAttribute);
 
                                                 entityLongAttributeValue.setLongAttribute(longAttribute);
 

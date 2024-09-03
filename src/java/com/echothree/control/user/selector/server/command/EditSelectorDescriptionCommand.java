@@ -19,7 +19,6 @@ package com.echothree.control.user.selector.server.command;
 import com.echothree.control.user.selector.common.edit.SelectorDescriptionEdit;
 import com.echothree.control.user.selector.common.edit.SelectorEditFactory;
 import com.echothree.control.user.selector.common.form.EditSelectorDescriptionForm;
-import com.echothree.control.user.selector.common.result.EditSelectorDescriptionResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.control.user.selector.common.spec.SelectorDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -27,12 +26,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorDescription;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.selector.server.value.SelectorDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -83,32 +76,32 @@ public class EditSelectorDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        EditSelectorDescriptionResult result = SelectorResultFactory.getEditSelectorDescriptionResult();
-        String selectorKindName = spec.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var result = SelectorResultFactory.getEditSelectorDescriptionResult();
+        var selectorKindName = spec.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorTypeName = spec.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorTypeName = spec.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             if(selectorType != null) {
-                String selectorName = spec.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                var selectorName = spec.getSelectorName();
+                var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                 
                 if(selector != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            SelectorDescription selectorDescription = selectorControl.getSelectorDescription(selector, language);
+                            var selectorDescription = selectorControl.getSelectorDescription(selector, language);
                             
                             if(selectorDescription != null) {
                                 result.setSelectorDescription(selectorControl.getSelectorDescriptionTransfer(getUserVisit(), selectorDescription));
                                 
                                 if(lockEntity(selector)) {
-                                    SelectorDescriptionEdit edit = SelectorEditFactory.getSelectorDescriptionEdit();
+                                    var edit = SelectorEditFactory.getSelectorDescriptionEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setDescription(selectorDescription.getDescription());
@@ -121,12 +114,12 @@ public class EditSelectorDescriptionCommand
                                 addExecutionError(ExecutionErrors.UnknownSelectorDescription.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            SelectorDescriptionValue selectorDescriptionValue = selectorControl.getSelectorDescriptionValueForUpdate(selector, language);
+                            var selectorDescriptionValue = selectorControl.getSelectorDescriptionValueForUpdate(selector, language);
                             
                             if(selectorDescriptionValue != null) {
                                 if(lockEntityForUpdate(selector)) {
                                     try {
-                                        String description = edit.getDescription();
+                                        var description = edit.getDescription();
                                         
                                         selectorDescriptionValue.setDescription(description);
                                         

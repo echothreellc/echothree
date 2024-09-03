@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.chain.common.transfer.ChainTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.offer.common.transfer.OfferChainTypeTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.offer.server.entity.OfferChainType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -39,13 +35,13 @@ public class OfferChainTypeTransferCache
     }
     
     public OfferChainTypeTransfer getOfferChainTypeTransfer(OfferChainType offerChainType) {
-        OfferChainTypeTransfer offerChainTypeTransfer = get(offerChainType);
+        var offerChainTypeTransfer = get(offerChainType);
         
         if(offerChainTypeTransfer == null) {
-            OfferTransfer offerTransfer = offerControl.getOfferTransfer(userVisit, offerChainType.getOffer());
-            ChainTypeTransfer chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, offerChainType.getChainType());
-            Chain chain = offerChainType.getChain();
-            ChainTransfer chainTransfer = chain == null? null: chainControl.getChainTransfer(userVisit, chain);
+            var offerTransfer = offerControl.getOfferTransfer(userVisit, offerChainType.getOffer());
+            var chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, offerChainType.getChainType());
+            var chain = offerChainType.getChain();
+            var chainTransfer = chain == null? null: chainControl.getChainTransfer(userVisit, chain);
             
             offerChainTypeTransfer = new OfferChainTypeTransfer(offerTransfer, chainTypeTransfer, chainTransfer);
             put(offerChainType, offerChainTypeTransfer);

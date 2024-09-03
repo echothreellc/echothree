@@ -30,15 +30,15 @@ public class UnitOfMeasureKindUseTypeTransferCache
     }
     
     public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        UnitOfMeasureKindUseTypeTransfer unitOfMeasureKindUseTypeTransfer = get(unitOfMeasureKindUseType);
+        var unitOfMeasureKindUseTypeTransfer = get(unitOfMeasureKindUseType);
         
         if(unitOfMeasureKindUseTypeTransfer == null) {
-            String unitOfMeasureKindUseTypeName = unitOfMeasureKindUseType.getUnitOfMeasureKindUseTypeName();
-            Boolean allowMultiple = unitOfMeasureKindUseType.getAllowMultiple();
-            Boolean allowFractionDigits = unitOfMeasureKindUseType.getAllowFractionDigits();
-            Boolean isDefault = unitOfMeasureKindUseType.getIsDefault();
-            Integer sortOrder = unitOfMeasureKindUseType.getSortOrder();
-            String description = uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getLanguage());
+            var unitOfMeasureKindUseTypeName = unitOfMeasureKindUseType.getUnitOfMeasureKindUseTypeName();
+            var allowMultiple = unitOfMeasureKindUseType.getAllowMultiple();
+            var allowFractionDigits = unitOfMeasureKindUseType.getAllowFractionDigits();
+            var isDefault = unitOfMeasureKindUseType.getIsDefault();
+            var sortOrder = unitOfMeasureKindUseType.getSortOrder();
+            var description = uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getLanguage());
             
             unitOfMeasureKindUseTypeTransfer = new UnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault,
                     sortOrder, description);

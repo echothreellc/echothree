@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
 import java.util.Iterator;
@@ -91,14 +90,14 @@ public class ValidationErrorsTag
 
     public Messages getMessages(PageContext pageContext, String paramName)
             throws JspException {
-        Messages messages = new Messages();
-        CommandResult commandResult = (CommandResult)pageContext.findAttribute(paramName);
+        var messages = new Messages();
+        var commandResult = (CommandResult)pageContext.findAttribute(paramName);
 
         if(commandResult != null) {
-            ValidationResult validationResult = commandResult.getValidationResult();
+            var validationResult = commandResult.getValidationResult();
 
             if(validationResult != null) {
-                Messages pageMessages = validationResult.getValidationMessages();
+                var pageMessages = validationResult.getValidationMessages();
 
                 if(pageMessages != null) {
                     messages.add(pageMessages);
@@ -122,7 +121,7 @@ public class ValidationErrorsTag
         processed = false;
 
         // Make a local copy of the name attribute that we can modify.
-        Messages messages = getMessages(pageContext, commandResultVar);
+        var messages = getMessages(pageContext, commandResultVar);
 
         // Acquire the collection we are going to iterate over
         this.iterator = messages.get(property);
@@ -135,7 +134,7 @@ public class ValidationErrorsTag
         setMessageAttribute(iterator.next());
 
         if(header != null && header.length() > 0) {
-            String headerMessage = TagUtils.getInstance().message(pageContext, bundle, locale, header);
+            var headerMessage = TagUtils.getInstance().message(pageContext, bundle, locale, header);
 
             if(headerMessage != null) {
                 TagUtils.getInstance().write(pageContext, headerMessage);
@@ -183,7 +182,7 @@ public class ValidationErrorsTag
     public int doEndTag()
             throws JspException {
         if(processed && footer != null && footer.length() > 0) {
-            String footerMessage = TagUtils.getInstance().message(pageContext, bundle, locale, footer);
+            var footerMessage = TagUtils.getInstance().message(pageContext, bundle, locale, footer);
 
             if(footerMessage != null) {
                 TagUtils.getInstance().write(pageContext, footerMessage);

@@ -18,7 +18,6 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetFreeOnBoardForm;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
-import com.echothree.control.user.shipment.common.result.GetFreeOnBoardResult;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.core.common.EventTypes;
@@ -56,7 +55,7 @@ public class GetFreeOnBoardCommand
     
     @Override
     protected FreeOnBoard getEntity() {
-        FreeOnBoard freeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByUniversalSpec(this, form, true);
+        var freeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByUniversalSpec(this, form, true);
 
         if(freeOnBoard != null) {
             sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -68,7 +67,7 @@ public class GetFreeOnBoardCommand
     @Override
     protected BaseResult getResult(FreeOnBoard freeOnBoard) {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        GetFreeOnBoardResult result = ShipmentResultFactory.getGetFreeOnBoardResult();
+        var result = ShipmentResultFactory.getGetFreeOnBoardResult();
 
         if(freeOnBoard != null) {
             result.setFreeOnBoard(freeOnBoardControl.getFreeOnBoardTransfer(getUserVisit(), freeOnBoard));

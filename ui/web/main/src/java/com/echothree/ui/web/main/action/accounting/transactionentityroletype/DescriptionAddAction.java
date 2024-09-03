@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.transactionentityroletype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.CreateTransactionEntityRoleTypeDescriptionForm;
-import com.echothree.control.user.accounting.common.form.GetTransactionEntityRoleTypeForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,15 +54,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionEntityRoleTypeForm commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setTransactionEntityRoleTypeName(actionForm.getTransactionEntityRoleTypeName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionEntityRoleTypeResult result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE, result.getTransactionEntityRoleType());
         }
@@ -74,7 +71,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTransactionEntityRoleTypeDescriptionForm commandForm = AccountingUtil.getHome().getCreateTransactionEntityRoleTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getCreateTransactionEntityRoleTypeDescriptionForm();
 
         commandForm.setTransactionTypeName( actionForm.getTransactionTypeName());
         commandForm.setTransactionEntityRoleTypeName( actionForm.getTransactionEntityRoleTypeName());

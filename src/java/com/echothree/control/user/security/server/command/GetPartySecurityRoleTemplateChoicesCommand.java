@@ -17,7 +17,6 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateChoicesForm;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateChoicesResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetPartySecurityRoleTemplateChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = Session.getModelController(SecurityControl.class);
-        GetPartySecurityRoleTemplateChoicesResult result = SecurityResultFactory.getGetPartySecurityRoleTemplateChoicesResult();
-        String defaultPartySecurityRoleTemplateChoice = form.getDefaultPartySecurityRoleTemplateChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SecurityResultFactory.getGetPartySecurityRoleTemplateChoicesResult();
+        var defaultPartySecurityRoleTemplateChoice = form.getDefaultPartySecurityRoleTemplateChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPartySecurityRoleTemplateChoices(coreControl.getPartySecurityRoleTemplateChoices(defaultPartySecurityRoleTemplateChoice,
                 getPreferredLanguage(), allowNullChoice));

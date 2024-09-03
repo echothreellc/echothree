@@ -18,7 +18,6 @@ package com.echothree.control.user.payment.common;
 
 import com.echothree.control.user.payment.server.PaymentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class PaymentUtil {
@@ -30,7 +29,7 @@ public class PaymentUtil {
     public static PaymentLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (PaymentLocal)ctx.lookup("ejb:echothree/echothree-server/PaymentBean!com.echothree.control.user.payment.server.PaymentLocal");
         }
@@ -42,7 +41,7 @@ public class PaymentUtil {
     public static PaymentRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (PaymentRemote)ctx.lookup("ejb:echothree/echothree-server/PaymentBean!com.echothree.control.user.payment.common.PaymentRemote");
         }

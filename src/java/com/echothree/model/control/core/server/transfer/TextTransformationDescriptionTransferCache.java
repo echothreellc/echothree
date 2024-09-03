@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.TextTransformationDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.TextTransformationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.TextTransformationDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class TextTransformationDescriptionTransferCache
     }
     
     public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(TextTransformationDescription textTransformationDescription) {
-        TextTransformationDescriptionTransfer textTransformationDescriptionTransfer = get(textTransformationDescription);
+        var textTransformationDescriptionTransfer = get(textTransformationDescription);
         
         if(textTransformationDescriptionTransfer == null) {
-            TextTransformationTransfer textTransformationTransfer = coreControl.getTextTransformationTransfer(userVisit, textTransformationDescription.getTextTransformation());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, textTransformationDescription.getLanguage());
+            var textTransformationTransfer = coreControl.getTextTransformationTransfer(userVisit, textTransformationDescription.getTextTransformation());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, textTransformationDescription.getLanguage());
             
             textTransformationDescriptionTransfer = new TextTransformationDescriptionTransfer(languageTransfer, textTransformationTransfer, textTransformationDescription.getDescription());
             put(textTransformationDescription, textTransformationDescriptionTransfer);

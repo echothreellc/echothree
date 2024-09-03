@@ -17,7 +17,6 @@
 package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindsForm;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindsResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
@@ -55,7 +54,7 @@ public class GetUnitOfMeasureKindsCommand
     
     @Override
     protected BaseResult getResult(Collection<UnitOfMeasureKind> entities) {
-        GetUnitOfMeasureKindsResult result = UomResultFactory.getGetUnitOfMeasureKindsResult();
+        var result = UomResultFactory.getGetUnitOfMeasureKindsResult();
         var uomControl = Session.getModelController(UomControl.class);
         
         result.setUnitOfMeasureKinds(uomControl.getUnitOfMeasureKindTransfers(getUserVisit(), entities));

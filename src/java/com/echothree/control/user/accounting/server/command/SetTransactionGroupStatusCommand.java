@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.SetTransactionGroupStatusForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,11 +49,11 @@ public class SetTransactionGroupStatusCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionGroupName = form.getTransactionGroupName();
-        TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
+        var transactionGroupName = form.getTransactionGroupName();
+        var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
         
         if(transactionGroup != null) {
-            String transactionGroupStatusChoice = form.getTransactionGroupStatusChoice();
+            var transactionGroupStatusChoice = form.getTransactionGroupStatusChoice();
             
             accountingControl.setTransactionGroupStatus(this, transactionGroup, transactionGroupStatusChoice, getPartyPK());
         } else {

@@ -54,7 +54,7 @@ public class PaymentProcessorTransferCache
 
     @Override
     public PaymentProcessorTransfer getTransfer(PaymentProcessor paymentProcessor) {
-        PaymentProcessorTransfer paymentProcessorTransfer = get(paymentProcessor);
+        var paymentProcessorTransfer = get(paymentProcessor);
         
         if(paymentProcessorTransfer == null) {
             var paymentProcessorDetail = paymentProcessor.getLastDetail();

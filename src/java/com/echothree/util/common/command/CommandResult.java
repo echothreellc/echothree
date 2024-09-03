@@ -82,7 +82,7 @@ public class CommandResult
         boolean result;
 
         if(securityResult != null) {
-            Messages securityMessages = securityResult.getSecurityMessages();
+            var securityMessages = securityResult.getSecurityMessages();
 
             if(securityMessages != null) {
                 result = securityMessages.containsKey(Messages.SECURITY_MESSAGE, key);
@@ -100,7 +100,7 @@ public class CommandResult
         boolean result;
 
         if(executionResult != null) {
-            Messages executionWarnings = executionResult.getExecutionWarnings();
+            var executionWarnings = executionResult.getExecutionWarnings();
 
             if(executionWarnings != null) {
                 result = executionWarnings.containsKey(Messages.EXECUTION_WARNING, key);
@@ -118,7 +118,7 @@ public class CommandResult
         boolean result;
 
         if(executionResult != null) {
-            Messages executionErrors = executionResult.getExecutionErrors();
+            var executionErrors = executionResult.getExecutionErrors();
 
             if(executionErrors != null) {
                 result = executionErrors.containsKey(Messages.EXECUTION_ERROR, key);
@@ -134,7 +134,7 @@ public class CommandResult
 
     @Override
     public String toString() {
-        return new StringBuilder().append("{ securityResult = ").append(securityResult).append(", validationResult = ").append(validationResult).append(", executionResult = ").append(executionResult).append(" }").toString();
+        return "{ securityResult = " + securityResult + ", validationResult = " + validationResult + ", executionResult = " + executionResult + " }";
     }
 
 }

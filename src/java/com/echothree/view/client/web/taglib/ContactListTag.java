@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -92,15 +89,15 @@ public class ContactListTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContactListForm commandForm = ContactListUtil.getHome().getGetContactListForm();
+            var commandForm = ContactListUtil.getHome().getGetContactListForm();
             
             commandForm.setContactListName(contactListName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ContactListUtil.getHome().getContactList(getUserVisitPK(), commandForm);
+
+            var commandResult = ContactListUtil.getHome().getContactList(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +105,8 @@ public class ContactListTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactListResult result = (GetContactListResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContactListResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContactList(), scope);
             }

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -26,14 +24,11 @@ import com.echothree.model.control.workeffort.common.WorkEffortOptions;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDetail;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class WorkEffortTypeTransferCache
         extends BaseWorkEffortTransferCache<WorkEffortType, WorkEffortTypeTransfer> {
@@ -60,22 +55,22 @@ public class WorkEffortTypeTransferCache
     }
     
     public WorkEffortTypeTransfer getWorkEffortTypeTransfer(WorkEffortType workEffortType) {
-        WorkEffortTypeTransfer workEffortTypeTransfer = get(workEffortType);
+        var workEffortTypeTransfer = get(workEffortType);
         
         if(workEffortTypeTransfer == null) {
-            WorkEffortTypeDetail workEffortTypeDetail = workEffortType.getLastDetail();
-            String workEffortTypeName = workEffortTypeDetail.getWorkEffortTypeName();
-            EntityTypeTransfer entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, workEffortTypeDetail.getEntityType());
-            Sequence workEffortSequence = workEffortTypeDetail.getWorkEffortSequence();
-            SequenceTransfer workEffortSequenceTransfer = workEffortSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workEffortSequence);
-            Long unformattedScheduledTime = workEffortTypeDetail.getScheduledTime();
-            String scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
-            Long unformattedEstimatedTimeAllowed = workEffortTypeDetail.getEstimatedTimeAllowed();
-            String estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
-            Long unformattedMaximumTimeAllowed = workEffortTypeDetail.getMaximumTimeAllowed();
-            String maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
-            Integer sortOrder = workEffortTypeDetail.getSortOrder();
-            String description = workEffortControl.getBestWorkEffortTypeDescription(workEffortType, getLanguage());
+            var workEffortTypeDetail = workEffortType.getLastDetail();
+            var workEffortTypeName = workEffortTypeDetail.getWorkEffortTypeName();
+            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, workEffortTypeDetail.getEntityType());
+            var workEffortSequence = workEffortTypeDetail.getWorkEffortSequence();
+            var workEffortSequenceTransfer = workEffortSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workEffortSequence);
+            var unformattedScheduledTime = workEffortTypeDetail.getScheduledTime();
+            var scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
+            var unformattedEstimatedTimeAllowed = workEffortTypeDetail.getEstimatedTimeAllowed();
+            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
+            var unformattedMaximumTimeAllowed = workEffortTypeDetail.getMaximumTimeAllowed();
+            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
+            var sortOrder = workEffortTypeDetail.getSortOrder();
+            var description = workEffortControl.getBestWorkEffortTypeDescription(workEffortType, getLanguage());
             
             workEffortTypeTransfer = new WorkEffortTypeTransfer(workEffortTypeName, entityTypeTransfer, workEffortSequenceTransfer, unformattedScheduledTime,
                     scheduledTime, unformattedEstimatedTimeAllowed, estimatedTimeAllowed, unformattedMaximumTimeAllowed, maximumTimeAllowed, sortOrder,

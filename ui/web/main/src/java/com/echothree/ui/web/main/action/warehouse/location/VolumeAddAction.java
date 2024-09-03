@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.CreateLocationVolumeForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,11 +52,11 @@ public class VolumeAddAction
     public ActionForward executeAction(ActionMapping mapping, VolumeAddActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
         
         if(wasPost(request)) {
-            CreateLocationVolumeForm commandForm = WarehouseUtil.getHome().getCreateLocationVolumeForm();
+            var commandForm = WarehouseUtil.getHome().getCreateLocationVolumeForm();
             
             if(warehouseName == null)
                 warehouseName = form.getWarehouseName();
@@ -73,8 +71,8 @@ public class VolumeAddAction
             commandForm.setWidthUnitOfMeasureTypeName(form.getWidthUnitOfMeasureTypeChoice());
             commandForm.setDepth(form.getDepth());
             commandForm.setDepthUnitOfMeasureTypeName(form.getDepthUnitOfMeasureTypeChoice());
-            
-            CommandResult commandResult = WarehouseUtil.getHome().createLocationVolume(getUserVisitPK(request), commandForm);
+
+            var commandResult = WarehouseUtil.getHome().createLocationVolume(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -87,8 +85,8 @@ public class VolumeAddAction
             form.setLocationName(locationName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
             request.setAttribute(AttributeConstants.LOCATION_NAME, locationName);

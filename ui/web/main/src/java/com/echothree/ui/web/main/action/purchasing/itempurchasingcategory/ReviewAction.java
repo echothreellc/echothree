@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.purchasing.itempurchasingcategory;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetItemPurchasingCategoryForm;
 import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetItemPurchasingCategoryForm commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryForm();
-            String itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
+            var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryForm();
+            var itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
             
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategory(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemPurchasingCategoryResult result = (GetItemPurchasingCategoryResult)executionResult.getResult();
+
+            var commandResult = VendorUtil.getHome().getItemPurchasingCategory(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemPurchasingCategoryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORY, result.getItemPurchasingCategory());
             forwardKey = ForwardConstants.DISPLAY;

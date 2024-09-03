@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.accounting.itemaccountingcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetItemAccountingCategoryChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetItemAccountingCategoryChoicesResult;
 import com.echothree.model.control.accounting.common.choice.ItemAccountingCategoryChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +42,14 @@ public class AddActionForm
     private void setupParentItemAccountingCategoryChoices() {
         if(parentItemAccountingCategoryChoices == null) {
             try {
-                GetItemAccountingCategoryChoicesForm form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
+                var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
                 
                 form.setDefaultItemAccountingCategoryChoice(parentItemAccountingCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemAccountingCategoryChoicesResult getItemAccountingCategoryChoicesResult = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemAccountingCategoryChoicesResult = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
                 parentItemAccountingCategoryChoices = getItemAccountingCategoryChoicesResult.getItemAccountingCategoryChoices();
                 
                 if(parentItemAccountingCategoryChoice == null)

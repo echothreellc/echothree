@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.edit.OfferEdit;
-import com.echothree.control.user.offer.common.form.EditOfferForm;
 import com.echothree.control.user.offer.common.result.EditOfferResult;
-import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalOfferName = request.getParameter(ParameterConstants.ORIGINAL_OFFER_NAME);
+        var originalOfferName = request.getParameter(ParameterConstants.ORIGINAL_OFFER_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditOfferForm commandForm = OfferUtil.getHome().getEditOfferForm();
-                OfferSpec spec = OfferUtil.getHome().getOfferSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = OfferUtil.getHome().getEditOfferForm();
+                var spec = OfferUtil.getHome().getOfferSpec();
                 
                 if(originalOfferName == null) {
                     originalOfferName = actionForm.getOriginalOfferName();
@@ -74,7 +69,7 @@ public class EditAction
                 spec.setOfferName(originalOfferName);
                 
                 if(wasPost(request)) {
-                    OfferEdit edit = OfferUtil.getHome().getOfferEdit();
+                    var edit = OfferUtil.getHome().getOfferEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -86,14 +81,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editOffer(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().editOffer(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditOfferResult result = (EditOfferResult)executionResult.getResult();
+                            var result = (EditOfferResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -106,13 +101,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editOffer(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditOfferResult result = (EditOfferResult)executionResult.getResult();
+
+                    var commandResult = OfferUtil.getHome().editOffer(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditOfferResult)executionResult.getResult();
                     
                     if(result != null) {
-                        OfferEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalOfferName(edit.getOfferName());

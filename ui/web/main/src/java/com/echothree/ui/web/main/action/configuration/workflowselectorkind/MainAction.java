@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowselectorkind;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowSelectorKindsForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowSelectorKindsResult;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            GetWorkflowSelectorKindsForm commandForm = WorkflowUtil.getHome().getGetWorkflowSelectorKindsForm();
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowSelectorKindsForm();
             
             commandForm.setWorkflowName(workflowName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowSelectorKinds(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowSelectorKindsResult result = (GetWorkflowSelectorKindsResult)executionResult.getResult();
-            WorkflowTransfer workflowTransfer = result.getWorkflow();
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowSelectorKinds(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowSelectorKindsResult)executionResult.getResult();
+            var workflowTransfer = result.getWorkflow();
             
             request.setAttribute(AttributeConstants.WORKFLOW, workflowTransfer);
             request.setAttribute(AttributeConstants.WORKFLOW_SELECTOR_KINDS, result.getWorkflowSelectorKinds());

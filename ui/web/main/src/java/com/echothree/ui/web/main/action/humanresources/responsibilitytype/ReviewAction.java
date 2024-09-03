@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.responsibilitytype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetResponsibilityTypeForm;
 import com.echothree.control.user.employee.common.result.GetResponsibilityTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetResponsibilityTypeForm commandForm = EmployeeUtil.getHome().getGetResponsibilityTypeForm();
-            String responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetResponsibilityTypeForm();
+            var responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
             
             commandForm.setResponsibilityTypeName(responsibilityTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getResponsibilityType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetResponsibilityTypeResult result = (GetResponsibilityTypeResult)executionResult.getResult();
+
+            var commandResult = EmployeeUtil.getHome().getResponsibilityType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetResponsibilityTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RESPONSIBILITY_TYPE, result.getResponsibilityType());
             forwardKey = ForwardConstants.DISPLAY;

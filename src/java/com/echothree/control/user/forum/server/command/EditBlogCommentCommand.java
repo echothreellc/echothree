@@ -27,22 +27,8 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumClobMessagePart;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumMessageDetail;
-import com.echothree.model.data.forum.server.entity.ForumMessagePart;
-import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
-import com.echothree.model.data.forum.server.entity.ForumMimeType;
-import com.echothree.model.data.forum.server.entity.ForumStringMessagePart;
-import com.echothree.model.data.forum.server.value.ForumClobMessagePartValue;
-import com.echothree.model.data.forum.server.value.ForumMessageDetailValue;
-import com.echothree.model.data.forum.server.value.ForumMessagePartDetailValue;
-import com.echothree.model.data.forum.server.value.ForumStringMessagePartValue;
 import com.echothree.model.data.icon.server.entity.Icon;
-import com.echothree.model.data.icon.server.entity.IconUsage;
-import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -93,8 +79,8 @@ public class EditBlogCommentCommand
     @Override
     public ForumMessage getEntity(EditBlogCommentResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMessage forumMessage = null;
-        String forumMessageName = spec.getForumMessageName();
+        ForumMessage forumMessage;
+        var forumMessageName = spec.getForumMessageName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             forumMessage = forumControl.getForumMessageByName(forumMessageName);
@@ -124,18 +110,18 @@ public class EditBlogCommentCommand
     @Override
     public void doLock(BlogCommentEdit edit, ForumMessage forumMessage) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
+        var forumMessageDetail = forumMessage.getLastDetail();
 
         forumMessageIcon = forumMessageDetail.getIcon();
 
         edit.setForumMessageIconName(forumMessageIcon == null? null: forumMessageIcon.getLastDetail().getIconName());
         edit.setPostedTime(DateUtils.getInstance().formatTypicalDateTime(getUserVisit(), getPreferredDateTimeFormat(), forumMessageDetail.getPostedTime()));
 
-        ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
-        Language preferredLanguage = getPreferredLanguage();
-        ForumMessagePart forumMessagePart = forumControl.getForumMessagePart(forumMessage, forumMessagePartType, preferredLanguage);
+        var forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
+        var preferredLanguage = getPreferredLanguage();
+        var forumMessagePart = forumControl.getForumMessagePart(forumMessage, forumMessagePartType, preferredLanguage);
         if(forumMessagePart != null) {
-            ForumStringMessagePart forumStringMessagePart = forumControl.getForumStringMessagePart(forumMessagePart);
+            var forumStringMessagePart = forumControl.getForumStringMessagePart(forumMessagePart);
 
             edit.setTitle(forumStringMessagePart.getString());
         }
@@ -143,7 +129,7 @@ public class EditBlogCommentCommand
         forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_CONTENT);
         forumMessagePart = forumControl.getForumMessagePart(forumMessage, forumMessagePartType, preferredLanguage);
         if(forumMessagePart != null) {
-            ForumClobMessagePart forumClobMessagePart = forumControl.getForumClobMessagePart(forumMessagePart);
+            var forumClobMessagePart = forumControl.getForumClobMessagePart(forumMessagePart);
 
             edit.setContentMimeTypeName(forumMessagePart.getLastDetail().getMimeType().getLastDetail().getMimeTypeName());
             edit.setContent(forumClobMessagePart.getClob());
@@ -156,18 +142,18 @@ public class EditBlogCommentCommand
     @Override
     public void canUpdate(ForumMessage forumMessage) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
+        var forumMessageDetail = forumMessage.getLastDetail();
 
         if(forumMessageDetail.getForumMessageType().getForumMessageTypeName().equals(ForumConstants.ForumMessageType_BLOG_COMMENT)) {
             var iconControl = Session.getModelController(IconControl.class);
-            String forumMessageIconName = edit.getForumMessageIconName();
+            var forumMessageIconName = edit.getForumMessageIconName();
 
             forumMessageIcon = forumMessageIconName == null? null: iconControl.getIconByName(forumMessageIconName);
 
             if(forumMessageIconName == null || forumMessageIcon != null) {
                 if(forumMessageIcon != null) {
-                    IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_MESSAGE);
-                    IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, forumMessageIcon);
+                    var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_MESSAGE);
+                    var iconUsage = iconControl.getIconUsage(iconUsageType, forumMessageIcon);
 
                     if(iconUsage == null) {
                         addExecutionError(ExecutionErrors.UnknownIconUsage.name());
@@ -176,13 +162,13 @@ public class EditBlogCommentCommand
 
                 if(!hasExecutionErrors()) {
                     var coreControl = getCoreControl();
-                    String contentMimeTypeName = edit.getContentMimeTypeName();
+                    var contentMimeTypeName = edit.getContentMimeTypeName();
 
                     contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
 
                     if(contentMimeType != null) {
-                        Forum forum = forumControl.getDefaultForumForumThread(forumMessageDetail.getForumThread()).getForum();
-                        ForumMimeType forumMimeType = forumControl.getForumMimeType(forum, contentMimeType);
+                        var forum = forumControl.getDefaultForumForumThread(forumMessageDetail.getForumThread()).getForum();
+                        var forumMimeType = forumControl.getForumMimeType(forum, contentMimeType);
 
                         if(forumMimeType == null) {
                             addExecutionError(ExecutionErrors.UnknownForumMimeType.name());
@@ -203,18 +189,18 @@ public class EditBlogCommentCommand
     public void doUpdate(ForumMessage forumMessage) {
         var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
-        ForumMessageDetailValue forumMessageDetailValue = forumControl.getForumMessageDetailValueForUpdate(forumMessage);
+        var forumMessageDetailValue = forumControl.getForumMessageDetailValueForUpdate(forumMessage);
 
         forumMessageDetailValue.setIconPK(forumMessageIcon == null? null: forumMessageIcon.getPrimaryKey());
         forumMessageDetailValue.setPostedTime(Long.valueOf(edit.getPostedTime()));
 
         forumControl.updateForumMessageFromValue(forumMessageDetailValue, partyPK);
 
-        ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
-        Language preferredLanguage = getPreferredLanguage();
-        ForumMessagePart forumMessagePart = forumControl.getForumMessagePart(forumMessage, forumMessagePartType, preferredLanguage);
+        var forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
+        var preferredLanguage = getPreferredLanguage();
+        var forumMessagePart = forumControl.getForumMessagePart(forumMessage, forumMessagePartType, preferredLanguage);
         if(forumMessagePart != null) {
-            ForumStringMessagePartValue forumStringMessagePartValue = forumControl.getForumStringMessagePartValueForUpdate(forumMessagePart);
+            var forumStringMessagePartValue = forumControl.getForumStringMessagePartValueForUpdate(forumMessagePart);
 
             forumStringMessagePartValue.setString(edit.getTitle());
 
@@ -224,8 +210,8 @@ public class EditBlogCommentCommand
         forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_CONTENT);
         forumMessagePart = forumControl.getForumMessagePart(forumMessage, forumMessagePartType, preferredLanguage);
         if(forumMessagePart != null) {
-            ForumMessagePartDetailValue forumMessagePartDetailValue = forumControl.getForumMessagePartDetailValueForUpdate(forumMessagePart);
-            ForumClobMessagePartValue forumClobMessagePartValue = forumControl.getForumClobMessagePartValueForUpdate(forumMessagePart);
+            var forumMessagePartDetailValue = forumControl.getForumMessagePartDetailValueForUpdate(forumMessagePart);
+            var forumClobMessagePartValue = forumControl.getForumClobMessagePartValueForUpdate(forumMessagePart);
 
             forumMessagePartDetailValue.setMimeTypePK(contentMimeType.getPrimaryKey());
             forumClobMessagePartValue.setClob(edit.getContent());

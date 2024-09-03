@@ -18,8 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.CreatePostalAddressLineForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
-import com.echothree.model.data.contact.server.entity.PostalAddressLine;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,19 +54,19 @@ public class CreatePostalAddressLineCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
-            Integer postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
-            PostalAddressLine postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
+            var postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
+            var postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
             
             if(postalAddressLine == null) {
-                String prefix = form.getPrefix();
-                Boolean alwaysIncludePrefix = Boolean.valueOf(form.getAlwaysIncludePrefix());
-                String suffix = form.getSuffix();
-                Boolean alwaysIncludeSuffix = Boolean.valueOf(form.getAlwaysIncludeSuffix());
-                Boolean collapseIfEmpty = Boolean.valueOf(form.getCollapseIfEmpty());
+                var prefix = form.getPrefix();
+                var alwaysIncludePrefix = Boolean.valueOf(form.getAlwaysIncludePrefix());
+                var suffix = form.getSuffix();
+                var alwaysIncludeSuffix = Boolean.valueOf(form.getAlwaysIncludeSuffix());
+                var collapseIfEmpty = Boolean.valueOf(form.getCollapseIfEmpty());
                 
                 contactControl.createPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder, prefix, alwaysIncludePrefix,
                         suffix, alwaysIncludeSuffix, collapseIfEmpty, getPartyPK());

@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.value.PartyPaymentMethodDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -63,8 +62,8 @@ public class SetDefaultPartyPaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        String partyPaymentMethodName = form.getPartyPaymentMethodName();
-        PartyPaymentMethodDetailValue partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueByNameForUpdate(partyPaymentMethodName);
+        var partyPaymentMethodName = form.getPartyPaymentMethodName();
+        var partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueByNameForUpdate(partyPaymentMethodName);
         
         if(partyPaymentMethodDetailValue != null) {
             partyPaymentMethodDetailValue.setIsDefault(Boolean.TRUE);

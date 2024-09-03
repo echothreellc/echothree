@@ -19,7 +19,6 @@ package com.echothree.control.user.invoice.server.command;
 import com.echothree.control.user.invoice.common.edit.InvoiceEditFactory;
 import com.echothree.control.user.invoice.common.edit.InvoiceLineTypeEdit;
 import com.echothree.control.user.invoice.common.form.EditInvoiceLineTypeForm;
-import com.echothree.control.user.invoice.common.result.EditInvoiceLineTypeResult;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.control.user.invoice.common.spec.InvoiceLineTypeSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
@@ -27,13 +26,7 @@ import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
-import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDescription;
-import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDetail;
-import com.echothree.model.data.invoice.server.entity.InvoiceType;
-import com.echothree.model.data.invoice.server.value.InvoiceLineTypeDescriptionValue;
-import com.echothree.model.data.invoice.server.value.InvoiceLineTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -87,23 +80,23 @@ public class EditInvoiceLineTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        EditInvoiceLineTypeResult result = InvoiceResultFactory.getEditInvoiceLineTypeResult();
-        String invoiceTypeName = spec.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var result = InvoiceResultFactory.getEditInvoiceLineTypeResult();
+        var invoiceTypeName = spec.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
             if(editMode.equals(EditMode.LOCK)) {
-                String invoiceLineTypeName = spec.getInvoiceLineTypeName();
-                InvoiceLineType invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
+                var invoiceLineTypeName = spec.getInvoiceLineTypeName();
+                var invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
                 
                 if(invoiceLineType != null) {
                     result.setInvoiceLineType(invoiceControl.getInvoiceLineTypeTransfer(getUserVisit(), invoiceLineType));
                     
                     if(lockEntity(invoiceLineType)) {
-                        InvoiceLineTypeDescription invoiceLineTypeDescription = invoiceControl.getInvoiceLineTypeDescription(invoiceLineType, getPreferredLanguage());
-                        InvoiceLineTypeEdit edit = InvoiceEditFactory.getInvoiceLineTypeEdit();
-                        InvoiceLineTypeDetail invoiceLineTypeDetail = invoiceLineType.getLastDetail();
-                        InvoiceLineType parentInvoiceLineType = invoiceLineTypeDetail.getParentInvoiceLineType();
+                        var invoiceLineTypeDescription = invoiceControl.getInvoiceLineTypeDescription(invoiceLineType, getPreferredLanguage());
+                        var edit = InvoiceEditFactory.getInvoiceLineTypeEdit();
+                        var invoiceLineTypeDetail = invoiceLineType.getLastDetail();
+                        var parentInvoiceLineType = invoiceLineTypeDetail.getParentInvoiceLineType();
                         
                         result.setEdit(edit);
                         edit.setInvoiceLineTypeName(invoiceLineTypeDetail.getInvoiceLineTypeName());
@@ -122,15 +115,15 @@ public class EditInvoiceLineTypeCommand
                     addExecutionError(ExecutionErrors.UnknownInvoiceLineTypeName.name(), invoiceLineTypeName);
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                String invoiceLineTypeName = spec.getInvoiceLineTypeName();
-                InvoiceLineType invoiceLineType = invoiceControl.getInvoiceLineTypeByNameForUpdate(invoiceType, invoiceLineTypeName);
+                var invoiceLineTypeName = spec.getInvoiceLineTypeName();
+                var invoiceLineType = invoiceControl.getInvoiceLineTypeByNameForUpdate(invoiceType, invoiceLineTypeName);
                 
                 if(invoiceLineType != null) {
                     invoiceLineTypeName = edit.getInvoiceLineTypeName();
-                    InvoiceLineType duplicateInvoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
+                    var duplicateInvoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
                     
                     if(duplicateInvoiceLineType == null || invoiceLineType.equals(duplicateInvoiceLineType)) {
-                        String parentInvoiceLineTypeName = edit.getParentInvoiceLineTypeName();
+                        var parentInvoiceLineTypeName = edit.getParentInvoiceLineTypeName();
                         InvoiceLineType parentInvoiceLineType = null;
                         
                         if(parentInvoiceLineTypeName != null) {
@@ -140,16 +133,16 @@ public class EditInvoiceLineTypeCommand
                         if(parentInvoiceLineTypeName == null || parentInvoiceLineType != null) {
                             if(invoiceControl.isParentInvoiceLineTypeSafe(invoiceLineType, parentInvoiceLineType)) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String defaultGlAccountName = edit.getDefaultGlAccountName();
-                                GlAccount defaultGlAccount = defaultGlAccountName == null? null: accountingControl.getGlAccountByName(defaultGlAccountName);
+                                var defaultGlAccountName = edit.getDefaultGlAccountName();
+                                var defaultGlAccount = defaultGlAccountName == null? null: accountingControl.getGlAccountByName(defaultGlAccountName);
 
                                 if(defaultGlAccountName == null || defaultGlAccount != null) {
                                     if(lockEntityForUpdate(invoiceLineType)) {
                                         try {
                                             var partyPK = getPartyPK();
-                                            InvoiceLineTypeDetailValue invoiceLineTypeDetailValue = invoiceControl.getInvoiceLineTypeDetailValueForUpdate(invoiceLineType);
-                                            InvoiceLineTypeDescription invoiceLineTypeDescription = invoiceControl.getInvoiceLineTypeDescriptionForUpdate(invoiceLineType, getPreferredLanguage());
-                                            String description = edit.getDescription();
+                                            var invoiceLineTypeDetailValue = invoiceControl.getInvoiceLineTypeDetailValueForUpdate(invoiceLineType);
+                                            var invoiceLineTypeDescription = invoiceControl.getInvoiceLineTypeDescriptionForUpdate(invoiceLineType, getPreferredLanguage());
+                                            var description = edit.getDescription();
 
                                             invoiceLineTypeDetailValue.setInvoiceLineTypeName(edit.getInvoiceLineTypeName());
                                             invoiceLineTypeDetailValue.setParentInvoiceLineTypePK(parentInvoiceLineType == null? null: parentInvoiceLineType.getPrimaryKey());
@@ -164,7 +157,7 @@ public class EditInvoiceLineTypeCommand
                                             } else if(invoiceLineTypeDescription != null && description == null) {
                                                 invoiceControl.deleteInvoiceLineTypeDescription(invoiceLineTypeDescription, partyPK);
                                             } else if(invoiceLineTypeDescription != null && description != null) {
-                                                InvoiceLineTypeDescriptionValue invoiceLineTypeDescriptionValue = invoiceControl.getInvoiceLineTypeDescriptionValue(invoiceLineTypeDescription);
+                                                var invoiceLineTypeDescriptionValue = invoiceControl.getInvoiceLineTypeDescriptionValue(invoiceLineTypeDescription);
 
                                                 invoiceLineTypeDescriptionValue.setDescription(description);
                                                 invoiceControl.updateInvoiceLineTypeDescriptionFromValue(invoiceLineTypeDescriptionValue, partyPK);

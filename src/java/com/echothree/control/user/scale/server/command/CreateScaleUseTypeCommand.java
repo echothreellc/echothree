@@ -18,9 +18,6 @@ package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.CreateScaleUseTypeForm;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,19 +51,19 @@ public class CreateScaleUseTypeCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleUseTypeName = form.getScaleUseTypeName();
-        ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+       var scaleUseTypeName = form.getScaleUseTypeName();
+       var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         
         if(scaleUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
 
             scaleUseType = scaleControl.createScaleUseType(scaleUseTypeName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                Language language = getPreferredLanguage();
+                var language = getPreferredLanguage();
 
                 scaleControl.createScaleUseTypeDescription(scaleUseType, language, description, createdBy);
             }

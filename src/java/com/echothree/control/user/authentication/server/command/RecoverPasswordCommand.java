@@ -17,20 +17,14 @@
 package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.control.user.authentication.common.form.RecoverPasswordForm;
-import com.echothree.control.user.party.common.result.GetPartyResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.RecoveryAnswer;
-import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.user.server.entity.UserLoginPassword;
-import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -62,9 +56,9 @@ public class RecoverPasswordCommand
 
     @Override
     protected BaseResult execute() {
-        GetPartyResult result = PartyResultFactory.getGetPartyResult();
-        String partyName = form.getPartyName();
-        String username = form.getUsername();
+        var result = PartyResultFactory.getGetPartyResult();
+        var partyName = form.getPartyName();
+        var username = form.getUsername();
         var parameterCount = (partyName == null ? 0 : 1) + (username == null ? 0 : 1);
 
         if(parameterCount == 1) {
@@ -75,7 +69,7 @@ public class RecoverPasswordCommand
             }
 
             if(username != null) {
-                UserLogin userLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
+                var userLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
 
                 if(!hasExecutionErrors()) {
                     party = userLogin.getParty();
@@ -84,8 +78,8 @@ public class RecoverPasswordCommand
 
             if(!hasExecutionErrors()) {
                 var userControl = Session.getModelController(UserControl.class);
-                RecoveryAnswer recoveryAnswer = userControl.getRecoveryAnswer(party);
-                String answer = form.getAnswer();
+                var recoveryAnswer = userControl.getRecoveryAnswer(party);
+                var answer = form.getAnswer();
                 
                 if(recoveryAnswer == null) {
                     if(answer != null) {
@@ -100,16 +94,16 @@ public class RecoverPasswordCommand
                 }
                 
                 if(!hasExecutionErrors()) {
-                    UserLoginPasswordType userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_RECOVERED_STRING);
-                    String password = PasswordGeneratorUtils.getInstance().getPassword(party.getLastDetail().getPartyType());
-                    PartyPK createdBy = getPartyPK();
+                    var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_RECOVERED_STRING);
+                    var password = PasswordGeneratorUtils.getInstance().getPassword(party.getLastDetail().getPartyType());
+                    var createdBy = getPartyPK();
 
                     // If it already exists, delete the previous attempt at recovery.
                     if(userControl.countUserLoginPasswords(party, userLoginPasswordType) != 0) {
                         userControl.deleteUserLoginPassword(userControl.getUserLoginPasswordForUpdate(party, userLoginPasswordType), createdBy);
                     }
-                    
-                    UserLoginPassword userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
+
+                    var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
                     userControl.createUserLoginPasswordString(userLoginPassword, password, session.START_TIME_LONG, Boolean.FALSE, createdBy);
                     
                     // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.

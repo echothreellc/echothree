@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.MimeTypeDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.MimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,12 +33,12 @@ public class MimeTypeDescriptionTransferCache
     }
     
     public MimeTypeDescriptionTransfer getMimeTypeDescriptionTransfer(MimeTypeDescription mimeTypeDescription) {
-        MimeTypeDescriptionTransfer mimeTypeDescriptionTransfer = get(mimeTypeDescription);
+        var mimeTypeDescriptionTransfer = get(mimeTypeDescription);
         
         if(mimeTypeDescriptionTransfer == null) {
-            MimeTypeTransfer mimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit,
+            var mimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit,
                     mimeTypeDescription.getMimeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, mimeTypeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, mimeTypeDescription.getLanguage());
             
             mimeTypeDescriptionTransfer = new MimeTypeDescriptionTransfer(languageTransfer, mimeTypeTransfer, mimeTypeDescription.getDescription());
             put(mimeTypeDescription, mimeTypeDescriptionTransfer);

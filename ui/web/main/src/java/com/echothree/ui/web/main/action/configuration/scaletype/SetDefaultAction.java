@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.scaletype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.SetDefaultScaleTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultScaleTypeForm commandForm = ScaleUtil.getHome().getSetDefaultScaleTypeForm();
+        var commandForm = ScaleUtil.getHome().getSetDefaultScaleTypeForm();
 
         commandForm.setScaleTypeName(request.getParameter(ParameterConstants.SCALE_TYPE_NAME));
 

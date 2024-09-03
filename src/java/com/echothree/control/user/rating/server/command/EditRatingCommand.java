@@ -19,14 +19,9 @@ package com.echothree.control.user.rating.server.command;
 import com.echothree.control.user.rating.common.edit.RatingEdit;
 import com.echothree.control.user.rating.common.edit.RatingEditFactory;
 import com.echothree.control.user.rating.common.form.EditRatingForm;
-import com.echothree.control.user.rating.common.result.EditRatingResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.control.user.rating.common.spec.RatingSpec;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.rating.server.entity.Rating;
-import com.echothree.model.data.rating.server.entity.RatingDetail;
-import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
-import com.echothree.model.data.rating.server.value.RatingDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,15 +58,15 @@ public class EditRatingCommand
     @Override
     protected BaseResult execute() {
         var ratingControl = Session.getModelController(RatingControl.class);
-        EditRatingResult result = RatingResultFactory.getEditRatingResult();
-        String ratingName = spec.getRatingName();
-        Rating rating = ratingControl.getRatingByName(ratingName);
+        var result = RatingResultFactory.getEditRatingResult();
+        var ratingName = spec.getRatingName();
+        var rating = ratingControl.getRatingByName(ratingName);
 
         if(rating != null) {
             if(editMode.equals(EditMode.LOCK)) {
                 if(lockEntity(rating)) {
-                    RatingEdit edit = RatingEditFactory.getRatingEdit();
-                    RatingDetail ratingDetail = rating.getLastDetail();
+                    var edit = RatingEditFactory.getRatingEdit();
+                    var ratingDetail = rating.getLastDetail();
 
                     result.setEdit(edit);
 
@@ -85,15 +80,15 @@ public class EditRatingCommand
             } else if(editMode.equals(EditMode.ABANDON)) {
                 unlockEntity(rating);
             } else if(editMode.equals(EditMode.UPDATE)) {
-                String ratingTypeListItemName = edit.getRatingTypeListItemName();
-                RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(rating.getLastDetail().getRatingTypeListItem().getLastDetail().getRatingType(),
+                var ratingTypeListItemName = edit.getRatingTypeListItemName();
+                var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(rating.getLastDetail().getRatingTypeListItem().getLastDetail().getRatingType(),
                         ratingTypeListItemName);
 
                 if(ratingTypeListItem != null) {
                     if(lockEntityForUpdate(rating)) {
                         try {
                             var partyPK = getPartyPK();
-                            RatingDetailValue ratingDetailValue = ratingControl.getRatingDetailValueForUpdate(rating);
+                            var ratingDetailValue = ratingControl.getRatingDetailValueForUpdate(rating);
 
                             ratingDetailValue.setRatingTypeListItemPK(ratingTypeListItem.getPrimaryKey());
 

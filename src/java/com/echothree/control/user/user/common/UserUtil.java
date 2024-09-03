@@ -18,7 +18,6 @@ package com.echothree.control.user.user.common;
 
 import com.echothree.control.user.user.server.UserLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class UserUtil {
@@ -30,7 +29,7 @@ public class UserUtil {
     public static UserLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (UserLocal)ctx.lookup("ejb:echothree/echothree-server/UserBean!com.echothree.control.user.user.server.UserLocal");
         }
@@ -42,7 +41,7 @@ public class UserUtil {
     public static UserRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (UserRemote)ctx.lookup("ejb:echothree/echothree-server/UserBean!com.echothree.control.user.user.common.UserRemote");
         }

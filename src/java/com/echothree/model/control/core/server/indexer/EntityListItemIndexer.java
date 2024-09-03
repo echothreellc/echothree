@@ -22,11 +22,8 @@ import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.EntityListItemAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityListItemDetail;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import org.apache.lucene.analysis.Analyzer;
@@ -55,10 +52,10 @@ public class EntityListItemIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityListItem entityListItem) {
-        EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
-        EntityAttributeDetail entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
-        EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-        String description = coreControl.getBestEntityListItemDescription(entityListItem, language);
+        var entityListItemDetail = entityListItem.getLastDetail();
+        var entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
+        var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+        var description = coreControl.getBestEntityListItemDescription(entityListItem, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, entityListItem.getPrimaryKey());
 

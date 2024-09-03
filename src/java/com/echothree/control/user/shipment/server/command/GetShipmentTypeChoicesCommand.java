@@ -17,7 +17,6 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetShipmentTypeChoicesForm;
-import com.echothree.control.user.shipment.common.result.GetShipmentTypeChoicesResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetShipmentTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentTypeChoicesResult result = ShipmentResultFactory.getGetShipmentTypeChoicesResult();
-        String defaultShipmentTypeChoice = form.getDefaultShipmentTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ShipmentResultFactory.getGetShipmentTypeChoicesResult();
+        var defaultShipmentTypeChoice = form.getDefaultShipmentTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setShipmentTypeChoices(shipmentControl.getShipmentTypeChoices(defaultShipmentTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

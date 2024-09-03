@@ -27,7 +27,6 @@ import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.server.entity.Item;
@@ -82,7 +81,7 @@ public class LotLogic
     public Lot getLotByName(final ExecutionErrorAccumulator eea, final String lotName,
             final EntityPermission entityPermission) {
         var lotControl = Session.getModelController(LotControl.class);
-        Lot lot = lotControl.getLotByName(lotName, entityPermission);
+        var lot = lotControl.getLotByName(lotName, entityPermission);
 
         if(lot == null) {
             handleExecutionError(UnknownLotNameException.class, eea, ExecutionErrors.UnknownLotName.name(), lotName);
@@ -103,7 +102,7 @@ public class LotLogic
             final EntityPermission entityPermission) {
         Lot lot = null;
         var lotControl = Session.getModelController(LotControl.class);
-        String lotName = universalSpec.getLotName();
+        var lotName = universalSpec.getLotName();
         var parameterCount = (lotName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

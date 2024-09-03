@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemDescriptionForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -104,7 +101,7 @@ public class ItemDescriptionTag
     public int doStartTag()
             throws JspException {
         try {
-            GetItemDescriptionForm commandForm = ItemUtil.getHome().getGetItemDescriptionForm();
+            var commandForm = ItemUtil.getHome().getGetItemDescriptionForm();
             
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.setItemName(itemName);
@@ -113,8 +110,8 @@ public class ItemDescriptionTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(), commandForm);
+
+            var commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -122,8 +119,8 @@ public class ItemDescriptionTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemDescriptionResult result = (GetItemDescriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemDescriptionResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getItemDescription(), scope);
             }

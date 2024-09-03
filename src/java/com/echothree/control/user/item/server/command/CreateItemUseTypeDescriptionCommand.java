@@ -20,9 +20,6 @@ import com.echothree.control.user.item.common.form.CreateItemUseTypeDescriptionF
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.item.server.entity.ItemUseType;
-import com.echothree.model.data.item.server.entity.ItemUseTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,16 +59,16 @@ public class CreateItemUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemUseTypeName = form.getItemUseTypeName();
-        ItemUseType itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
+        var itemUseTypeName = form.getItemUseTypeName();
+        var itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
         
         if(itemUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemUseTypeDescription itemUseTypeDescription = itemControl.getItemUseTypeDescription(itemUseType, language);
+                var itemUseTypeDescription = itemControl.getItemUseTypeDescription(itemUseType, language);
                 
                 if(itemUseTypeDescription == null) {
                     var description = form.getDescription();

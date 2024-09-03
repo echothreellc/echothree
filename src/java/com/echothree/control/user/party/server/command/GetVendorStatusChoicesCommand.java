@@ -17,14 +17,12 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetVendorStatusChoicesForm;
-import com.echothree.control.user.party.common.result.GetVendorStatusChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -66,13 +64,13 @@ public class GetVendorStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetVendorStatusChoicesResult result = PartyResultFactory.getGetVendorStatusChoicesResult();
-        String vendorName = form.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
+        var result = PartyResultFactory.getGetVendorStatusChoicesResult();
+        var vendorName = form.getVendorName();
+        var vendor = vendorControl.getVendorByName(vendorName);
         
         if(vendor != null) {
-            String defaultVendorStatusChoice = form.getDefaultVendorStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultVendorStatusChoice = form.getDefaultVendorStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setVendorStatusChoices(vendorControl.getVendorStatusChoices(defaultVendorStatusChoice, getPreferredLanguage(), allowNullChoice,
                     vendor.getParty(), getPartyPK()));

@@ -17,8 +17,6 @@
 package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.util.server.persistence.Session;
 
 public class SelectorCacheFactory {
@@ -41,11 +39,11 @@ public class SelectorCacheFactory {
     
     public SelectorCache getSelectorCache(Session session, String selectorKindName, String selectorTypeName) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        SelectorCache selectorCache = null;
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        SelectorCache selectorCache;
         
         if(selectorKind != null) {
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             if(selectorType != null) {
                 selectorCache = new SelectorCache(selectorType);

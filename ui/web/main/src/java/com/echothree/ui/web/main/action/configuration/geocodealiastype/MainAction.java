@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocodealiastype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeAliasTypesForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeAliasTypesResult;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
-            GetGeoCodeAliasTypesForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypesForm();
+            var geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypesForm();
             
             commandForm.setGeoCodeTypeName(geoCodeTypeName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasTypesResult result = (GetGeoCodeAliasTypesResult)executionResult.getResult();
-            GeoCodeTypeTransfer geoCodeTypeTransfer = result.getGeoCodeType();
+
+            var commandResult = GeoUtil.getHome().getGeoCodeAliasTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasTypesResult)executionResult.getResult();
+            var geoCodeTypeTransfer = result.getGeoCodeType();
             
             request.setAttribute(AttributeConstants.GEO_CODE_TYPE, geoCodeTypeTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPES, result.getGeoCodeAliasTypes());

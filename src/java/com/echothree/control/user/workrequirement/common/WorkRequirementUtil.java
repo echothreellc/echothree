@@ -18,7 +18,6 @@ package com.echothree.control.user.workrequirement.common;
 
 import com.echothree.control.user.workrequirement.server.WorkRequirementLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class WorkRequirementUtil {
@@ -30,7 +29,7 @@ public class WorkRequirementUtil {
     public static WorkRequirementLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (WorkRequirementLocal)ctx.lookup("ejb:echothree/echothree-server/WorkRequirementBean!com.echothree.control.user.workrequirement.server.WorkRequirementLocal");
         }
@@ -42,7 +41,7 @@ public class WorkRequirementUtil {
     public static WorkRequirementRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (WorkRequirementRemote)ctx.lookup("ejb:echothree/echothree-server/WorkRequirementBean!com.echothree.control.user.workrequirement.common.WorkRequirementRemote");
         }

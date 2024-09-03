@@ -17,7 +17,6 @@
 package com.echothree.control.user.test.inventory.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.Map;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Test;
 
@@ -221,7 +220,7 @@ public class InventoryConditionTest
         var inventoryConditionEdges = getList(queryBody, "data.inventoryConditions.edges");
         
         var foundInventoryCondition = false;
-        for(Map<String, Object> inventoryConditionEdge : inventoryConditionEdges) {
+        for(var inventoryConditionEdge : inventoryConditionEdges) {
             var inventoryConditionNode = getMap(inventoryConditionEdge, "node");
 
             if(id.equals(getString(inventoryConditionNode, "id"))) {

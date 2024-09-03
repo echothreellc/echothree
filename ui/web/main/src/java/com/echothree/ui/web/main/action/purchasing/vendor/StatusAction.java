@@ -17,16 +17,13 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.SetVendorStatusForm;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorForm;
 import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,13 +52,13 @@ public class StatusAction
     
     public void setupVendor(HttpServletRequest request, String vendorName)
             throws NamingException {
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
 
         commandForm.setVendorName(vendorName);
 
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorResult result = (GetVendorResult)executionResult.getResult();
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
     }
@@ -70,9 +67,9 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        StatusActionForm actionForm = (StatusActionForm)form;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        var actionForm = (StatusActionForm)form;
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
 
         if(returnUrl == null) {
             returnUrl = actionForm.getReturnUrl();
@@ -85,7 +82,7 @@ public class StatusAction
             CommandResult commandResult = null;
 
             if(!wasCanceled(request)) {
-                SetVendorStatusForm commandForm = PartyUtil.getHome().getSetVendorStatusForm();
+                var commandForm = PartyUtil.getHome().getSetVendorStatusForm();
 
                 commandForm.setVendorName(vendorName);
                 commandForm.setVendorStatusChoice(actionForm.getVendorStatusChoice());

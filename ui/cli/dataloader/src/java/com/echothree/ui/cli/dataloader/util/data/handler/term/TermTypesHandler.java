@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.term;
 
 import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.TermService;
-import com.echothree.control.user.term.common.form.CreateTermTypeForm;
 import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,9 +47,9 @@ public class TermTypesHandler
             String termTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("termTypeName"))
                     termTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class TermTypesHandler
             }
             
             try {
-                CreateTermTypeForm commandForm = TermFormFactory.getCreateTermTypeForm();
+                var commandForm = TermFormFactory.getCreateTermTypeForm();
                 
                 commandForm.setTermTypeName(termTypeName);
                 commandForm.setIsDefault(isDefault);

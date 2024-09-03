@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.DeleteScaleForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteScaleForm commandForm = ScaleUtil.getHome().getDeleteScaleForm();
-            String scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
+            var commandForm = ScaleUtil.getHome().getDeleteScaleForm();
+            var scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
             
             commandForm.setScaleName(scaleName);
             

@@ -42,56 +42,32 @@ import com.echothree.model.control.chain.common.transfer.ChainKindTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainTypeDescriptionTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
-import com.echothree.model.control.chain.server.transfer.ChainActionSetTransferCache;
-import com.echothree.model.control.chain.server.transfer.ChainActionTransferCache;
-import com.echothree.model.control.chain.server.transfer.ChainActionTypeTransferCache;
-import com.echothree.model.control.chain.server.transfer.ChainEntityRoleTypeTransferCache;
-import com.echothree.model.control.chain.server.transfer.ChainInstanceEntityRoleTransferCache;
-import com.echothree.model.control.chain.server.transfer.ChainInstanceTransferCache;
-import com.echothree.model.control.chain.server.transfer.ChainKindTransferCache;
-import com.echothree.model.control.chain.server.transfer.ChainTransferCache;
 import com.echothree.model.control.chain.server.transfer.ChainTransferCaches;
-import com.echothree.model.control.chain.server.transfer.ChainTypeTransferCache;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.data.chain.common.pk.ChainActionPK;
-import com.echothree.model.data.chain.common.pk.ChainActionSetPK;
-import com.echothree.model.data.chain.common.pk.ChainActionTypePK;
-import com.echothree.model.data.chain.common.pk.ChainEntityRoleTypePK;
-import com.echothree.model.data.chain.common.pk.ChainKindPK;
-import com.echothree.model.data.chain.common.pk.ChainPK;
-import com.echothree.model.data.chain.common.pk.ChainTypePK;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainActionDescription;
-import com.echothree.model.data.chain.server.entity.ChainActionDetail;
 import com.echothree.model.data.chain.server.entity.ChainActionLetter;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainActionSetDescription;
-import com.echothree.model.data.chain.server.entity.ChainActionSetDetail;
 import com.echothree.model.data.chain.server.entity.ChainActionSurvey;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeDescription;
-import com.echothree.model.data.chain.server.entity.ChainActionTypeDetail;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeUse;
 import com.echothree.model.data.chain.server.entity.ChainDescription;
-import com.echothree.model.data.chain.server.entity.ChainDetail;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleTypeDescription;
-import com.echothree.model.data.chain.server.entity.ChainEntityRoleTypeDetail;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
-import com.echothree.model.data.chain.server.entity.ChainInstanceDetail;
 import com.echothree.model.data.chain.server.entity.ChainInstanceEntityRole;
 import com.echothree.model.data.chain.server.entity.ChainInstanceStatus;
 import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainKindDescription;
-import com.echothree.model.data.chain.server.entity.ChainKindDetail;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.chain.server.entity.ChainTypeDescription;
-import com.echothree.model.data.chain.server.entity.ChainTypeDetail;
 import com.echothree.model.data.chain.server.factory.ChainActionChainActionSetFactory;
 import com.echothree.model.data.chain.server.factory.ChainActionDescriptionFactory;
 import com.echothree.model.data.chain.server.factory.ChainActionDetailFactory;
@@ -139,15 +115,11 @@ import com.echothree.model.data.chain.server.value.ChainKindDescriptionValue;
 import com.echothree.model.data.chain.server.value.ChainKindDetailValue;
 import com.echothree.model.data.chain.server.value.ChainTypeDescriptionValue;
 import com.echothree.model.data.chain.server.value.ChainTypeDetailValue;
-import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.letter.common.pk.LetterPK;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.survey.common.pk.SurveyPK;
 import com.echothree.model.data.survey.server.entity.Survey;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
@@ -155,13 +127,11 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -193,11 +163,11 @@ public class ChainControl
     // --------------------------------------------------------------------------------
 
     public ChainKind createChainKind(String chainKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ChainKind defaultChainKind = getDefaultChainKind();
-        boolean defaultFound = defaultChainKind != null;
+        var defaultChainKind = getDefaultChainKind();
+        var defaultFound = defaultChainKind != null;
 
         if(defaultFound && isDefault) {
-            ChainKindDetailValue defaultChainKindDetailValue = getDefaultChainKindDetailValueForUpdate();
+            var defaultChainKindDetailValue = getDefaultChainKindDetailValueForUpdate();
 
             defaultChainKindDetailValue.setIsDefault(Boolean.FALSE);
             updateChainKindFromValue(defaultChainKindDetailValue, false, createdBy);
@@ -205,8 +175,8 @@ public class ChainControl
             isDefault = Boolean.TRUE;
         }
 
-        ChainKind chainKind = ChainKindFactory.getInstance().create();
-        ChainKindDetail chainKindDetail = ChainKindDetailFactory.getInstance().create(chainKind, chainKindName, isDefault, sortOrder,
+        var chainKind = ChainKindFactory.getInstance().create();
+        var chainKindDetail = ChainKindDetailFactory.getInstance().create(chainKind, chainKindName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -323,7 +293,7 @@ public class ChainControl
     }
 
     public ChainKindChoicesBean getChainKindChoices(String defaultChainKindChoice, Language language, boolean allowNullChoice) {
-        List<ChainKind> chainKinds = getChainKinds();
+        var chainKinds = getChainKinds();
         var size = chainKinds.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -339,7 +309,7 @@ public class ChainControl
         }
 
         for(var chainKind : chainKinds) {
-            ChainKindDetail chainKindDetail = chainKind.getLastDetail();
+            var chainKindDetail = chainKind.getLastDetail();
 
             var label = getBestChainKindDescription(chainKind, language);
             var value = chainKindDetail.getChainKindName();
@@ -361,9 +331,9 @@ public class ChainControl
     }
 
     public List<ChainKindTransfer> getChainKindTransfers(UserVisit userVisit) {
-        List<ChainKind> chainKinds = getChainKinds();
+        var chainKinds = getChainKinds();
         List<ChainKindTransfer> chainKindTransfers = new ArrayList<>(chainKinds.size());
-        ChainKindTransferCache chainKindTransferCache = getChainTransferCaches(userVisit).getChainKindTransferCache();
+        var chainKindTransferCache = getChainTransferCaches(userVisit).getChainKindTransferCache();
 
         chainKinds.forEach((chainKind) ->
                 chainKindTransfers.add(chainKindTransferCache.getChainKindTransfer(chainKind))
@@ -373,25 +343,25 @@ public class ChainControl
     }
 
     private void updateChainKindFromValue(ChainKindDetailValue chainKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        ChainKind chainKind = ChainKindFactory.getInstance().getEntityFromPK(session,
+        var chainKind = ChainKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, chainKindDetailValue.getChainKindPK());
-        ChainKindDetail chainKindDetail = chainKind.getActiveDetailForUpdate();
+        var chainKindDetail = chainKind.getActiveDetailForUpdate();
 
         chainKindDetail.setThruTime(session.START_TIME_LONG);
         chainKindDetail.store();
 
-        ChainKindPK chainKindPK = chainKindDetail.getChainKindPK();
-        String chainKindName = chainKindDetailValue.getChainKindName();
-        Boolean isDefault = chainKindDetailValue.getIsDefault();
-        Integer sortOrder = chainKindDetailValue.getSortOrder();
+        var chainKindPK = chainKindDetail.getChainKindPK();
+        var chainKindName = chainKindDetailValue.getChainKindName();
+        var isDefault = chainKindDetailValue.getIsDefault();
+        var sortOrder = chainKindDetailValue.getSortOrder();
 
         if(checkDefault) {
-            ChainKind defaultChainKind = getDefaultChainKind();
-            boolean defaultFound = defaultChainKind != null && !defaultChainKind.equals(chainKind);
+            var defaultChainKind = getDefaultChainKind();
+            var defaultFound = defaultChainKind != null && !defaultChainKind.equals(chainKind);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                ChainKindDetailValue defaultChainKindDetailValue = getDefaultChainKindDetailValueForUpdate();
+                var defaultChainKindDetailValue = getDefaultChainKindDetailValueForUpdate();
 
                 defaultChainKindDetailValue.setIsDefault(Boolean.FALSE);
                 updateChainKindFromValue(defaultChainKindDetailValue, false, updatedBy);
@@ -419,22 +389,22 @@ public class ChainControl
         deleteChainTypesByChainKind(chainKind, deletedBy);
         deleteChainKindDescriptionsByChainKind(chainKind, deletedBy);
 
-        ChainKindDetail chainKindDetail = chainKind.getLastDetailForUpdate();
+        var chainKindDetail = chainKind.getLastDetailForUpdate();
         chainKindDetail.setThruTime(session.START_TIME_LONG);
         chainKind.setActiveDetail(null);
         chainKind.store();
 
         // Check for default, and pick one if necessary
-        ChainKind defaultChainKind = getDefaultChainKind();
+        var defaultChainKind = getDefaultChainKind();
         if(defaultChainKind == null) {
-            List<ChainKind> chainKinds = getChainKindsForUpdate();
+            var chainKinds = getChainKindsForUpdate();
 
             if(!chainKinds.isEmpty()) {
-                Iterator<ChainKind> iter = chainKinds.iterator();
+                var iter = chainKinds.iterator();
                 if(iter.hasNext()) {
                     defaultChainKind = iter.next();
                 }
-                ChainKindDetailValue chainKindDetailValue = Objects.requireNonNull(defaultChainKind).getLastDetailForUpdate().getChainKindDetailValue().clone();
+                var chainKindDetailValue = Objects.requireNonNull(defaultChainKind).getLastDetailForUpdate().getChainKindDetailValue().clone();
 
                 chainKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainKindFromValue(chainKindDetailValue, false, deletedBy);
@@ -450,7 +420,7 @@ public class ChainControl
 
     public ChainKindDescription createChainKindDescription(ChainKind chainKind, Language language, String description,
             BasePK createdBy) {
-        ChainKindDescription chainKindDescription = ChainKindDescriptionFactory.getInstance().create(chainKind,
+        var chainKindDescription = ChainKindDescriptionFactory.getInstance().create(chainKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(chainKind.getPrimaryKey(), EventTypes.MODIFY, chainKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -529,7 +499,7 @@ public class ChainControl
 
     public String getBestChainKindDescription(ChainKind chainKind, Language language) {
         String description;
-        ChainKindDescription chainKindDescription = getChainKindDescription(chainKind, language);
+        var chainKindDescription = getChainKindDescription(chainKind, language);
 
         if(chainKindDescription == null && !language.getIsDefault()) {
             chainKindDescription = getChainKindDescription(chainKind, getPartyControl().getDefaultLanguage());
@@ -549,7 +519,7 @@ public class ChainControl
     }
 
     public List<ChainKindDescriptionTransfer> getChainKindDescriptionTransfersByChainKind(UserVisit userVisit, ChainKind chainKind) {
-        List<ChainKindDescription> chainKindDescriptions = getChainKindDescriptionsByChainKind(chainKind);
+        var chainKindDescriptions = getChainKindDescriptionsByChainKind(chainKind);
         List<ChainKindDescriptionTransfer> chainKindDescriptionTransfers = new ArrayList<>(chainKindDescriptions.size());
 
         chainKindDescriptions.forEach((chainKindDescription) -> {
@@ -561,15 +531,15 @@ public class ChainControl
 
     public void updateChainKindDescriptionFromValue(ChainKindDescriptionValue chainKindDescriptionValue, BasePK updatedBy) {
         if(chainKindDescriptionValue.hasBeenModified()) {
-            ChainKindDescription chainKindDescription = ChainKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainKindDescription = ChainKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainKindDescriptionValue.getPrimaryKey());
 
             chainKindDescription.setThruTime(session.START_TIME_LONG);
             chainKindDescription.store();
 
-            ChainKind chainKind = chainKindDescription.getChainKind();
-            Language language = chainKindDescription.getLanguage();
-            String description = chainKindDescriptionValue.getDescription();
+            var chainKind = chainKindDescription.getChainKind();
+            var language = chainKindDescription.getLanguage();
+            var description = chainKindDescriptionValue.getDescription();
 
             chainKindDescription = ChainKindDescriptionFactory.getInstance().create(chainKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -586,7 +556,7 @@ public class ChainControl
     }
 
     public void deleteChainKindDescriptionsByChainKind(ChainKind chainKind, BasePK deletedBy) {
-        List<ChainKindDescription> chainKindDescriptions = getChainKindDescriptionsByChainKindForUpdate(chainKind);
+        var chainKindDescriptions = getChainKindDescriptionsByChainKindForUpdate(chainKind);
 
         chainKindDescriptions.forEach((chainKindDescription) -> 
                 deleteChainKindDescription(chainKindDescription, deletedBy)
@@ -598,11 +568,11 @@ public class ChainControl
     // --------------------------------------------------------------------------------
 
     public ChainType createChainType(ChainKind chainKind, String chainTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ChainType defaultChainType = getDefaultChainType(chainKind);
-        boolean defaultFound = defaultChainType != null;
+        var defaultChainType = getDefaultChainType(chainKind);
+        var defaultFound = defaultChainType != null;
 
         if(defaultFound && isDefault) {
-            ChainTypeDetailValue defaultChainTypeDetailValue = getDefaultChainTypeDetailValueForUpdate(chainKind);
+            var defaultChainTypeDetailValue = getDefaultChainTypeDetailValueForUpdate(chainKind);
 
             defaultChainTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateChainTypeFromValue(defaultChainTypeDetailValue, false, createdBy);
@@ -610,8 +580,8 @@ public class ChainControl
             isDefault = Boolean.TRUE;
         }
 
-        ChainType chainType = ChainTypeFactory.getInstance().create();
-        ChainTypeDetail chainTypeDetail = ChainTypeDetailFactory.getInstance().create(session, chainType, chainKind, chainTypeName, isDefault, sortOrder,
+        var chainType = ChainTypeFactory.getInstance().create();
+        var chainTypeDetail = ChainTypeDetailFactory.getInstance().create(session, chainType, chainKind, chainTypeName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -767,7 +737,7 @@ public class ChainControl
 
     public ChainTypeChoicesBean getChainTypeChoices(String defaultChainTypeChoice, Language language,
             boolean allowNullChoice, ChainKind chainKind) {
-        List<ChainType> chainTypes = getChainTypesByChainKind(chainKind);
+        var chainTypes = getChainTypesByChainKind(chainKind);
         var size = chainTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -783,7 +753,7 @@ public class ChainControl
         }
 
         for(var chainType : chainTypes) {
-            ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
+            var chainTypeDetail = chainType.getLastDetail();
             var label = getBestChainTypeDescription(chainType, language);
             var value = chainTypeDetail.getChainTypeName();
 
@@ -804,9 +774,9 @@ public class ChainControl
     }
 
     public List<ChainTypeTransfer> getChainTypeTransfersByChainKind(UserVisit userVisit, ChainKind chainKind) {
-        List<ChainType> chainTypes = getChainTypesByChainKind(chainKind);
+        var chainTypes = getChainTypesByChainKind(chainKind);
         List<ChainTypeTransfer> chainTypeTransfers = new ArrayList<>(chainTypes.size());
-        ChainTypeTransferCache chainTypeTransferCache = getChainTransferCaches(userVisit).getChainTypeTransferCache();
+        var chainTypeTransferCache = getChainTransferCaches(userVisit).getChainTypeTransferCache();
 
         chainTypes.forEach((chainType) ->
                 chainTypeTransfers.add(chainTypeTransferCache.getChainTypeTransfer(chainType))
@@ -818,27 +788,27 @@ public class ChainControl
     private void updateChainTypeFromValue(ChainTypeDetailValue chainTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(chainTypeDetailValue.hasBeenModified()) {
-            ChainType chainType = ChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainType = ChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainTypeDetailValue.getChainTypePK());
-            ChainTypeDetail chainTypeDetail = chainType.getActiveDetailForUpdate();
+            var chainTypeDetail = chainType.getActiveDetailForUpdate();
 
             chainTypeDetail.setThruTime(session.START_TIME_LONG);
             chainTypeDetail.store();
 
-            ChainTypePK chainTypePK = chainTypeDetail.getChainTypePK();
-            ChainKind chainKind = chainTypeDetail.getChainKind();
-            ChainKindPK chainKindPK = chainKind.getPrimaryKey();
-            String chainTypeName = chainTypeDetailValue.getChainTypeName();
-            Boolean isDefault = chainTypeDetailValue.getIsDefault();
-            Integer sortOrder = chainTypeDetailValue.getSortOrder();
+            var chainTypePK = chainTypeDetail.getChainTypePK();
+            var chainKind = chainTypeDetail.getChainKind();
+            var chainKindPK = chainKind.getPrimaryKey();
+            var chainTypeName = chainTypeDetailValue.getChainTypeName();
+            var isDefault = chainTypeDetailValue.getIsDefault();
+            var sortOrder = chainTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ChainType defaultChainType = getDefaultChainType(chainKind);
-                boolean defaultFound = defaultChainType != null && !defaultChainType.equals(chainType);
+                var defaultChainType = getDefaultChainType(chainKind);
+                var defaultFound = defaultChainType != null && !defaultChainType.equals(chainType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ChainTypeDetailValue defaultChainTypeDetailValue = getDefaultChainTypeDetailValueForUpdate(chainKind);
+                    var defaultChainTypeDetailValue = getDefaultChainTypeDetailValueForUpdate(chainKind);
 
                     defaultChainTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateChainTypeFromValue(defaultChainTypeDetailValue, false, updatedBy);
@@ -867,23 +837,23 @@ public class ChainControl
         deleteChainEntityRoleTypesByChainType(chainType, deletedBy);
         deleteChainTypeDescriptionsByChainType(chainType, deletedBy);
 
-        ChainTypeDetail chainTypeDetail = chainType.getLastDetailForUpdate();
+        var chainTypeDetail = chainType.getLastDetailForUpdate();
         chainTypeDetail.setThruTime(session.START_TIME_LONG);
         chainType.setActiveDetail(null);
         chainType.store();
 
         // Check for default, and pick one if necessary
-        ChainKind chainKind = chainTypeDetail.getChainKind();
-        ChainType defaultChainType = getDefaultChainType(chainKind);
+        var chainKind = chainTypeDetail.getChainKind();
+        var defaultChainType = getDefaultChainType(chainKind);
         if(defaultChainType == null) {
-            List<ChainType> chainTypes = getChainTypesByChainKind(chainKind);
+            var chainTypes = getChainTypesByChainKind(chainKind);
 
             if(!chainTypes.isEmpty()) {
-                Iterator<ChainType> iter = chainTypes.iterator();
+                var iter = chainTypes.iterator();
                 if(iter.hasNext()) {
                     defaultChainType = iter.next();
                 }
-                ChainTypeDetailValue chainTypeDetailValue = Objects.requireNonNull(defaultChainType).getLastDetailForUpdate().getChainTypeDetailValue().clone();
+                var chainTypeDetailValue = Objects.requireNonNull(defaultChainType).getLastDetailForUpdate().getChainTypeDetailValue().clone();
 
                 chainTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainTypeFromValue(chainTypeDetailValue, false, deletedBy);
@@ -913,7 +883,7 @@ public class ChainControl
 
     public ChainTypeDescription createChainTypeDescription(ChainType chainType, Language language, String description,
             BasePK createdBy) {
-        ChainTypeDescription chainTypeDescription = ChainTypeDescriptionFactory.getInstance().create(chainType,
+        var chainTypeDescription = ChainTypeDescriptionFactory.getInstance().create(chainType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(chainType.getPrimaryKey(), EventTypes.MODIFY, chainTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -992,7 +962,7 @@ public class ChainControl
 
     public String getBestChainTypeDescription(ChainType chainType, Language language) {
         String description;
-        ChainTypeDescription chainTypeDescription = getChainTypeDescription(chainType, language);
+        var chainTypeDescription = getChainTypeDescription(chainType, language);
 
         if(chainTypeDescription == null && !language.getIsDefault()) {
             chainTypeDescription = getChainTypeDescription(chainType, getPartyControl().getDefaultLanguage());
@@ -1012,7 +982,7 @@ public class ChainControl
     }
 
     public List<ChainTypeDescriptionTransfer> getChainTypeDescriptionTransfersByChainType(UserVisit userVisit, ChainType chainType) {
-        List<ChainTypeDescription> chainTypeDescriptions = getChainTypeDescriptionsByChainType(chainType);
+        var chainTypeDescriptions = getChainTypeDescriptionsByChainType(chainType);
         List<ChainTypeDescriptionTransfer> chainTypeDescriptionTransfers = new ArrayList<>(chainTypeDescriptions.size());
 
         chainTypeDescriptions.forEach((chainTypeDescription) -> {
@@ -1024,15 +994,15 @@ public class ChainControl
 
     public void updateChainTypeDescriptionFromValue(ChainTypeDescriptionValue chainTypeDescriptionValue, BasePK updatedBy) {
         if(chainTypeDescriptionValue.hasBeenModified()) {
-            ChainTypeDescription chainTypeDescription = ChainTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainTypeDescription = ChainTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainTypeDescriptionValue.getPrimaryKey());
 
             chainTypeDescription.setThruTime(session.START_TIME_LONG);
             chainTypeDescription.store();
 
-            ChainType chainType = chainTypeDescription.getChainType();
-            Language language = chainTypeDescription.getLanguage();
-            String description = chainTypeDescriptionValue.getDescription();
+            var chainType = chainTypeDescription.getChainType();
+            var language = chainTypeDescription.getLanguage();
+            var description = chainTypeDescriptionValue.getDescription();
 
             chainTypeDescription = ChainTypeDescriptionFactory.getInstance().create(chainType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1049,7 +1019,7 @@ public class ChainControl
     }
 
     public void deleteChainTypeDescriptionsByChainType(ChainType chainType, BasePK deletedBy) {
-        List<ChainTypeDescription> chainTypeDescriptions = getChainTypeDescriptionsByChainTypeForUpdate(chainType);
+        var chainTypeDescriptions = getChainTypeDescriptionsByChainTypeForUpdate(chainType);
 
         chainTypeDescriptions.forEach((chainTypeDescription) -> 
                 deleteChainTypeDescription(chainTypeDescription, deletedBy)
@@ -1062,8 +1032,8 @@ public class ChainControl
 
     public ChainEntityRoleType createChainEntityRoleType(ChainType chainType, String chainEntityRoleTypeName, EntityType entityType, Integer sortOrder,
             BasePK createdBy) {
-        ChainEntityRoleType chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().create();
-        ChainEntityRoleTypeDetail chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create(session, chainEntityRoleType, chainType,
+        var chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().create();
+        var chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create(session, chainEntityRoleType, chainType,
                 chainEntityRoleTypeName, entityType, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1154,9 +1124,9 @@ public class ChainControl
     }
 
     public List<ChainEntityRoleTypeTransfer> getChainEntityRoleTypeTransfersByChainType(UserVisit userVisit, ChainType chainType) {
-        List<ChainEntityRoleType> chainEntityRoleTypes = getChainEntityRoleTypes(chainType);
+        var chainEntityRoleTypes = getChainEntityRoleTypes(chainType);
         List<ChainEntityRoleTypeTransfer> chainEntityRoleTypeTransfers = new ArrayList<>(chainEntityRoleTypes.size());
-        ChainEntityRoleTypeTransferCache chainEntityRoleTypeTransferCache = getChainTransferCaches(userVisit).getChainEntityRoleTypeTransferCache();
+        var chainEntityRoleTypeTransferCache = getChainTransferCaches(userVisit).getChainEntityRoleTypeTransferCache();
 
         chainEntityRoleTypes.forEach((chainEntityRoleType) ->
                 chainEntityRoleTypeTransfers.add(chainEntityRoleTypeTransferCache.getChainEntityRoleTypeTransfer(chainEntityRoleType))
@@ -1167,19 +1137,19 @@ public class ChainControl
 
     public void updateChainEntityRoleTypeFromValue(ChainEntityRoleTypeDetailValue chainEntityRoleTypeDetailValue, BasePK updatedBy) {
         if(chainEntityRoleTypeDetailValue.hasBeenModified()) {
-            ChainEntityRoleType chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainEntityRoleTypeDetailValue.getChainEntityRoleTypePK());
-            ChainEntityRoleTypeDetail chainEntityRoleTypeDetail = chainEntityRoleType.getActiveDetailForUpdate();
+            var chainEntityRoleTypeDetail = chainEntityRoleType.getActiveDetailForUpdate();
 
             chainEntityRoleTypeDetail.setThruTime(session.START_TIME_LONG);
             chainEntityRoleTypeDetail.store();
 
-            ChainEntityRoleTypePK chainEntityRoleTypePK = chainEntityRoleTypeDetail.getChainEntityRoleTypePK();
-            ChainType chainType = chainEntityRoleTypeDetail.getChainType();
-            ChainTypePK chainTypePK = chainType.getPrimaryKey();
-            String chainEntityRoleTypeName = chainEntityRoleTypeDetailValue.getChainEntityRoleTypeName();
-            EntityTypePK entityTypePK = chainEntityRoleTypeDetailValue.getEntityTypePK();
-            Integer sortOrder = chainEntityRoleTypeDetailValue.getSortOrder();
+            var chainEntityRoleTypePK = chainEntityRoleTypeDetail.getChainEntityRoleTypePK();
+            var chainType = chainEntityRoleTypeDetail.getChainType();
+            var chainTypePK = chainType.getPrimaryKey();
+            var chainEntityRoleTypeName = chainEntityRoleTypeDetailValue.getChainEntityRoleTypeName();
+            var entityTypePK = chainEntityRoleTypeDetailValue.getEntityTypePK();
+            var sortOrder = chainEntityRoleTypeDetailValue.getSortOrder();
 
             chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create(chainEntityRoleTypePK, chainTypePK, chainEntityRoleTypeName,
                     entityTypePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1195,7 +1165,7 @@ public class ChainControl
         deleteChainInstanceEntityRolesByChainEntityRoleType(chainEntityRoleType, deletedBy);
         deleteChainEntityRoleTypeDescriptionsByChainEntityRoleType(chainEntityRoleType, deletedBy);
 
-        ChainEntityRoleTypeDetail chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetailForUpdate();
+        var chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetailForUpdate();
         chainEntityRoleTypeDetail.setThruTime(session.START_TIME_LONG);
         chainEntityRoleType.setActiveDetail(null);
         chainEntityRoleType.store();
@@ -1204,7 +1174,7 @@ public class ChainControl
     }
 
     public void deleteChainEntityRoleTypesByChainType(ChainType chainType, BasePK deletedBy) {
-        List<ChainEntityRoleType> chainEntityRoleTypes = getChainEntityRoleTypesForUpdate(chainType);
+        var chainEntityRoleTypes = getChainEntityRoleTypesForUpdate(chainType);
 
         chainEntityRoleTypes.forEach((chainEntityRoleType) -> 
                 deleteChainEntityRoleType(chainEntityRoleType, deletedBy)
@@ -1217,7 +1187,7 @@ public class ChainControl
 
     public ChainEntityRoleTypeDescription createChainEntityRoleTypeDescription(ChainEntityRoleType chainEntityRoleType, Language language, String description,
             BasePK createdBy) {
-        ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().create(chainEntityRoleType,
+        var chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().create(chainEntityRoleType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(chainEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, chainEntityRoleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1296,7 +1266,7 @@ public class ChainControl
 
     public String getBestChainEntityRoleTypeDescription(ChainEntityRoleType chainEntityRoleType, Language language) {
         String description;
-        ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = getChainEntityRoleTypeDescription(chainEntityRoleType, language);
+        var chainEntityRoleTypeDescription = getChainEntityRoleTypeDescription(chainEntityRoleType, language);
 
         if(chainEntityRoleTypeDescription == null && !language.getIsDefault()) {
             chainEntityRoleTypeDescription = getChainEntityRoleTypeDescription(chainEntityRoleType, getPartyControl().getDefaultLanguage());
@@ -1316,7 +1286,7 @@ public class ChainControl
     }
 
     public List<ChainEntityRoleTypeDescriptionTransfer> getChainEntityRoleTypeDescriptionTransfersByChainEntityRoleType(UserVisit userVisit, ChainEntityRoleType chainEntityRoleType) {
-        List<ChainEntityRoleTypeDescription> chainEntityRoleTypeDescriptions = getChainEntityRoleTypeDescriptionsByChainEntityRoleType(chainEntityRoleType);
+        var chainEntityRoleTypeDescriptions = getChainEntityRoleTypeDescriptionsByChainEntityRoleType(chainEntityRoleType);
         List<ChainEntityRoleTypeDescriptionTransfer> chainEntityRoleTypeDescriptionTransfers = new ArrayList<>(chainEntityRoleTypeDescriptions.size());
 
         chainEntityRoleTypeDescriptions.forEach((chainEntityRoleTypeDescription) -> {
@@ -1328,15 +1298,15 @@ public class ChainControl
 
     public void updateChainEntityRoleTypeDescriptionFromValue(ChainEntityRoleTypeDescriptionValue chainEntityRoleTypeDescriptionValue, BasePK updatedBy) {
         if(chainEntityRoleTypeDescriptionValue.hasBeenModified()) {
-            ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainEntityRoleTypeDescriptionValue.getPrimaryKey());
 
             chainEntityRoleTypeDescription.setThruTime(session.START_TIME_LONG);
             chainEntityRoleTypeDescription.store();
 
-            ChainEntityRoleType chainEntityRoleType = chainEntityRoleTypeDescription.getChainEntityRoleType();
-            Language language = chainEntityRoleTypeDescription.getLanguage();
-            String description = chainEntityRoleTypeDescriptionValue.getDescription();
+            var chainEntityRoleType = chainEntityRoleTypeDescription.getChainEntityRoleType();
+            var language = chainEntityRoleTypeDescription.getLanguage();
+            var description = chainEntityRoleTypeDescriptionValue.getDescription();
 
             chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().create(chainEntityRoleType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1353,7 +1323,7 @@ public class ChainControl
     }
 
     public void deleteChainEntityRoleTypeDescriptionsByChainEntityRoleType(ChainEntityRoleType chainEntityRoleType, BasePK deletedBy) {
-        List<ChainEntityRoleTypeDescription> chainEntityRoleTypeDescriptions = getChainEntityRoleTypeDescriptionsByChainEntityRoleTypeForUpdate(chainEntityRoleType);
+        var chainEntityRoleTypeDescriptions = getChainEntityRoleTypeDescriptionsByChainEntityRoleTypeForUpdate(chainEntityRoleType);
 
         chainEntityRoleTypeDescriptions.forEach((chainEntityRoleTypeDescription) -> 
                 deleteChainEntityRoleTypeDescription(chainEntityRoleTypeDescription, deletedBy)
@@ -1365,11 +1335,11 @@ public class ChainControl
     // --------------------------------------------------------------------------------
 
     public Chain createChain(ChainType chainType, String chainName, Sequence chainInstanceSequence, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Chain defaultChain = getDefaultChain(chainType);
-        boolean defaultFound = defaultChain != null;
+        var defaultChain = getDefaultChain(chainType);
+        var defaultFound = defaultChain != null;
 
         if(defaultFound && isDefault) {
-            ChainDetailValue defaultChainDetailValue = getDefaultChainDetailValueForUpdate(chainType);
+            var defaultChainDetailValue = getDefaultChainDetailValueForUpdate(chainType);
 
             defaultChainDetailValue.setIsDefault(Boolean.FALSE);
             updateChainFromValue(defaultChainDetailValue, false, createdBy);
@@ -1377,8 +1347,8 @@ public class ChainControl
             isDefault = Boolean.TRUE;
         }
 
-        Chain chain = ChainFactory.getInstance().create();
-        ChainDetail chainDetail = ChainDetailFactory.getInstance().create(session, chain, chainType, chainName, chainInstanceSequence, isDefault, sortOrder,
+        var chain = ChainFactory.getInstance().create();
+        var chainDetail = ChainDetailFactory.getInstance().create(session, chain, chainType, chainName, chainInstanceSequence, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1534,7 +1504,7 @@ public class ChainControl
 
     public ChainChoicesBean getChainChoices(String defaultChainChoice, Language language,
             boolean allowNullChoice, ChainType chainType) {
-        List<Chain> chains = getChainsByChainType(chainType);
+        var chains = getChainsByChainType(chainType);
         var size = chains.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1550,7 +1520,7 @@ public class ChainControl
         }
 
         for(var chain : chains) {
-            ChainDetail chainDetail = chain.getLastDetail();
+            var chainDetail = chain.getLastDetail();
             var label = getBestChainDescription(chain, language);
             var value = chainDetail.getChainName();
 
@@ -1571,9 +1541,9 @@ public class ChainControl
     }
 
     public List<ChainTransfer> getChainTransfersByChainType(UserVisit userVisit, ChainType chainType) {
-        List<Chain> chains = getChainsByChainType(chainType);
+        var chains = getChainsByChainType(chainType);
         List<ChainTransfer> chainTransfers = new ArrayList<>(chains.size());
-        ChainTransferCache chainTransferCache = getChainTransferCaches(userVisit).getChainTransferCache();
+        var chainTransferCache = getChainTransferCaches(userVisit).getChainTransferCache();
 
         chains.forEach((chain) ->
                 chainTransfers.add(chainTransferCache.getChainTransfer(chain))
@@ -1585,28 +1555,28 @@ public class ChainControl
     private void updateChainFromValue(ChainDetailValue chainDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(chainDetailValue.hasBeenModified()) {
-            Chain chain = ChainFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chain = ChainFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainDetailValue.getChainPK());
-            ChainDetail chainDetail = chain.getActiveDetailForUpdate();
+            var chainDetail = chain.getActiveDetailForUpdate();
 
             chainDetail.setThruTime(session.START_TIME_LONG);
             chainDetail.store();
 
-            ChainPK chainPK = chainDetail.getChainPK();
-            ChainType chainType = chainDetail.getChainType();
-            ChainTypePK chainTypePK = chainType.getPrimaryKey();
-            String chainName = chainDetailValue.getChainName();
-            SequencePK chainInstanceSequencePK = chainDetailValue.getChainInstanceSequencePK();
-            Boolean isDefault = chainDetailValue.getIsDefault();
-            Integer sortOrder = chainDetailValue.getSortOrder();
+            var chainPK = chainDetail.getChainPK();
+            var chainType = chainDetail.getChainType();
+            var chainTypePK = chainType.getPrimaryKey();
+            var chainName = chainDetailValue.getChainName();
+            var chainInstanceSequencePK = chainDetailValue.getChainInstanceSequencePK();
+            var isDefault = chainDetailValue.getIsDefault();
+            var sortOrder = chainDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Chain defaultChain = getDefaultChain(chainType);
-                boolean defaultFound = defaultChain != null && !defaultChain.equals(chain);
+                var defaultChain = getDefaultChain(chainType);
+                var defaultFound = defaultChain != null && !defaultChain.equals(chain);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ChainDetailValue defaultChainDetailValue = getDefaultChainDetailValueForUpdate(chainType);
+                    var defaultChainDetailValue = getDefaultChainDetailValueForUpdate(chainType);
 
                     defaultChainDetailValue.setIsDefault(Boolean.FALSE);
                     updateChainFromValue(defaultChainDetailValue, false, updatedBy);
@@ -1640,23 +1610,23 @@ public class ChainControl
         deleteChainActionSetsByChain(chain, deletedBy);
         deleteChainDescriptionsByChain(chain, deletedBy);
 
-        ChainDetail chainDetail = chain.getLastDetailForUpdate();
+        var chainDetail = chain.getLastDetailForUpdate();
         chainDetail.setThruTime(session.START_TIME_LONG);
         chain.setActiveDetail(null);
         chain.store();
 
         // Check for default, and pick one if necessary
-        ChainType chainType = chainDetail.getChainType();
-        Chain defaultChain = getDefaultChain(chainType);
+        var chainType = chainDetail.getChainType();
+        var defaultChain = getDefaultChain(chainType);
         if(defaultChain == null) {
-            List<Chain> chains = getChainsByChainType(chainType);
+            var chains = getChainsByChainType(chainType);
 
             if(!chains.isEmpty()) {
-                Iterator<Chain> iter = chains.iterator();
+                var iter = chains.iterator();
                 if(iter.hasNext()) {
                     defaultChain = iter.next();
                 }
-                ChainDetailValue chainDetailValue = Objects.requireNonNull(defaultChain).getLastDetailForUpdate().getChainDetailValue().clone();
+                var chainDetailValue = Objects.requireNonNull(defaultChain).getLastDetailForUpdate().getChainDetailValue().clone();
 
                 chainDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainFromValue(chainDetailValue, false, deletedBy);
@@ -1686,7 +1656,7 @@ public class ChainControl
 
     public ChainDescription createChainDescription(Chain chain, Language language, String description,
             BasePK createdBy) {
-        ChainDescription chainDescription = ChainDescriptionFactory.getInstance().create(chain,
+        var chainDescription = ChainDescriptionFactory.getInstance().create(chain,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(chain.getPrimaryKey(), EventTypes.MODIFY, chainDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1765,7 +1735,7 @@ public class ChainControl
 
     public String getBestChainDescription(Chain chain, Language language) {
         String description;
-        ChainDescription chainDescription = getChainDescription(chain, language);
+        var chainDescription = getChainDescription(chain, language);
 
         if(chainDescription == null && !language.getIsDefault()) {
             chainDescription = getChainDescription(chain, getPartyControl().getDefaultLanguage());
@@ -1785,7 +1755,7 @@ public class ChainControl
     }
 
     public List<ChainDescriptionTransfer> getChainDescriptionTransfersByChain(UserVisit userVisit, Chain chain) {
-        List<ChainDescription> chainDescriptions = getChainDescriptionsByChain(chain);
+        var chainDescriptions = getChainDescriptionsByChain(chain);
         List<ChainDescriptionTransfer> chainDescriptionTransfers = new ArrayList<>(chainDescriptions.size());
 
         chainDescriptions.forEach((chainDescription) -> {
@@ -1797,15 +1767,15 @@ public class ChainControl
 
     public void updateChainDescriptionFromValue(ChainDescriptionValue chainDescriptionValue, BasePK updatedBy) {
         if(chainDescriptionValue.hasBeenModified()) {
-            ChainDescription chainDescription = ChainDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainDescription = ChainDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainDescriptionValue.getPrimaryKey());
 
             chainDescription.setThruTime(session.START_TIME_LONG);
             chainDescription.store();
 
-            Chain chain = chainDescription.getChain();
-            Language language = chainDescription.getLanguage();
-            String description = chainDescriptionValue.getDescription();
+            var chain = chainDescription.getChain();
+            var language = chainDescription.getLanguage();
+            var description = chainDescriptionValue.getDescription();
 
             chainDescription = ChainDescriptionFactory.getInstance().create(chain, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1822,7 +1792,7 @@ public class ChainControl
     }
 
     public void deleteChainDescriptionsByChain(Chain chain, BasePK deletedBy) {
-        List<ChainDescription> chainDescriptions = getChainDescriptionsByChainForUpdate(chain);
+        var chainDescriptions = getChainDescriptionsByChainForUpdate(chain);
 
         chainDescriptions.forEach((chainDescription) -> 
                 deleteChainDescription(chainDescription, deletedBy)
@@ -1834,11 +1804,11 @@ public class ChainControl
     // --------------------------------------------------------------------------------
 
     public ChainActionSet createChainActionSet(Chain chain, String chainActionSetName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ChainActionSet defaultChainActionSet = getDefaultChainActionSet(chain);
-        boolean defaultFound = defaultChainActionSet != null;
+        var defaultChainActionSet = getDefaultChainActionSet(chain);
+        var defaultFound = defaultChainActionSet != null;
 
         if(defaultFound && isDefault) {
-            ChainActionSetDetailValue defaultChainActionSetDetailValue = getDefaultChainActionSetDetailValueForUpdate(chain);
+            var defaultChainActionSetDetailValue = getDefaultChainActionSetDetailValueForUpdate(chain);
 
             defaultChainActionSetDetailValue.setIsDefault(Boolean.FALSE);
             updateChainActionSetFromValue(defaultChainActionSetDetailValue, false, createdBy);
@@ -1846,8 +1816,8 @@ public class ChainControl
             isDefault = Boolean.TRUE;
         }
 
-        ChainActionSet chainActionSet = ChainActionSetFactory.getInstance().create();
-        ChainActionSetDetail chainActionSetDetail = ChainActionSetDetailFactory.getInstance().create(session, chainActionSet, chain, chainActionSetName,
+        var chainActionSet = ChainActionSetFactory.getInstance().create();
+        var chainActionSetDetail = ChainActionSetDetailFactory.getInstance().create(session, chainActionSet, chain, chainActionSetName,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1969,7 +1939,7 @@ public class ChainControl
     }
 
     public ChainActionSetChoicesBean getChainActionSetChoices(String defaultChainActionSetChoice, Language language, boolean allowNullChoice, Chain chain) {
-        List<ChainActionSet> chainActionSets = getChainActionSetsByChain(chain);
+        var chainActionSets = getChainActionSetsByChain(chain);
         var size = chainActionSets.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1985,7 +1955,7 @@ public class ChainControl
         }
 
         for(var chainActionSet : chainActionSets) {
-            ChainActionSetDetail chainActionSetDetail = chainActionSet.getLastDetail();
+            var chainActionSetDetail = chainActionSet.getLastDetail();
             var label = getBestChainActionSetDescription(chainActionSet, language);
             var value = chainActionSetDetail.getChainActionSetName();
 
@@ -2006,9 +1976,9 @@ public class ChainControl
     }
 
     public List<ChainActionSetTransfer> getChainActionSetTransfersByChain(UserVisit userVisit, Chain chain) {
-        List<ChainActionSet> chainActionSets = getChainActionSetsByChain(chain);
+        var chainActionSets = getChainActionSetsByChain(chain);
         List<ChainActionSetTransfer> chainActionSetTransfers = new ArrayList<>(chainActionSets.size());
-        ChainActionSetTransferCache chainActionSetTransferCache = getChainTransferCaches(userVisit).getChainActionSetTransferCache();
+        var chainActionSetTransferCache = getChainTransferCaches(userVisit).getChainActionSetTransferCache();
 
         chainActionSets.forEach((chainActionSet) ->
                 chainActionSetTransfers.add(chainActionSetTransferCache.getChainActionSetTransfer(chainActionSet))
@@ -2020,27 +1990,27 @@ public class ChainControl
     private void updateChainActionSetFromValue(ChainActionSetDetailValue chainActionSetDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(chainActionSetDetailValue.hasBeenModified()) {
-            ChainActionSet chainActionSet = ChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionSet = ChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionSetDetailValue.getChainActionSetPK());
-            ChainActionSetDetail chainActionSetDetail = chainActionSet.getActiveDetailForUpdate();
+            var chainActionSetDetail = chainActionSet.getActiveDetailForUpdate();
 
             chainActionSetDetail.setThruTime(session.START_TIME_LONG);
             chainActionSetDetail.store();
 
-            ChainActionSetPK chainActionSetPK = chainActionSetDetail.getChainActionSetPK();
-            Chain chain = chainActionSetDetail.getChain();
-            ChainPK chainPK = chain.getPrimaryKey();
-            String chainActionSetName = chainActionSetDetailValue.getChainActionSetName();
-            Boolean isDefault = chainActionSetDetailValue.getIsDefault();
-            Integer sortOrder = chainActionSetDetailValue.getSortOrder();
+            var chainActionSetPK = chainActionSetDetail.getChainActionSetPK();
+            var chain = chainActionSetDetail.getChain();
+            var chainPK = chain.getPrimaryKey();
+            var chainActionSetName = chainActionSetDetailValue.getChainActionSetName();
+            var isDefault = chainActionSetDetailValue.getIsDefault();
+            var sortOrder = chainActionSetDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ChainActionSet defaultChainActionSet = getDefaultChainActionSet(chain);
-                boolean defaultFound = defaultChainActionSet != null && !defaultChainActionSet.equals(chainActionSet);
+                var defaultChainActionSet = getDefaultChainActionSet(chain);
+                var defaultFound = defaultChainActionSet != null && !defaultChainActionSet.equals(chainActionSet);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ChainActionSetDetailValue defaultChainActionSetDetailValue = getDefaultChainActionSetDetailValueForUpdate(chain);
+                    var defaultChainActionSetDetailValue = getDefaultChainActionSetDetailValueForUpdate(chain);
 
                     defaultChainActionSetDetailValue.setIsDefault(Boolean.FALSE);
                     updateChainActionSetFromValue(defaultChainActionSetDetailValue, false, updatedBy);
@@ -2069,23 +2039,23 @@ public class ChainControl
         deleteChainActionsByChainActionSet(chainActionSet, deletedBy);
         deleteChainActionSetDescriptionsByChainActionSet(chainActionSet, deletedBy);
 
-        ChainActionSetDetail chainActionSetDetail = chainActionSet.getLastDetailForUpdate();
+        var chainActionSetDetail = chainActionSet.getLastDetailForUpdate();
         chainActionSetDetail.setThruTime(session.START_TIME_LONG);
         chainActionSet.setActiveDetail(null);
         chainActionSet.store();
 
         // Check for default, and pick one if necessary
-        Chain chain = chainActionSetDetail.getChain();
-        ChainActionSet defaultChainActionSet = getDefaultChainActionSet(chain);
+        var chain = chainActionSetDetail.getChain();
+        var defaultChainActionSet = getDefaultChainActionSet(chain);
         if(defaultChainActionSet == null) {
-            List<ChainActionSet> chainActionSets = getChainActionSetsByChain(chain);
+            var chainActionSets = getChainActionSetsByChain(chain);
 
             if(!chainActionSets.isEmpty()) {
-                Iterator<ChainActionSet> iter = chainActionSets.iterator();
+                var iter = chainActionSets.iterator();
                 if(iter.hasNext()) {
                     defaultChainActionSet = iter.next();
                 }
-                ChainActionSetDetailValue chainActionSetDetailValue = Objects.requireNonNull(defaultChainActionSet).getLastDetailForUpdate().getChainActionSetDetailValue().clone();
+                var chainActionSetDetailValue = Objects.requireNonNull(defaultChainActionSet).getLastDetailForUpdate().getChainActionSetDetailValue().clone();
 
                 chainActionSetDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainActionSetFromValue(chainActionSetDetailValue, false, deletedBy);
@@ -2110,7 +2080,7 @@ public class ChainControl
     // --------------------------------------------------------------------------------
 
     public ChainActionSetDescription createChainActionSetDescription(ChainActionSet chainActionSet, Language language, String description, BasePK createdBy) {
-        ChainActionSetDescription chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().create(chainActionSet,
+        var chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().create(chainActionSet,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(chainActionSet.getPrimaryKey(), EventTypes.MODIFY, chainActionSetDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2189,7 +2159,7 @@ public class ChainControl
 
     public String getBestChainActionSetDescription(ChainActionSet chainActionSet, Language language) {
         String description;
-        ChainActionSetDescription chainActionSetDescription = getChainActionSetDescription(chainActionSet, language);
+        var chainActionSetDescription = getChainActionSetDescription(chainActionSet, language);
 
         if(chainActionSetDescription == null && !language.getIsDefault()) {
             chainActionSetDescription = getChainActionSetDescription(chainActionSet, getPartyControl().getDefaultLanguage());
@@ -2209,7 +2179,7 @@ public class ChainControl
     }
 
     public List<ChainActionSetDescriptionTransfer> getChainActionSetDescriptionTransfersByChainActionSet(UserVisit userVisit, ChainActionSet chainActionSet) {
-        List<ChainActionSetDescription> chainActionSetDescriptions = getChainActionSetDescriptionsByChainActionSet(chainActionSet);
+        var chainActionSetDescriptions = getChainActionSetDescriptionsByChainActionSet(chainActionSet);
         List<ChainActionSetDescriptionTransfer> chainActionSetDescriptionTransfers = new ArrayList<>(chainActionSetDescriptions.size());
 
         chainActionSetDescriptions.forEach((chainActionSetDescription) -> {
@@ -2221,15 +2191,15 @@ public class ChainControl
 
     public void updateChainActionSetDescriptionFromValue(ChainActionSetDescriptionValue chainActionSetDescriptionValue, BasePK updatedBy) {
         if(chainActionSetDescriptionValue.hasBeenModified()) {
-            ChainActionSetDescription chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionSetDescriptionValue.getPrimaryKey());
 
             chainActionSetDescription.setThruTime(session.START_TIME_LONG);
             chainActionSetDescription.store();
 
-            ChainActionSet chainActionSet = chainActionSetDescription.getChainActionSet();
-            Language language = chainActionSetDescription.getLanguage();
-            String description = chainActionSetDescriptionValue.getDescription();
+            var chainActionSet = chainActionSetDescription.getChainActionSet();
+            var language = chainActionSetDescription.getLanguage();
+            var description = chainActionSetDescriptionValue.getDescription();
 
             chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().create(chainActionSet, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2246,7 +2216,7 @@ public class ChainControl
     }
 
     public void deleteChainActionSetDescriptionsByChainActionSet(ChainActionSet chainActionSet, BasePK deletedBy) {
-        List<ChainActionSetDescription> chainActionSetDescriptions = getChainActionSetDescriptionsByChainActionSetForUpdate(chainActionSet);
+        var chainActionSetDescriptions = getChainActionSetDescriptionsByChainActionSetForUpdate(chainActionSet);
 
         chainActionSetDescriptions.forEach((chainActionSetDescription) -> 
                 deleteChainActionSetDescription(chainActionSetDescription, deletedBy)
@@ -2258,11 +2228,11 @@ public class ChainControl
     // --------------------------------------------------------------------------------
 
     public ChainActionType createChainActionType(String chainActionTypeName, Boolean allowMultiple, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ChainActionType defaultChainActionType = getDefaultChainActionType();
-        boolean defaultFound = defaultChainActionType != null;
+        var defaultChainActionType = getDefaultChainActionType();
+        var defaultFound = defaultChainActionType != null;
 
         if(defaultFound && isDefault) {
-            ChainActionTypeDetailValue defaultChainActionTypeDetailValue = getDefaultChainActionTypeDetailValueForUpdate();
+            var defaultChainActionTypeDetailValue = getDefaultChainActionTypeDetailValueForUpdate();
 
             defaultChainActionTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateChainActionTypeFromValue(defaultChainActionTypeDetailValue, false, createdBy);
@@ -2270,8 +2240,8 @@ public class ChainControl
             isDefault = Boolean.TRUE;
         }
 
-        ChainActionType chainActionType = ChainActionTypeFactory.getInstance().create();
-        ChainActionTypeDetail chainActionTypeDetail = ChainActionTypeDetailFactory.getInstance().create(chainActionType, chainActionTypeName, allowMultiple,
+        var chainActionType = ChainActionTypeFactory.getInstance().create();
+        var chainActionTypeDetail = ChainActionTypeDetailFactory.getInstance().create(chainActionType, chainActionTypeName, allowMultiple,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2388,7 +2358,7 @@ public class ChainControl
     }
 
     public ChainActionTypeChoicesBean getChainActionTypeChoices(String defaultChainActionTypeChoice, Language language, boolean allowNullChoice) {
-        List<ChainActionType> chainActionTypes = getChainActionTypes();
+        var chainActionTypes = getChainActionTypes();
         var size = chainActionTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2404,7 +2374,7 @@ public class ChainControl
         }
 
         for(var chainActionType : chainActionTypes) {
-            ChainActionTypeDetail chainActionTypeDetail = chainActionType.getLastDetail();
+            var chainActionTypeDetail = chainActionType.getLastDetail();
 
             var label = getBestChainActionTypeDescription(chainActionType, language);
             var value = chainActionTypeDetail.getChainActionTypeName();
@@ -2426,9 +2396,9 @@ public class ChainControl
     }
 
     public List<ChainActionTypeTransfer> getChainActionTypeTransfers(UserVisit userVisit) {
-        List<ChainActionType> chainActionTypes = getChainActionTypes();
+        var chainActionTypes = getChainActionTypes();
         List<ChainActionTypeTransfer> chainActionTypeTransfers = new ArrayList<>(chainActionTypes.size());
-        ChainActionTypeTransferCache chainActionTypeTransferCache = getChainTransferCaches(userVisit).getChainActionTypeTransferCache();
+        var chainActionTypeTransferCache = getChainTransferCaches(userVisit).getChainActionTypeTransferCache();
 
         chainActionTypes.forEach((chainActionType) ->
                 chainActionTypeTransfers.add(chainActionTypeTransferCache.getChainActionTypeTransfer(chainActionType))
@@ -2438,26 +2408,26 @@ public class ChainControl
     }
 
     private void updateChainActionTypeFromValue(ChainActionTypeDetailValue chainActionTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        ChainActionType chainActionType = ChainActionTypeFactory.getInstance().getEntityFromPK(session,
+        var chainActionType = ChainActionTypeFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, chainActionTypeDetailValue.getChainActionTypePK());
-        ChainActionTypeDetail chainActionTypeDetail = chainActionType.getActiveDetailForUpdate();
+        var chainActionTypeDetail = chainActionType.getActiveDetailForUpdate();
 
         chainActionTypeDetail.setThruTime(session.START_TIME_LONG);
         chainActionTypeDetail.store();
 
-        ChainActionTypePK chainActionTypePK = chainActionTypeDetail.getChainActionTypePK();
-        String chainActionTypeName = chainActionTypeDetailValue.getChainActionTypeName();
-        Boolean allowMultiple = chainActionTypeDetailValue.getAllowMultiple();
-        Boolean isDefault = chainActionTypeDetailValue.getIsDefault();
-        Integer sortOrder = chainActionTypeDetailValue.getSortOrder();
+        var chainActionTypePK = chainActionTypeDetail.getChainActionTypePK();
+        var chainActionTypeName = chainActionTypeDetailValue.getChainActionTypeName();
+        var allowMultiple = chainActionTypeDetailValue.getAllowMultiple();
+        var isDefault = chainActionTypeDetailValue.getIsDefault();
+        var sortOrder = chainActionTypeDetailValue.getSortOrder();
 
         if(checkDefault) {
-            ChainActionType defaultChainActionType = getDefaultChainActionType();
-            boolean defaultFound = defaultChainActionType != null && !defaultChainActionType.equals(chainActionType);
+            var defaultChainActionType = getDefaultChainActionType();
+            var defaultFound = defaultChainActionType != null && !defaultChainActionType.equals(chainActionType);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                ChainActionTypeDetailValue defaultChainActionTypeDetailValue = getDefaultChainActionTypeDetailValueForUpdate();
+                var defaultChainActionTypeDetailValue = getDefaultChainActionTypeDetailValueForUpdate();
 
                 defaultChainActionTypeDetailValue.setIsDefault(Boolean.FALSE);
                 updateChainActionTypeFromValue(defaultChainActionTypeDetailValue, false, updatedBy);
@@ -2484,22 +2454,22 @@ public class ChainControl
     public void deleteChainActionType(ChainActionType chainActionType, BasePK deletedBy) {
         deleteChainActionTypeDescriptionsByChainActionType(chainActionType, deletedBy);
 
-        ChainActionTypeDetail chainActionTypeDetail = chainActionType.getLastDetailForUpdate();
+        var chainActionTypeDetail = chainActionType.getLastDetailForUpdate();
         chainActionTypeDetail.setThruTime(session.START_TIME_LONG);
         chainActionType.setActiveDetail(null);
         chainActionType.store();
 
         // Check for default, and pick one if necessary
-        ChainActionType defaultChainActionType = getDefaultChainActionType();
+        var defaultChainActionType = getDefaultChainActionType();
         if(defaultChainActionType == null) {
-            List<ChainActionType> chainActionTypes = getChainActionTypesForUpdate();
+            var chainActionTypes = getChainActionTypesForUpdate();
 
             if(!chainActionTypes.isEmpty()) {
-                Iterator<ChainActionType> iter = chainActionTypes.iterator();
+                var iter = chainActionTypes.iterator();
                 if(iter.hasNext()) {
                     defaultChainActionType = iter.next();
                 }
-                ChainActionTypeDetailValue chainActionTypeDetailValue = Objects.requireNonNull(defaultChainActionType).getLastDetailForUpdate().getChainActionTypeDetailValue().clone();
+                var chainActionTypeDetailValue = Objects.requireNonNull(defaultChainActionType).getLastDetailForUpdate().getChainActionTypeDetailValue().clone();
 
                 chainActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainActionTypeFromValue(chainActionTypeDetailValue, false, deletedBy);
@@ -2515,7 +2485,7 @@ public class ChainControl
 
     public ChainActionTypeDescription createChainActionTypeDescription(ChainActionType chainActionType, Language language, String description,
             BasePK createdBy) {
-        ChainActionTypeDescription chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().create(chainActionType,
+        var chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().create(chainActionType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(chainActionType.getPrimaryKey(), EventTypes.MODIFY, chainActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2594,7 +2564,7 @@ public class ChainControl
 
     public String getBestChainActionTypeDescription(ChainActionType chainActionType, Language language) {
         String description;
-        ChainActionTypeDescription chainActionTypeDescription = getChainActionTypeDescription(chainActionType, language);
+        var chainActionTypeDescription = getChainActionTypeDescription(chainActionType, language);
 
         if(chainActionTypeDescription == null && !language.getIsDefault()) {
             chainActionTypeDescription = getChainActionTypeDescription(chainActionType, getPartyControl().getDefaultLanguage());
@@ -2614,7 +2584,7 @@ public class ChainControl
     }
 
     public List<ChainActionTypeDescriptionTransfer> getChainActionTypeDescriptionTransfersByChainActionType(UserVisit userVisit, ChainActionType chainActionType) {
-        List<ChainActionTypeDescription> chainActionTypeDescriptions = getChainActionTypeDescriptionsByChainActionType(chainActionType);
+        var chainActionTypeDescriptions = getChainActionTypeDescriptionsByChainActionType(chainActionType);
         List<ChainActionTypeDescriptionTransfer> chainActionTypeDescriptionTransfers = new ArrayList<>(chainActionTypeDescriptions.size());
 
         chainActionTypeDescriptions.forEach((chainActionTypeDescription) -> {
@@ -2626,15 +2596,15 @@ public class ChainControl
 
     public void updateChainActionTypeDescriptionFromValue(ChainActionTypeDescriptionValue chainActionTypeDescriptionValue, BasePK updatedBy) {
         if(chainActionTypeDescriptionValue.hasBeenModified()) {
-            ChainActionTypeDescription chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionTypeDescriptionValue.getPrimaryKey());
 
             chainActionTypeDescription.setThruTime(session.START_TIME_LONG);
             chainActionTypeDescription.store();
 
-            ChainActionType chainActionType = chainActionTypeDescription.getChainActionType();
-            Language language = chainActionTypeDescription.getLanguage();
-            String description = chainActionTypeDescriptionValue.getDescription();
+            var chainActionType = chainActionTypeDescription.getChainActionType();
+            var language = chainActionTypeDescription.getLanguage();
+            var description = chainActionTypeDescriptionValue.getDescription();
 
             chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().create(chainActionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2651,7 +2621,7 @@ public class ChainControl
     }
 
     public void deleteChainActionTypeDescriptionsByChainActionType(ChainActionType chainActionType, BasePK deletedBy) {
-        List<ChainActionTypeDescription> chainActionTypeDescriptions = getChainActionTypeDescriptionsByChainActionTypeForUpdate(chainActionType);
+        var chainActionTypeDescriptions = getChainActionTypeDescriptionsByChainActionTypeForUpdate(chainActionType);
 
         chainActionTypeDescriptions.forEach((chainActionTypeDescription) -> 
                 deleteChainActionTypeDescription(chainActionTypeDescription, deletedBy)
@@ -2671,7 +2641,7 @@ public class ChainControl
         ChainActionTypeUse chainActionTypeUse;
         
         try {
-            PreparedStatement ps = ChainActionTypeUseFactory.getInstance().prepareStatement(
+            var ps = ChainActionTypeUseFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM chainactiontypeuses " +
                     "WHERE chnacttypu_chnk_chainkindid = ? AND chnacttypu_chnacttyp_chainactiontypeid = ?");
@@ -2693,8 +2663,8 @@ public class ChainControl
     
     public ChainAction createChainAction(ChainActionSet chainActionSet, String chainActionName, ChainActionType chainActionType, Integer sortOrder,
             BasePK createdBy) {
-        ChainAction chainAction = ChainActionFactory.getInstance().create();
-        ChainActionDetail chainActionDetail = ChainActionDetailFactory.getInstance().create(chainAction, chainActionSet, chainActionName, chainActionType, sortOrder, session.START_TIME_LONG,
+        var chainAction = ChainActionFactory.getInstance().create();
+        var chainActionDetail = ChainActionDetailFactory.getInstance().create(chainAction, chainActionSet, chainActionName, chainActionType, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2782,9 +2752,9 @@ public class ChainControl
     }
 
     public List<ChainActionTransfer> getChainActionTransfersByChainActionSet(UserVisit userVisit, ChainActionSet chainActionSet) {
-        List<ChainAction> chainActions = getChainActionsByChainActionSet(chainActionSet);
+        var chainActions = getChainActionsByChainActionSet(chainActionSet);
         List<ChainActionTransfer> chainActionTransfers = new ArrayList<>(chainActions.size());
-        ChainActionTransferCache chainActionTransferCache = getChainTransferCaches(userVisit).getChainActionTransferCache();
+        var chainActionTransferCache = getChainTransferCaches(userVisit).getChainActionTransferCache();
 
         chainActions.forEach((chainAction) ->
                 chainActionTransfers.add(chainActionTransferCache.getChainActionTransfer(chainAction))
@@ -2795,18 +2765,18 @@ public class ChainControl
 
     public void updateChainActionFromValue(ChainActionDetailValue chainActionDetailValue, BasePK updatedBy) {
         if(chainActionDetailValue.hasBeenModified()) {
-            ChainAction chainAction = ChainActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionDetailValue.getChainActionPK());
-            ChainActionDetail chainActionDetail = chainAction.getActiveDetailForUpdate();
+            var chainAction = ChainActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionDetailValue.getChainActionPK());
+            var chainActionDetail = chainAction.getActiveDetailForUpdate();
 
             chainActionDetail.setThruTime(session.START_TIME_LONG);
             chainActionDetail.store();
 
-            ChainActionPK chainActionPK = chainActionDetail.getChainActionPK(); // Not updated
-            ChainActionSet chainActionSet = chainActionDetail.getChainActionSet(); // Not updated
-            ChainActionSetPK chainActionSetPK = chainActionSet.getPrimaryKey(); // Not updated
-            String chainActionName = chainActionDetailValue.getChainActionName();
-            ChainActionTypePK chainActionTypePK = chainActionDetail.getChainActionTypePK(); // Not updated
-            Integer sortOrder = chainActionDetailValue.getSortOrder();
+            var chainActionPK = chainActionDetail.getChainActionPK(); // Not updated
+            var chainActionSet = chainActionDetail.getChainActionSet(); // Not updated
+            var chainActionSetPK = chainActionSet.getPrimaryKey(); // Not updated
+            var chainActionName = chainActionDetailValue.getChainActionName();
+            var chainActionTypePK = chainActionDetail.getChainActionTypePK(); // Not updated
+            var sortOrder = chainActionDetailValue.getSortOrder();
 
             chainActionDetail = ChainActionDetailFactory.getInstance().create(chainActionPK, chainActionSetPK, chainActionName, chainActionTypePK, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2819,8 +2789,8 @@ public class ChainControl
     }
 
     public void deleteChainAction(ChainAction chainAction, BasePK deletedBy) {
-        ChainActionDetail chainActionDetail = chainAction.getLastDetailForUpdate();
-        String chainActionTypeName = chainActionDetail.getChainActionType().getLastDetail().getChainActionTypeName();
+        var chainActionDetail = chainAction.getLastDetailForUpdate();
+        var chainActionTypeName = chainActionDetail.getChainActionType().getLastDetail().getChainActionTypeName();
         
         deleteChainActionDescriptionsByChainAction(chainAction, deletedBy);
 
@@ -2854,7 +2824,7 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainActionDescription createChainActionDescription(ChainAction chainAction, Language language, String description, BasePK createdBy) {
-        ChainActionDescription chainActionDescription = ChainActionDescriptionFactory.getInstance().create(chainAction,
+        var chainActionDescription = ChainActionDescriptionFactory.getInstance().create(chainAction,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2933,7 +2903,7 @@ public class ChainControl
 
     public String getBestChainActionDescription(ChainAction chainAction, Language language) {
         String description;
-        ChainActionDescription chainActionDescription = getChainActionDescription(chainAction, language);
+        var chainActionDescription = getChainActionDescription(chainAction, language);
 
         if(chainActionDescription == null && !language.getIsDefault()) {
             chainActionDescription = getChainActionDescription(chainAction, getPartyControl().getDefaultLanguage());
@@ -2953,7 +2923,7 @@ public class ChainControl
     }
 
     public List<ChainActionDescriptionTransfer> getChainActionDescriptionTransfersByChainAction(UserVisit userVisit, ChainAction chainAction) {
-        List<ChainActionDescription> chainActionDescriptions = getChainActionDescriptionsByChainAction(chainAction);
+        var chainActionDescriptions = getChainActionDescriptionsByChainAction(chainAction);
         List<ChainActionDescriptionTransfer> chainActionDescriptionTransfers = new ArrayList<>(chainActionDescriptions.size());
 
         chainActionDescriptions.forEach((chainActionDescription) -> {
@@ -2965,15 +2935,15 @@ public class ChainControl
 
     public void updateChainActionDescriptionFromValue(ChainActionDescriptionValue chainActionDescriptionValue, BasePK updatedBy) {
         if(chainActionDescriptionValue.hasBeenModified()) {
-            ChainActionDescription chainActionDescription = ChainActionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionDescription = ChainActionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionDescriptionValue.getPrimaryKey());
 
             chainActionDescription.setThruTime(session.START_TIME_LONG);
             chainActionDescription.store();
 
-            ChainAction chainAction = chainActionDescription.getChainAction();
-            Language language = chainActionDescription.getLanguage();
-            String description = chainActionDescriptionValue.getDescription();
+            var chainAction = chainActionDescription.getChainAction();
+            var language = chainActionDescription.getLanguage();
+            var description = chainActionDescriptionValue.getDescription();
 
             chainActionDescription = ChainActionDescriptionFactory.getInstance().create(chainAction, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2990,7 +2960,7 @@ public class ChainControl
     }
 
     public void deleteChainActionDescriptionsByChainAction(ChainAction chainAction, BasePK deletedBy) {
-        List<ChainActionDescription> chainActionDescriptions = getChainActionDescriptionsByChainActionForUpdate(chainAction);
+        var chainActionDescriptions = getChainActionDescriptionsByChainActionForUpdate(chainAction);
 
         chainActionDescriptions.forEach((chainActionDescription) -> 
                 deleteChainActionDescription(chainActionDescription, deletedBy)
@@ -3002,7 +2972,7 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainActionLetter createChainActionLetter(ChainAction chainAction, Letter letter, BasePK createdBy) {
-        ChainActionLetter chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction, letter, session.START_TIME_LONG,
+        var chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction, letter, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionLetter.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3011,7 +2981,7 @@ public class ChainControl
     }
 
     private ChainActionLetter getChainActionLetter(ChainAction chainAction, EntityPermission entityPermission) {
-        ChainActionLetter chainActionLetter = null;
+        ChainActionLetter chainActionLetter;
 
         try {
             String query = null;
@@ -3026,8 +2996,8 @@ public class ChainControl
                         "WHERE chnactlttr_chnact_chainactionid = ? AND chnactlttr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ChainActionLetterFactory.getInstance().prepareStatement(query);
+
+            var ps = ChainActionLetterFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, chainAction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3053,7 +3023,7 @@ public class ChainControl
     }
 
     public ChainActionLetterValue getChainActionLetterValueForUpdate(ChainAction chainAction) {
-        ChainActionLetter chainActionLetter = getChainActionLetterForUpdate(chainAction);
+        var chainActionLetter = getChainActionLetterForUpdate(chainAction);
 
         return chainActionLetter == null ? null : chainActionLetter.getChainActionLetterValue().clone();
     }
@@ -3064,13 +3034,13 @@ public class ChainControl
 
     public void updateChainActionLetterFromValue(ChainActionLetterValue chainActionLetterValue, BasePK updatedBy) {
         if(chainActionLetterValue.hasBeenModified()) {
-            ChainActionLetter chainActionLetter = ChainActionLetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionLetterValue.getPrimaryKey());
+            var chainActionLetter = ChainActionLetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionLetterValue.getPrimaryKey());
 
             chainActionLetter.setThruTime(session.START_TIME_LONG);
             chainActionLetter.store();
 
-            ChainAction chainAction = chainActionLetter.getChainAction();
-            LetterPK letterPK = chainActionLetterValue.getLetterPK();
+            var chainAction = chainActionLetter.getChainAction();
+            var letterPK = chainActionLetterValue.getLetterPK();
 
             chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction.getPrimaryKey(), letterPK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -3090,7 +3060,7 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainActionSurvey createChainActionSurvey(ChainAction chainAction, Survey survey, BasePK createdBy) {
-        ChainActionSurvey chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction, survey, session.START_TIME_LONG,
+        var chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction, survey, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionSurvey.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3099,7 +3069,7 @@ public class ChainControl
     }
 
     private ChainActionSurvey getChainActionSurvey(ChainAction chainAction, EntityPermission entityPermission) {
-        ChainActionSurvey chainActionSurvey = null;
+        ChainActionSurvey chainActionSurvey;
 
         try {
             String query = null;
@@ -3114,8 +3084,8 @@ public class ChainControl
                         "WHERE chnactsrvy_chnact_chainactionid = ? AND chnactsrvy_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ChainActionSurveyFactory.getInstance().prepareStatement(query);
+
+            var ps = ChainActionSurveyFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, chainAction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3141,7 +3111,7 @@ public class ChainControl
     }
 
     public ChainActionSurveyValue getChainActionSurveyValueForUpdate(ChainAction chainAction) {
-        ChainActionSurvey chainActionSurvey = getChainActionSurveyForUpdate(chainAction);
+        var chainActionSurvey = getChainActionSurveyForUpdate(chainAction);
 
         return chainActionSurvey == null ? null : chainActionSurvey.getChainActionSurveyValue().clone();
     }
@@ -3152,13 +3122,13 @@ public class ChainControl
 
     public void updateChainActionSurveyFromValue(ChainActionSurveyValue chainActionSurveyValue, BasePK updatedBy) {
         if(chainActionSurveyValue.hasBeenModified()) {
-            ChainActionSurvey chainActionSurvey = ChainActionSurveyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionSurveyValue.getPrimaryKey());
+            var chainActionSurvey = ChainActionSurveyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionSurveyValue.getPrimaryKey());
 
             chainActionSurvey.setThruTime(session.START_TIME_LONG);
             chainActionSurvey.store();
 
-            ChainAction chainAction = chainActionSurvey.getChainAction();
-            SurveyPK surveyPK = chainActionSurveyValue.getSurveyPK();
+            var chainAction = chainActionSurvey.getChainAction();
+            var surveyPK = chainActionSurveyValue.getSurveyPK();
 
             chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction.getPrimaryKey(), surveyPK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -3178,7 +3148,7 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainActionChainActionSet createChainActionChainActionSet(ChainAction chainAction, ChainActionSet nextChainActionSet, Long delayTime, BasePK createdBy) {
-        ChainActionChainActionSet chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction, nextChainActionSet, delayTime, session.START_TIME_LONG,
+        var chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction, nextChainActionSet, delayTime, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionChainActionSet.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3187,7 +3157,7 @@ public class ChainControl
     }
 
     private ChainActionChainActionSet getChainActionChainActionSet(ChainAction chainAction, EntityPermission entityPermission) {
-        ChainActionChainActionSet chainActionChainActionSet = null;
+        ChainActionChainActionSet chainActionChainActionSet;
 
         try {
             String query = null;
@@ -3203,7 +3173,7 @@ public class ChainControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ChainActionChainActionSetFactory.getInstance().prepareStatement(query);
+            var ps = ChainActionChainActionSetFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, chainAction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3229,7 +3199,7 @@ public class ChainControl
     }
 
     public ChainActionChainActionSetValue getChainActionChainActionSetValueForUpdate(ChainAction chainAction) {
-        ChainActionChainActionSet chainActionChainActionSet = getChainActionChainActionSetForUpdate(chainAction);
+        var chainActionChainActionSet = getChainActionChainActionSetForUpdate(chainAction);
 
         return chainActionChainActionSet == null ? null : chainActionChainActionSet.getChainActionChainActionSetValue().clone();
     }
@@ -3240,15 +3210,15 @@ public class ChainControl
 
     public void updateChainActionChainActionSetFromValue(ChainActionChainActionSetValue chainActionChainActionSetValue, BasePK updatedBy) {
         if(chainActionChainActionSetValue.hasBeenModified()) {
-            ChainActionChainActionSet chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionChainActionSetValue.getPrimaryKey());
 
             chainActionChainActionSet.setThruTime(session.START_TIME_LONG);
             chainActionChainActionSet.store();
 
-            ChainAction chainAction = chainActionChainActionSet.getChainAction();
-            ChainActionSetPK nextChainActionSetPK = chainActionChainActionSetValue.getNextChainActionSetPK();
-            Long delayTime = chainActionChainActionSetValue.getDelayTime();
+            var chainAction = chainActionChainActionSet.getChainAction();
+            var nextChainActionSetPK = chainActionChainActionSetValue.getNextChainActionSetPK();
+            var delayTime = chainActionChainActionSetValue.getDelayTime();
 
             chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction.getPrimaryKey(), nextChainActionSetPK, delayTime, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -3268,8 +3238,8 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainInstance createChainInstance(String chainInstanceName, ChainActionSet defaultChainActionSet, BasePK createdBy) {
-        ChainInstance chainInstance = ChainInstanceFactory.getInstance().create();
-        ChainInstanceDetail chainInstanceDetail = ChainInstanceDetailFactory.getInstance().create(chainInstance,
+        var chainInstance = ChainInstanceFactory.getInstance().create();
+        var chainInstanceDetail = ChainInstanceDetailFactory.getInstance().create(chainInstance,
                 chainInstanceName, defaultChainActionSet.getLastDetail().getChain(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3308,8 +3278,8 @@ public class ChainControl
                         "WHERE chni_activedetailid = chnidt_chaininstancedetailid AND chnidt_chaininstancename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ChainInstanceFactory.getInstance().prepareStatement(query);
+
+            var ps = ChainInstanceFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, chainInstanceName);
             
@@ -3354,8 +3324,8 @@ public class ChainControl
                         "WHERE chni_activedetailid = chnidt_chaininstancedetailid AND chnidt_chn_chainid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ChainInstanceFactory.getInstance().prepareStatement(query);
+
+            var ps = ChainInstanceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chain.getPrimaryKey().getEntityId());
             
@@ -3381,7 +3351,7 @@ public class ChainControl
     
     public List<ChainInstanceTransfer> getChainInstanceTransfers(UserVisit userVisit, Collection<ChainInstance> chainInstances) {
         List<ChainInstanceTransfer> chainInstanceTransfers = new ArrayList<>(chainInstances.size());
-        ChainInstanceTransferCache chainInstanceTransferCache = getChainTransferCaches(userVisit).getChainInstanceTransferCache();
+        var chainInstanceTransferCache = getChainTransferCaches(userVisit).getChainInstanceTransferCache();
         
         chainInstances.forEach((chainInstance) ->
                 chainInstanceTransfers.add(chainInstanceTransferCache.getChainInstanceTransfer(chainInstance))
@@ -3400,8 +3370,8 @@ public class ChainControl
         removeChainInstanceStatusByChainInstance(chainInstance);
         letterControl.removedQueuedLettersByChainInstance(chainInstance);
         deleteChainInstanceEntityRolesByChainInstance(chainInstance, deletedBy);
-        
-        ChainInstanceDetail chainInstanceDetail = chainInstance.getLastDetailForUpdate();
+
+        var chainInstanceDetail = chainInstance.getLastDetailForUpdate();
         chainInstanceDetail.setThruTime(session.START_TIME_LONG);
         chainInstance.setActiveDetail(null);
         chainInstance.store();
@@ -3549,13 +3519,13 @@ public class ChainControl
     }
 
     public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(UserVisit userVisit, ChainInstance chainInstance) {
-        ChainInstanceStatus chainInstanceStatus = getChainInstanceStatus(chainInstance);
+        var chainInstanceStatus = getChainInstanceStatus(chainInstance);
 
         return chainInstanceStatus == null ? null : getChainInstanceStatusTransfer(userVisit, chainInstanceStatus);
     }
 
     public void removeChainInstanceStatusByChainInstance(ChainInstance chainInstance) {
-        ChainInstanceStatus chainInstanceStatus = getChainInstanceStatusForUpdate(chainInstance);
+        var chainInstanceStatus = getChainInstanceStatusForUpdate(chainInstance);
 
         if(chainInstanceStatus != null) {
             chainInstanceStatus.remove();
@@ -3568,14 +3538,14 @@ public class ChainControl
     
     public ChainInstanceEntityRole createChainInstanceEntityRole(ChainInstance chainInstance, ChainEntityRoleType chainEntityRoleType, BasePK pk,
             BasePK createdBy) {
-        EntityInstance entityInstance = getEntityInstanceByBasePK(pk);
+        var entityInstance = getEntityInstanceByBasePK(pk);
         
         return createChainInstanceEntityRole(chainInstance, chainEntityRoleType, entityInstance, createdBy);
     }
     
     public ChainInstanceEntityRole createChainInstanceEntityRole(ChainInstance chainInstance, ChainEntityRoleType chainEntityRoleType,
             EntityInstance entityInstance, BasePK createdBy) {
-        ChainInstanceEntityRole chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().create(session, chainInstance, chainEntityRoleType,
+        var chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().create(session, chainInstance, chainEntityRoleType,
                 entityInstance, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(chainInstance.getPrimaryKey(), EventTypes.MODIFY, chainInstanceEntityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3612,7 +3582,7 @@ public class ChainControl
         ChainInstanceEntityRole chainInstanceEntityRole;
         
         try {
-            PreparedStatement ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(
+            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM chaininstanceentityroles " +
                     "WHERE chnier_chni_chaininstanceid = ? AND chnier_chnertyp_chainentityroletypeid = ? AND chnier_thrutime = ?");
@@ -3647,8 +3617,8 @@ public class ChainControl
                         "WHERE chnier_chnertyp_chainentityroletypeid = ? AND chnier_eni_entityinstanceid = ? AND chnier_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chainEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -3690,8 +3660,8 @@ public class ChainControl
                         + "WHERE chnier_chni_chaininstanceid = ? AND chnier_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chainInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3730,8 +3700,8 @@ public class ChainControl
                         "WHERE chnier_chnertyp_chainentityroletypeid = ? AND chnier_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chainEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3769,8 +3739,8 @@ public class ChainControl
                         "WHERE chnier_chni_chaininstanceid = ? AND chnier_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3799,7 +3769,7 @@ public class ChainControl
     
     public List<ChainInstanceEntityRoleTransfer> getChainInstanceEntityRoleTransfers(UserVisit userVisit, Collection<ChainInstanceEntityRole> chainInstanceEntityRoles) {
         List<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoleTransfers = new ArrayList<>(chainInstanceEntityRoles.size());
-        ChainInstanceEntityRoleTransferCache chainInstanceEntityRoleTransferCache = getChainTransferCaches(userVisit).getChainInstanceEntityRoleTransferCache();
+        var chainInstanceEntityRoleTransferCache = getChainTransferCaches(userVisit).getChainInstanceEntityRoleTransferCache();
         
         chainInstanceEntityRoles.forEach((chainInstanceEntityRole) ->
                 chainInstanceEntityRoleTransfers.add(chainInstanceEntityRoleTransferCache.getChainInstanceEntityRoleTransfer(chainInstanceEntityRole))

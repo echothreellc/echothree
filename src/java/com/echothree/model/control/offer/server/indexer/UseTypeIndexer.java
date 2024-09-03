@@ -26,7 +26,6 @@ import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.offer.server.entity.UseType;
-import com.echothree.model.data.offer.server.entity.UseTypeDetail;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import org.apache.lucene.analysis.Analyzer;
@@ -57,8 +56,8 @@ public class UseTypeIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final UseType useType) {
-        UseTypeDetail useTypeDetail = useType.getLastDetail();
-        String description = useTypeControl.getBestUseTypeDescription(useType, language);
+        var useTypeDetail = useType.getLastDetail();
+        var description = useTypeControl.getBestUseTypeDescription(useType, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, useType.getPrimaryKey());
 

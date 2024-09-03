@@ -17,16 +17,12 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchSortDirectionDescriptionForm;
-import com.echothree.control.user.search.common.result.GetSearchSortDirectionDescriptionResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.search.server.entity.SearchSortDirection;
-import com.echothree.model.data.search.server.entity.SearchSortDirectionDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,17 +64,17 @@ public class GetSearchSortDirectionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchSortDirectionDescriptionResult result = SearchResultFactory.getGetSearchSortDirectionDescriptionResult();
-        String searchSortDirectionName = form.getSearchSortDirectionName();
-        SearchSortDirection searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
+        var result = SearchResultFactory.getGetSearchSortDirectionDescriptionResult();
+        var searchSortDirectionName = form.getSearchSortDirectionName();
+        var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
         if(searchSortDirection != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                SearchSortDirectionDescription searchSortDirectionDescription = searchControl.getSearchSortDirectionDescription(searchSortDirection, language);
+                var searchSortDirectionDescription = searchControl.getSearchSortDirectionDescription(searchSortDirection, language);
 
                 if(searchSortDirectionDescription != null) {
                     result.setSearchSortDirectionDescription(searchControl.getSearchSortDirectionDescriptionTransfer(getUserVisit(), searchSortDirectionDescription));

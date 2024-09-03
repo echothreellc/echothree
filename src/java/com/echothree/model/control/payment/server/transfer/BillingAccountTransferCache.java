@@ -16,20 +16,15 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTransfer;
 import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
 import com.echothree.model.control.payment.server.control.BillingControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.payment.server.entity.BillingAccount;
-import com.echothree.model.data.payment.server.entity.BillingAccountDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
-import java.util.Set;
 
 public class BillingAccountTransferCache
         extends BasePaymentTransferCache<BillingAccount, BillingAccountTransfer> {
@@ -52,15 +47,15 @@ public class BillingAccountTransferCache
 
     @Override
     public BillingAccountTransfer getTransfer(BillingAccount billingAccount) {
-        BillingAccountTransfer billingAccountTransfer = get(billingAccount);
+        var billingAccountTransfer = get(billingAccount);
 
         if(billingAccountTransfer == null) {
-            BillingAccountDetail billingAccountDetail = billingAccount.getLastDetail();
-            String billingAccountName = billingAccountDetail.getBillingAccountName();
-            Currency currency = billingAccountDetail.getCurrency();
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
-            String reference = billingAccountDetail.getReference();
-            String description = billingAccountDetail.getDescription();
+            var billingAccountDetail = billingAccount.getLastDetail();
+            var billingAccountName = billingAccountDetail.getBillingAccountName();
+            var currency = billingAccountDetail.getCurrency();
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            var reference = billingAccountDetail.getReference();
+            var description = billingAccountDetail.getDescription();
             String creditLimit = null;
             String potentialCreditLimit = null;
 //            BillingAccountStatus billingAccountStatus = paymentControl.getBillingAccountStatus(billingAccount);
@@ -80,8 +75,8 @@ public class BillingAccountTransferCache
             put(billingAccount, billingAccountTransfer);
             
             if(includeRoles) {
-                List<BillingAccountRoleTransfer> billingAccountRoleTransfers = billingControl.getBillingAccountRoleTransfersByBillingAccount(userVisit, billingAccount);
-                MapWrapper<BillingAccountRoleTransfer> billingAccountRoles = new MapWrapper<>(billingAccountRoleTransfers.size());
+                var billingAccountRoleTransfers = billingControl.getBillingAccountRoleTransfersByBillingAccount(userVisit, billingAccount);
+                var billingAccountRoles = new MapWrapper<BillingAccountRoleTransfer>(billingAccountRoleTransfers.size());
 
                 billingAccountRoleTransfers.forEach((billingAccountRoleTransfer) -> {
                     billingAccountRoles.put(billingAccountRoleTransfer.getBillingAccountRoleType().getBillingAccountRoleTypeName(), billingAccountRoleTransfer);

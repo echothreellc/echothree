@@ -42,7 +42,7 @@ public class CurrencyLogic
     
     public Currency getCurrencyByName(final ExecutionErrorAccumulator eea, final String currencyIsoName) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+        var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency == null) {
             handleExecutionError(UnknownCurrencyIsoNameException.class, eea, ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);
@@ -53,7 +53,7 @@ public class CurrencyLogic
     
     public Currency getDefaultCurrency(final ExecutionErrorAccumulator eea) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        Currency currency = accountingControl.getDefaultCurrency();
+        var currency = accountingControl.getDefaultCurrency();
 
         if(currency == null) {
             handleExecutionError(MissingDefaultCurrencyException.class, eea, ExecutionErrors.MissingDefaultCurrency.name());

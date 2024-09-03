@@ -30,8 +30,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.scale.server.entity.PartyScaleUse;
 import com.echothree.model.data.scale.server.entity.Scale;
-import com.echothree.model.data.scale.server.entity.ScaleUseType;
-import com.echothree.model.data.scale.server.value.PartyScaleUseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,8 +87,8 @@ public class EditPartyScaleUseCommand
     @Override
     public PartyScaleUse getEntity(EditPartyScaleUseResult result) {
         PartyScaleUse partyScaleUse = null;
-        String partyName = spec.getPartyName();
-        Party party = null;
+        var partyName = spec.getPartyName();
+        Party party;
 
         if(partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -106,8 +104,8 @@ public class EditPartyScaleUseCommand
 
         if(!hasExecutionErrors()) {
             var scaleControl = Session.getModelController(ScaleControl.class);
-            String scaleUseTypeName = spec.getScaleUseTypeName();
-            ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+            var scaleUseTypeName = spec.getScaleUseTypeName();
+            var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
             if(scaleUseType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -149,7 +147,7 @@ public class EditPartyScaleUseCommand
     @Override
     public void canUpdate(PartyScaleUse partyScaleUse) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleName = edit.getScaleName();
+        var scaleName = edit.getScaleName();
 
         scale = scaleControl.getScaleByName(scaleName);
 
@@ -161,7 +159,7 @@ public class EditPartyScaleUseCommand
     @Override
     public void doUpdate(PartyScaleUse partyScaleUse) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        PartyScaleUseValue partyScaleUseValue = scaleControl.getPartyScaleUseValue(partyScaleUse);
+        var partyScaleUseValue = scaleControl.getPartyScaleUseValue(partyScaleUse);
 
         partyScaleUseValue.setScalePK(scale.getPrimaryKey());
 

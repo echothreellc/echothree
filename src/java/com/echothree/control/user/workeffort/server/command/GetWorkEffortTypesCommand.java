@@ -17,7 +17,6 @@
 package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.form.GetWorkEffortTypesForm;
-import com.echothree.control.user.workeffort.common.result.GetWorkEffortTypesResult;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -46,7 +45,7 @@ public class GetWorkEffortTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetWorkEffortTypesResult result = WorkEffortResultFactory.getGetWorkEffortTypesResult();
+        var result = WorkEffortResultFactory.getGetWorkEffortTypesResult();
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
         
         result.setWorkEffortTypes(workEffortControl.getWorkEffortTypeTransfers(getUserVisit()));

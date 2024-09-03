@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.geocodealiastype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeAliasTypeForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeAliasTypeResult;
 import com.echothree.model.control.geo.common.transfer.GeoCodeAliasTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetGeoCodeAliasTypeForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeForm();
+        String forwardKey;
+        var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeForm();
 
         commandForm.setGeoCodeTypeName(request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME));
         commandForm.setGeoCodeAliasTypeName(request.getParameter(ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME));
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasType(getUserVisitPK(request), commandForm);
+        var commandResult = GeoUtil.getHome().getGeoCodeAliasType(getUserVisitPK(request), commandForm);
         GeoCodeAliasTypeTransfer geoCodeAliasType = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasTypeResult result = (GetGeoCodeAliasTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasTypeResult)executionResult.getResult();
 
             geoCodeAliasType = result.getGeoCodeAliasType();
         }

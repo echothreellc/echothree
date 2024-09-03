@@ -17,14 +17,12 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeChoicesForm;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeChoicesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,14 +65,14 @@ public class GetHarmonizedTariffScheduleCodeChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetHarmonizedTariffScheduleCodeChoicesResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeChoicesResult();
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeChoicesResult();
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String defaultHarmonizedTariffScheduleCodeChoice = form.getDefaultHarmonizedTariffScheduleCodeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultHarmonizedTariffScheduleCodeChoice = form.getDefaultHarmonizedTariffScheduleCodeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setHarmonizedTariffScheduleCodeChoices(itemControl.getHarmonizedTariffScheduleCodeChoices(defaultHarmonizedTariffScheduleCodeChoice, getPreferredLanguage(),
                     allowNullChoice, geoCode));

@@ -19,9 +19,6 @@ package com.echothree.control.user.communication.server.server;
 import com.echothree.control.user.communication.common.form.CreateCommunicationEventRoleTypeDescriptionForm;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.communication.server.entity.CommunicationEventRoleType;
-import com.echothree.model.data.communication.server.entity.CommunicationEventRoleTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateCommunicationEventRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationEventRoleTypeName = form.getCommunicationEventRoleTypeName();
-        CommunicationEventRoleType communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeByName(communicationEventRoleTypeName);
+        var communicationEventRoleTypeName = form.getCommunicationEventRoleTypeName();
+        var communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeByName(communicationEventRoleTypeName);
         
         if(communicationEventRoleType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CommunicationEventRoleTypeDescription communicationEventRoleTypeDescription = communicationControl.getCommunicationEventRoleTypeDescription(communicationEventRoleType, language);
+                var communicationEventRoleTypeDescription = communicationControl.getCommunicationEventRoleTypeDescription(communicationEventRoleType, language);
                 
                 if(communicationEventRoleTypeDescription == null) {
                     var description = form.getDescription();

@@ -17,16 +17,10 @@
 package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.control.user.authentication.common.form.AuthenticationFormFactory;
-import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
 import com.echothree.control.user.authentication.common.form.GetCustomerLoginDefaultsForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.common.result.GetCustomerLoginDefaultsResult;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -51,24 +45,24 @@ public class GetCustomerLoginDefaultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerLoginDefaultsResult result = AuthenticationResultFactory.getGetCustomerLoginDefaultsResult();
-        UserControl userControl = getUserControl();
-        UserSession userSession = userControl.getUserSessionByUserVisit(getUserVisit());
+        var result = AuthenticationResultFactory.getGetCustomerLoginDefaultsResult();
+        var userControl = getUserControl();
+        var userSession = userControl.getUserSessionByUserVisit(getUserVisit());
         String username = null;
         
         if(userSession != null) {
-            Party party = userSession.getParty();
+            var party = userSession.getParty();
             
             if(party != null) {
                 if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.CUSTOMER.name())) {
-                    UserLogin userLogin = userControl.getUserLogin(party);
+                    var userLogin = userControl.getUserLogin(party);
                     
                     username = userLogin.getUsername();
                 }
             }
         }
-        
-        CustomerLoginForm customerLoginForm = AuthenticationFormFactory.getCustomerLoginForm();
+
+        var customerLoginForm = AuthenticationFormFactory.getCustomerLoginForm();
         customerLoginForm.setUsername(username);
         result.setCustomerLoginForm(customerLoginForm);
         

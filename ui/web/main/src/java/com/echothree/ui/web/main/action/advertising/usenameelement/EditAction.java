@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.usenameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.edit.UseNameElementEdit;
-import com.echothree.control.user.offer.common.form.EditUseNameElementForm;
 import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
-import com.echothree.control.user.offer.common.spec.UseNameElementSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,12 +53,12 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalTypeOfferName = request.getParameter(ParameterConstants.ORIGINAL_USE_NAME_ELEMENT_NAME);
+        var originalTypeOfferName = request.getParameter(ParameterConstants.ORIGINAL_USE_NAME_ELEMENT_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditUseNameElementForm commandForm = OfferUtil.getHome().getEditUseNameElementForm();
+                var actionForm = (EditActionForm)form;
+                var commandForm = OfferUtil.getHome().getEditUseNameElementForm();
                 var spec = OfferUtil.getHome().getUseNameElementUniversalSpec();
                 
                 if(originalTypeOfferName == null)
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setUseNameElementName(originalTypeOfferName);
                 
                 if(wasPost(request)) {
-                    UseNameElementEdit edit = OfferUtil.getHome().getUseNameElementEdit();
+                    var edit = OfferUtil.getHome().getUseNameElementEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -83,14 +78,14 @@ public class EditAction
                     edit.setLength(actionForm.getLength());
                     edit.setValidationPattern(actionForm.getValidationPattern());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editUseNameElement(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().editUseNameElement(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditUseNameElementResult result = (EditUseNameElementResult)executionResult.getResult();
+                            var result = (EditUseNameElementResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -103,13 +98,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editUseNameElement(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditUseNameElementResult result = (EditUseNameElementResult)executionResult.getResult();
+
+                    var commandResult = OfferUtil.getHome().editUseNameElement(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditUseNameElementResult)executionResult.getResult();
                     
                     if(result != null) {
-                        UseNameElementEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalUseNameElementName(edit.getUseNameElementName());

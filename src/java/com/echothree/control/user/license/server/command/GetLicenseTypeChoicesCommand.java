@@ -17,7 +17,6 @@
 package com.echothree.control.user.license.server.command;
 
 import com.echothree.control.user.license.common.form.GetLicenseTypeChoicesForm;
-import com.echothree.control.user.license.common.result.GetLicenseTypeChoicesResult;
 import com.echothree.control.user.license.common.result.LicenseResultFactory;
 import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetLicenseTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        GetLicenseTypeChoicesResult result = LicenseResultFactory.getGetLicenseTypeChoicesResult();
-        String defaultLicenseTypeChoice = form.getDefaultLicenseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = LicenseResultFactory.getGetLicenseTypeChoicesResult();
+        var defaultLicenseTypeChoice = form.getDefaultLicenseTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setLicenseTypeChoices(licenseControl.getLicenseTypeChoices(defaultLicenseTypeChoice, getPreferredLanguage(), allowNullChoice));
         

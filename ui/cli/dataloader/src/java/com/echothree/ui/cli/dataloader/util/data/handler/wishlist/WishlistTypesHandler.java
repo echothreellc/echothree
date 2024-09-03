@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.wishlist;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.WishlistService;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypeForm;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,9 +47,9 @@ public class WishlistTypesHandler
             String wishlistTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("wishlistTypeName"))
                     wishlistTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class WishlistTypesHandler
             }
             
             try {
-                CreateWishlistTypeForm form = WishlistFormFactory.getCreateWishlistTypeForm();
+                var form = WishlistFormFactory.getCreateWishlistTypeForm();
                 
                 form.setWishlistTypeName(wishlistTypeName);
                 form.setIsDefault(isDefault);

@@ -20,14 +20,8 @@ import com.echothree.control.user.contact.common.edit.ContactEditFactory;
 import com.echothree.control.user.contact.common.edit.PostalAddressFormatEdit;
 import com.echothree.control.user.contact.common.form.EditPostalAddressFormatForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.EditPostalAddressFormatResult;
 import com.echothree.control.user.contact.common.spec.PostalAddressFormatSpec;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormatDescription;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormatDetail;
-import com.echothree.model.data.contact.server.value.PostalAddressFormatDescriptionValue;
-import com.echothree.model.data.contact.server.value.PostalAddressFormatDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,19 +61,19 @@ public class EditPostalAddressFormatCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        EditPostalAddressFormatResult result = ContactResultFactory.getEditPostalAddressFormatResult();
+        var result = ContactResultFactory.getEditPostalAddressFormatResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String postalAddressFormatName = spec.getPostalAddressFormatName();
-            PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+            var postalAddressFormatName = spec.getPostalAddressFormatName();
+            var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
             
             if(postalAddressFormat != null) {
                 result.setPostalAddressFormat(contactControl.getPostalAddressFormatTransfer(getUserVisit(), postalAddressFormat));
                 
                 if(lockEntity(postalAddressFormat)) {
-                    PostalAddressFormatDescription postalAddressFormatDescription = contactControl.getPostalAddressFormatDescription(postalAddressFormat, getPreferredLanguage());
-                    PostalAddressFormatEdit edit = ContactEditFactory.getPostalAddressFormatEdit();
-                    PostalAddressFormatDetail postalAddressFormatDetail = postalAddressFormat.getLastDetail();
+                    var postalAddressFormatDescription = contactControl.getPostalAddressFormatDescription(postalAddressFormat, getPreferredLanguage());
+                    var edit = ContactEditFactory.getPostalAddressFormatEdit();
+                    var postalAddressFormatDetail = postalAddressFormat.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setPostalAddressFormatName(postalAddressFormatDetail.getPostalAddressFormatName());
@@ -97,20 +91,20 @@ public class EditPostalAddressFormatCommand
                 addExecutionError(ExecutionErrors.UnknownPostalAddressFormatName.name(), postalAddressFormatName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String postalAddressFormatName = spec.getPostalAddressFormatName();
-            PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByNameForUpdate(postalAddressFormatName);
+            var postalAddressFormatName = spec.getPostalAddressFormatName();
+            var postalAddressFormat = contactControl.getPostalAddressFormatByNameForUpdate(postalAddressFormatName);
             
             if(postalAddressFormat != null) {
                 postalAddressFormatName = edit.getPostalAddressFormatName();
-                PostalAddressFormat duplicatePostalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+                var duplicatePostalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
                 
                 if(duplicatePostalAddressFormat == null || postalAddressFormat.equals(duplicatePostalAddressFormat)) {
                     if(lockEntityForUpdate(postalAddressFormat)) {
                         try {
                             var partyPK = getPartyPK();
-                            PostalAddressFormatDetailValue postalAddressFormatDetailValue = contactControl.getPostalAddressFormatDetailValueForUpdate(postalAddressFormat);
-                            PostalAddressFormatDescription postalAddressFormatDescription = contactControl.getPostalAddressFormatDescriptionForUpdate(postalAddressFormat, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var postalAddressFormatDetailValue = contactControl.getPostalAddressFormatDetailValueForUpdate(postalAddressFormat);
+                            var postalAddressFormatDescription = contactControl.getPostalAddressFormatDescriptionForUpdate(postalAddressFormat, getPreferredLanguage());
+                            var description = edit.getDescription();
                             
                             postalAddressFormatDetailValue.setPostalAddressFormatName(edit.getPostalAddressFormatName());
                             postalAddressFormatDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -123,7 +117,7 @@ public class EditPostalAddressFormatCommand
                             } else if(postalAddressFormatDescription != null && description == null) {
                                 contactControl.deletePostalAddressFormatDescription(postalAddressFormatDescription, partyPK);
                             } else if(postalAddressFormatDescription != null && description != null) {
-                                PostalAddressFormatDescriptionValue postalAddressFormatDescriptionValue = contactControl.getPostalAddressFormatDescriptionValue(postalAddressFormatDescription);
+                                var postalAddressFormatDescriptionValue = contactControl.getPostalAddressFormatDescriptionValue(postalAddressFormatDescription);
                                 
                                 postalAddressFormatDescriptionValue.setDescription(description);
                                 contactControl.updatePostalAddressFormatDescriptionFromValue(postalAddressFormatDescriptionValue, partyPK);

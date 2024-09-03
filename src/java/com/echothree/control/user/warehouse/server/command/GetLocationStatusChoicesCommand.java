@@ -17,16 +17,12 @@
 package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.GetLocationStatusChoicesForm;
-import com.echothree.control.user.warehouse.common.result.GetLocationStatusChoicesResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Location;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,18 +64,18 @@ public class GetLocationStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetLocationStatusChoicesResult result = WarehouseResultFactory.getGetLocationStatusChoicesResult();
+        var result = WarehouseResultFactory.getGetLocationStatusChoicesResult();
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationName = form.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouseParty, locationName);
+            var warehouseParty = warehouse.getParty();
+            var locationName = form.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouseParty, locationName);
             
             if(location != null) {
-                String defaultLocationStatusChoice = form.getDefaultLocationStatusChoice();
+                var defaultLocationStatusChoice = form.getDefaultLocationStatusChoice();
                 
                 result.setLocationStatusChoices(warehouseControl.getLocationStatusChoices(defaultLocationStatusChoice,
                         getPreferredLanguage(), location, getPartyPK()));

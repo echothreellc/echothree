@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.offeruse;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetOfferUsesForm;
 import com.echothree.control.user.offer.common.result.GetOfferUsesResult;
-import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-            GetOfferUsesForm commandForm = OfferUtil.getHome().getGetOfferUsesForm();
+            var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+            var commandForm = OfferUtil.getHome().getGetOfferUsesForm();
             
             commandForm.setOfferName(offerName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getOfferUses(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetOfferUsesResult result = (GetOfferUsesResult)executionResult.getResult();
-            OfferTransfer offerTransfer = result.getOffer();
+
+            var commandResult = OfferUtil.getHome().getOfferUses(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetOfferUsesResult)executionResult.getResult();
+            var offerTransfer = result.getOffer();
             
             request.setAttribute(AttributeConstants.OFFER, offerTransfer);
             request.setAttribute(AttributeConstants.OFFER_NAME, offerTransfer.getOfferName());

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.eventgroup;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEventGroupForm;
 import com.echothree.control.user.core.common.result.GetEventGroupResult;
-import com.echothree.model.control.core.common.transfer.EventGroupTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetEventGroupForm commandForm = CoreUtil.getHome().getGetEventGroupForm();
-            String eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
+            var commandForm = CoreUtil.getHome().getGetEventGroupForm();
+            var eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
             
             commandForm.setEventGroupName(eventGroupName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEventGroup(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEventGroupResult result = (GetEventGroupResult)executionResult.getResult();
-            EventGroupTransfer eventGroup = result.getEventGroup();
+
+            var commandResult = CoreUtil.getHome().getEventGroup(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEventGroupResult)executionResult.getResult();
+            var eventGroup = result.getEventGroup();
             
             if(eventGroup == null) {
                 forwardKey = ForwardConstants.ERROR_404;

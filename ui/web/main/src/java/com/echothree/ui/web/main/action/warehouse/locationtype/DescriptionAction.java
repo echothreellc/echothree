@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.warehouse.locationtype;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.GetLocationTypeDescriptionsForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,16 +51,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            String locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
-            GetLocationTypeDescriptionsForm commandForm = WarehouseUtil.getHome().getGetLocationTypeDescriptionsForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
+            var commandForm = WarehouseUtil.getHome().getGetLocationTypeDescriptionsForm();
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationTypeName(locationTypeName);
-            
-            CommandResult commandResult = WarehouseUtil.getHome().getLocationTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationTypeDescriptionsResult result = (GetLocationTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = WarehouseUtil.getHome().getLocationTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLocationTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("warehouse", result.getWarehouse());
             request.setAttribute("locationType", result.getLocationType());

@@ -22,13 +22,11 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardPaymentMethodConstants.Workflow_CUSTOMER_CREDIT_CARD_PAYMENT_METHOD;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -37,19 +35,12 @@ import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.server.entity.NameSuffix;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCard;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCardSecurityCode;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class PartyPaymentMethodTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethod, PartyPaymentMethodTransfer> {
@@ -81,7 +72,7 @@ public class PartyPaymentMethodTransferCache
             includeComments = options.contains(PaymentOptions.PartyPaymentMethodIncludeComments);
 
             if(includeNumber || includeSecurityCode) {
-                UserControl userControl = Session.getModelController(UserControl.class);
+                var userControl = Session.getModelController(UserControl.class);
 
                 if(!SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, userControl.getPartyFromUserVisit(userVisit),
                         SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.CreditCard.name())) {
@@ -97,18 +88,18 @@ public class PartyPaymentMethodTransferCache
 
     @Override
     public PartyPaymentMethodTransfer getTransfer(PartyPaymentMethod partyPaymentMethod) {
-        PartyPaymentMethodTransfer partyPaymentMethodTransfer = get(partyPaymentMethod);
+        var partyPaymentMethodTransfer = get(partyPaymentMethod);
         
         if(partyPaymentMethodTransfer == null) {
-            PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
-            String partyPaymentMethodName = partyPaymentMethodDetail.getPartyPaymentMethodName();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyPaymentMethodDetail.getParty());
-            String description = partyPaymentMethodDetail.getDescription();
-            PaymentMethodTransfer paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, partyPaymentMethodDetail.getPaymentMethod());
-            String paymentMethodTypeName = paymentMethodTransfer.getPaymentMethodType().getPaymentMethodTypeName();
-            Boolean deleteWhenUnused = partyPaymentMethodDetail.getDeleteWhenUnused();
-            Boolean isDefault = partyPaymentMethodDetail.getIsDefault();
-            Integer sortOrder = partyPaymentMethodDetail.getSortOrder();
+            var partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
+            var partyPaymentMethodName = partyPaymentMethodDetail.getPartyPaymentMethodName();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyPaymentMethodDetail.getParty());
+            var description = partyPaymentMethodDetail.getDescription();
+            var paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, partyPaymentMethodDetail.getPaymentMethod());
+            var paymentMethodTypeName = paymentMethodTransfer.getPaymentMethodType().getPaymentMethodTypeName();
+            var deleteWhenUnused = partyPaymentMethodDetail.getDeleteWhenUnused();
+            var isDefault = partyPaymentMethodDetail.getIsDefault();
+            var sortOrder = partyPaymentMethodDetail.getSortOrder();
             WorkflowEntityStatusTransfer partyPaymentMethodStatusTransfer = null;
             String number = null;
             Integer expirationMonth = null;
@@ -126,13 +117,13 @@ public class PartyPaymentMethodTransferCache
             EntityInstance entityInstance = null;
             
             if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-                PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = partyPaymentMethodControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
+                var partyPaymentMethodCreditCard = partyPaymentMethodControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
                 
                 if(partyPaymentMethodCreditCard != null) {
-                    PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
+                    var partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
                     
                     if(includeNumber || maskNumberAndSecurityCode) {
-                        String decodedNumber = partyPaymentMethodControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard);
+                        var decodedNumber = partyPaymentMethodControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard);
 
                         if(decodedNumber != null) {
                             number = includeNumber? partyPaymentMethodControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard): StringUtils.getInstance().mask(decodedNumber, 'X', 4);
@@ -141,23 +132,23 @@ public class PartyPaymentMethodTransferCache
                     
                     expirationMonth = partyPaymentMethodCreditCard.getExpirationMonth();
                     expirationYear = partyPaymentMethodCreditCard.getExpirationYear();
-                    PersonalTitle personalTitle = partyPaymentMethodCreditCard.getPersonalTitle();
+                    var personalTitle = partyPaymentMethodCreditCard.getPersonalTitle();
                     personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
                     firstName = partyPaymentMethodCreditCard.getFirstName();
                     middleName = partyPaymentMethodCreditCard.getMiddleName();
                     lastName = partyPaymentMethodCreditCard.getLastName();
-                    NameSuffix nameSuffix = partyPaymentMethodCreditCard.getNameSuffix();
+                    var nameSuffix = partyPaymentMethodCreditCard.getNameSuffix();
                     nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
                     name = partyPaymentMethodCreditCard.getName();
-                    PartyContactMechanism billingPartyContactMechanism = partyPaymentMethodCreditCard.getBillingPartyContactMechanism();
+                    var billingPartyContactMechanism = partyPaymentMethodCreditCard.getBillingPartyContactMechanism();
                     billingPartyContactMechanismTransfer = billingPartyContactMechanism == null? null: contactControl.getPartyContactMechanismTransfer(userVisit, billingPartyContactMechanism);
                     issuerName = partyPaymentMethodCreditCard.getIssuerName();
-                    PartyContactMechanism issuerPartyContactMechanism = partyPaymentMethodCreditCard.getIssuerPartyContactMechanism();
+                    var issuerPartyContactMechanism = partyPaymentMethodCreditCard.getIssuerPartyContactMechanism();
                     issuerPartyContactMechanismTransfer = issuerPartyContactMechanism == null? null: contactControl.getPartyContactMechanismTransfer(userVisit, issuerPartyContactMechanism);
                     
                     if(partyPaymentMethodCreditCardSecurityCode != null) {
                         if(includeSecurityCode || maskNumberAndSecurityCode) {
-                            String decodedSecurityCode = partyPaymentMethodControl.decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCode);
+                            var decodedSecurityCode = partyPaymentMethodControl.decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCode);
 
                             if(decodedSecurityCode != null) {
                                 securityCode = includeNumber? partyPaymentMethodControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard): StringUtils.getInstance().mask(decodedSecurityCode, 'X');

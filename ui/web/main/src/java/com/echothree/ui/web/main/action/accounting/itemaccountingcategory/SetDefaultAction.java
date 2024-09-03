@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.itemaccountingcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.SetDefaultItemAccountingCategoryForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultItemAccountingCategoryForm commandForm = AccountingUtil.getHome().getSetDefaultItemAccountingCategoryForm();
-            String itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getSetDefaultItemAccountingCategoryForm();
+            var itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
             
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             

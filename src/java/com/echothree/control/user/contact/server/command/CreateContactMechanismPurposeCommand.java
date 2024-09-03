@@ -18,8 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.CreateContactMechanismPurposeForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
-import com.echothree.model.data.contact.server.entity.ContactMechanismType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,15 +52,15 @@ public class CreateContactMechanismPurposeCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismPurposeName = form.getContactMechanismPurposeName();
-        ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
+        var contactMechanismPurposeName = form.getContactMechanismPurposeName();
+        var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
         
         if(contactMechanismPurpose == null) {
-            String contactMechanismTypeName = form.getContactMechanismTypeName();
-            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
+            var contactMechanismTypeName = form.getContactMechanismTypeName();
+            var contactMechanismType = contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
             
             if(contactMechanismType != null) {
-                Boolean eventSubscriber = Boolean.valueOf(form.getEventSubscriber());
+                var eventSubscriber = Boolean.valueOf(form.getEventSubscriber());
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 

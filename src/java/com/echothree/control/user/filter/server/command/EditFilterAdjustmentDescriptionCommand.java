@@ -19,7 +19,6 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.edit.FilterAdjustmentDescriptionEdit;
 import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.form.EditFilterAdjustmentDescriptionForm;
-import com.echothree.control.user.filter.common.result.EditFilterAdjustmentDescriptionResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentDescriptionSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
@@ -27,11 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentDescription;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.value.FilterAdjustmentDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -81,28 +75,28 @@ public class EditFilterAdjustmentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterAdjustmentDescriptionResult result = FilterResultFactory.getEditFilterAdjustmentDescriptionResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterAdjustmentDescriptionResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterAdjustmentName = spec.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustmentName = spec.getFilterAdjustmentName();
+            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        FilterAdjustmentDescription filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, language);
+                        var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, language);
                         
                         if(filterAdjustmentDescription != null) {
                             result.setFilterAdjustmentDescription(filterControl.getFilterAdjustmentDescriptionTransfer(getUserVisit(), filterAdjustmentDescription));
                             
                             if(lockEntity(filterAdjustment)) {
-                                FilterAdjustmentDescriptionEdit edit = FilterEditFactory.getFilterAdjustmentDescriptionEdit();
+                                var edit = FilterEditFactory.getFilterAdjustmentDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(filterAdjustmentDescription.getDescription());
@@ -115,12 +109,12 @@ public class EditFilterAdjustmentDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownFilterAdjustmentDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        FilterAdjustmentDescriptionValue filterAdjustmentDescriptionValue = filterControl.getFilterAdjustmentDescriptionValueForUpdate(filterAdjustment, language);
+                        var filterAdjustmentDescriptionValue = filterControl.getFilterAdjustmentDescriptionValueForUpdate(filterAdjustment, language);
                         
                         if(filterAdjustmentDescriptionValue != null) {
                             if(lockEntityForUpdate(filterAdjustment)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     filterAdjustmentDescriptionValue.setDescription(description);
                                     

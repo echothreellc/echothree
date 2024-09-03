@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.club.club;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.edit.ClubDescriptionEdit;
-import com.echothree.control.user.club.common.form.EditClubDescriptionForm;
 import com.echothree.control.user.club.common.result.EditClubDescriptionResult;
-import com.echothree.control.user.club.common.spec.ClubDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditClubDescriptionForm commandForm = ClubUtil.getHome().getEditClubDescriptionForm();
-                ClubDescriptionSpec spec = ClubUtil.getHome().getClubDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = ClubUtil.getHome().getEditClubDescriptionForm();
+                var spec = ClubUtil.getHome().getClubDescriptionSpec();
                 
                 if(clubName == null)
                     clubName = actionForm.getClubName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    ClubDescriptionEdit edit = ClubUtil.getHome().getClubDescriptionEdit();
+                    var edit = ClubUtil.getHome().getClubDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ClubUtil.getHome().editClubDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ClubUtil.getHome().editClubDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditClubDescriptionResult result = (EditClubDescriptionResult)executionResult.getResult();
+                            var result = (EditClubDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ClubUtil.getHome().editClubDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditClubDescriptionResult result = (EditClubDescriptionResult)executionResult.getResult();
+
+                    var commandResult = ClubUtil.getHome().editClubDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditClubDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ClubDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setClubName(clubName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CLUB_NAME, clubName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

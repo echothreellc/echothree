@@ -22,10 +22,6 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferChainType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,20 +65,20 @@ public class DeleteOfferChainTypeCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            String chainKindName = form.getChainKindName();
-            ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+            var chainKindName = form.getChainKindName();
+            var chainKind = chainControl.getChainKindByName(chainKindName);
             
             if(chainKind != null) {
-                String chainTypeName = form.getChainTypeName();
-                ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+                var chainTypeName = form.getChainTypeName();
+                var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
                 
                 if(chainType != null) {
-                    OfferChainType offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
+                    var offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
                     
                     if(offerChainType != null) {
                         offerControl.deleteOfferChainType(offerChainType, getPartyPK());

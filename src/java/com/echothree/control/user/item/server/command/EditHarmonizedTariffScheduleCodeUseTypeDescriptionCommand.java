@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseTypeDescription;
-import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeUseTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditHarmonizedTariffScheduleCodeUseTypeDescriptionCommand
     public HarmonizedTariffScheduleCodeUseTypeDescription getEntity(EditHarmonizedTariffScheduleCodeUseTypeDescriptionResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeUseTypeDescription harmonizedTariffScheduleCodeUseTypeDescription = null;
-        String harmonizedTariffScheduleCodeUseTypeName = spec.getHarmonizedTariffScheduleCodeUseTypeName();
-        HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
+        var harmonizedTariffScheduleCodeUseTypeName = spec.getHarmonizedTariffScheduleCodeUseTypeName();
+        var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
         if(harmonizedTariffScheduleCodeUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditHarmonizedTariffScheduleCodeUseTypeDescriptionCommand
     @Override
     public void doUpdate(HarmonizedTariffScheduleCodeUseTypeDescription harmonizedTariffScheduleCodeUseTypeDescription) {
         var itemControl = Session.getModelController(ItemControl.class);
-        HarmonizedTariffScheduleCodeUseTypeDescriptionValue harmonizedTariffScheduleCodeUseTypeDescriptionValue = itemControl.getHarmonizedTariffScheduleCodeUseTypeDescriptionValue(harmonizedTariffScheduleCodeUseTypeDescription);
+        var harmonizedTariffScheduleCodeUseTypeDescriptionValue = itemControl.getHarmonizedTariffScheduleCodeUseTypeDescriptionValue(harmonizedTariffScheduleCodeUseTypeDescription);
 
         harmonizedTariffScheduleCodeUseTypeDescriptionValue.setDescription(edit.getDescription());
 

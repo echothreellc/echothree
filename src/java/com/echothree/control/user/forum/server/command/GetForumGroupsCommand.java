@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumGroupsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumGroupsResult;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.factory.ForumGroupFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -48,7 +47,7 @@ public class GetForumGroupsCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumGroupsResult result = ForumResultFactory.getGetForumGroupsResult();
+        var result = ForumResultFactory.getGetForumGroupsResult();
         
         if(session.hasLimit(ForumGroupFactory.class)) {
             result.setForumGroupCount(forumControl.countForumGroups());

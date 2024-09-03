@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemWeightSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemWeightSpec spec = ItemUtil.getHome().getItemWeightSpec();
+        var spec = ItemUtil.getHome().getItemWeightSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setUnitOfMeasureTypeName(findParameter(request, ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME, actionForm.getUnitOfMeasureTypeName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected ItemWeightEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemWeightEdit edit = ItemUtil.getHome().getItemWeightEdit();
+        var edit = ItemUtil.getHome().getItemWeightEdit();
 
         edit.setWeightUnitOfMeasureTypeName(actionForm.getWeightUnitOfMeasureTypeChoice());
         edit.setWeight(actionForm.getWeight());

@@ -19,15 +19,8 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
 import com.echothree.control.user.contactlist.common.ContactListService;
 import com.echothree.control.user.contactlist.common.form.ContactListFormFactory;
-import com.echothree.control.user.contactlist.common.form.CreatePartyTypeContactListForm;
-import com.echothree.control.user.contactlist.common.form.CreatePartyTypeContactListGroupForm;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreatePartyAliasTypeForm;
-import com.echothree.control.user.party.common.form.CreatePartyTypeAuditPolicyForm;
-import com.echothree.control.user.party.common.form.CreatePartyTypeDescriptionForm;
-import com.echothree.control.user.party.common.form.CreatePartyTypeLockoutPolicyForm;
-import com.echothree.control.user.party.common.form.CreatePartyTypePasswordStringPolicyForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -61,49 +54,49 @@ public class PartyTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyTypeDescription")) {
-            CreatePartyTypeDescriptionForm commandForm = PartyFormFactory.getCreatePartyTypeDescriptionForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypeDescriptionForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.createPartyTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypePasswordStringPolicy")) {
-            CreatePartyTypePasswordStringPolicyForm commandForm = PartyFormFactory.getCreatePartyTypePasswordStringPolicyForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypePasswordStringPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.createPartyTypePasswordStringPolicy(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypeLockoutPolicy")) {
-            CreatePartyTypeLockoutPolicyForm commandForm = PartyFormFactory.getCreatePartyTypeLockoutPolicyForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypeLockoutPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.createPartyTypeLockoutPolicy(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypeAuditPolicy")) {
-            CreatePartyTypeAuditPolicyForm commandForm = PartyFormFactory.getCreatePartyTypeAuditPolicyForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypeAuditPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.createPartyTypeAuditPolicy(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypeContactListGroup")) {
-            CreatePartyTypeContactListGroupForm commandForm = ContactListFormFactory.getCreatePartyTypeContactListGroupForm();
+            var commandForm = ContactListFormFactory.getCreatePartyTypeContactListGroupForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             contactListService.createPartyTypeContactListGroup(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypeContactList")) {
-            CreatePartyTypeContactListForm commandForm = ContactListFormFactory.getCreatePartyTypeContactListForm();
+            var commandForm = ContactListFormFactory.getCreatePartyTypeContactListForm();
 
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             contactListService.createPartyTypeContactList(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyAliasType")) {
-            CreatePartyAliasTypeForm commandForm = PartyFormFactory.getCreatePartyAliasTypeForm();
+            var commandForm = PartyFormFactory.getCreatePartyAliasTypeForm();
 
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));

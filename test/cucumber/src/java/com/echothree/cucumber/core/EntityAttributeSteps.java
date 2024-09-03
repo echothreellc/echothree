@@ -360,6 +360,36 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
+        When("^the user sets the entity attribute's entity list item sequence to \"([^\"]*)\"$",
+                (String entityListItemSequenceName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
+
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setEntityListItemSequenceName(entityListItemSequenceName);
+                    } else {
+                        entityAttributeEdit.setEntityListItemSequenceName(entityListItemSequenceName);
+                    }
+                });
+
+        When("^the user sets the entity attribute's workflow to \"([^\"]*)\"$",
+                (String workflowName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
+
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setWorkflowName(workflowName);
+                    } else {
+                        entityAttributeEdit.setWorkflowName(workflowName);
+                    }
+                });
+
         When("^the user sets the entity attribute's description to \"([^\"]*)\"$",
                 (String description) -> {
                     var persona = CurrentPersona.persona;

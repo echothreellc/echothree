@@ -18,7 +18,6 @@ package com.echothree.control.user.rating.common;
 
 import com.echothree.control.user.rating.server.RatingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class RatingUtil {
@@ -30,7 +29,7 @@ public class RatingUtil {
     public static RatingLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (RatingLocal)ctx.lookup("ejb:echothree/echothree-server/RatingBean!com.echothree.control.user.rating.server.RatingLocal");
         }
@@ -42,7 +41,7 @@ public class RatingUtil {
     public static RatingRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (RatingRemote)ctx.lookup("ejb:echothree/echothree-server/RatingBean!com.echothree.control.user.rating.common.RatingRemote");
         }

@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.subscription.subscriptiontype;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.form.GetSubscriptionTypeDescriptionsForm;
 import com.echothree.control.user.subscription.common.result.GetSubscriptionTypeDescriptionsResult;
-import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,17 +51,17 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-            String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
-            GetSubscriptionTypeDescriptionsForm commandForm = SubscriptionUtil.getHome().getGetSubscriptionTypeDescriptionsForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+            var commandForm = SubscriptionUtil.getHome().getGetSubscriptionTypeDescriptionsForm();
             
             commandForm.setSubscriptionKindName(subscriptionKindName);
             commandForm.setSubscriptionTypeName(subscriptionTypeName);
-            
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptionTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionTypeDescriptionsResult result = (GetSubscriptionTypeDescriptionsResult)executionResult.getResult();
-            SubscriptionTypeTransfer subscriptionType = result.getSubscriptionType();
+
+            var commandResult = SubscriptionUtil.getHome().getSubscriptionTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSubscriptionTypeDescriptionsResult)executionResult.getResult();
+            var subscriptionType = result.getSubscriptionType();
             
             request.setAttribute("subscriptionKind", subscriptionType.getSubscriptionKind());
             request.setAttribute("subscriptionType", subscriptionType);

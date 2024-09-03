@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.searchkind;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetSearchKindDescriptionsForm;
 import com.echothree.control.user.search.common.result.GetSearchKindDescriptionsResult;
-import com.echothree.model.control.search.common.transfer.SearchKindTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,15 +49,15 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetSearchKindDescriptionsForm commandForm = SearchUtil.getHome().getGetSearchKindDescriptionsForm();
+        var commandForm = SearchUtil.getHome().getGetSearchKindDescriptionsForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
 
-        CommandResult commandResult = SearchUtil.getHome().getSearchKindDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = SearchUtil.getHome().getSearchKindDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchKindDescriptionsResult result = (GetSearchKindDescriptionsResult) executionResult.getResult();
-            SearchKindTransfer searchKindTransfer = result.getSearchKind();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchKindDescriptionsResult) executionResult.getResult();
+            var searchKindTransfer = result.getSearchKind();
 
             request.setAttribute(AttributeConstants.SEARCH_KIND, searchKindTransfer);
             request.setAttribute(AttributeConstants.SEARCH_KIND_DESCRIPTIONS, result.getSearchKindDescriptions());

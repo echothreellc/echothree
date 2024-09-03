@@ -30,13 +30,13 @@ public class PostalAddressElementTypeTransferCache
     }
     
     public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(PostalAddressElementType postalAddressElementType) {
-        PostalAddressElementTypeTransfer postalAddressElementTypeTransfer = get(postalAddressElementType);
+        var postalAddressElementTypeTransfer = get(postalAddressElementType);
         
         if(postalAddressElementTypeTransfer == null) {
-            String postalAddressElementTypeName = postalAddressElementType.getPostalAddressElementTypeName();
-            Boolean isDefault = postalAddressElementType.getIsDefault();
-            Integer sortOrder = postalAddressElementType.getSortOrder();
-            String description = contactControl.getBestPostalAddressElementTypeDescription(postalAddressElementType, getLanguage());
+            var postalAddressElementTypeName = postalAddressElementType.getPostalAddressElementTypeName();
+            var isDefault = postalAddressElementType.getIsDefault();
+            var sortOrder = postalAddressElementType.getSortOrder();
+            var description = contactControl.getBestPostalAddressElementTypeDescription(postalAddressElementType, getLanguage());
             
             postalAddressElementTypeTransfer = new PostalAddressElementTypeTransfer(postalAddressElementTypeName, isDefault, sortOrder, description);
             put(postalAddressElementType, postalAddressElementTypeTransfer);

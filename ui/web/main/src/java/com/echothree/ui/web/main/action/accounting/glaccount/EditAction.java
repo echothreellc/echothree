@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.glaccount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.edit.GlAccountEdit;
-import com.echothree.control.user.accounting.common.form.EditGlAccountForm;
 import com.echothree.control.user.accounting.common.result.EditGlAccountResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,9 +50,9 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String originalGlAccountName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_NAME);
-        EditGlAccountForm commandForm = AccountingUtil.getHome().getEditGlAccountForm();
+        String forwardKey;
+        var originalGlAccountName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_NAME);
+        var commandForm = AccountingUtil.getHome().getEditGlAccountForm();
         var spec = AccountingUtil.getHome().getGlAccountUniversalSpec();
         
         if(originalGlAccountName == null)
@@ -66,7 +62,7 @@ public class EditAction
         spec.setGlAccountName(originalGlAccountName);
         
         if(wasPost(request)) {
-            GlAccountEdit edit = AccountingUtil.getHome().getGlAccountEdit();
+            var edit = AccountingUtil.getHome().getGlAccountEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -78,14 +74,14 @@ public class EditAction
             edit.setGlResourceTypeName(actionForm.getGlResourceTypeChoice());
             edit.setIsDefault(actionForm.getIsDefault().toString());
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(request), commandForm);
+
+            var commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditGlAccountResult result = (EditGlAccountResult)executionResult.getResult();
+                    var result = (EditGlAccountResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -98,13 +94,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditGlAccountResult result = (EditGlAccountResult)executionResult.getResult();
+
+            var commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditGlAccountResult)executionResult.getResult();
             
             if(result != null) {
-                GlAccountEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setOriginalGlAccountName(edit.getGlAccountName());

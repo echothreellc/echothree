@@ -18,18 +18,15 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumThreadsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumThreadsResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.factory.ForumThreadFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -63,8 +60,8 @@ public class GetForumThreadsCommand
     
     @Override
     protected BaseResult execute() {
-        GetForumThreadsResult result = ForumResultFactory.getGetForumThreadsResult();
-        String forumName = form.getForumName();
+        var result = ForumResultFactory.getGetForumThreadsResult();
+        var forumName = form.getForumName();
         var parameterCount = (forumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,8 +86,8 @@ public class GetForumThreadsCommand
             // If the Key for the Forum is specified, then bypass the ForumRoleType check.
             if(!hasExecutionErrors()) {
                 if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
-                    boolean includeFutureForumThreads = Boolean.parseBoolean(form.getIncludeFutureForumThreads());
-                    UserVisit userVisit = getUserVisit();
+                    var includeFutureForumThreads = Boolean.parseBoolean(form.getIncludeFutureForumThreads());
+                    var userVisit = getUserVisit();
 
                     if(session.hasLimit(ForumThreadFactory.class)) {
                         result.setForumThreadCount(forumControl.countForumThreadsByForum(forum, includeFutureForumThreads));

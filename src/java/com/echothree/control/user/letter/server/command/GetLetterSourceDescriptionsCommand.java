@@ -17,13 +17,11 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.GetLetterSourceDescriptionsForm;
-import com.echothree.control.user.letter.common.result.GetLetterSourceDescriptionsResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetLetterSourceDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        GetLetterSourceDescriptionsResult result = LetterResultFactory.getGetLetterSourceDescriptionsResult();
-        String letterSourceName = form.getLetterSourceName();
-        LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+        var result = LetterResultFactory.getGetLetterSourceDescriptionsResult();
+        var letterSourceName = form.getLetterSourceName();
+        var letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
         if(letterSource != null) {
             result.setLetterSource(letterControl.getLetterSourceTransfer(getUserVisit(), letterSource));

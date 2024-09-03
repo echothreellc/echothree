@@ -17,7 +17,6 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.CreateTagScopeForm;
-import com.echothree.control.user.tag.common.result.CreateTagScopeResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -26,9 +25,6 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -72,21 +68,21 @@ public class CreateTagScopeCommand
     
     @Override
     protected BaseResult execute() {
-        CreateTagScopeResult result = TagResultFactory.getCreateTagScopeResult();
+        var result = TagResultFactory.getCreateTagScopeResult();
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
+        var tagScopeName = form.getTagScopeName();
         
         if(tagScopeName == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.name());
+            var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.name());
             
             tagScopeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
-        
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

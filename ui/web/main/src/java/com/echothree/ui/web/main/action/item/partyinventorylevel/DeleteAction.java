@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.item.partyinventorylevel;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.DeletePartyInventoryLevelForm;
-import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelForm;
 import com.echothree.control.user.inventory.common.result.GetPartyInventoryLevelResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.party.common.PartyOptions;
@@ -26,7 +24,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -67,7 +64,7 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyInventoryLevelForm commandForm = InventoryUtil.getHome().getGetPartyInventoryLevelForm();
+        var commandForm = InventoryUtil.getHome().getGetPartyInventoryLevelForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setItemName(actionForm.getItemName());
@@ -77,9 +74,9 @@ public class DeleteAction
         options.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = InventoryUtil.getHome().getPartyInventoryLevel(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyInventoryLevelResult result = (GetPartyInventoryLevelResult)executionResult.getResult();
+        var commandResult = InventoryUtil.getHome().getPartyInventoryLevel(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyInventoryLevelResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_INVENTORY_LEVEL, result.getPartyInventoryLevel());
     }
@@ -87,7 +84,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyInventoryLevelForm commandForm = InventoryUtil.getHome().getDeletePartyInventoryLevelForm();
+        var commandForm = InventoryUtil.getHome().getDeletePartyInventoryLevelForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setItemName(actionForm.getItemName());

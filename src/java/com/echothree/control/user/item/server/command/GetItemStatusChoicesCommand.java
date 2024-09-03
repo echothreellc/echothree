@@ -17,10 +17,8 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemStatusChoicesForm;
-import com.echothree.control.user.item.common.result.GetItemStatusChoicesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,13 +51,13 @@ public class GetItemStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemStatusChoicesResult result = ItemResultFactory.getGetItemStatusChoicesResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemStatusChoicesResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(itemName == null || item != null) {
-            String defaultItemStatusChoice = form.getDefaultItemStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultItemStatusChoice = form.getDefaultItemStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setItemStatusChoices(itemControl.getItemStatusChoices(defaultItemStatusChoice, getPreferredLanguage(),
                     allowNullChoice, item, getPartyPK()));

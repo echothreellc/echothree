@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetTelephoneStatusChoicesForm;
 import com.echothree.control.user.contact.common.result.GetTelephoneStatusChoicesResult;
 import com.echothree.model.control.contact.common.choice.TelephoneStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class ContactTelephoneStatusActionForm
     public void setupTelephoneStatusChoices()
             throws NamingException {
         if(telephoneStatusChoices == null) {
-            GetTelephoneStatusChoicesForm form = ContactUtil.getHome().getGetTelephoneStatusChoicesForm();
+            var form = ContactUtil.getHome().getGetTelephoneStatusChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultTelephoneStatusChoice(telephoneStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getTelephoneStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTelephoneStatusChoicesResult result = (GetTelephoneStatusChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getTelephoneStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTelephoneStatusChoicesResult)executionResult.getResult();
             telephoneStatusChoices = result.getTelephoneStatusChoices();
 
             if(telephoneStatusChoice == null) {

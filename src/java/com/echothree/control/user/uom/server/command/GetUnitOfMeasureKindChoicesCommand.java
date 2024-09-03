@@ -17,10 +17,8 @@
 package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindChoicesForm;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindChoicesResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,14 +50,14 @@ public class GetUnitOfMeasureKindChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetUnitOfMeasureKindChoicesResult result = UomResultFactory.getGetUnitOfMeasureKindChoicesResult();
+        var result = UomResultFactory.getGetUnitOfMeasureKindChoicesResult();
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = unitOfMeasureKindUseTypeName == null? null: uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = unitOfMeasureKindUseTypeName == null? null: uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseTypeName == null || unitOfMeasureKindUseType != null) {
-            String defaultUnitOfMeasureKindChoice = form.getDefaultUnitOfMeasureKindChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultUnitOfMeasureKindChoice = form.getDefaultUnitOfMeasureKindChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             if(unitOfMeasureKindUseType == null) {
                 result.setUnitOfMeasureKindChoices(uomControl.getUnitOfMeasureKindChoices(defaultUnitOfMeasureKindChoice,

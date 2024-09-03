@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.selector.common.result;
 
-import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
 import com.echothree.util.common.command.BaseResult;

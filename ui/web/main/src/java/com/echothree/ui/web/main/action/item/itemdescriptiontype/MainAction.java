@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypesForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionTypesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,8 +50,8 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetItemDescriptionTypesForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypesForm();
+        String forwardKey;
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypesForm();
 
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
@@ -62,10 +59,10 @@ public class MainAction
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypes(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemDescriptionTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypesResult result = (GetItemDescriptionTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPES, result.getItemDescriptionTypes());
             forwardKey = ForwardConstants.DISPLAY;

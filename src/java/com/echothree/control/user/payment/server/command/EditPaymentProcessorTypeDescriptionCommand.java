@@ -20,17 +20,12 @@ import com.echothree.control.user.payment.common.edit.PaymentEditFactory;
 import com.echothree.control.user.payment.common.edit.PaymentProcessorTypeDescriptionEdit;
 import com.echothree.control.user.payment.common.form.EditPaymentProcessorTypeDescriptionForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.EditPaymentProcessorTypeDescriptionResult;
 import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeDescriptionSpec;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeDescription;
-import com.echothree.model.data.payment.server.value.PaymentProcessorTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,25 +74,25 @@ public class EditPaymentProcessorTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
-        EditPaymentProcessorTypeDescriptionResult result = PaymentResultFactory.getEditPaymentProcessorTypeDescriptionResult();
-        String paymentProcessorTypeName = spec.getPaymentProcessorTypeName();
-        PaymentProcessorType paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
+        var result = PaymentResultFactory.getEditPaymentProcessorTypeDescriptionResult();
+        var paymentProcessorTypeName = spec.getPaymentProcessorTypeName();
+        var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
         
         if(paymentProcessorType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    PaymentProcessorTypeDescription paymentProcessorTypeDescription = paymentProcessorTypeControl.getPaymentProcessorTypeDescription(paymentProcessorType, language);
+                    var paymentProcessorTypeDescription = paymentProcessorTypeControl.getPaymentProcessorTypeDescription(paymentProcessorType, language);
                     
                     if(paymentProcessorTypeDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setPaymentProcessorTypeDescription(paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionTransfer(getUserVisit(), paymentProcessorTypeDescription));
 
                             if(lockEntity(paymentProcessorType)) {
-                                PaymentProcessorTypeDescriptionEdit edit = PaymentEditFactory.getPaymentProcessorTypeDescriptionEdit();
+                                var edit = PaymentEditFactory.getPaymentProcessorTypeDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(paymentProcessorTypeDescription.getDescription());
@@ -113,12 +108,12 @@ public class EditPaymentProcessorTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownPaymentProcessorTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    PaymentProcessorTypeDescriptionValue paymentProcessorTypeDescriptionValue = paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionValueForUpdate(paymentProcessorType, language);
+                    var paymentProcessorTypeDescriptionValue = paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionValueForUpdate(paymentProcessorType, language);
                     
                     if(paymentProcessorTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(paymentProcessorType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 paymentProcessorTypeDescriptionValue.setDescription(description);
                                 

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.content.contentcategoryitem.add;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.CreateContentCategoryItemForm;
-import com.echothree.control.user.content.common.form.GetContentCategoryForm;
 import com.echothree.control.user.content.common.result.GetContentCategoryResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -65,15 +62,15 @@ public class Step2Action
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContentCategoryForm commandForm = ContentUtil.getHome().getGetContentCategoryForm();
+        var commandForm = ContentUtil.getHome().getGetContentCategoryForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentCatalogName(actionForm.getContentCatalogName());
         commandForm.setContentCategoryName(actionForm.getContentCategoryName());
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategory(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContentCategoryResult result = (GetContentCategoryResult)executionResult.getResult();
+        var commandResult = ContentUtil.getHome().getContentCategory(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContentCategoryResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTENT_CATEGORY, result.getContentCategory());
     }
@@ -81,7 +78,7 @@ public class Step2Action
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateContentCategoryItemForm commandForm = ContentUtil.getHome().getCreateContentCategoryItemForm();
+        var commandForm = ContentUtil.getHome().getCreateContentCategoryItemForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentCatalogName(actionForm.getContentCatalogName());

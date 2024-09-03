@@ -17,9 +17,7 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetRecoveryQuestionChoicesForm;
-import com.echothree.control.user.user.common.result.GetRecoveryQuestionChoicesResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -48,10 +46,10 @@ public class GetRecoveryQuestionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetRecoveryQuestionChoicesResult result = UserResultFactory.getGetRecoveryQuestionChoicesResult();
-        String defaultRecoveryQuestionChoice = form.getDefaultRecoveryQuestionChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetRecoveryQuestionChoicesResult();
+        var defaultRecoveryQuestionChoice = form.getDefaultRecoveryQuestionChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setRecoveryQuestionChoices(userControl.getRecoveryQuestionChoices(defaultRecoveryQuestionChoice,
                 getPreferredLanguage(), allowNullChoice));

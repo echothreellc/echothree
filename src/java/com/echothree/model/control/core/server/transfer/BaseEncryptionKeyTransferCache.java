@@ -19,10 +19,8 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.BaseEncryptionKeyTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.BaseEncryptionKey;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -40,13 +38,13 @@ public class BaseEncryptionKeyTransferCache
     }
     
     public BaseEncryptionKeyTransfer getBaseEncryptionKeyTransfer(BaseEncryptionKey baseEncryptionKey) {
-        BaseEncryptionKeyTransfer baseEncryptionKeyTransfer = get(baseEncryptionKey);
+        var baseEncryptionKeyTransfer = get(baseEncryptionKey);
         
         if(baseEncryptionKeyTransfer == null) {
-            String baseEncryptionKeyName = baseEncryptionKey.getBaseEncryptionKeyName();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
-            WorkflowEntityStatusTransfer baseEncryptionKeyStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var baseEncryptionKeyName = baseEncryptionKey.getBaseEncryptionKeyName();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
+            var baseEncryptionKeyStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance);
             
             baseEncryptionKeyTransfer = new BaseEncryptionKeyTransfer(baseEncryptionKeyName, baseEncryptionKeyStatus);

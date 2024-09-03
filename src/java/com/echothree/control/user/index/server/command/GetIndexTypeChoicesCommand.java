@@ -17,7 +17,6 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.GetIndexTypeChoicesForm;
-import com.echothree.control.user.index.common.result.GetIndexTypeChoicesResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetIndexTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexTypeChoicesResult result = IndexResultFactory.getGetIndexTypeChoicesResult();
-        String defaultIndexTypeChoice = form.getDefaultIndexTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = IndexResultFactory.getGetIndexTypeChoicesResult();
+        var defaultIndexTypeChoice = form.getDefaultIndexTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setIndexTypeChoices(indexControl.getIndexTypeChoices(defaultIndexTypeChoice, getPreferredLanguage(), allowNullChoice));
         

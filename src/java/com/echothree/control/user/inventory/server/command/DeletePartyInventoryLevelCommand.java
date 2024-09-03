@@ -19,10 +19,6 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.DeletePartyInventoryLevelForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,19 +52,19 @@ public class DeletePartyInventoryLevelCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        Party party = getParty(form);
+        var party = getParty(form);
         
         if(party != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByName(itemName);
+            var itemName = form.getItemName();
+            var item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                String inventoryConditionName = form.getInventoryConditionName();
-                InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryConditionName = form.getInventoryConditionName();
+                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
-                    PartyInventoryLevel partyInventoryLevel = inventoryControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
+                    var partyInventoryLevel = inventoryControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
                     
                     if(partyInventoryLevel != null) {
                         inventoryControl.deletePartyInventoryLevel(partyInventoryLevel, getPartyPK());

@@ -18,12 +18,10 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetLeaveStatusChoicesForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetLeaveStatusChoicesResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetLeaveStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetLeaveStatusChoicesResult result = EmployeeResultFactory.getGetLeaveStatusChoicesResult();
-        String leaveName = form.getLeaveName();
-        Leave leave = leaveName == null ? null : employeeControl.getLeaveByName(leaveName);
+        var result = EmployeeResultFactory.getGetLeaveStatusChoicesResult();
+        var leaveName = form.getLeaveName();
+        var leave = leaveName == null ? null : employeeControl.getLeaveByName(leaveName);
 
         if(leaveName == null || leave != null) {
-            String defaultLeaveStatusChoice = form.getDefaultLeaveStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultLeaveStatusChoice = form.getDefaultLeaveStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setLeaveStatusChoices(employeeControl.getLeaveStatusChoices(defaultLeaveStatusChoice, getPreferredLanguage(), allowNullChoice, leave,
                     getPartyPK()));

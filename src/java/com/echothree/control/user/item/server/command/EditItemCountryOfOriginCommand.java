@@ -24,10 +24,8 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemCountryOfOriginSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
-import com.echothree.model.data.item.server.value.ItemCountryOfOriginValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -76,13 +74,13 @@ public class EditItemCountryOfOriginCommand
     public ItemCountryOfOrigin getEntity(EditItemCountryOfOriginResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemCountryOfOrigin itemCountryOfOrigin = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = spec.getCountryName();
-            GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+            var countryName = spec.getCountryName();
+            var countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -124,7 +122,7 @@ public class EditItemCountryOfOriginCommand
     @Override
     public void doUpdate(ItemCountryOfOrigin itemCountryOfOrigin) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemCountryOfOriginValue itemCountryOfOriginValue = itemControl.getItemCountryOfOriginValue(itemCountryOfOrigin);
+        var itemCountryOfOriginValue = itemControl.getItemCountryOfOriginValue(itemCountryOfOrigin);
 
         itemCountryOfOriginValue.setPercent(Integer.valueOf(edit.getPercent()));
 

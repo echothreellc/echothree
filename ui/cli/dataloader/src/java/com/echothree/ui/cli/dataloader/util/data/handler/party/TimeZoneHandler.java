@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreateTimeZoneDescriptionForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,9 +49,9 @@ public class TimeZoneHandler
         if(localName.equals("timeZoneDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class TimeZoneHandler
             }
             
             try {
-                CreateTimeZoneDescriptionForm createTimeZoneDescriptionForm = PartyFormFactory.getCreateTimeZoneDescriptionForm();
+                var createTimeZoneDescriptionForm = PartyFormFactory.getCreateTimeZoneDescriptionForm();
                 
                 createTimeZoneDescriptionForm.setJavaTimeZoneName(javaTimeZoneName);
                 createTimeZoneDescriptionForm.setLanguageIsoName(languageIsoName);

@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
@@ -35,8 +34,8 @@ public class CostUnitFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        Currency currency = getCurrency();
+        var hadErrors = false;
+        var currency = getCurrency();
         
         if(currency == null) {
             hadErrors = true;

@@ -26,7 +26,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
 
 public class ItemCategoryLogic
         extends BaseLogic {
@@ -45,7 +44,7 @@ public class ItemCategoryLogic
 
     public ItemCategory getItemCategoryByName(final ExecutionErrorAccumulator eea, final String itemCategoryName, EntityPermission entityPermission) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName, entityPermission);
+        var itemCategory = itemControl.getItemCategoryByName(itemCategoryName, entityPermission);
 
         if(itemCategory == null) {
             handleExecutionError(UnknownItemCategoryNameException.class, eea, ExecutionErrors.UnknownItemCategoryName.name(), itemCategoryName);
@@ -63,8 +62,8 @@ public class ItemCategoryLogic
     }
 
     private long countItemsByItemCategoryChildren(final ItemControl itemControl, final ItemCategory parentItemCategory) {
-        List<ItemCategory> itemCategoryChildren = itemControl.getItemCategoriesByParentItemCategory(parentItemCategory);
-        long total = itemControl.countItemsByItemCategory(parentItemCategory);
+        var itemCategoryChildren = itemControl.getItemCategoriesByParentItemCategory(parentItemCategory);
+        var total = itemControl.countItemsByItemCategory(parentItemCategory);
 
         total = itemCategoryChildren.stream().map((childItemCategory) -> countItemsByItemCategoryChildren(itemControl, childItemCategory)).reduce(total, (accumulator, _item) -> accumulator + _item);
 
@@ -82,7 +81,7 @@ public class ItemCategoryLogic
 
     public ItemCategory getDefaultItemCategory(final ExecutionErrorAccumulator eea) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemCategory itemCategory = itemControl.getDefaultItemCategory();
+        var itemCategory = itemControl.getDefaultItemCategory();
 
         if(itemCategory == null) {
             handleExecutionError(MissingDefaultItemCategoryException.class, eea, ExecutionErrors.MissingDefaultItemCategory.name());

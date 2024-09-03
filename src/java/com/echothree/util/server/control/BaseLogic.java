@@ -61,7 +61,7 @@ public abstract class BaseLogic {
     // If eea is specified, we'll consider this to be a non-fatal error, and add this error to it. Otherwise, if a BaseException class
     // is specified, we'll instantiate it and throw it. If neither was specified, the error cannot be handled - abort.
     public void handleExecutionError(final Class<? extends BaseException> exceptionClass, final ExecutionErrorAccumulator eea, final String key, final Object... values) {
-        Message message = new Message(key, values);
+        var message = new Message(key, values);
 
         if(eea == null) {
             if(exceptionClass != null) {
@@ -87,7 +87,7 @@ public abstract class BaseLogic {
     // If sma is specified, we'll consider this to be a non-fatal error, and add this error to it. Otherwise, if a BaseException class
     // is specified, we'll instantiate it and throw it. If neither was specified, the error cannot be handled - abort.
     public void handleSecurityMessage(final Class<? extends BaseException> exceptionClass, final SecurityMessageAccumulator sma, final String key, final Object... values) {
-        Message message = new Message(key, values);
+        var message = new Message(key, values);
 
         if(sma == null) {
             if(exceptionClass != null) {
@@ -110,10 +110,10 @@ public abstract class BaseLogic {
         }
     }
     
-    // This is only safe to use if all function are using handleError. If eea is null in that case, an Exception will be throw, and this
+    // This is only safe to use if all function are using handleError. If eea is null in that case, an Exception will be thrown, and this
     // code will never be needed. Otherwise, eea will be checked and the value of hasExecutionErrors() returned.
     public boolean hasExecutionErrors(final ExecutionErrorAccumulator eea) {
-        boolean hasExecutionErrors = false;
+        var hasExecutionErrors = false;
         
         if(eea != null) {
             hasExecutionErrors = eea.hasExecutionErrors();

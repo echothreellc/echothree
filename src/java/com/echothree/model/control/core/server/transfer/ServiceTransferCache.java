@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.ProtocolTransfer;
 import com.echothree.model.control.core.common.transfer.ServiceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Service;
-import com.echothree.model.data.core.server.entity.ServiceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,16 +35,16 @@ public class ServiceTransferCache
     }
     
     public ServiceTransfer getServiceTransfer(Service service) {
-        ServiceTransfer serviceTransfer = get(service);
+        var serviceTransfer = get(service);
         
         if(serviceTransfer == null) {
-            ServiceDetail serviceDetail = service.getLastDetail();
-            String serviceName = serviceDetail.getServiceName();
-            Integer port = serviceDetail.getPort();
-            ProtocolTransfer protocol = coreControl.getProtocolTransfer(userVisit, serviceDetail.getProtocol());
-            Boolean isDefault = serviceDetail.getIsDefault();
-            Integer sortOrder = serviceDetail.getSortOrder();
-            String description = coreControl.getBestServiceDescription(service, getLanguage());
+            var serviceDetail = service.getLastDetail();
+            var serviceName = serviceDetail.getServiceName();
+            var port = serviceDetail.getPort();
+            var protocol = coreControl.getProtocolTransfer(userVisit, serviceDetail.getProtocol());
+            var isDefault = serviceDetail.getIsDefault();
+            var sortOrder = serviceDetail.getSortOrder();
+            var description = coreControl.getBestServiceDescription(service, getLanguage());
     
             serviceTransfer = new ServiceTransfer(serviceName, port, protocol, isDefault, sortOrder, description);
             put(service, serviceTransfer);

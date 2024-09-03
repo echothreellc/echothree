@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.geocodealias;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeAliasTypeChoicesForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeAliasTypeChoicesResult;
 import com.echothree.model.control.geo.common.choice.GeoCodeAliasTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class AddActionForm
     public void setupGeoCodeAliasTypeChoices() {
         if(geoCodeAliasTypeChoices == null) {
             try {
-                GetGeoCodeAliasTypeChoicesForm form = GeoUtil.getHome().getGetGeoCodeAliasTypeChoicesForm();
+                var form = GeoUtil.getHome().getGetGeoCodeAliasTypeChoicesForm();
 
                 form.setGeoCodeName(geoCodeName);
                 form.setDefaultGeoCodeAliasTypeChoice(geoCodeAliasTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGeoCodeAliasTypeChoicesResult getGeoCodeAliasTypeChoicesResult = (GetGeoCodeAliasTypeChoicesResult)executionResult.getResult();
+                var commandResult = GeoUtil.getHome().getGeoCodeAliasTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGeoCodeAliasTypeChoicesResult = (GetGeoCodeAliasTypeChoicesResult)executionResult.getResult();
                 geoCodeAliasTypeChoices = getGeoCodeAliasTypeChoicesResult.getGeoCodeAliasTypeChoices();
 
                 if(geoCodeAliasTypeChoice == null) {

@@ -38,47 +38,23 @@ import com.echothree.model.control.contactlist.common.transfer.PartyContactListT
 import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactListGroupTransfer;
 import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactListTransfer;
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
-import com.echothree.model.control.contactlist.server.transfer.ContactListContactMechanismPurposeTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.ContactListFrequencyTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.ContactListGroupTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.ContactListTransferCache;
 import com.echothree.model.control.contactlist.server.transfer.ContactListTransferCaches;
-import com.echothree.model.control.contactlist.server.transfer.ContactListTypeTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.CustomerTypeContactListGroupTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.CustomerTypeContactListTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.PartyContactListTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListGroupTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.server.control.LetterControl;
-import com.echothree.model.data.chain.common.pk.ChainPK;
 import com.echothree.model.data.chain.server.entity.Chain;
-import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
-import com.echothree.model.data.contactlist.common.pk.ContactListContactMechanismPurposePK;
-import com.echothree.model.data.contactlist.common.pk.ContactListFrequencyPK;
-import com.echothree.model.data.contactlist.common.pk.ContactListGroupPK;
-import com.echothree.model.data.contactlist.common.pk.ContactListPK;
-import com.echothree.model.data.contactlist.common.pk.ContactListTypePK;
-import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
-import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurposeDetail;
 import com.echothree.model.data.contactlist.server.entity.ContactListDescription;
-import com.echothree.model.data.contactlist.server.entity.ContactListDetail;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequencyDescription;
-import com.echothree.model.data.contactlist.server.entity.ContactListFrequencyDetail;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroupDescription;
-import com.echothree.model.data.contactlist.server.entity.ContactListGroupDetail;
 import com.echothree.model.data.contactlist.server.entity.ContactListType;
 import com.echothree.model.data.contactlist.server.entity.ContactListTypeDescription;
-import com.echothree.model.data.contactlist.server.entity.ContactListTypeDetail;
 import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactList;
 import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactListGroup;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
-import com.echothree.model.data.contactlist.server.entity.PartyContactListDetail;
 import com.echothree.model.data.contactlist.server.entity.PartyTypeContactList;
 import com.echothree.model.data.contactlist.server.entity.PartyTypeContactListGroup;
 import com.echothree.model.data.contactlist.server.factory.ContactListContactMechanismPurposeDetailFactory;
@@ -115,18 +91,12 @@ import com.echothree.model.data.contactlist.server.value.CustomerTypeContactList
 import com.echothree.model.data.contactlist.server.value.PartyContactListDetailValue;
 import com.echothree.model.data.contactlist.server.value.PartyTypeContactListGroupValue;
 import com.echothree.model.data.contactlist.server.value.PartyTypeContactListValue;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.customer.common.pk.CustomerTypePK;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.common.pk.PartyTypePK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -138,7 +108,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -171,11 +140,11 @@ public class ContactListControl
 
     public ContactListType createContactListType(String contactListTypeName, Chain confirmationRequestChain, Chain subscribeChain, Chain unsubscribeChain,
             Boolean usedForSolicitation, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ContactListType defaultContactListType = getDefaultContactListType();
-        boolean defaultFound = defaultContactListType != null;
+        var defaultContactListType = getDefaultContactListType();
+        var defaultFound = defaultContactListType != null;
 
         if(defaultFound && isDefault) {
-            ContactListTypeDetailValue defaultContactListTypeDetailValue = getDefaultContactListTypeDetailValueForUpdate();
+            var defaultContactListTypeDetailValue = getDefaultContactListTypeDetailValueForUpdate();
 
             defaultContactListTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateContactListTypeFromValue(defaultContactListTypeDetailValue, false, createdBy);
@@ -183,8 +152,8 @@ public class ContactListControl
             isDefault = Boolean.TRUE;
         }
 
-        ContactListType contactListType = ContactListTypeFactory.getInstance().create();
-        ContactListTypeDetail contactListTypeDetail = ContactListTypeDetailFactory.getInstance().create(contactListType, contactListTypeName,
+        var contactListType = ContactListTypeFactory.getInstance().create();
+        var contactListTypeDetail = ContactListTypeDetailFactory.getInstance().create(contactListType, contactListTypeName,
                 confirmationRequestChain, subscribeChain, unsubscribeChain, usedForSolicitation, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -395,7 +364,7 @@ public class ContactListControl
     }
 
     public ContactListTypeChoicesBean getContactListTypeChoices(String defaultContactListTypeChoice, Language language, boolean allowNullChoice) {
-        List<ContactListType> contactListTypes = getContactListTypes();
+        var contactListTypes = getContactListTypes();
         var size = contactListTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -411,7 +380,7 @@ public class ContactListControl
         }
 
         for(var contactListType : contactListTypes) {
-            ContactListTypeDetail contactListTypeDetail = contactListType.getLastDetail();
+            var contactListTypeDetail = contactListType.getLastDetail();
 
             var label = getBestContactListTypeDescription(contactListType, language);
             var value = contactListTypeDetail.getContactListTypeName();
@@ -433,9 +402,9 @@ public class ContactListControl
     }
 
     public List<ContactListTypeTransfer> getContactListTypeTransfers(UserVisit userVisit) {
-        List<ContactListType> contactListTypes = getContactListTypes();
+        var contactListTypes = getContactListTypes();
         List<ContactListTypeTransfer> contactListTypeTransfers = new ArrayList<>(contactListTypes.size());
-        ContactListTypeTransferCache contactListTypeTransferCache = getContactListTransferCaches(userVisit).getContactListTypeTransferCache();
+        var contactListTypeTransferCache = getContactListTransferCaches(userVisit).getContactListTypeTransferCache();
 
         contactListTypes.forEach((contactListType) ->
                 contactListTypeTransfers.add(contactListTypeTransferCache.getContactListTypeTransfer(contactListType))
@@ -445,29 +414,29 @@ public class ContactListControl
     }
 
     private void updateContactListTypeFromValue(ContactListTypeDetailValue contactListTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        ContactListType contactListType = ContactListTypeFactory.getInstance().getEntityFromPK(session,
+        var contactListType = ContactListTypeFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, contactListTypeDetailValue.getContactListTypePK());
-        ContactListTypeDetail contactListTypeDetail = contactListType.getActiveDetailForUpdate();
+        var contactListTypeDetail = contactListType.getActiveDetailForUpdate();
 
         contactListTypeDetail.setThruTime(session.START_TIME_LONG);
         contactListTypeDetail.store();
 
-        ContactListTypePK contactListTypePK = contactListTypeDetail.getContactListTypePK();
-        String contactListTypeName = contactListTypeDetailValue.getContactListTypeName();
-        ChainPK confirmationRequestChainPK = contactListTypeDetailValue.getConfirmationRequestChainPK();
-        ChainPK subscribeChainPK = contactListTypeDetailValue.getSubscribeChainPK();
-        ChainPK unsubscribeChainPK = contactListTypeDetailValue.getUnsubscribeChainPK();
-        Boolean usedForSolicitation = contactListTypeDetailValue.getUsedForSolicitation();
-        Boolean isDefault = contactListTypeDetailValue.getIsDefault();
-        Integer sortOrder = contactListTypeDetailValue.getSortOrder();
+        var contactListTypePK = contactListTypeDetail.getContactListTypePK();
+        var contactListTypeName = contactListTypeDetailValue.getContactListTypeName();
+        var confirmationRequestChainPK = contactListTypeDetailValue.getConfirmationRequestChainPK();
+        var subscribeChainPK = contactListTypeDetailValue.getSubscribeChainPK();
+        var unsubscribeChainPK = contactListTypeDetailValue.getUnsubscribeChainPK();
+        var usedForSolicitation = contactListTypeDetailValue.getUsedForSolicitation();
+        var isDefault = contactListTypeDetailValue.getIsDefault();
+        var sortOrder = contactListTypeDetailValue.getSortOrder();
 
         if(checkDefault) {
-            ContactListType defaultContactListType = getDefaultContactListType();
-            boolean defaultFound = defaultContactListType != null && !defaultContactListType.equals(contactListType);
+            var defaultContactListType = getDefaultContactListType();
+            var defaultFound = defaultContactListType != null && !defaultContactListType.equals(contactListType);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                ContactListTypeDetailValue defaultContactListTypeDetailValue = getDefaultContactListTypeDetailValueForUpdate();
+                var defaultContactListTypeDetailValue = getDefaultContactListTypeDetailValueForUpdate();
 
                 defaultContactListTypeDetailValue.setIsDefault(Boolean.FALSE);
                 updateContactListTypeFromValue(defaultContactListTypeDetailValue, false, updatedBy);
@@ -495,22 +464,22 @@ public class ContactListControl
         deleteContactListsByContactListType(contactListType, deletedBy);
         deleteContactListTypeDescriptionsByContactListType(contactListType, deletedBy);
 
-        ContactListTypeDetail contactListTypeDetail = contactListType.getLastDetailForUpdate();
+        var contactListTypeDetail = contactListType.getLastDetailForUpdate();
         contactListTypeDetail.setThruTime(session.START_TIME_LONG);
         contactListType.setActiveDetail(null);
         contactListType.store();
 
         // Check for default, and pick one if necessary
-        ContactListType defaultContactListType = getDefaultContactListType();
+        var defaultContactListType = getDefaultContactListType();
         if(defaultContactListType == null) {
-            List<ContactListType> contactListTypes = getContactListTypesForUpdate();
+            var contactListTypes = getContactListTypesForUpdate();
 
             if(!contactListTypes.isEmpty()) {
-                Iterator<ContactListType> iter = contactListTypes.iterator();
+                var iter = contactListTypes.iterator();
                 if(iter.hasNext()) {
                     defaultContactListType = iter.next();
                 }
-                ContactListTypeDetailValue contactListTypeDetailValue = Objects.requireNonNull(defaultContactListType).getLastDetailForUpdate().getContactListTypeDetailValue().clone();
+                var contactListTypeDetailValue = Objects.requireNonNull(defaultContactListType).getLastDetailForUpdate().getContactListTypeDetailValue().clone();
 
                 contactListTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListTypeFromValue(contactListTypeDetailValue, false, deletedBy);
@@ -550,7 +519,7 @@ public class ContactListControl
 
     public ContactListTypeDescription createContactListTypeDescription(ContactListType contactListType, Language language, String description,
             BasePK createdBy) {
-        ContactListTypeDescription contactListTypeDescription = ContactListTypeDescriptionFactory.getInstance().create(contactListType,
+        var contactListTypeDescription = ContactListTypeDescriptionFactory.getInstance().create(contactListType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contactListType.getPrimaryKey(), EventTypes.MODIFY, contactListTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -629,7 +598,7 @@ public class ContactListControl
 
     public String getBestContactListTypeDescription(ContactListType contactListType, Language language) {
         String description;
-        ContactListTypeDescription contactListTypeDescription = getContactListTypeDescription(contactListType, language);
+        var contactListTypeDescription = getContactListTypeDescription(contactListType, language);
 
         if(contactListTypeDescription == null && !language.getIsDefault()) {
             contactListTypeDescription = getContactListTypeDescription(contactListType, getPartyControl().getDefaultLanguage());
@@ -649,7 +618,7 @@ public class ContactListControl
     }
 
     public List<ContactListTypeDescriptionTransfer> getContactListTypeDescriptionTransfersByContactListType(UserVisit userVisit, ContactListType contactListType) {
-        List<ContactListTypeDescription> contactListTypeDescriptions = getContactListTypeDescriptionsByContactListType(contactListType);
+        var contactListTypeDescriptions = getContactListTypeDescriptionsByContactListType(contactListType);
         List<ContactListTypeDescriptionTransfer> contactListTypeDescriptionTransfers = new ArrayList<>(contactListTypeDescriptions.size());
 
         contactListTypeDescriptions.forEach((contactListTypeDescription) -> {
@@ -661,15 +630,15 @@ public class ContactListControl
 
     public void updateContactListTypeDescriptionFromValue(ContactListTypeDescriptionValue contactListTypeDescriptionValue, BasePK updatedBy) {
         if(contactListTypeDescriptionValue.hasBeenModified()) {
-            ContactListTypeDescription contactListTypeDescription = ContactListTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListTypeDescription = ContactListTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListTypeDescriptionValue.getPrimaryKey());
 
             contactListTypeDescription.setThruTime(session.START_TIME_LONG);
             contactListTypeDescription.store();
 
-            ContactListType contactListType = contactListTypeDescription.getContactListType();
-            Language language = contactListTypeDescription.getLanguage();
-            String description = contactListTypeDescriptionValue.getDescription();
+            var contactListType = contactListTypeDescription.getContactListType();
+            var language = contactListTypeDescription.getLanguage();
+            var description = contactListTypeDescriptionValue.getDescription();
 
             contactListTypeDescription = ContactListTypeDescriptionFactory.getInstance().create(contactListType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -686,7 +655,7 @@ public class ContactListControl
     }
 
     public void deleteContactListTypeDescriptionsByContactListType(ContactListType contactListType, BasePK deletedBy) {
-        List<ContactListTypeDescription> contactListTypeDescriptions = getContactListTypeDescriptionsByContactListTypeForUpdate(contactListType);
+        var contactListTypeDescriptions = getContactListTypeDescriptionsByContactListTypeForUpdate(contactListType);
 
         contactListTypeDescriptions.forEach((contactListTypeDescription) -> 
                 deleteContactListTypeDescription(contactListTypeDescription, deletedBy)
@@ -698,11 +667,11 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     public ContactListGroup createContactListGroup(String contactListGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ContactListGroup defaultContactListGroup = getDefaultContactListGroup();
-        boolean defaultFound = defaultContactListGroup != null;
+        var defaultContactListGroup = getDefaultContactListGroup();
+        var defaultFound = defaultContactListGroup != null;
 
         if(defaultFound && isDefault) {
-            ContactListGroupDetailValue defaultContactListGroupDetailValue = getDefaultContactListGroupDetailValueForUpdate();
+            var defaultContactListGroupDetailValue = getDefaultContactListGroupDetailValueForUpdate();
 
             defaultContactListGroupDetailValue.setIsDefault(Boolean.FALSE);
             updateContactListGroupFromValue(defaultContactListGroupDetailValue, false, createdBy);
@@ -710,8 +679,8 @@ public class ContactListControl
             isDefault = Boolean.TRUE;
         }
 
-        ContactListGroup contactListGroup = ContactListGroupFactory.getInstance().create();
-        ContactListGroupDetail contactListGroupDetail = ContactListGroupDetailFactory.getInstance().create(contactListGroup, contactListGroupName, isDefault,
+        var contactListGroup = ContactListGroupFactory.getInstance().create();
+        var contactListGroupDetail = ContactListGroupDetailFactory.getInstance().create(contactListGroup, contactListGroupName, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -828,7 +797,7 @@ public class ContactListControl
     }
 
     public ContactListGroupChoicesBean getContactListGroupChoices(String defaultContactListGroupChoice, Language language, boolean allowNullChoice) {
-        List<ContactListGroup> contactListGroups = getContactListGroups();
+        var contactListGroups = getContactListGroups();
         var size = contactListGroups.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -844,7 +813,7 @@ public class ContactListControl
         }
 
         for(var contactListGroup : contactListGroups) {
-            ContactListGroupDetail contactListGroupDetail = contactListGroup.getLastDetail();
+            var contactListGroupDetail = contactListGroup.getLastDetail();
 
             var label = getBestContactListGroupDescription(contactListGroup, language);
             var value = contactListGroupDetail.getContactListGroupName();
@@ -866,9 +835,9 @@ public class ContactListControl
     }
 
     public List<ContactListGroupTransfer> getContactListGroupTransfers(UserVisit userVisit) {
-        List<ContactListGroup> contactListGroups = getContactListGroups();
+        var contactListGroups = getContactListGroups();
         List<ContactListGroupTransfer> contactListGroupTransfers = new ArrayList<>(contactListGroups.size());
-        ContactListGroupTransferCache contactListGroupTransferCache = getContactListTransferCaches(userVisit).getContactListGroupTransferCache();
+        var contactListGroupTransferCache = getContactListTransferCaches(userVisit).getContactListGroupTransferCache();
 
         contactListGroups.forEach((contactListGroup) ->
                 contactListGroupTransfers.add(contactListGroupTransferCache.getContactListGroupTransfer(contactListGroup))
@@ -878,25 +847,25 @@ public class ContactListControl
     }
 
     private void updateContactListGroupFromValue(ContactListGroupDetailValue contactListGroupDetailValue, boolean checkDefault, BasePK updatedBy) {
-        ContactListGroup contactListGroup = ContactListGroupFactory.getInstance().getEntityFromPK(session,
+        var contactListGroup = ContactListGroupFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, contactListGroupDetailValue.getContactListGroupPK());
-        ContactListGroupDetail contactListGroupDetail = contactListGroup.getActiveDetailForUpdate();
+        var contactListGroupDetail = contactListGroup.getActiveDetailForUpdate();
 
         contactListGroupDetail.setThruTime(session.START_TIME_LONG);
         contactListGroupDetail.store();
 
-        ContactListGroupPK contactListGroupPK = contactListGroupDetail.getContactListGroupPK();
-        String contactListGroupName = contactListGroupDetailValue.getContactListGroupName();
-        Boolean isDefault = contactListGroupDetailValue.getIsDefault();
-        Integer sortOrder = contactListGroupDetailValue.getSortOrder();
+        var contactListGroupPK = contactListGroupDetail.getContactListGroupPK();
+        var contactListGroupName = contactListGroupDetailValue.getContactListGroupName();
+        var isDefault = contactListGroupDetailValue.getIsDefault();
+        var sortOrder = contactListGroupDetailValue.getSortOrder();
 
         if(checkDefault) {
-            ContactListGroup defaultContactListGroup = getDefaultContactListGroup();
-            boolean defaultFound = defaultContactListGroup != null && !defaultContactListGroup.equals(contactListGroup);
+            var defaultContactListGroup = getDefaultContactListGroup();
+            var defaultFound = defaultContactListGroup != null && !defaultContactListGroup.equals(contactListGroup);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                ContactListGroupDetailValue defaultContactListGroupDetailValue = getDefaultContactListGroupDetailValueForUpdate();
+                var defaultContactListGroupDetailValue = getDefaultContactListGroupDetailValueForUpdate();
 
                 defaultContactListGroupDetailValue.setIsDefault(Boolean.FALSE);
                 updateContactListGroupFromValue(defaultContactListGroupDetailValue, false, updatedBy);
@@ -927,22 +896,22 @@ public class ContactListControl
         deleteCustomerTypeContactListGroupsByContactListGroup(contactListGroup, deletedBy);
         deleteContactListGroupDescriptionsByContactListGroup(contactListGroup, deletedBy);
 
-        ContactListGroupDetail contactListGroupDetail = contactListGroup.getLastDetailForUpdate();
+        var contactListGroupDetail = contactListGroup.getLastDetailForUpdate();
         contactListGroupDetail.setThruTime(session.START_TIME_LONG);
         contactListGroup.setActiveDetail(null);
         contactListGroup.store();
 
         // Check for default, and pick one if necessary
-        ContactListGroup defaultContactListGroup = getDefaultContactListGroup();
+        var defaultContactListGroup = getDefaultContactListGroup();
         if(defaultContactListGroup == null) {
-            List<ContactListGroup> contactListGroups = getContactListGroupsForUpdate();
+            var contactListGroups = getContactListGroupsForUpdate();
 
             if(!contactListGroups.isEmpty()) {
-                Iterator<ContactListGroup> iter = contactListGroups.iterator();
+                var iter = contactListGroups.iterator();
                 if(iter.hasNext()) {
                     defaultContactListGroup = iter.next();
                 }
-                ContactListGroupDetailValue contactListGroupDetailValue = Objects.requireNonNull(defaultContactListGroup).getLastDetailForUpdate().getContactListGroupDetailValue().clone();
+                var contactListGroupDetailValue = Objects.requireNonNull(defaultContactListGroup).getLastDetailForUpdate().getContactListGroupDetailValue().clone();
 
                 contactListGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListGroupFromValue(contactListGroupDetailValue, false, deletedBy);
@@ -958,7 +927,7 @@ public class ContactListControl
 
     public ContactListGroupDescription createContactListGroupDescription(ContactListGroup contactListGroup, Language language, String description,
             BasePK createdBy) {
-        ContactListGroupDescription contactListGroupDescription = ContactListGroupDescriptionFactory.getInstance().create(contactListGroup,
+        var contactListGroupDescription = ContactListGroupDescriptionFactory.getInstance().create(contactListGroup,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, contactListGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1037,7 +1006,7 @@ public class ContactListControl
 
     public String getBestContactListGroupDescription(ContactListGroup contactListGroup, Language language) {
         String description;
-        ContactListGroupDescription contactListGroupDescription = getContactListGroupDescription(contactListGroup, language);
+        var contactListGroupDescription = getContactListGroupDescription(contactListGroup, language);
 
         if(contactListGroupDescription == null && !language.getIsDefault()) {
             contactListGroupDescription = getContactListGroupDescription(contactListGroup, getPartyControl().getDefaultLanguage());
@@ -1057,7 +1026,7 @@ public class ContactListControl
     }
 
     public List<ContactListGroupDescriptionTransfer> getContactListGroupDescriptionTransfersByContactListGroup(UserVisit userVisit, ContactListGroup contactListGroup) {
-        List<ContactListGroupDescription> contactListGroupDescriptions = getContactListGroupDescriptionsByContactListGroup(contactListGroup);
+        var contactListGroupDescriptions = getContactListGroupDescriptionsByContactListGroup(contactListGroup);
         List<ContactListGroupDescriptionTransfer> contactListGroupDescriptionTransfers = new ArrayList<>(contactListGroupDescriptions.size());
 
         contactListGroupDescriptions.forEach((contactListGroupDescription) -> {
@@ -1069,15 +1038,15 @@ public class ContactListControl
 
     public void updateContactListGroupDescriptionFromValue(ContactListGroupDescriptionValue contactListGroupDescriptionValue, BasePK updatedBy) {
         if(contactListGroupDescriptionValue.hasBeenModified()) {
-            ContactListGroupDescription contactListGroupDescription = ContactListGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListGroupDescription = ContactListGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListGroupDescriptionValue.getPrimaryKey());
 
             contactListGroupDescription.setThruTime(session.START_TIME_LONG);
             contactListGroupDescription.store();
 
-            ContactListGroup contactListGroup = contactListGroupDescription.getContactListGroup();
-            Language language = contactListGroupDescription.getLanguage();
-            String description = contactListGroupDescriptionValue.getDescription();
+            var contactListGroup = contactListGroupDescription.getContactListGroup();
+            var language = contactListGroupDescription.getLanguage();
+            var description = contactListGroupDescriptionValue.getDescription();
 
             contactListGroupDescription = ContactListGroupDescriptionFactory.getInstance().create(contactListGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1094,7 +1063,7 @@ public class ContactListControl
     }
 
     public void deleteContactListGroupDescriptionsByContactListGroup(ContactListGroup contactListGroup, BasePK deletedBy) {
-        List<ContactListGroupDescription> contactListGroupDescriptions = getContactListGroupDescriptionsByContactListGroupForUpdate(contactListGroup);
+        var contactListGroupDescriptions = getContactListGroupDescriptionsByContactListGroupForUpdate(contactListGroup);
 
         contactListGroupDescriptions.forEach((contactListGroupDescription) -> 
                 deleteContactListGroupDescription(contactListGroupDescription, deletedBy)
@@ -1106,11 +1075,11 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     public ContactListFrequency createContactListFrequency(String contactListFrequencyName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ContactListFrequency defaultContactListFrequency = getDefaultContactListFrequency();
-        boolean defaultFound = defaultContactListFrequency != null;
+        var defaultContactListFrequency = getDefaultContactListFrequency();
+        var defaultFound = defaultContactListFrequency != null;
 
         if(defaultFound && isDefault) {
-            ContactListFrequencyDetailValue defaultContactListFrequencyDetailValue = getDefaultContactListFrequencyDetailValueForUpdate();
+            var defaultContactListFrequencyDetailValue = getDefaultContactListFrequencyDetailValueForUpdate();
 
             defaultContactListFrequencyDetailValue.setIsDefault(Boolean.FALSE);
             updateContactListFrequencyFromValue(defaultContactListFrequencyDetailValue, false, createdBy);
@@ -1118,8 +1087,8 @@ public class ContactListControl
             isDefault = Boolean.TRUE;
         }
 
-        ContactListFrequency contactListFrequency = ContactListFrequencyFactory.getInstance().create();
-        ContactListFrequencyDetail contactListFrequencyDetail = ContactListFrequencyDetailFactory.getInstance().create(contactListFrequency, contactListFrequencyName, isDefault,
+        var contactListFrequency = ContactListFrequencyFactory.getInstance().create();
+        var contactListFrequencyDetail = ContactListFrequencyDetailFactory.getInstance().create(contactListFrequency, contactListFrequencyName, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1236,7 +1205,7 @@ public class ContactListControl
     }
 
     public ContactListFrequencyChoicesBean getContactListFrequencyChoices(String defaultContactListFrequencyChoice, Language language, boolean allowNullChoice) {
-        List<ContactListFrequency> contactListFrequencies = getContactListFrequencies();
+        var contactListFrequencies = getContactListFrequencies();
         var size = contactListFrequencies.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1252,7 +1221,7 @@ public class ContactListControl
         }
 
         for(var contactListFrequency : contactListFrequencies) {
-            ContactListFrequencyDetail contactListFrequencyDetail = contactListFrequency.getLastDetail();
+            var contactListFrequencyDetail = contactListFrequency.getLastDetail();
 
             var label = getBestContactListFrequencyDescription(contactListFrequency, language);
             var value = contactListFrequencyDetail.getContactListFrequencyName();
@@ -1274,9 +1243,9 @@ public class ContactListControl
     }
 
     public List<ContactListFrequencyTransfer> getContactListFrequencyTransfers(UserVisit userVisit) {
-        List<ContactListFrequency> contactListFrequencies = getContactListFrequencies();
+        var contactListFrequencies = getContactListFrequencies();
         List<ContactListFrequencyTransfer> contactListFrequencyTransfers = new ArrayList<>(contactListFrequencies.size());
-        ContactListFrequencyTransferCache contactListFrequencyTransferCache = getContactListTransferCaches(userVisit).getContactListFrequencyTransferCache();
+        var contactListFrequencyTransferCache = getContactListTransferCaches(userVisit).getContactListFrequencyTransferCache();
 
         contactListFrequencies.forEach((contactListFrequency) ->
                 contactListFrequencyTransfers.add(contactListFrequencyTransferCache.getContactListFrequencyTransfer(contactListFrequency))
@@ -1286,25 +1255,25 @@ public class ContactListControl
     }
 
     private void updateContactListFrequencyFromValue(ContactListFrequencyDetailValue contactListFrequencyDetailValue, boolean checkDefault, BasePK updatedBy) {
-        ContactListFrequency contactListFrequency = ContactListFrequencyFactory.getInstance().getEntityFromPK(session,
+        var contactListFrequency = ContactListFrequencyFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, contactListFrequencyDetailValue.getContactListFrequencyPK());
-        ContactListFrequencyDetail contactListFrequencyDetail = contactListFrequency.getActiveDetailForUpdate();
+        var contactListFrequencyDetail = contactListFrequency.getActiveDetailForUpdate();
 
         contactListFrequencyDetail.setThruTime(session.START_TIME_LONG);
         contactListFrequencyDetail.store();
 
-        ContactListFrequencyPK contactListFrequencyPK = contactListFrequencyDetail.getContactListFrequencyPK();
-        String contactListFrequencyName = contactListFrequencyDetailValue.getContactListFrequencyName();
-        Boolean isDefault = contactListFrequencyDetailValue.getIsDefault();
-        Integer sortOrder = contactListFrequencyDetailValue.getSortOrder();
+        var contactListFrequencyPK = contactListFrequencyDetail.getContactListFrequencyPK();
+        var contactListFrequencyName = contactListFrequencyDetailValue.getContactListFrequencyName();
+        var isDefault = contactListFrequencyDetailValue.getIsDefault();
+        var sortOrder = contactListFrequencyDetailValue.getSortOrder();
 
         if(checkDefault) {
-            ContactListFrequency defaultContactListFrequency = getDefaultContactListFrequency();
-            boolean defaultFound = defaultContactListFrequency != null && !defaultContactListFrequency.equals(contactListFrequency);
+            var defaultContactListFrequency = getDefaultContactListFrequency();
+            var defaultFound = defaultContactListFrequency != null && !defaultContactListFrequency.equals(contactListFrequency);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                ContactListFrequencyDetailValue defaultContactListFrequencyDetailValue = getDefaultContactListFrequencyDetailValueForUpdate();
+                var defaultContactListFrequencyDetailValue = getDefaultContactListFrequencyDetailValueForUpdate();
 
                 defaultContactListFrequencyDetailValue.setIsDefault(Boolean.FALSE);
                 updateContactListFrequencyFromValue(defaultContactListFrequencyDetailValue, false, updatedBy);
@@ -1332,22 +1301,22 @@ public class ContactListControl
         deleteContactListsByContactListFrequency(contactListFrequency, deletedBy);
         deleteContactListFrequencyDescriptionsByContactListFrequency(contactListFrequency, deletedBy);
 
-        ContactListFrequencyDetail contactListFrequencyDetail = contactListFrequency.getLastDetailForUpdate();
+        var contactListFrequencyDetail = contactListFrequency.getLastDetailForUpdate();
         contactListFrequencyDetail.setThruTime(session.START_TIME_LONG);
         contactListFrequency.setActiveDetail(null);
         contactListFrequency.store();
 
         // Check for default, and pick one if necessary
-        ContactListFrequency defaultContactListFrequency = getDefaultContactListFrequency();
+        var defaultContactListFrequency = getDefaultContactListFrequency();
         if(defaultContactListFrequency == null) {
-            List<ContactListFrequency> contactListFrequencies = getContactListFrequenciesForUpdate();
+            var contactListFrequencies = getContactListFrequenciesForUpdate();
 
             if(!contactListFrequencies.isEmpty()) {
-                Iterator<ContactListFrequency> iter = contactListFrequencies.iterator();
+                var iter = contactListFrequencies.iterator();
                 if(iter.hasNext()) {
                     defaultContactListFrequency = iter.next();
                 }
-                ContactListFrequencyDetailValue contactListFrequencyDetailValue = Objects.requireNonNull(defaultContactListFrequency).getLastDetailForUpdate().getContactListFrequencyDetailValue().clone();
+                var contactListFrequencyDetailValue = Objects.requireNonNull(defaultContactListFrequency).getLastDetailForUpdate().getContactListFrequencyDetailValue().clone();
 
                 contactListFrequencyDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListFrequencyFromValue(contactListFrequencyDetailValue, false, deletedBy);
@@ -1363,7 +1332,7 @@ public class ContactListControl
 
     public ContactListFrequencyDescription createContactListFrequencyDescription(ContactListFrequency contactListFrequency, Language language, String description,
             BasePK createdBy) {
-        ContactListFrequencyDescription contactListFrequencyDescription = ContactListFrequencyDescriptionFactory.getInstance().create(contactListFrequency,
+        var contactListFrequencyDescription = ContactListFrequencyDescriptionFactory.getInstance().create(contactListFrequency,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contactListFrequency.getPrimaryKey(), EventTypes.MODIFY, contactListFrequencyDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1442,7 +1411,7 @@ public class ContactListControl
 
     public String getBestContactListFrequencyDescription(ContactListFrequency contactListFrequency, Language language) {
         String description;
-        ContactListFrequencyDescription contactListFrequencyDescription = getContactListFrequencyDescription(contactListFrequency, language);
+        var contactListFrequencyDescription = getContactListFrequencyDescription(contactListFrequency, language);
 
         if(contactListFrequencyDescription == null && !language.getIsDefault()) {
             contactListFrequencyDescription = getContactListFrequencyDescription(contactListFrequency, getPartyControl().getDefaultLanguage());
@@ -1462,7 +1431,7 @@ public class ContactListControl
     }
 
     public List<ContactListFrequencyDescriptionTransfer> getContactListFrequencyDescriptionTransfersByContactListFrequency(UserVisit userVisit, ContactListFrequency contactListFrequency) {
-        List<ContactListFrequencyDescription> contactListFrequencyDescriptions = getContactListFrequencyDescriptionsByContactListFrequency(contactListFrequency);
+        var contactListFrequencyDescriptions = getContactListFrequencyDescriptionsByContactListFrequency(contactListFrequency);
         List<ContactListFrequencyDescriptionTransfer> contactListFrequencyDescriptionTransfers = new ArrayList<>(contactListFrequencyDescriptions.size());
 
         contactListFrequencyDescriptions.forEach((contactListFrequencyDescription) -> {
@@ -1474,15 +1443,15 @@ public class ContactListControl
 
     public void updateContactListFrequencyDescriptionFromValue(ContactListFrequencyDescriptionValue contactListFrequencyDescriptionValue, BasePK updatedBy) {
         if(contactListFrequencyDescriptionValue.hasBeenModified()) {
-            ContactListFrequencyDescription contactListFrequencyDescription = ContactListFrequencyDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListFrequencyDescription = ContactListFrequencyDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListFrequencyDescriptionValue.getPrimaryKey());
 
             contactListFrequencyDescription.setThruTime(session.START_TIME_LONG);
             contactListFrequencyDescription.store();
 
-            ContactListFrequency contactListFrequency = contactListFrequencyDescription.getContactListFrequency();
-            Language language = contactListFrequencyDescription.getLanguage();
-            String description = contactListFrequencyDescriptionValue.getDescription();
+            var contactListFrequency = contactListFrequencyDescription.getContactListFrequency();
+            var language = contactListFrequencyDescription.getLanguage();
+            var description = contactListFrequencyDescriptionValue.getDescription();
 
             contactListFrequencyDescription = ContactListFrequencyDescriptionFactory.getInstance().create(contactListFrequency, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1499,7 +1468,7 @@ public class ContactListControl
     }
 
     public void deleteContactListFrequencyDescriptionsByContactListFrequency(ContactListFrequency contactListFrequency, BasePK deletedBy) {
-        List<ContactListFrequencyDescription> contactListFrequencyDescriptions = getContactListFrequencyDescriptionsByContactListFrequencyForUpdate(contactListFrequency);
+        var contactListFrequencyDescriptions = getContactListFrequencyDescriptionsByContactListFrequencyForUpdate(contactListFrequency);
 
         contactListFrequencyDescriptions.forEach((contactListFrequencyDescription) -> 
                 deleteContactListFrequencyDescription(contactListFrequencyDescription, deletedBy)
@@ -1512,11 +1481,11 @@ public class ContactListControl
 
     public ContactList createContactList(String contactListName, ContactListGroup contactListGroup, ContactListType contactListType,
             ContactListFrequency contactListFrequency, WorkflowEntrance defaultPartyContactListStatus, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ContactList defaultContactList = getDefaultContactList();
-        boolean defaultFound = defaultContactList != null;
+        var defaultContactList = getDefaultContactList();
+        var defaultFound = defaultContactList != null;
 
         if(defaultFound && isDefault) {
-            ContactListDetailValue defaultContactListDetailValue = getDefaultContactListDetailValueForUpdate();
+            var defaultContactListDetailValue = getDefaultContactListDetailValueForUpdate();
 
             defaultContactListDetailValue.setIsDefault(Boolean.FALSE);
             updateContactListFromValue(defaultContactListDetailValue, false, createdBy);
@@ -1524,8 +1493,8 @@ public class ContactListControl
             isDefault = Boolean.TRUE;
         }
 
-        ContactList contactList = ContactListFactory.getInstance().create();
-        ContactListDetail contactListDetail = ContactListDetailFactory.getInstance().create(contactList, contactListName, contactListGroup, contactListType,
+        var contactList = ContactListFactory.getInstance().create();
+        var contactListDetail = ContactListDetailFactory.getInstance().create(contactList, contactListName, contactListGroup, contactListType,
             contactListFrequency, defaultPartyContactListStatus, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1774,7 +1743,7 @@ public class ContactListControl
     }
 
     public ContactListChoicesBean getContactListChoices(String defaultContactListChoice, Language language, boolean allowNullChoice) {
-        List<ContactList> contactLists = getContactLists();
+        var contactLists = getContactLists();
         var size = contactLists.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1790,7 +1759,7 @@ public class ContactListControl
         }
 
         for(var contactList : contactLists) {
-            ContactListDetail contactListDetail = contactList.getLastDetail();
+            var contactListDetail = contactList.getLastDetail();
 
             var label = getBestContactListDescription(contactList, language);
             var value = contactListDetail.getContactListName();
@@ -1812,9 +1781,9 @@ public class ContactListControl
     }
 
     public List<ContactListTransfer> getContactListTransfers(UserVisit userVisit) {
-        List<ContactList> contactLists = getContactLists();
+        var contactLists = getContactLists();
         List<ContactListTransfer> contactListTransfers = new ArrayList<>(contactLists.size());
-        ContactListTransferCache contactListTransferCache = getContactListTransferCaches(userVisit).getContactListTransferCache();
+        var contactListTransferCache = getContactListTransferCaches(userVisit).getContactListTransferCache();
 
         contactLists.forEach((contactList) ->
                 contactListTransfers.add(contactListTransferCache.getContactListTransfer(contactList))
@@ -1824,29 +1793,29 @@ public class ContactListControl
     }
 
     private void updateContactListFromValue(ContactListDetailValue contactListDetailValue, boolean checkDefault, BasePK updatedBy) {
-        ContactList contactList = ContactListFactory.getInstance().getEntityFromPK(session,
+        var contactList = ContactListFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, contactListDetailValue.getContactListPK());
-        ContactListDetail contactListDetail = contactList.getActiveDetailForUpdate();
+        var contactListDetail = contactList.getActiveDetailForUpdate();
 
         contactListDetail.setThruTime(session.START_TIME_LONG);
         contactListDetail.store();
 
-        ContactListPK contactListPK = contactListDetail.getContactListPK();
-        String contactListName = contactListDetailValue.getContactListName();
-        ContactListGroupPK contactListGroupPK = contactListDetailValue.getContactListGroupPK();
-        ContactListTypePK contactListTypePK = contactListDetailValue.getContactListTypePK();
-        ContactListFrequencyPK contactListFrequencyPK = contactListDetailValue.getContactListFrequencyPK();
-        WorkflowEntrancePK defaultPartyContactListStatusPK = contactListDetailValue.getDefaultPartyContactListStatusPK();
-        Boolean isDefault = contactListDetailValue.getIsDefault();
-        Integer sortOrder = contactListDetailValue.getSortOrder();
+        var contactListPK = contactListDetail.getContactListPK();
+        var contactListName = contactListDetailValue.getContactListName();
+        var contactListGroupPK = contactListDetailValue.getContactListGroupPK();
+        var contactListTypePK = contactListDetailValue.getContactListTypePK();
+        var contactListFrequencyPK = contactListDetailValue.getContactListFrequencyPK();
+        var defaultPartyContactListStatusPK = contactListDetailValue.getDefaultPartyContactListStatusPK();
+        var isDefault = contactListDetailValue.getIsDefault();
+        var sortOrder = contactListDetailValue.getSortOrder();
 
         if(checkDefault) {
-            ContactList defaultContactList = getDefaultContactList();
-            boolean defaultFound = defaultContactList != null && !defaultContactList.equals(contactList);
+            var defaultContactList = getDefaultContactList();
+            var defaultFound = defaultContactList != null && !defaultContactList.equals(contactList);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                ContactListDetailValue defaultContactListDetailValue = getDefaultContactListDetailValueForUpdate();
+                var defaultContactListDetailValue = getDefaultContactListDetailValueForUpdate();
 
                 defaultContactListDetailValue.setIsDefault(Boolean.FALSE);
                 updateContactListFromValue(defaultContactListDetailValue, false, updatedBy);
@@ -1880,22 +1849,22 @@ public class ContactListControl
         deleteContactListContactMechanismPurposesByContactList(contactList, deletedBy);
         deleteContactListDescriptionsByContactList(contactList, deletedBy);
 
-        ContactListDetail contactListDetail = contactList.getLastDetailForUpdate();
+        var contactListDetail = contactList.getLastDetailForUpdate();
         contactListDetail.setThruTime(session.START_TIME_LONG);
         contactList.setActiveDetail(null);
         contactList.store();
 
         // Check for default, and pick one if necessary
-        ContactList defaultContactList = getDefaultContactList();
+        var defaultContactList = getDefaultContactList();
         if(defaultContactList == null) {
-            List<ContactList> contactLists = getContactListsForUpdate();
+            var contactLists = getContactListsForUpdate();
 
             if(!contactLists.isEmpty()) {
-                Iterator<ContactList> iter = contactLists.iterator();
+                var iter = contactLists.iterator();
                 if(iter.hasNext()) {
                     defaultContactList = iter.next();
                 }
-                ContactListDetailValue contactListDetailValue = Objects.requireNonNull(defaultContactList).getLastDetailForUpdate().getContactListDetailValue().clone();
+                var contactListDetailValue = Objects.requireNonNull(defaultContactList).getLastDetailForUpdate().getContactListDetailValue().clone();
 
                 contactListDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListFromValue(contactListDetailValue, false, deletedBy);
@@ -1933,7 +1902,7 @@ public class ContactListControl
 
     public ContactListDescription createContactListDescription(ContactList contactList, Language language, String description,
             BasePK createdBy) {
-        ContactListDescription contactListDescription = ContactListDescriptionFactory.getInstance().create(contactList,
+        var contactListDescription = ContactListDescriptionFactory.getInstance().create(contactList,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, contactListDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2012,7 +1981,7 @@ public class ContactListControl
 
     public String getBestContactListDescription(ContactList contactList, Language language) {
         String description;
-        ContactListDescription contactListDescription = getContactListDescription(contactList, language);
+        var contactListDescription = getContactListDescription(contactList, language);
 
         if(contactListDescription == null && !language.getIsDefault()) {
             contactListDescription = getContactListDescription(contactList, getPartyControl().getDefaultLanguage());
@@ -2032,7 +2001,7 @@ public class ContactListControl
     }
 
     public List<ContactListDescriptionTransfer> getContactListDescriptionTransfersByContactList(UserVisit userVisit, ContactList contactList) {
-        List<ContactListDescription> contactListDescriptions = getContactListDescriptionsByContactList(contactList);
+        var contactListDescriptions = getContactListDescriptionsByContactList(contactList);
         List<ContactListDescriptionTransfer> contactListDescriptionTransfers = new ArrayList<>(contactListDescriptions.size());
 
         contactListDescriptions.forEach((contactListDescription) -> {
@@ -2044,15 +2013,15 @@ public class ContactListControl
 
     public void updateContactListDescriptionFromValue(ContactListDescriptionValue contactListDescriptionValue, BasePK updatedBy) {
         if(contactListDescriptionValue.hasBeenModified()) {
-            ContactListDescription contactListDescription = ContactListDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListDescription = ContactListDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListDescriptionValue.getPrimaryKey());
 
             contactListDescription.setThruTime(session.START_TIME_LONG);
             contactListDescription.store();
 
-            ContactList contactList = contactListDescription.getContactList();
-            Language language = contactListDescription.getLanguage();
-            String description = contactListDescriptionValue.getDescription();
+            var contactList = contactListDescription.getContactList();
+            var language = contactListDescription.getLanguage();
+            var description = contactListDescriptionValue.getDescription();
 
             contactListDescription = ContactListDescriptionFactory.getInstance().create(contactList, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2069,7 +2038,7 @@ public class ContactListControl
     }
 
     public void deleteContactListDescriptionsByContactList(ContactList contactList, BasePK deletedBy) {
-        List<ContactListDescription> contactListDescriptions = getContactListDescriptionsByContactListForUpdate(contactList);
+        var contactListDescriptions = getContactListDescriptionsByContactListForUpdate(contactList);
 
         contactListDescriptions.forEach((contactListDescription) -> 
                 deleteContactListDescription(contactListDescription, deletedBy)
@@ -2082,8 +2051,8 @@ public class ContactListControl
     
     public PartyContactList createPartyContactList(Party party, ContactList contactList, ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose,
             BasePK createdBy) {
-        PartyContactList partyContactList = PartyContactListFactory.getInstance().create();
-        PartyContactListDetail partyContactListDetail = PartyContactListDetailFactory.getInstance().create(session, partyContactList, party, contactList,
+        var partyContactList = PartyContactListFactory.getInstance().create();
+        var partyContactListDetail = PartyContactListDetailFactory.getInstance().create(session, partyContactList, party, contactList,
                 preferredContactListContactMechanismPurpose, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2234,7 +2203,7 @@ public class ContactListControl
     
     public List<PartyContactListTransfer> getPartyContactListTransfers(UserVisit userVisit, Collection<PartyContactList> partyContactLists) {
         List<PartyContactListTransfer> partyContactListTransfers = new ArrayList<>(partyContactLists.size());
-        PartyContactListTransferCache partyContactListTransferCache = getContactListTransferCaches(userVisit).getPartyContactListTransferCache();
+        var partyContactListTransferCache = getContactListTransferCaches(userVisit).getPartyContactListTransferCache();
         
         partyContactLists.forEach((partyContactList) ->
                 partyContactListTransfers.add(partyContactListTransferCache.getPartyContactListTransfer(partyContactList))
@@ -2258,14 +2227,14 @@ public class ContactListControl
     public PartyContactListStatusChoicesBean getPartyContactListStatusChoices(String defaultPartyContactListStatusChoice, Language language,
             boolean allowNullChoice, PartyContactList partyContactList, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PartyContactListStatusChoicesBean partyContactListStatusChoicesBean = new PartyContactListStatusChoicesBean();
+        var partyContactListStatusChoicesBean = new PartyContactListStatusChoicesBean();
 
         if(partyContactList == null) {
             workflowControl.getWorkflowEntranceChoices(partyContactListStatusChoicesBean, defaultPartyContactListStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS,
                     entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(partyContactListStatusChoicesBean, defaultPartyContactListStatusChoice, language, allowNullChoice,
@@ -2278,10 +2247,10 @@ public class ContactListControl
     public void setPartyContactListStatus(ExecutionErrorAccumulator eea, PartyContactList partyContactList, String partyContactListStatusChoice,
             PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(partyContactList);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(partyContactList);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = partyContactListStatusChoice == null? null:
+        var workflowDestination = partyContactListStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), partyContactListStatusChoice);
 
         if(workflowDestination != null || partyContactListStatusChoice == null) {
@@ -2293,17 +2262,17 @@ public class ContactListControl
 
     public void updatePartyContactListFromValue(PartyContactListDetailValue partyContactListDetailValue, BasePK updatedBy) {
         if(partyContactListDetailValue.hasBeenModified()) {
-            PartyContactList partyContactList = PartyContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyContactList = PartyContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyContactListDetailValue.getPartyContactListPK());
-            PartyContactListDetail partyContactListDetail = partyContactList.getActiveDetailForUpdate();
+            var partyContactListDetail = partyContactList.getActiveDetailForUpdate();
             
             partyContactListDetail.setThruTime(session.START_TIME_LONG);
             partyContactListDetail.store();
-            
-            PartyContactListPK partyContactListPK = partyContactListDetail.getPartyContactListPK();
-            PartyPK partyPK = partyContactListDetail.getPartyPK(); // Not updated
-            ContactListPK contactListPK = partyContactListDetail.getContactListPK(); // Not updated
-            ContactListContactMechanismPurposePK preferredContactListContactMechanismPurposePK = partyContactListDetailValue.getPreferredContactListContactMechanismPurposePK();
+
+            var partyContactListPK = partyContactListDetail.getPartyContactListPK();
+            var partyPK = partyContactListDetail.getPartyPK(); // Not updated
+            var contactListPK = partyContactListDetail.getContactListPK(); // Not updated
+            var preferredContactListContactMechanismPurposePK = partyContactListDetailValue.getPreferredContactListContactMechanismPurposePK();
             
             partyContactListDetail = PartyContactListDetailFactory.getInstance().create(partyContactListPK, partyPK, contactListPK,
                     preferredContactListContactMechanismPurposePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2325,7 +2294,7 @@ public class ContactListControl
     }
     
     public void deletePartyContactList(PartyContactList partyContactList, BasePK deletedBy) {
-        PartyContactListDetail partyContactListDetail = partyContactList.getLastDetailForUpdate();
+        var partyContactListDetail = partyContactList.getLastDetailForUpdate();
         partyContactListDetail.setThruTime(session.START_TIME_LONG);
         partyContactList.setActiveDetail(null);
         partyContactList.store();
@@ -2334,7 +2303,7 @@ public class ContactListControl
     }
     
     public void deletePartyContactListsByParty(Party party, BasePK deletedBy) {
-        List<PartyContactList> partyContactLists = getPartyContactListsByPartyForUpdate(party);
+        var partyContactLists = getPartyContactListsByPartyForUpdate(party);
         
         partyContactLists.forEach((partyContactList) -> 
                 deletePartyContactList(partyContactList, deletedBy)
@@ -2342,7 +2311,7 @@ public class ContactListControl
     }
     
     public void deletePartyContactListsByContactList(ContactList contactList, BasePK deletedBy) {
-        List<PartyContactList> partyContactLists = getPartyContactListsByContactListForUpdate(contactList);
+        var partyContactLists = getPartyContactListsByContactListForUpdate(contactList);
         
         partyContactLists.forEach((partyContactList) -> 
                 deletePartyContactList(partyContactList, deletedBy)
@@ -2355,7 +2324,7 @@ public class ContactListControl
     
     public PartyTypeContactListGroup createPartyTypeContactListGroup(PartyType partyType, ContactListGroup contactListGroup,
             Boolean addWhenCreated, BasePK createdBy) {
-        PartyTypeContactListGroup partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().create(session,
+        var partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().create(session,
                 partyType, contactListGroup, addWhenCreated, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, partyTypeContactListGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2467,7 +2436,7 @@ public class ContactListControl
     
     public List<PartyTypeContactListGroupTransfer> getPartyTypeContactListGroupTransfers(UserVisit userVisit, Collection<PartyTypeContactListGroup> partyTypeContactListGroups) {
         List<PartyTypeContactListGroupTransfer> partyTypeContactListGroupTransfers = new ArrayList<>(partyTypeContactListGroups.size());
-        PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache = getContactListTransferCaches(userVisit).getPartyTypeContactListGroupTransferCache();
+        var partyTypeContactListGroupTransferCache = getContactListTransferCaches(userVisit).getPartyTypeContactListGroupTransferCache();
         
         partyTypeContactListGroups.forEach((partyTypeContactListGroup) ->
                 partyTypeContactListGroupTransfers.add(partyTypeContactListGroupTransferCache.getPartyTypeContactListGroupTransfer(partyTypeContactListGroup))
@@ -2490,15 +2459,15 @@ public class ContactListControl
     
     public void updatePartyTypeContactListGroupFromValue(PartyTypeContactListGroupValue partyTypeContactListGroupValue, BasePK updatedBy) {
         if(partyTypeContactListGroupValue.hasBeenModified()) {
-            PartyTypeContactListGroup partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypeContactListGroupValue.getPrimaryKey());
             
             partyTypeContactListGroup.setThruTime(session.START_TIME_LONG);
             partyTypeContactListGroup.store();
-            
-            PartyTypePK partyTypePK = partyTypeContactListGroup.getPartyType().getPrimaryKey(); // Not Updated
-            ContactListGroupPK contactListGroupPK = partyTypeContactListGroup.getContactListGroupPK(); // Not Updated
-            Boolean addWhenCreated = partyTypeContactListGroupValue.getAddWhenCreated();
+
+            var partyTypePK = partyTypeContactListGroup.getPartyType().getPrimaryKey(); // Not Updated
+            var contactListGroupPK = partyTypeContactListGroup.getContactListGroupPK(); // Not Updated
+            var addWhenCreated = partyTypeContactListGroupValue.getAddWhenCreated();
             
             partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().create(partyTypePK, contactListGroupPK, addWhenCreated,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2533,7 +2502,7 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
     
     public PartyTypeContactList createPartyTypeContactList(PartyType partyType, ContactList contactList, Boolean addWhenCreated, BasePK createdBy) {
-        PartyTypeContactList partyTypeContactList = PartyTypeContactListFactory.getInstance().create(session, partyType, contactList, addWhenCreated,
+        var partyTypeContactList = PartyTypeContactListFactory.getInstance().create(session, partyType, contactList, addWhenCreated,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, partyTypeContactList.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2645,7 +2614,7 @@ public class ContactListControl
     
     public List<PartyTypeContactListTransfer> getPartyTypeContactListTransfers(UserVisit userVisit, Collection<PartyTypeContactList> partyTypeContactLists) {
         List<PartyTypeContactListTransfer> partyTypeContactListTransfers = new ArrayList<>(partyTypeContactLists.size());
-        PartyTypeContactListTransferCache partyTypeContactListTransferCache = getContactListTransferCaches(userVisit).getPartyTypeContactListTransferCache();
+        var partyTypeContactListTransferCache = getContactListTransferCaches(userVisit).getPartyTypeContactListTransferCache();
         
         partyTypeContactLists.forEach((partyTypeContactList) ->
                 partyTypeContactListTransfers.add(partyTypeContactListTransferCache.getPartyTypeContactListTransfer(partyTypeContactList))
@@ -2668,15 +2637,15 @@ public class ContactListControl
     
     public void updatePartyTypeContactListFromValue(PartyTypeContactListValue partyTypeContactListValue, BasePK updatedBy) {
         if(partyTypeContactListValue.hasBeenModified()) {
-            PartyTypeContactList partyTypeContactList = PartyTypeContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeContactList = PartyTypeContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypeContactListValue.getPrimaryKey());
             
             partyTypeContactList.setThruTime(session.START_TIME_LONG);
             partyTypeContactList.store();
-            
-            PartyTypePK partyTypePK = partyTypeContactList.getPartyType().getPrimaryKey(); // Not Updated
-            ContactListPK contactListPK = partyTypeContactList.getContactListPK(); // Not Updated
-            Boolean addWhenCreated = partyTypeContactListValue.getAddWhenCreated();
+
+            var partyTypePK = partyTypeContactList.getPartyType().getPrimaryKey(); // Not Updated
+            var contactListPK = partyTypeContactList.getContactListPK(); // Not Updated
+            var addWhenCreated = partyTypeContactListValue.getAddWhenCreated();
             
             partyTypeContactList = PartyTypeContactListFactory.getInstance().create(partyTypePK, contactListPK, addWhenCreated, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -2712,7 +2681,7 @@ public class ContactListControl
 
     public CustomerTypeContactListGroup createCustomerTypeContactListGroup(CustomerType customerType, ContactListGroup contactListGroup,
             Boolean addWhenCreated, BasePK createdBy) {
-        CustomerTypeContactListGroup customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().create(session,
+        var customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().create(session,
                 customerType, contactListGroup, addWhenCreated, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, customerTypeContactListGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2824,7 +2793,7 @@ public class ContactListControl
 
     public List<CustomerTypeContactListGroupTransfer> getCustomerTypeContactListGroupTransfers(UserVisit userVisit, Collection<CustomerTypeContactListGroup> customerTypeContactListGroups) {
         List<CustomerTypeContactListGroupTransfer> customerTypeContactListGroupTransfers = new ArrayList<>(customerTypeContactListGroups.size());
-        CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache = getContactListTransferCaches(userVisit).getCustomerTypeContactListGroupTransferCache();
+        var customerTypeContactListGroupTransferCache = getContactListTransferCaches(userVisit).getCustomerTypeContactListGroupTransferCache();
 
         customerTypeContactListGroups.forEach((customerTypeContactListGroup) ->
                 customerTypeContactListGroupTransfers.add(customerTypeContactListGroupTransferCache.getCustomerTypeContactListGroupTransfer(customerTypeContactListGroup))
@@ -2847,15 +2816,15 @@ public class ContactListControl
 
     public void updateCustomerTypeContactListGroupFromValue(CustomerTypeContactListGroupValue customerTypeContactListGroupValue, BasePK updatedBy) {
         if(customerTypeContactListGroupValue.hasBeenModified()) {
-            CustomerTypeContactListGroup customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeContactListGroupValue.getPrimaryKey());
 
             customerTypeContactListGroup.setThruTime(session.START_TIME_LONG);
             customerTypeContactListGroup.store();
 
-            CustomerTypePK customerTypePK = customerTypeContactListGroup.getCustomerType().getPrimaryKey(); // Not Updated
-            ContactListGroupPK contactListGroupPK = customerTypeContactListGroup.getContactListGroupPK(); // Not Updated
-            Boolean addWhenCreated = customerTypeContactListGroupValue.getAddWhenCreated();
+            var customerTypePK = customerTypeContactListGroup.getCustomerType().getPrimaryKey(); // Not Updated
+            var contactListGroupPK = customerTypeContactListGroup.getContactListGroupPK(); // Not Updated
+            var addWhenCreated = customerTypeContactListGroupValue.getAddWhenCreated();
 
             customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().create(customerTypePK, contactListGroupPK, addWhenCreated,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2890,7 +2859,7 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     public CustomerTypeContactList createCustomerTypeContactList(CustomerType customerType, ContactList contactList, Boolean addWhenCreated, BasePK createdBy) {
-        CustomerTypeContactList customerTypeContactList = CustomerTypeContactListFactory.getInstance().create(session, customerType, contactList, addWhenCreated,
+        var customerTypeContactList = CustomerTypeContactListFactory.getInstance().create(session, customerType, contactList, addWhenCreated,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, customerTypeContactList.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3002,7 +2971,7 @@ public class ContactListControl
 
     public List<CustomerTypeContactListTransfer> getCustomerTypeContactListTransfers(UserVisit userVisit, Collection<CustomerTypeContactList> customerTypeContactLists) {
         List<CustomerTypeContactListTransfer> customerTypeContactListTransfers = new ArrayList<>(customerTypeContactLists.size());
-        CustomerTypeContactListTransferCache customerTypeContactListTransferCache = getContactListTransferCaches(userVisit).getCustomerTypeContactListTransferCache();
+        var customerTypeContactListTransferCache = getContactListTransferCaches(userVisit).getCustomerTypeContactListTransferCache();
 
         customerTypeContactLists.forEach((customerTypeContactList) ->
                 customerTypeContactListTransfers.add(customerTypeContactListTransferCache.getCustomerTypeContactListTransfer(customerTypeContactList))
@@ -3025,15 +2994,15 @@ public class ContactListControl
 
     public void updateCustomerTypeContactListFromValue(CustomerTypeContactListValue customerTypeContactListValue, BasePK updatedBy) {
         if(customerTypeContactListValue.hasBeenModified()) {
-            CustomerTypeContactList customerTypeContactList = CustomerTypeContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypeContactList = CustomerTypeContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeContactListValue.getPrimaryKey());
 
             customerTypeContactList.setThruTime(session.START_TIME_LONG);
             customerTypeContactList.store();
 
-            CustomerTypePK customerTypePK = customerTypeContactList.getCustomerType().getPrimaryKey(); // Not Updated
-            ContactListPK contactListPK = customerTypeContactList.getContactListPK(); // Not Updated
-            Boolean addWhenCreated = customerTypeContactListValue.getAddWhenCreated();
+            var customerTypePK = customerTypeContactList.getCustomerType().getPrimaryKey(); // Not Updated
+            var contactListPK = customerTypeContactList.getContactListPK(); // Not Updated
+            var addWhenCreated = customerTypeContactListValue.getAddWhenCreated();
 
             customerTypeContactList = CustomerTypeContactListFactory.getInstance().create(customerTypePK, contactListPK, addWhenCreated, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -3068,11 +3037,11 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     public ContactListContactMechanismPurpose createContactListContactMechanismPurpose(ContactList contactList, ContactMechanismPurpose contactMechanismPurpose, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ContactListContactMechanismPurpose defaultContactListContactMechanismPurpose = getDefaultContactListContactMechanismPurpose(contactList);
-        boolean defaultFound = defaultContactListContactMechanismPurpose != null;
+        var defaultContactListContactMechanismPurpose = getDefaultContactListContactMechanismPurpose(contactList);
+        var defaultFound = defaultContactListContactMechanismPurpose != null;
 
         if(defaultFound && isDefault) {
-            ContactListContactMechanismPurposeDetailValue defaultContactListContactMechanismPurposeDetailValue = getDefaultContactListContactMechanismPurposeDetailValueForUpdate(contactList);
+            var defaultContactListContactMechanismPurposeDetailValue = getDefaultContactListContactMechanismPurposeDetailValueForUpdate(contactList);
 
             defaultContactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.FALSE);
             updateContactListContactMechanismPurposeFromValue(defaultContactListContactMechanismPurposeDetailValue, false, createdBy);
@@ -3080,8 +3049,8 @@ public class ContactListControl
             isDefault = Boolean.TRUE;
         }
 
-        ContactListContactMechanismPurpose contactListContactMechanismPurpose = ContactListContactMechanismPurposeFactory.getInstance().create();
-        ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = ContactListContactMechanismPurposeDetailFactory.getInstance().create(contactListContactMechanismPurpose, contactList, contactMechanismPurpose, isDefault,
+        var contactListContactMechanismPurpose = ContactListContactMechanismPurposeFactory.getInstance().create();
+        var contactListContactMechanismPurposeDetail = ContactListContactMechanismPurposeDetailFactory.getInstance().create(contactListContactMechanismPurpose, contactList, contactMechanismPurpose, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -3243,7 +3212,7 @@ public class ContactListControl
 
     public List<ContactListContactMechanismPurposeTransfer> getContactListContactMechanismPurposeTransfers(List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes, UserVisit userVisit) {
         List<ContactListContactMechanismPurposeTransfer> contactListContactMechanismPurposeTransfers = new ArrayList<>(contactListContactMechanismPurposes.size());
-        ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache = getContactListTransferCaches(userVisit).getContactListContactMechanismPurposeTransferCache();
+        var contactListContactMechanismPurposeTransferCache = getContactListTransferCaches(userVisit).getContactListContactMechanismPurposeTransferCache();
 
         contactListContactMechanismPurposes.forEach((contactListContactMechanismPurpose) ->
                 contactListContactMechanismPurposeTransfers.add(contactListContactMechanismPurposeTransferCache.getContactListContactMechanismPurposeTransfer(contactListContactMechanismPurpose))
@@ -3263,7 +3232,7 @@ public class ContactListControl
     public ContactListContactMechanismPurposeChoicesBean getContactListContactMechanismPurposeChoices(String defaultContactListContactMechanismPurposeChoice, Language language, boolean allowNullChoice,
             ContactList contactList) {
         var contactControl = Session.getModelController(ContactControl.class);
-        List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes = getContactListContactMechanismPurposesByContactList(contactList);
+        var contactListContactMechanismPurposes = getContactListContactMechanismPurposesByContactList(contactList);
         var size = contactListContactMechanismPurposes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3279,8 +3248,8 @@ public class ContactListControl
         }
 
         for(var contactListContactMechanismPurpose : contactListContactMechanismPurposes) {
-            ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
-            ContactMechanismPurpose contactMechanismPurpose = contactListContactMechanismPurposeDetail.getContactMechanismPurpose();
+            var contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
+            var contactMechanismPurpose = contactListContactMechanismPurposeDetail.getContactMechanismPurpose();
 
             var label = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, language);
             var value = contactMechanismPurpose.getContactMechanismPurposeName();
@@ -3299,27 +3268,27 @@ public class ContactListControl
 
     private void updateContactListContactMechanismPurposeFromValue(ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contactListContactMechanismPurposeDetailValue.hasBeenModified()) {
-            ContactListContactMechanismPurpose contactListContactMechanismPurpose = ContactListContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListContactMechanismPurpose = ContactListContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListContactMechanismPurposeDetailValue.getContactListContactMechanismPurposePK());
-            ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getActiveDetailForUpdate();
+            var contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getActiveDetailForUpdate();
 
             contactListContactMechanismPurposeDetail.setThruTime(session.START_TIME_LONG);
             contactListContactMechanismPurposeDetail.store();
 
-            ContactListContactMechanismPurposePK contactListContactMechanismPurposePK = contactListContactMechanismPurposeDetail.getContactListContactMechanismPurposePK(); // Not updated
-            ContactList contactList = contactListContactMechanismPurposeDetail.getContactList();
-            ContactListPK contactListPK = contactList.getPrimaryKey(); // Not updated
-            ContactMechanismPurposePK contactMechanismPurposePK = contactListContactMechanismPurposeDetail.getContactMechanismPurposePK(); // Not updated
-            Boolean isDefault = contactListContactMechanismPurposeDetailValue.getIsDefault();
-            Integer sortOrder = contactListContactMechanismPurposeDetailValue.getSortOrder();
+            var contactListContactMechanismPurposePK = contactListContactMechanismPurposeDetail.getContactListContactMechanismPurposePK(); // Not updated
+            var contactList = contactListContactMechanismPurposeDetail.getContactList();
+            var contactListPK = contactList.getPrimaryKey(); // Not updated
+            var contactMechanismPurposePK = contactListContactMechanismPurposeDetail.getContactMechanismPurposePK(); // Not updated
+            var isDefault = contactListContactMechanismPurposeDetailValue.getIsDefault();
+            var sortOrder = contactListContactMechanismPurposeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ContactListContactMechanismPurpose defaultContactListContactMechanismPurpose = getDefaultContactListContactMechanismPurpose(contactList);
-                boolean defaultFound = defaultContactListContactMechanismPurpose != null && !defaultContactListContactMechanismPurpose.equals(contactListContactMechanismPurpose);
+                var defaultContactListContactMechanismPurpose = getDefaultContactListContactMechanismPurpose(contactList);
+                var defaultFound = defaultContactListContactMechanismPurpose != null && !defaultContactListContactMechanismPurpose.equals(contactListContactMechanismPurpose);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContactListContactMechanismPurposeDetailValue defaultContactListContactMechanismPurposeDetailValue = getDefaultContactListContactMechanismPurposeDetailValueForUpdate(contactList);
+                    var defaultContactListContactMechanismPurposeDetailValue = getDefaultContactListContactMechanismPurposeDetailValueForUpdate(contactList);
 
                     defaultContactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.FALSE);
                     updateContactListContactMechanismPurposeFromValue(defaultContactListContactMechanismPurposeDetailValue, false, updatedBy);
@@ -3344,8 +3313,8 @@ public class ContactListControl
     }
 
     private void deleteContactListContactMechanismPurpose(ContactListContactMechanismPurpose contactListContactMechanismPurpose, boolean checkDefault, BasePK deletedBy) {
-        ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetailForUpdate();
-        ContactList contactList = contactListContactMechanismPurposeDetail.getContactList();
+        var contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetailForUpdate();
+        var contactList = contactListContactMechanismPurposeDetail.getContactList();
 
         clearContactListContactMechanismPurposeFromPartyContactLists(contactListContactMechanismPurpose, deletedBy);
         
@@ -3355,17 +3324,17 @@ public class ContactListControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ContactListContactMechanismPurpose defaultContactListContactMechanismPurpose = getDefaultContactListContactMechanismPurpose(contactList);
+            var defaultContactListContactMechanismPurpose = getDefaultContactListContactMechanismPurpose(contactList);
 
             if(defaultContactListContactMechanismPurpose == null) {
-                List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes = getContactListContactMechanismPurposesByContactListForUpdate(contactList);
+                var contactListContactMechanismPurposes = getContactListContactMechanismPurposesByContactListForUpdate(contactList);
 
                 if(!contactListContactMechanismPurposes.isEmpty()) {
-                    Iterator<ContactListContactMechanismPurpose> iter = contactListContactMechanismPurposes.iterator();
+                    var iter = contactListContactMechanismPurposes.iterator();
                     if(iter.hasNext()) {
                         defaultContactListContactMechanismPurpose = iter.next();
                     }
-                    ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultContactListContactMechanismPurpose).getLastDetailForUpdate().getContactListContactMechanismPurposeDetailValue().clone();
+                    var contactListContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultContactListContactMechanismPurpose).getLastDetailForUpdate().getContactListContactMechanismPurposeDetailValue().clone();
 
                     contactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
                     updateContactListContactMechanismPurposeFromValue(contactListContactMechanismPurposeDetailValue, false, deletedBy);

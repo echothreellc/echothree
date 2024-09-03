@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entitylongrange;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityLongRangesForm;
 import com.echothree.control.user.core.common.result.GetEntityLongRangesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,7 +52,7 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityLongRangesForm commandForm = CoreUtil.getHome().getGetEntityLongRangesForm();
+        var commandForm = CoreUtil.getHome().getGetEntityLongRangesForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
@@ -66,12 +63,12 @@ public class MainAction
         options.add(CoreOptions.AppearanceIncludeTextDecorations);
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityLongRanges(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityLongRanges(getUserVisitPK(request), commandForm);
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityLongRangesResult result = (GetEntityLongRangesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityLongRangesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE, result.getEntityAttribute());
             request.setAttribute(AttributeConstants.ENTITY_LONG_RANGES, result.getEntityLongRanges());

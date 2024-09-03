@@ -17,7 +17,6 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchUseTypesForm;
-import com.echothree.control.user.search.common.result.GetSearchUseTypesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -61,7 +60,7 @@ public class GetSearchUseTypesCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchUseTypesResult result = SearchResultFactory.getGetSearchUseTypesResult();
+        var result = SearchResultFactory.getGetSearchUseTypesResult();
         
         result.setSearchUseTypes(searchControl.getSearchUseTypeTransfers(getUserVisit()));
         

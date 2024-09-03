@@ -16,11 +16,9 @@
 
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
-import com.echothree.control.user.search.common.result.GetWarehouseResultsResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.result.GetWarehousesResult;
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.warehouse.common.WarehouseConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;

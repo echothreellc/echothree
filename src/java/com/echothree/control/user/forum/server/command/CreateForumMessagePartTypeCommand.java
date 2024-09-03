@@ -18,8 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumMessagePartTypeForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
-import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,13 +50,13 @@ public class CreateForumMessagePartTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessagePartTypeName = form.getForumMessagePartTypeName();
-        ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
+        var forumMessagePartTypeName = form.getForumMessagePartTypeName();
+        var forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
         
         if(forumMessagePartType == null) {
             var coreControl = getCoreControl();
-            String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-            MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+            var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+            var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
             
             if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
                 var sortOrder = Integer.valueOf(form.getSortOrder());

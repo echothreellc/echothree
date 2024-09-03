@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassAnswerTransfer;
 import com.echothree.model.control.training.common.transfer.TrainingClassAnswerTranslationTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswerTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -38,16 +34,16 @@ public class TrainingClassAnswerTranslationTransferCache
     }
     
     public TrainingClassAnswerTranslationTransfer getTrainingClassAnswerTranslationTransfer(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        TrainingClassAnswerTranslationTransfer trainingClassAnswerTranslationTransfer = get(trainingClassAnswerTranslation);
+        var trainingClassAnswerTranslationTransfer = get(trainingClassAnswerTranslation);
         
         if(trainingClassAnswerTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassAnswerTranslation.getLanguage());
-            TrainingClassAnswerTransfer trainingClassAnswerTransfer = trainingControl.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswerTranslation.getTrainingClassAnswer());
-            MimeTypeTransfer answerMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassAnswerTranslation.getAnswerMimeType());
-            String answer = trainingClassAnswerTranslation.getAnswer();
-            MimeType selectedMimeType = trainingClassAnswerTranslation.getSelectedMimeType();
-            MimeTypeTransfer selectedMimeTypeTransfer = selectedMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, selectedMimeType);
-            String selected = trainingClassAnswerTranslation.getSelected();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassAnswerTranslation.getLanguage());
+            var trainingClassAnswerTransfer = trainingControl.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswerTranslation.getTrainingClassAnswer());
+            var answerMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassAnswerTranslation.getAnswerMimeType());
+            var answer = trainingClassAnswerTranslation.getAnswer();
+            var selectedMimeType = trainingClassAnswerTranslation.getSelectedMimeType();
+            var selectedMimeTypeTransfer = selectedMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, selectedMimeType);
+            var selected = trainingClassAnswerTranslation.getSelected();
             
             trainingClassAnswerTranslationTransfer = new TrainingClassAnswerTranslationTransfer(trainingClassAnswerTransfer, languageTransfer,
                     answerMimeTypeTransfer, answer, selectedMimeTypeTransfer, selected);

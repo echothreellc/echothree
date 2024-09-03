@@ -19,7 +19,6 @@ package com.echothree.model.control.geo.server.transfer;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
-import com.echothree.model.data.geo.server.entity.GeoCodeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class GeoCodeTypeTransferCache
@@ -33,17 +32,17 @@ public class GeoCodeTypeTransferCache
     }
     
     public GeoCodeTypeTransfer getGeoCodeTypeTransfer(GeoCodeType geoCodeType) {
-        GeoCodeTypeTransfer geoCodeTypeTransfer = get(geoCodeType);
+        var geoCodeTypeTransfer = get(geoCodeType);
         
         if(geoCodeTypeTransfer == null) {
-            GeoCodeTypeDetail geoCodeTypeDetail = geoCodeType.getLastDetail();
-            String geoCodeTypeName = geoCodeTypeDetail.getGeoCodeTypeName();
-            GeoCodeType parentGeoCodeType = geoCodeTypeDetail.getParentGeoCodeType();
-            GeoCodeTypeTransfer parentGeoCodeTypeTransfer = parentGeoCodeType == null? null: geoControl.getGeoCodeTypeTransfer(userVisit,
+            var geoCodeTypeDetail = geoCodeType.getLastDetail();
+            var geoCodeTypeName = geoCodeTypeDetail.getGeoCodeTypeName();
+            var parentGeoCodeType = geoCodeTypeDetail.getParentGeoCodeType();
+            var parentGeoCodeTypeTransfer = parentGeoCodeType == null? null: geoControl.getGeoCodeTypeTransfer(userVisit,
                     parentGeoCodeType);
-            Boolean isDefault = geoCodeTypeDetail.getIsDefault();
-            Integer sortOrder = geoCodeTypeDetail.getSortOrder();
-            String description = geoControl.getBestGeoCodeTypeDescription(geoCodeType, getLanguage());
+            var isDefault = geoCodeTypeDetail.getIsDefault();
+            var sortOrder = geoCodeTypeDetail.getSortOrder();
+            var description = geoControl.getBestGeoCodeTypeDescription(geoCodeType, getLanguage());
             
             geoCodeTypeTransfer = new GeoCodeTypeTransfer(geoCodeTypeName, parentGeoCodeTypeTransfer, isDefault, sortOrder,
                     description);

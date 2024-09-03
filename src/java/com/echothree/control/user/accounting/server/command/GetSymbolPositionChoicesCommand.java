@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetSymbolPositionChoicesForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetSymbolPositionChoicesResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetSymbolPositionChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetSymbolPositionChoicesResult result = AccountingResultFactory.getGetSymbolPositionChoicesResult();
-        String defaultSymbolPositionChoice = form.getDefaultSymbolPositionChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AccountingResultFactory.getGetSymbolPositionChoicesResult();
+        var defaultSymbolPositionChoice = form.getDefaultSymbolPositionChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSymbolPositionChoices(accountingControl.getSymbolPositionChoices(defaultSymbolPositionChoice,
                 getPreferredLanguage(), allowNullChoice));

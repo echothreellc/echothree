@@ -18,11 +18,8 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.GetCustomerTypeShippingMethodsForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.result.GetCustomerTypeShippingMethodsResult;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -51,13 +48,13 @@ public class GetCustomerTypeShippingMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerTypeShippingMethodsResult result = CustomerResultFactory.getGetCustomerTypeShippingMethodsResult();
+        var result = CustomerResultFactory.getGetCustomerTypeShippingMethodsResult();
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
             result.setCustomerTypeShippingMethods(customerControl.getCustomerTypeShippingMethodTransfersByCustomerType(userVisit,

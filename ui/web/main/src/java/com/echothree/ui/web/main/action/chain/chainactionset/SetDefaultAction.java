@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chainactionset;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.SetDefaultChainActionSetForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,11 +49,11 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String chainName = request.getParameter(ParameterConstants.CHAIN_NAME);
-        String chainActionSetName = request.getParameter(ParameterConstants.CHAIN_ACTION_SET_NAME);
-        SetDefaultChainActionSetForm commandForm = ChainUtil.getHome().getSetDefaultChainActionSetForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var chainName = request.getParameter(ParameterConstants.CHAIN_NAME);
+        var chainActionSetName = request.getParameter(ParameterConstants.CHAIN_ACTION_SET_NAME);
+        var commandForm = ChainUtil.getHome().getSetDefaultChainActionSetForm();
 
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(chainTypeName);
@@ -63,7 +62,7 @@ public class SetDefaultAction
 
         ChainUtil.getHome().setDefaultChainActionSet(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(3);
         
         parameters.put(ParameterConstants.CHAIN_KIND_NAME, chainKindName);

@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetServicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetServicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -59,7 +58,7 @@ public class GetServicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServicesResult result = CoreResultFactory.getGetServicesResult();
+        var result = CoreResultFactory.getGetServicesResult();
         
         result.setServices(coreControl.getServiceTransfers(getUserVisit()));
         

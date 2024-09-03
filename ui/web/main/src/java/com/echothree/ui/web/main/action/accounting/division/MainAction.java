@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.division;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDivisionsForm;
 import com.echothree.control.user.party.common.result.GetDivisionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-            GetDivisionsForm commandForm = PartyUtil.getHome().getGetDivisionsForm();
+            var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+            var commandForm = PartyUtil.getHome().getGetDivisionsForm();
             
             commandForm.setCompanyName(companyName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDivisions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDivisionsResult result = (GetDivisionsResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getDivisions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDivisionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
             request.setAttribute(AttributeConstants.DIVISIONS, result.getDivisions());

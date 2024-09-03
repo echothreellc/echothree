@@ -87,61 +87,57 @@ public class Column {
             this.onParentDelete = Column.parentNone;
         
         this.columnType = null;
-        if(type.equals("EID")) {
-            this.type = ColumnType.columnEID;
-        } else if(type.equals("Integer")) {
-            this.type = ColumnType.columnInteger;
-        } else if(type.equals("Long")) {
-            this.type = ColumnType.columnLong;
-        } else if(type.equals("String")) {
-            this.type = ColumnType.columnString;
-            if(hasMaxLength == false) {
-                throw new Exception("String column type requires length");
+        switch(type) {
+            case "EID" -> this.type = ColumnType.columnEID;
+            case "Integer" -> this.type = ColumnType.columnInteger;
+            case "Long" -> this.type = ColumnType.columnLong;
+            case "String" -> {
+                this.type = ColumnType.columnString;
+                if(!hasMaxLength) {
+                    throw new Exception("String column type requires length");
+                }
             }
-        } else if(type.equals("Boolean")) {
-            this.type = ColumnType.columnBoolean;
-        } else if(type.equals("Date")) {
-            this.type = ColumnType.columnDate;
-        } else if(type.equals("Time")) {
-            this.type = ColumnType.columnTime;
-        } else if(type.equals("CLOB")) {
-            this.type = ColumnType.columnCLOB;
-        } else if(type.equals("BLOB")) {
-            this.type = ColumnType.columnBLOB;
-        } else if(type.equals("ForeignKey")) {
-            this.type = ColumnType.columnForeignKey;
-            if(destinationTable == null || destinationColumn == null || onParentDelete == null) {
-                throw new Exception("Foreign Key missing one or more of destinationTable, destinationColumn or onParentDelete");
+            case "Boolean" -> this.type = ColumnType.columnBoolean;
+            case "Date" -> this.type = ColumnType.columnDate;
+            case "Time" -> this.type = ColumnType.columnTime;
+            case "CLOB" -> this.type = ColumnType.columnCLOB;
+            case "BLOB" -> this.type = ColumnType.columnBLOB;
+            case "ForeignKey" -> {
+                this.type = ColumnType.columnForeignKey;
+                if(destinationTable == null || destinationColumn == null || onParentDelete == null) {
+                    throw new Exception("Foreign Key missing one or more of destinationTable, destinationColumn or onParentDelete");
+                }
             }
-        } else {
-            String[] types = Splitter.on(':').splitToList(type).toArray(new String[0]);
-            
-            for(int i = 0; i < types.length; i++) {
-                ColumnType currentColumnType = table.getDatabase().getColumnType(types[i]);
+            default -> {
+                var types = Splitter.on(':').splitToList(type).toArray(new String[0]);
 
-                if(currentColumnType == null) {
-                    throw new Exception("Illegal column type \"" + type + "\"");
-                } else {
-                    if(this.type != 0 && currentColumnType.getRealType() != this.type) {
-                        throw new Exception("Multiple incompatible types used \"" + type + "\"");
-                        
-                    }
-                    
-                    columnType = currentColumnType;
-                    this.type = columnType.getRealType();
-                    
-                    if(columnType.hasMaxLength()) {
-                        this.maxLength = Math.max(this.maxLength, columnType.getMaxLength());
-                    }
+                for(var i = 0; i < types.length; i++) {
+                    var currentColumnType = table.getDatabase().getColumnType(types[i]);
 
-                    this.destinationTable = columnType.getDestinationTable();
-                    this.destinationColumn = columnType.getDestinationColumn();
-                    this.onParentDelete = columnType.getOnParentDelete();
+                    if(currentColumnType == null) {
+                        throw new Exception("Illegal column type \"" + type + "\"");
+                    } else {
+                        if(this.type != 0 && currentColumnType.getRealType() != this.type) {
+                            throw new Exception("Multiple incompatible types used \"" + type + "\"");
+
+                        }
+
+                        columnType = currentColumnType;
+                        this.type = columnType.getRealType();
+
+                        if(columnType.hasMaxLength()) {
+                            this.maxLength = Math.max(this.maxLength, columnType.getMaxLength());
+                        }
+
+                        this.destinationTable = columnType.getDestinationTable();
+                        this.destinationColumn = columnType.getDestinationColumn();
+                        this.onParentDelete = columnType.getOnParentDelete();
+                    }
                 }
             }
         }
-    };
-    
+    }
+
     public Table getTable() {
         return table;
     }
@@ -157,7 +153,7 @@ public class Column {
             if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
                 entityVariableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length() - 2);
             else
-                entityVariableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length());
+                entityVariableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1);
         }
         return entityVariableName;
     }
@@ -169,7 +165,7 @@ public class Column {
             if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
                 variableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length() - 2) + "PK";
             else
-                variableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length());
+                variableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1);
         }
         return variableName;
     }
@@ -196,7 +192,7 @@ public class Column {
         return setFunctionName;
     }
     
-    /** Same as getSetFunctionName, just with a PK on the end if its for a FK */
+    /** Same as getSetFunctionName, just with a PK on the end if It's for a FK */
     public String getSetEntityFunctionName() {
         if(setEntityFunctionName == null) {
             if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
@@ -217,7 +213,7 @@ public class Column {
         return getFunctionName;
     }
     
-    /** Same as getGetFunctionName, just with a PK on the end if its for a FK */
+    /** Same as getGetFunctionName, just with a PK on the end if It's for a FK */
     public String getGetEntityFunctionName() {
         if(getEntityFunctionName == null) {
             if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
@@ -268,7 +264,7 @@ public class Column {
                     break;
                 case ColumnType.columnForeignKey: {
                     try {
-                        Table fkTable = getTable().getDatabase().getTable(destinationTable);
+                        var fkTable = getTable().getDatabase().getTable(destinationTable);
                         javaType = fkTable.getPKClass();
                     } catch (Exception e) {
                         javaType = "<error>";
@@ -320,16 +316,13 @@ public class Column {
     
     public String getFKEntityClass() {
         if(fkEntityClass == null) {
-            switch(type) {
-                case ColumnType.columnForeignKey: {
-                    try {
-                        Table fkTable = getTable().getDatabase().getTable(destinationTable);
-                        fkEntityClass = fkTable.getEntityClass();
-                    } catch (Exception e) {
-                        fkEntityClass = "<error>";
-                    }
+            if(type == ColumnType.columnForeignKey) {
+                try {
+                    var fkTable = getTable().getDatabase().getTable(destinationTable);
+                    fkEntityClass = fkTable.getEntityClass();
+                } catch(Exception e) {
+                    fkEntityClass = "<error>";
                 }
-                break;
             }
         }
         return fkEntityClass;
@@ -337,16 +330,13 @@ public class Column {
     
     public String getFKFactoryClass() {
         if(fkFactoryClass == null) {
-            switch(type) {
-                case ColumnType.columnForeignKey: {
-                    try {
-                        Table fkTable = getTable().getDatabase().getTable(destinationTable);
-                        fkFactoryClass = fkTable.getFactoryClass();
-                    } catch (Exception e) {
-                        fkFactoryClass = "<error>";
-                    }
+            if(type == ColumnType.columnForeignKey) {
+                try {
+                    var fkTable = getTable().getDatabase().getTable(destinationTable);
+                    fkFactoryClass = fkTable.getFactoryClass();
+                } catch(Exception e) {
+                    fkFactoryClass = "<error>";
                 }
-                break;
             }
         }
         return fkFactoryClass;
@@ -354,16 +344,13 @@ public class Column {
     
     public String getFKPKClass() {
         if(fkPKClass == null) {
-            switch(type) {
-                case ColumnType.columnForeignKey: {
-                    try {
-                        Table fkTable = getTable().getDatabase().getTable(destinationTable);
-                        fkPKClass = fkTable.getPKClass();
-                    } catch (Exception e) {
-                        fkPKClass = "<error>";
-                    }
+            if(type == ColumnType.columnForeignKey) {
+                try {
+                    var fkTable = getTable().getDatabase().getTable(destinationTable);
+                    fkPKClass = fkTable.getPKClass();
+                } catch(Exception e) {
+                    fkPKClass = "<error>";
                 }
-                break;
             }
         }
         return fkPKClass;
@@ -374,10 +361,10 @@ public class Column {
         String result;
         
         if(type == ColumnType.columnForeignKey) {
-            Table fkTable = getTable().getDatabase().getTable(destinationTable);
+            var fkTable = getTable().getDatabase().getTable(destinationTable);
 
-            boolean referencesSelf = fkTable.getNamePlural().equals(table.getNamePlural());
-            boolean columnNameNotPk = !fkTable.getEID().getName().equals(name);
+            var referencesSelf = fkTable.getNamePlural().equals(table.getNamePlural());
+            var columnNameNotPk = !fkTable.getEID().getName().equals(name);
 
             result = columnPrefixLowerCase + "_" + (referencesSelf || columnNameNotPk? "": fkTable.getColumnPrefixLowerCase() + "_") + name.toLowerCase(Locale.getDefault());
         } else {
@@ -420,9 +407,9 @@ public class Column {
         if(sequenceSource == null)
             return null;
         else {
-            int thePeriod = sequenceSource.indexOf('.');
-            String stringTable = new String(sequenceSource.getBytes(Charsets.UTF_8), 0, thePeriod, Charsets.UTF_8);
-            String stringColumn = new String(sequenceSource.getBytes(Charsets.UTF_8), thePeriod + 1, sequenceSource.length() - thePeriod - 1, Charsets.UTF_8);
+            var thePeriod = sequenceSource.indexOf('.');
+            var stringTable = new String(sequenceSource.getBytes(Charsets.UTF_8), 0, thePeriod, Charsets.UTF_8);
+            var stringColumn = new String(sequenceSource.getBytes(Charsets.UTF_8), thePeriod + 1, sequenceSource.length() - thePeriod - 1, Charsets.UTF_8);
             return table.getDatabase().getTable(stringTable).getColumn(stringColumn);
         }
     }

@@ -22,9 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.value.GeoCodeDateTimeFormatValue;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,16 +64,16 @@ public class SetDefaultGeoCodeDateTimeFormatCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String dateTimeFormatName = form.getDateTimeFormatName();
-            DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+            var dateTimeFormatName = form.getDateTimeFormatName();
+            var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
             
             if(dateTimeFormat != null) {
-                GeoCodeDateTimeFormatValue geoCodeDateTimeFormatValue = geoControl.getGeoCodeDateTimeFormatValueForUpdate(geoCode, dateTimeFormat);
+                var geoCodeDateTimeFormatValue = geoControl.getGeoCodeDateTimeFormatValueForUpdate(geoCode, dateTimeFormat);
                 
                 if(geoCodeDateTimeFormatValue != null) {
                     geoCodeDateTimeFormatValue.setIsDefault(Boolean.TRUE);

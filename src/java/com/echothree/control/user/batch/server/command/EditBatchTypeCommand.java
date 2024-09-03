@@ -29,10 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.batch.server.entity.BatchTypeDescription;
-import com.echothree.model.data.batch.server.entity.BatchTypeDetail;
-import com.echothree.model.data.batch.server.value.BatchTypeDescriptionValue;
-import com.echothree.model.data.batch.server.value.BatchTypeDetailValue;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
@@ -99,8 +95,8 @@ public class EditBatchTypeCommand
     @Override
     public BatchType getEntity(EditBatchTypeResult result) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchType batchType = null;
-        String batchTypeName = spec.getBatchTypeName();
+        BatchType batchType;
+        var batchTypeName = spec.getBatchTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             batchType = batchControl.getBatchTypeByName(batchTypeName);
@@ -137,8 +133,8 @@ public class EditBatchTypeCommand
     @Override
     public void doLock(BatchTypeEdit edit, BatchType batchType) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescription(batchType, getPreferredLanguage());
-        BatchTypeDetail batchTypeDetail = batchType.getLastDetail();
+        var batchTypeDescription = batchControl.getBatchTypeDescription(batchType, getPreferredLanguage());
+        var batchTypeDetail = batchType.getLastDetail();
 
         parentBatchType = batchTypeDetail.getParentBatchType();
         batchSequenceType = batchTypeDetail.getBatchSequenceType();
@@ -161,11 +157,11 @@ public class EditBatchTypeCommand
     @Override
     public void canUpdate(BatchType batchType) {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchTypeName = edit.getBatchTypeName();
-        BatchType duplicateBatchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchTypeName = edit.getBatchTypeName();
+        var duplicateBatchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(duplicateBatchType == null || batchType.equals(duplicateBatchType)) {
-            String parentBatchTypeName = edit.getParentBatchTypeName();
+            var parentBatchTypeName = edit.getParentBatchTypeName();
 
             if(parentBatchTypeName != null) {
                 parentBatchType = batchControl.getBatchTypeByName(parentBatchTypeName);
@@ -174,18 +170,18 @@ public class EditBatchTypeCommand
             if(parentBatchTypeName == null || parentBatchType != null) {
                 if(batchControl.isParentBatchTypeSafe(batchType, parentBatchType)) {
                     var sequenceControl = Session.getModelController(SequenceControl.class);
-                    String batchSequenceTypeName = edit.getBatchSequenceTypeName();
+                    var batchSequenceTypeName = edit.getBatchSequenceTypeName();
 
                     batchSequenceType = sequenceControl.getSequenceTypeByName(batchSequenceTypeName);
 
                     if(batchSequenceTypeName == null || batchSequenceType != null) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        String batchWorkflowName = edit.getBatchWorkflowName();
+                        var batchWorkflowName = edit.getBatchWorkflowName();
 
                         batchWorkflow = batchWorkflowName == null ? null : workflowControl.getWorkflowByName(batchWorkflowName);
 
                         if(batchWorkflowName == null || batchWorkflow != null) {
-                            String batchWorkflowEntranceName = edit.getBatchWorkflowEntranceName();
+                            var batchWorkflowEntranceName = edit.getBatchWorkflowEntranceName();
 
                             if(batchWorkflowEntranceName == null || (batchWorkflow != null && batchWorkflowEntranceName != null)) {
                                 batchWorkflowEntrance = batchWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(batchWorkflow, batchWorkflowEntranceName);
@@ -217,9 +213,9 @@ public class EditBatchTypeCommand
     public void doUpdate(BatchType batchType) {
         var batchControl = Session.getModelController(BatchControl.class);
         var partyPK = getPartyPK();
-        BatchTypeDetailValue batchTypeDetailValue = batchControl.getBatchTypeDetailValueForUpdate(batchType);
-        BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescriptionForUpdate(batchType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var batchTypeDetailValue = batchControl.getBatchTypeDetailValueForUpdate(batchType);
+        var batchTypeDescription = batchControl.getBatchTypeDescriptionForUpdate(batchType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         batchTypeDetailValue.setBatchTypeName(edit.getBatchTypeName());
         batchTypeDetailValue.setParentBatchTypePK(parentBatchType == null ? null : parentBatchType.getPrimaryKey());
@@ -238,7 +234,7 @@ public class EditBatchTypeCommand
                 batchControl.deleteBatchTypeDescription(batchTypeDescription, partyPK);
             } else {
                 if(batchTypeDescription != null && description != null) {
-                    BatchTypeDescriptionValue batchTypeDescriptionValue = batchControl.getBatchTypeDescriptionValue(batchTypeDescription);
+                    var batchTypeDescriptionValue = batchControl.getBatchTypeDescriptionValue(batchTypeDescription);
 
                     batchTypeDescriptionValue.setDescription(description);
                     batchControl.updateBatchTypeDescriptionFromValue(batchTypeDescriptionValue, partyPK);

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.datetimeformat;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDateTimeFormatForm;
 import com.echothree.control.user.party.common.result.GetDateTimeFormatResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetDateTimeFormatForm commandForm = PartyUtil.getHome().getGetDateTimeFormatForm();
-            String dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
+            var commandForm = PartyUtil.getHome().getGetDateTimeFormatForm();
+            var dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
             
             commandForm.setDateTimeFormatName(dateTimeFormatName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDateTimeFormat(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDateTimeFormatResult result = (GetDateTimeFormatResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getDateTimeFormat(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDateTimeFormatResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.DATE_TIME_FORMAT, result.getDateTimeFormat());
             forwardKey = ForwardConstants.DISPLAY;

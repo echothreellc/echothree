@@ -18,11 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetCommandDescriptionsResult;
-import com.echothree.model.data.core.server.entity.Command;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,16 +48,16 @@ public class GetCommandDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandDescriptionsResult result = CoreResultFactory.getGetCommandDescriptionsResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetCommandDescriptionsResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String commandName = form.getCommandName();
-            Command command = coreControl.getCommandByName(componentVendor, commandName);
+            var commandName = form.getCommandName();
+            var command = coreControl.getCommandByName(componentVendor, commandName);
             
             if(command != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
                 
                 result.setCommand(coreControl.getCommandTransfer(userVisit, command));
                 result.setCommandDescriptions(coreControl.getCommandDescriptionTransfersByCommand(userVisit, command));

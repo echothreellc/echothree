@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.purchasing.vendorcontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismChoicesForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismChoicesResult;
 import com.echothree.model.control.contact.common.choice.ContactMechanismChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class PartyContactMechanismRelationshipAddActionForm
     public void setupToContactMechanismChoices() {
         if(toContactMechanismChoices == null) {
             try {
-                GetContactMechanismChoicesForm form = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+                var form = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 form.setPartyName(partyName);
                 form.setDefaultContactMechanismChoice(toContactMechanismChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismChoicesResult getToContactMechanismChoicesResult = (GetContactMechanismChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getToContactMechanismChoicesResult = (GetContactMechanismChoicesResult)executionResult.getResult();
                 toContactMechanismChoices = getToContactMechanismChoicesResult.getContactMechanismChoices();
                 
                 if(toContactMechanismChoice == null) {

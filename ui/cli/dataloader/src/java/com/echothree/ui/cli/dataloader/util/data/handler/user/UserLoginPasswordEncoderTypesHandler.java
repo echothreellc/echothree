@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.user;
 
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.UserService;
-import com.echothree.control.user.user.common.form.CreateUserLoginPasswordEncoderTypeForm;
 import com.echothree.control.user.user.common.form.UserFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -45,11 +44,11 @@ public class UserLoginPasswordEncoderTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("userLoginPasswordEncoderType")) {
-            CreateUserLoginPasswordEncoderTypeForm commandForm = UserFormFactory.getCreateUserLoginPasswordEncoderTypeForm();
+            var commandForm = UserFormFactory.getCreateUserLoginPasswordEncoderTypeForm();
             String userLoginPasswordEncoderTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("userLoginPasswordEncoderTypeName"))
                     userLoginPasswordEncoderTypeName = attrs.getValue(i);
             }

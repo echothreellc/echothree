@@ -19,18 +19,13 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sequence;
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.SequenceService;
 import com.echothree.control.user.sequence.common.edit.SequenceTypeEdit;
-import com.echothree.control.user.sequence.common.form.CreateSequenceTypeForm;
-import com.echothree.control.user.sequence.common.form.EditSequenceTypeForm;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
 import com.echothree.control.user.sequence.common.result.EditSequenceTypeResult;
 import com.echothree.control.user.sequence.common.spec.SequenceSpecFactory;
-import com.echothree.control.user.sequence.common.spec.SequenceTypeSpec;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -56,19 +51,19 @@ public class SequenceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceType")) {
-            SequenceTypeSpec spec = SequenceSpecFactory.getSequenceTypeSpec();
-            EditSequenceTypeForm editForm = SequenceFormFactory.getEditSequenceTypeForm();
+            var spec = SequenceSpecFactory.getSequenceTypeSpec();
+            var editForm = SequenceFormFactory.getEditSequenceTypeForm();
 
             spec.set(getAttrsMap(attrs));
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSequenceTypeName.name())) {
-                    CreateSequenceTypeForm createForm = SequenceFormFactory.getCreateSequenceTypeForm();
+                    var createForm = SequenceFormFactory.getCreateSequenceTypeForm();
 
                     createForm.set(getAttrsMap(attrs));
 
@@ -81,17 +76,17 @@ public class SequenceTypesHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditSequenceTypeResult result = (EditSequenceTypeResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSequenceTypeResult)executionResult.getResult();
 
                 if(result != null) {
-                    SequenceTypeEdit edit = (SequenceTypeEdit)result.getEdit();
-                    String prefix = attrs.getValue("prefix");
-                    String sequenceEncoderTypeName = attrs.getValue("sequenceEncoderTypeName");
-                    String sequenceChecksumTypeName = attrs.getValue("sequenceChecksumTypeName");
-                    String isDefault = attrs.getValue("isDefault");
-                    String sortOrder = attrs.getValue("sortOrder");
-                    boolean changed = false;
+                    var edit = (SequenceTypeEdit)result.getEdit();
+                    var prefix = attrs.getValue("prefix");
+                    var sequenceEncoderTypeName = attrs.getValue("sequenceEncoderTypeName");
+                    var sequenceChecksumTypeName = attrs.getValue("sequenceChecksumTypeName");
+                    var isDefault = attrs.getValue("isDefault");
+                    var sortOrder = attrs.getValue("sortOrder");
+                    var changed = false;
                     
                     if(!edit.getPrefix().equals(prefix)) {
                         edit.setPrefix(prefix);

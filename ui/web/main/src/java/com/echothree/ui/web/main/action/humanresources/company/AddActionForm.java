@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyChoicesForm;
-import com.echothree.control.user.party.common.form.GetDepartmentChoicesForm;
-import com.echothree.control.user.party.common.form.GetDivisionChoicesForm;
 import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
 import com.echothree.control.user.party.common.result.GetDepartmentChoicesResult;
 import com.echothree.control.user.party.common.result.GetDivisionChoicesResult;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
 import com.echothree.model.control.party.common.choice.DepartmentChoicesBean;
 import com.echothree.model.control.party.common.choice.DivisionChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -52,14 +47,14 @@ public class AddActionForm
     private void setupCompanyChoices()
             throws NamingException {
         if(companyChoices == null) {
-            GetCompanyChoicesForm commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
             commandForm.setDefaultCompanyChoice(companyChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCompanyChoicesResult)executionResult.getResult();
             companyChoices = result.getCompanyChoices();
 
             if(companyChoice == null) {
@@ -71,15 +66,15 @@ public class AddActionForm
     private void setupDivisionChoices()
             throws NamingException {
         if(divisionChoices == null) {
-            GetDivisionChoicesForm commandForm = PartyUtil.getHome().getGetDivisionChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetDivisionChoicesForm();
 
             commandForm.setCompanyName(getCompanyName());
             commandForm.setDefaultDivisionChoice(divisionChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getDivisionChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDivisionChoicesResult result = (GetDivisionChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getDivisionChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDivisionChoicesResult)executionResult.getResult();
             divisionChoices = result.getDivisionChoices();
 
             if(divisionChoice == null) {
@@ -91,16 +86,16 @@ public class AddActionForm
     private void setupDepartmentChoices()
             throws NamingException {
         if(departmentChoices == null) {
-            GetDepartmentChoicesForm commandForm = PartyUtil.getHome().getGetDepartmentChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetDepartmentChoicesForm();
 
             commandForm.setCompanyName(getCompanyName());
             commandForm.setDivisionName(getDivisionName());
             commandForm.setDefaultDepartmentChoice(departmentChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getDepartmentChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDepartmentChoicesResult result = (GetDepartmentChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getDepartmentChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDepartmentChoicesResult)executionResult.getResult();
             departmentChoices = result.getDepartmentChoices();
 
             if(departmentChoice == null) {

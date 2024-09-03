@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.queue;
 
 import com.echothree.control.user.queue.common.QueueUtil;
 import com.echothree.control.user.queue.common.QueueService;
-import com.echothree.control.user.queue.common.form.CreateQueueTypeDescriptionForm;
 import com.echothree.control.user.queue.common.form.QueueFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,7 +49,7 @@ public class QueueTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("queueTypeDescription")) {
-            CreateQueueTypeDescriptionForm commandForm = QueueFormFactory.getCreateQueueTypeDescriptionForm();
+            var commandForm = QueueFormFactory.getCreateQueueTypeDescriptionForm();
 
             commandForm.setQueueTypeName(queueTypeName);
             commandForm.set(getAttrsMap(attrs));

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.color;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteColorDescriptionForm;
-import com.echothree.control.user.core.common.form.GetColorDescriptionForm;
 import com.echothree.control.user.core.common.result.GetColorDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetColorDescriptionForm commandForm = CoreUtil.getHome().getGetColorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetColorDescriptionForm();
         
         commandForm.setColorName(actionForm.getColorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getColorDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getColorDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorDescriptionResult result = (GetColorDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetColorDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COLOR_DESCRIPTION, result.getColorDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteColorDescriptionForm commandForm = CoreUtil.getHome().getDeleteColorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteColorDescriptionForm();
 
         commandForm.setColorName(actionForm.getColorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

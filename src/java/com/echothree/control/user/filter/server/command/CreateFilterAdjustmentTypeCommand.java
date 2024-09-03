@@ -21,7 +21,6 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -64,9 +63,9 @@ public class CreateFilterAdjustmentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
+        var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterAdjustmentType filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

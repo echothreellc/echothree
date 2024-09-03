@@ -19,7 +19,6 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceStatusLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.chain.server.entity.ChainInstanceStatus;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
@@ -49,13 +48,13 @@ public class ProcessChainInstanceStatusesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainInstanceStatusLogic chainInstanceStatusLogic = ChainInstanceStatusLogic.getInstance();
+        var chainInstanceStatusLogic = ChainInstanceStatusLogic.getInstance();
         BasePK processedBy = getPartyPK();
         long chainInstanceStatusesProcessed = 0;
-        long remainingTime = (long) 2 * 60 * 1000; // 2 minutes
+        var remainingTime = (long) 2 * 60 * 1000; // 2 minutes
         
-        for(ChainInstanceStatus chainInstanceStatus: chainControl.getChainInstanceStatusesByNextChainActionSetTimeForUpdate(session.START_TIME_LONG)) {
-            long startTime = System.currentTimeMillis();
+        for(var chainInstanceStatus: chainControl.getChainInstanceStatusesByNextChainActionSetTimeForUpdate(session.START_TIME_LONG)) {
+            var startTime = System.currentTimeMillis();
 
             chainInstanceStatusLogic.processChainInstanceStatus(session, chainControl, chainInstanceStatus, processedBy);
             

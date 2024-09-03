@@ -21,7 +21,6 @@ import com.echothree.model.control.offer.server.logic.UseNameElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -60,8 +59,8 @@ public class DeleteUseNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = UseNameElementLogic.getInstance().getUseNameElementByNameForUpdate(this, useNameElementName);
+        var useNameElementName = form.getUseNameElementName();
+        var useNameElement = UseNameElementLogic.getInstance().getUseNameElementByNameForUpdate(this, useNameElementName);
         
         if(!hasExecutionErrors()) {
             UseNameElementLogic.getInstance().deleteUseNameElement(this, useNameElement, getPartyPK());

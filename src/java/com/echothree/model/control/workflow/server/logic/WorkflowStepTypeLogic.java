@@ -25,7 +25,6 @@ import com.echothree.model.control.workflow.common.exception.DuplicateWorkflowSt
 import com.echothree.model.control.workflow.common.exception.UnknownDefaultWorkflowStepTypeException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowStepTypeNameException;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.util.common.message.ExecutionErrors;

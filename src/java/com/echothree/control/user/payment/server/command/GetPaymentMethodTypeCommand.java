@@ -18,7 +18,6 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodTypeResult;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.core.common.EventTypes;
@@ -56,7 +55,7 @@ public class GetPaymentMethodTypeCommand
     
     @Override
     protected PaymentMethodType getEntity() {
-        PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByUniversalSpec(this, form, true);
+        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByUniversalSpec(this, form, true);
 
         if(paymentMethodType != null) {
             sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -68,7 +67,7 @@ public class GetPaymentMethodTypeCommand
     @Override
     protected BaseResult getResult(PaymentMethodType paymentMethodType) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        GetPaymentMethodTypeResult result = PaymentResultFactory.getGetPaymentMethodTypeResult();
+        var result = PaymentResultFactory.getGetPaymentMethodTypeResult();
 
         if(paymentMethodType != null) {
             result.setPaymentMethodType(paymentMethodTypeControl.getPaymentMethodTypeTransfer(getUserVisit(), paymentMethodType));

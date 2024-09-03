@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.tagscope;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.CreateTagScopeDescriptionForm;
-import com.echothree.control.user.tag.common.form.GetTagScopeForm;
 import com.echothree.control.user.tag.common.result.GetTagScopeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagScopeForm commandForm = TagUtil.getHome().getGetTagScopeForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
-        
-        CommandResult commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagScopeResult result = (GetTagScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagScopeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTagScopeDescriptionForm commandForm = TagUtil.getHome().getCreateTagScopeDescriptionForm();
+        var commandForm = TagUtil.getHome().getCreateTagScopeDescriptionForm();
 
         commandForm.setTagScopeName( actionForm.getTagScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

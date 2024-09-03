@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasureequivalent;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureEquivalentForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,11 +51,11 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        String forwardKey;
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
         
         if(wasPost(request)) {
-            CreateUnitOfMeasureEquivalentForm commandForm = UomUtil.getHome().getCreateUnitOfMeasureEquivalentForm();
+            var commandForm = UomUtil.getHome().getCreateUnitOfMeasureEquivalentForm();
             
             if(unitOfMeasureKindName == null)
                 unitOfMeasureKindName = actionForm.getUnitOfMeasureKindName();
@@ -66,8 +64,8 @@ public class AddAction
             commandForm.setFromUnitOfMeasureTypeName(actionForm.getFromUnitOfMeasureTypeChoice());
             commandForm.setToUnitOfMeasureTypeName(actionForm.getToUnitOfMeasureTypeChoice());
             commandForm.setToQuantity(actionForm.getToQuantity());
-            
-            CommandResult commandResult = UomUtil.getHome().createUnitOfMeasureEquivalent(getUserVisitPK(request), commandForm);
+
+            var commandResult = UomUtil.getHome().createUnitOfMeasureEquivalent(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -80,8 +78,8 @@ public class AddAction
             actionForm.setToQuantity("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND_NAME, unitOfMeasureKindName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

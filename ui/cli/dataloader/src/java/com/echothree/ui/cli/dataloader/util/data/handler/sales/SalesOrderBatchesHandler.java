@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sales;
 
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.SalesService;
-import com.echothree.control.user.sales.common.form.CreateSalesOrderBatchForm;
 import com.echothree.control.user.sales.common.form.SalesFormFactory;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -49,16 +46,16 @@ public class SalesOrderBatchesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("salesOrderBatch")) {
-            CreateSalesOrderBatchForm commandForm = SalesFormFactory.getCreateSalesOrderBatchForm();
+            var commandForm = SalesFormFactory.getCreateSalesOrderBatchForm();
 
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = salesService.createSalesOrderBatch(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = salesService.createSalesOrderBatch(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateSalesOrderBatchResult result = (CreateSalesOrderBatchResult)executionResult.getResult();
-                String batchName = result.getBatchName();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateSalesOrderBatchResult)executionResult.getResult();
+                var batchName = result.getBatchName();
 
                 // TODO
             }

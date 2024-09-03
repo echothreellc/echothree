@@ -21,21 +21,17 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
-import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic.PreparedPartyTrainingClass;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateUse;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class PartyTrainingClassTrigger
         extends BaseTrigger
@@ -46,9 +42,9 @@ public class PartyTrainingClassTrigger
         var coreControl = Session.getModelController(CoreControl.class);
         var trainingControl = Session.getModelController(TrainingControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        PartyTrainingClassDetail partyTrainingClassDetail = partyTrainingClass.getLastDetail();
-        Party party = partyTrainingClassDetail.getParty();
-        TrainingClass trainingClass = partyTrainingClassDetail.getTrainingClass();
+        var partyTrainingClassDetail = partyTrainingClass.getLastDetail();
+        var party = partyTrainingClassDetail.getParty();
+        var trainingClass = partyTrainingClassDetail.getTrainingClass();
 
         workflowControl.transitionEntityInWorkflowUsingNames(null, workflowEntityStatus, PartyTrainingClassStatusConstants.WorkflowDestination_PASSED_TO_EXPIRED,
                 trainingClass.getLastDetail().getExpiredRetentionTime(), triggeredBy);
@@ -58,13 +54,13 @@ public class PartyTrainingClassTrigger
         if(checkTrainingRequired(party, trainingClass)) {
             // Check to see if the TrainingClass is in one of the listed statuses for the Party. If it is, then we do not create a
             // new instance of a PartyTrainingClass for it.
-            Set<PartyTrainingClass> partyTrainingClasses = trainingControl.getPartyTrainingClassesByStatuses(party, trainingClass,
+            var partyTrainingClasses = trainingControl.getPartyTrainingClassesByStatuses(party, trainingClass,
                     PartyTrainingClassStatusConstants.WorkflowStep_ASSIGNED, PartyTrainingClassStatusConstants.WorkflowStep_TRAINING,
                     PartyTrainingClassStatusConstants.WorkflowStep_PASSED);
 
             if(partyTrainingClasses.isEmpty()) {
-                PartyTrainingClassLogic partyTrainingClassLogic = PartyTrainingClassLogic.getInstance();
-                PreparedPartyTrainingClass preparedPartyTrainingClass = partyTrainingClassLogic.preparePartyTrainingClass(eea, party, trainingClass, null, null);
+                var partyTrainingClassLogic = PartyTrainingClassLogic.getInstance();
+                var preparedPartyTrainingClass = partyTrainingClassLogic.preparePartyTrainingClass(eea, party, trainingClass, null, null);
 
                 if(!eea.hasExecutionErrors()) {
                     partyTrainingClassLogic.createPartyTrainingClass(session, preparedPartyTrainingClass, triggeredBy);
@@ -74,7 +70,7 @@ public class PartyTrainingClassTrigger
     }
     
     private boolean checkTrainingRequired(final Party party, final TrainingClass trainingClass) {
-        boolean trainingRequired = false;
+        var trainingRequired = false;
 
         // Check AlwaysReassignOnExpiration on the TrainingClass, and if that isn't set, check to see if the Party has a
         // PartySecurityRoleTemplateUse. If the PartySecurityRoleTemplate lists this TrainingClass, then it will be required.
@@ -82,7 +78,7 @@ public class PartyTrainingClassTrigger
             trainingRequired = true;
         } else {
             var securityControl = Session.getModelController(SecurityControl.class);
-            PartySecurityRoleTemplateUse partySecurityRoleTemplateUse = securityControl.getPartySecurityRoleTemplateUse(party);
+            var partySecurityRoleTemplateUse = securityControl.getPartySecurityRoleTemplateUse(party);
             if(partySecurityRoleTemplateUse != null) {
                 if(securityControl.getPartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplateUse.getPartySecurityRoleTemplate(), trainingClass) != null) {
                     trainingRequired = true;
@@ -96,8 +92,8 @@ public class PartyTrainingClassTrigger
     @Override
     public void handleTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        PartyTrainingClass partyTrainingClass = trainingControl.convertEntityInstanceToPartyTrainingClassForUpdate(getEntityInstance(workflowEntityStatus));
-        String workflowStepName = getWorkflowStepName(workflowEntityStatus);
+        var partyTrainingClass = trainingControl.convertEntityInstanceToPartyTrainingClassForUpdate(getEntityInstance(workflowEntityStatus));
+        var workflowStepName = getWorkflowStepName(workflowEntityStatus);
         
         if(workflowStepName.equals(PartyTrainingClassStatusConstants.WorkflowStep_PASSED)) {
             expireCurrentPartyTrainingClass(session, eea, workflowEntityStatus, partyTrainingClass, triggeredBy);

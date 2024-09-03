@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.user.common.transfer.RecoveryQuestionDescriptionTransfer;
-import com.echothree.model.control.user.common.transfer.RecoveryQuestionTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class RecoveryQuestionDescriptionTransferCache
     }
     
     public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(RecoveryQuestionDescription recoveryQuestionDescription) {
-        RecoveryQuestionDescriptionTransfer recoveryQuestionDescriptionTransfer = get(recoveryQuestionDescription);
+        var recoveryQuestionDescriptionTransfer = get(recoveryQuestionDescription);
         
         if(recoveryQuestionDescriptionTransfer == null) {
-            RecoveryQuestionTransfer recoveryQuestionTransfer = userControl.getRecoveryQuestionTransfer(userVisit, recoveryQuestionDescription.getRecoveryQuestion());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, recoveryQuestionDescription.getLanguage());
+            var recoveryQuestionTransfer = userControl.getRecoveryQuestionTransfer(userVisit, recoveryQuestionDescription.getRecoveryQuestion());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, recoveryQuestionDescription.getLanguage());
             
             recoveryQuestionDescriptionTransfer = new RecoveryQuestionDescriptionTransfer(languageTransfer, recoveryQuestionTransfer, recoveryQuestionDescription.getDescription());
             put(recoveryQuestionDescription, recoveryQuestionDescriptionTransfer);

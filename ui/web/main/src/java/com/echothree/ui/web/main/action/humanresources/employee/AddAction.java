@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreateEmployeeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -48,10 +46,10 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         if(wasPost(request)) {
-            CreateEmployeeForm commandForm = PartyUtil.getHome().getCreateEmployeeForm();
+            var commandForm = PartyUtil.getHome().getCreateEmployeeForm();
             
             commandForm.setEmployeeTypeName(actionForm.getEmployeeTypeChoice());
             commandForm.setPersonalTitleId(actionForm.getPersonalTitleChoice());
@@ -69,8 +67,8 @@ public class AddAction
             commandForm.setPassword1(actionForm.getPassword1());
             commandForm.setPassword2(actionForm.getPassword2());
             commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateChoice());
-            
-            CommandResult commandResult = PartyUtil.getHome().createEmployee(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createEmployee(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

@@ -17,9 +17,7 @@
 package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.filter.common.transfer.FilterKindDescriptionTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.filter.server.entity.FilterKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -36,11 +34,11 @@ public class FilterKindDescriptionTransferCache
 
     @Override
     public FilterKindDescriptionTransfer getTransfer(FilterKindDescription filterKindDescription) {
-        FilterKindDescriptionTransfer filterKindDescriptionTransfer = get(filterKindDescription);
+        var filterKindDescriptionTransfer = get(filterKindDescription);
         
         if(filterKindDescriptionTransfer == null) {
-            FilterKindTransfer filterKindTransfer = filterControl.getFilterKindTransfer(userVisit, filterKindDescription.getFilterKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, filterKindDescription.getLanguage());
+            var filterKindTransfer = filterControl.getFilterKindTransfer(userVisit, filterKindDescription.getFilterKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, filterKindDescription.getLanguage());
             
             filterKindDescriptionTransfer = new FilterKindDescriptionTransfer(languageTransfer, filterKindTransfer, filterKindDescription.getDescription());
             put(filterKindDescription, filterKindDescriptionTransfer);

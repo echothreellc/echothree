@@ -21,7 +21,6 @@ import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.value.OrderTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,7 +62,7 @@ public class SetDefaultOrderTypeCommand
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = form.getOrderTypeName();
-        OrderTypeDetailValue orderTypeDetailValue = orderTypeControl.getOrderTypeDetailValueByNameForUpdate(orderTypeName);
+        var orderTypeDetailValue = orderTypeControl.getOrderTypeDetailValueByNameForUpdate(orderTypeName);
         
         if(orderTypeDetailValue != null) {
             orderTypeDetailValue.setIsDefault(Boolean.TRUE);

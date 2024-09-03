@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.item.server.entity.ItemAliasTypeDescription;
-import com.echothree.model.data.item.server.value.ItemAliasTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditItemAliasTypeDescriptionCommand
     public ItemAliasTypeDescription getEntity(EditItemAliasTypeDescriptionResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemAliasTypeDescription itemAliasTypeDescription = null;
-        String itemAliasTypeName = spec.getItemAliasTypeName();
-        ItemAliasType itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
+        var itemAliasTypeName = spec.getItemAliasTypeName();
+        var itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
         if(itemAliasType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditItemAliasTypeDescriptionCommand
     @Override
     public void doUpdate(ItemAliasTypeDescription itemAliasTypeDescription) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemAliasTypeDescriptionValue itemAliasTypeDescriptionValue = itemControl.getItemAliasTypeDescriptionValue(itemAliasTypeDescription);
+        var itemAliasTypeDescriptionValue = itemControl.getItemAliasTypeDescriptionValue(itemAliasTypeDescription);
         
         itemAliasTypeDescriptionValue.setDescription(edit.getDescription());
         

@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.TextTransformationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.TextTransformation;
-import com.echothree.model.data.core.server.entity.TextTransformationDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,14 +35,14 @@ public class TextTransformationTransferCache
     }
 
     public TextTransformationTransfer getTextTransformationTransfer(TextTransformation textTransformation) {
-        TextTransformationTransfer textTransformationTransfer = get(textTransformation);
+        var textTransformationTransfer = get(textTransformation);
 
         if(textTransformationTransfer == null) {
-            TextTransformationDetail textTransformationDetail = textTransformation.getLastDetail();
-            String textTransformationName = textTransformationDetail.getTextTransformationName();
-            Boolean isDefault = textTransformationDetail.getIsDefault();
-            Integer sortOrder = textTransformationDetail.getSortOrder();
-            String description = coreControl.getBestTextTransformationDescription(textTransformation, getLanguage());
+            var textTransformationDetail = textTransformation.getLastDetail();
+            var textTransformationName = textTransformationDetail.getTextTransformationName();
+            var isDefault = textTransformationDetail.getIsDefault();
+            var sortOrder = textTransformationDetail.getSortOrder();
+            var description = coreControl.getBestTextTransformationDescription(textTransformation, getLanguage());
 
             textTransformationTransfer = new TextTransformationTransfer(textTransformationName, isDefault, sortOrder, description);
             put(textTransformation, textTransformationTransfer);

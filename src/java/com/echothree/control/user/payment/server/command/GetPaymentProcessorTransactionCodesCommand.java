@@ -17,15 +17,12 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentProcessorTransactionCodesForm;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorTransactionCodesResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionCodeControl;
-import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.payment.server.logic.PaymentProcessorTransactionLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactionCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -80,7 +77,7 @@ public class GetPaymentProcessorTransactionCodesCommand
     
     @Override
     protected BaseResult getResult(Collection<PaymentProcessorTransactionCode> entities) {
-        GetPaymentProcessorTransactionCodesResult result = PaymentResultFactory.getGetPaymentProcessorTransactionCodesResult();
+        var result = PaymentResultFactory.getGetPaymentProcessorTransactionCodesResult();
         var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
         
         result.setPaymentProcessorTransactionCodes(paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodeTransfers(getUserVisit(), entities));

@@ -91,10 +91,10 @@ public abstract class MainBaseEditAction<A extends ActionForm, S extends BaseSpe
         String forwardKey = null;
 
         if(commandResult.hasErrors() && !wasCanceled) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
 
             if(executionResult != null) {
-                R result = (R)executionResult.getResult();
+                var result = (R)executionResult.getResult();
 
                 setLockAttribute(request, (BaseEditResult)executionResult.getResult());
                 setupTransferForForm(request, actionForm, result);
@@ -111,18 +111,18 @@ public abstract class MainBaseEditAction<A extends ActionForm, S extends BaseSpe
     public final ActionForward executeAction(ActionMapping mapping, A actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        F commandForm = getForm();
-        S spec = getSpec(request, actionForm);
+        var commandForm = getForm();
+        var spec = getSpec(request, actionForm);
         
         commandForm.setSpec(spec);
 
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                E edit = getEdit(request, actionForm);
+                var edit = getEdit(request, actionForm);
 
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
@@ -132,12 +132,12 @@ public abstract class MainBaseEditAction<A extends ActionForm, S extends BaseSpe
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = doEdit(request, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            R result = (R)executionResult.getResult();
+            var commandResult = doEdit(request, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (R)executionResult.getResult();
 
             if(result != null) {
-                E edit = (E)result.getEdit();
+                var edit = (E)result.getEdit();
 
                 setLockAttribute(request, result);
 

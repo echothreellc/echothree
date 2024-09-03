@@ -21,7 +21,6 @@ import com.echothree.model.control.payment.server.control.PaymentMethodTypeContr
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.value.PaymentMethodTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultPaymentMethodTypeCommand
     @Override
     protected BaseResult execute() {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        String paymentMethodTypeName = form.getPaymentMethodTypeName();
-        PaymentMethodTypeDetailValue paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueByNameForUpdate(paymentMethodTypeName);
+        var paymentMethodTypeName = form.getPaymentMethodTypeName();
+        var paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueByNameForUpdate(paymentMethodTypeName);
         
         if(paymentMethodTypeDetailValue != null) {
             paymentMethodTypeDetailValue.setIsDefault(Boolean.TRUE);

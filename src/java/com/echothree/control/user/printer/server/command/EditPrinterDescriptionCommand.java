@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.printer.server.entity.PrinterDescription;
-import com.echothree.model.data.printer.server.value.PrinterDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditPrinterDescriptionCommand
     public PrinterDescription getEntity(EditPrinterDescriptionResult result) {
         var printerControl = Session.getModelController(PrinterControl.class);
         PrinterDescription printerDescription = null;
-        String printerName = spec.getPrinterName();
-        Printer printer = printerControl.getPrinterByName(printerName);
+        var printerName = spec.getPrinterName();
+        var printer = printerControl.getPrinterByName(printerName);
 
         if(printer != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditPrinterDescriptionCommand
     @Override
     public void doUpdate(PrinterDescription printerDescription) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterDescriptionValue printerDescriptionValue = printerControl.getPrinterDescriptionValue(printerDescription);
+        var printerDescriptionValue = printerControl.getPrinterDescriptionValue(printerDescription);
 
         printerDescriptionValue.setDescription(edit.getDescription());
 

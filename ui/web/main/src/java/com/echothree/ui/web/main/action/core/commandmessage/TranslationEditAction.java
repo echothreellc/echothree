@@ -51,7 +51,7 @@ public class TranslationEditAction
     @Override
     protected CommandMessageTranslationSpec getSpec(HttpServletRequest request, TranslationEditActionForm actionForm)
             throws NamingException {
-        CommandMessageTranslationSpec spec = CoreUtil.getHome().getCommandMessageTranslationSpec();
+        var spec = CoreUtil.getHome().getCommandMessageTranslationSpec();
         
         spec.setCommandMessageTypeName(findParameter(request, ParameterConstants.COMMAND_MESSAGE_TYPE_NAME, actionForm.getCommandMessageTypeName()));
         spec.setCommandMessageKey(findParameter(request, ParameterConstants.COMMAND_MESSAGE_KEY, actionForm.getCommandMessageKey()));
@@ -63,7 +63,7 @@ public class TranslationEditAction
     @Override
     protected CommandMessageTranslationEdit getEdit(HttpServletRequest request, TranslationEditActionForm actionForm)
             throws NamingException {
-        CommandMessageTranslationEdit edit = CoreUtil.getHome().getCommandMessageTranslationEdit();
+        var edit = CoreUtil.getHome().getCommandMessageTranslationEdit();
 
         edit.setTranslation(actionForm.getTranslation());
 

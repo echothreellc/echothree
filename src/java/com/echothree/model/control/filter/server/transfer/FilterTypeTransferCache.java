@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.filter.server.entity.FilterTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -38,15 +36,15 @@ public class FilterTypeTransferCache
 
     @Override
     public FilterTypeTransfer getTransfer(FilterType filterType) {
-        FilterTypeTransfer filterTypeTransfer = get(filterType);
+        var filterTypeTransfer = get(filterType);
         
         if(filterTypeTransfer == null) {
-            FilterTypeDetail filterTypeDetail = filterType.getLastDetail();
-            FilterKindTransfer filterKindTransfer = filterControl.getFilterKindTransfer(userVisit, filterTypeDetail.getFilterKind());
-            String filterTypeName = filterTypeDetail.getFilterTypeName();
-            Boolean isDefault = filterTypeDetail.getIsDefault();
-            Integer sortOrder = filterTypeDetail.getSortOrder();
-            String description = filterControl.getBestFilterTypeDescription(filterType, getLanguage());
+            var filterTypeDetail = filterType.getLastDetail();
+            var filterKindTransfer = filterControl.getFilterKindTransfer(userVisit, filterTypeDetail.getFilterKind());
+            var filterTypeName = filterTypeDetail.getFilterTypeName();
+            var isDefault = filterTypeDetail.getIsDefault();
+            var sortOrder = filterTypeDetail.getSortOrder();
+            var description = filterControl.getBestFilterTypeDescription(filterType, getLanguage());
             
             filterTypeTransfer = new FilterTypeTransfer(filterKindTransfer, filterTypeName, isDefault, sortOrder, description);
             put(filterType, filterTypeTransfer);

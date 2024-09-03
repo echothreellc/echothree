@@ -607,6 +607,7 @@ import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.model.data.core.common.FontStyleConstants;
 import com.echothree.model.data.core.common.FontWeightConstants;
+import com.echothree.model.data.core.common.MimeTypeConstants;
 import com.echothree.model.data.core.common.TextDecorationConstants;
 import com.echothree.model.data.core.common.TextTransformationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
@@ -686,6 +687,7 @@ import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferConstants;
+import com.echothree.model.data.offer.common.UseConstants;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -742,6 +744,8 @@ import com.echothree.model.data.selector.common.SelectorKindConstants;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.data.sequence.common.SequenceChecksumTypeConstants;
+import com.echothree.model.data.sequence.common.SequenceEncoderTypeConstants;
 import com.echothree.model.data.sequence.common.SequenceTypeConstants;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
@@ -1997,29 +2001,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("sequenceChecksumTypes")
-    static Collection<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
-        Collection<SequenceChecksumType> sequenceChecksumTypes;
-        Collection<SequenceChecksumTypeObject> sequenceChecksumTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SequenceChecksumTypeObject> data;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceChecksumTypesForm();
+            var command = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            sequenceChecksumTypes = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SequenceChecksumTypeConstants.COMPONENT_VENDOR_NAME, SequenceChecksumTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var sequenceChecksumTypes = entities.stream()
+                            .map(SequenceChecksumTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, sequenceChecksumTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(sequenceChecksumTypes == null) {
-            sequenceChecksumTypeObjects = emptyList();
-        } else {
-            sequenceChecksumTypeObjects = new ArrayList<>(sequenceChecksumTypes.size());
-
-            sequenceChecksumTypes.stream()
-                    .map(SequenceChecksumTypeObject::new)
-                    .forEachOrdered(sequenceChecksumTypeObjects::add);
-        }
-
-        return sequenceChecksumTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -2043,29 +2052,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("sequenceEncoderTypes")
-    static Collection<SequenceEncoderTypeObject> sequenceEncoderTypes(final DataFetchingEnvironment env) {
-        Collection<SequenceEncoderType> sequenceEncoderTypes;
-        Collection<SequenceEncoderTypeObject> sequenceEncoderTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SequenceEncoderTypeObject> sequenceEncoderTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SequenceEncoderTypeObject> data;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceEncoderTypesForm();
+            var command = new GetSequenceEncoderTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            sequenceEncoderTypes = new GetSequenceEncoderTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SequenceEncoderTypeConstants.COMPONENT_VENDOR_NAME, SequenceEncoderTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var sequenceEncoderTypes = entities.stream()
+                            .map(SequenceEncoderTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, sequenceEncoderTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(sequenceEncoderTypes == null) {
-            sequenceEncoderTypeObjects = emptyList();
-        } else {
-            sequenceEncoderTypeObjects = new ArrayList<>(sequenceEncoderTypes.size());
-
-            sequenceEncoderTypes.stream()
-                    .map(SequenceEncoderTypeObject::new)
-                    .forEachOrdered(sequenceEncoderTypeObjects::add);
-        }
-
-        return sequenceEncoderTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3024,29 +3038,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("uses")
-    static Collection<UseObject> uses(final DataFetchingEnvironment env) {
-        Collection<Use> uses;
-        Collection<UseObject> useObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UseObject> uses(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UseObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetUsesForm();
+            var command = new GetUsesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            uses = new GetUsesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UseConstants.COMPONENT_VENDOR_NAME, UseConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var uses = entities.stream()
+                            .map(UseObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, uses);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(uses == null) {
-            useObjects = emptyList();
-        } else {
-            useObjects = new ArrayList<>(uses.size());
-
-            uses.stream()
-                    .map(UseObject::new)
-                    .forEachOrdered(useObjects::add);
-        }
-
-        return useObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5150,32 +5169,38 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("mimeTypes")
-    static Collection<MimeTypeObject> mimeTypes(final DataFetchingEnvironment env,
-           @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName) {
-        Collection<MimeType> mimeTypes;
-        Collection<MimeTypeObject> mimeTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<MimeTypeObject> mimeTypes(final DataFetchingEnvironment env,
+            @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName) {
+        CountingPaginatedData<MimeTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypesForm();
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
-            mimeTypes = new GetMimeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var command = new GetMimeTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, MimeTypeConstants.COMPONENT_VENDOR_NAME, MimeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var mimeTypes = entities.stream()
+                            .map(MimeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, mimeTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(mimeTypes == null) {
-            mimeTypeObjects = emptyList();
-        } else {
-            mimeTypeObjects = new ArrayList<>(mimeTypes.size());
-
-            mimeTypes.stream()
-                    .map(MimeTypeObject::new)
-                    .forEachOrdered(mimeTypeObjects::add);
-        }
-
-        return mimeTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5890,7 +5915,7 @@ public interface GraphQlQueries {
             commandForm.setUsername(username);
             commandForm.setUlid(id);
 
-            GetUserLoginCommand getUserLoginCommand = new GetUserLoginCommand(getUserVisitPK(env), commandForm);
+            var getUserLoginCommand = new GetUserLoginCommand(getUserVisitPK(env), commandForm);
             userLogin = getUserLoginCommand.getEntityForGraphQl();
             foundByUsernameUserLogin = getUserLoginCommand.foundByUsernameUserLogin;
         } catch (NamingException ex) {

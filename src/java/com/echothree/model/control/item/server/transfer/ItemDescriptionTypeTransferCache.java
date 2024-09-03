@@ -18,20 +18,14 @@ package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDetail;
-import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ItemDescriptionTypeTransferCache
         extends BaseItemTransferCache<ItemDescriptionType, ItemDescriptionTypeTransfer> {
@@ -97,22 +91,22 @@ public class ItemDescriptionTypeTransferCache
     
     @Override
     public ItemDescriptionTypeTransfer getTransfer(ItemDescriptionType itemDescriptionType) {
-        ItemDescriptionTypeTransfer itemDescriptionTypeTransfer = get(itemDescriptionType);
+        var itemDescriptionTypeTransfer = get(itemDescriptionType);
         
         if(itemDescriptionTypeTransfer == null) {
-            ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
-            String itemDescriptionTypeName = filterItemDescriptionTypeName ? null : itemDescriptionTypeDetail.getItemDescriptionTypeName();
-            ItemDescriptionType parentItemDescriptionType = filterParentItemDescriptionType ? null : itemDescriptionTypeDetail.getParentItemDescriptionType();
-            ItemDescriptionTypeTransfer parentItemDescriptionTypeTransfer = parentItemDescriptionType == null ? null : itemControl.getItemDescriptionTypeTransfer(userVisit, parentItemDescriptionType);
-            Boolean useParentIfMissing = filterUseParentIfMissing ? null : itemDescriptionTypeDetail.getUseParentIfMissing();
-            MimeTypeUsageType mimeTypeUsageType = filterMimeTypeUsageType ? null : itemDescriptionTypeDetail.getMimeTypeUsageType();
-            MimeTypeUsageTypeTransfer mimeTypeUsageTypeTransfer = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
-            Boolean checkContentWebAddress = filterCheckContentWebAddress ? null : itemDescriptionTypeDetail.getCheckContentWebAddress();
-            Boolean includeInIndex = filterIncludeInIndex ? null : itemDescriptionTypeDetail.getIncludeInIndex();
-            Boolean indexDefault = filterIndexDefault ? null : itemDescriptionTypeDetail.getIndexDefault();
-            Boolean isDefault = filterIsDefault ? null : itemDescriptionTypeDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : itemDescriptionTypeDetail.getSortOrder();
-            String description = filterDescription ? null : itemControl.getBestItemDescriptionTypeDescription(itemDescriptionType, getLanguage());
+            var itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
+            var itemDescriptionTypeName = filterItemDescriptionTypeName ? null : itemDescriptionTypeDetail.getItemDescriptionTypeName();
+            var parentItemDescriptionType = filterParentItemDescriptionType ? null : itemDescriptionTypeDetail.getParentItemDescriptionType();
+            var parentItemDescriptionTypeTransfer = parentItemDescriptionType == null ? null : itemControl.getItemDescriptionTypeTransfer(userVisit, parentItemDescriptionType);
+            var useParentIfMissing = filterUseParentIfMissing ? null : itemDescriptionTypeDetail.getUseParentIfMissing();
+            var mimeTypeUsageType = filterMimeTypeUsageType ? null : itemDescriptionTypeDetail.getMimeTypeUsageType();
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var checkContentWebAddress = filterCheckContentWebAddress ? null : itemDescriptionTypeDetail.getCheckContentWebAddress();
+            var includeInIndex = filterIncludeInIndex ? null : itemDescriptionTypeDetail.getIncludeInIndex();
+            var indexDefault = filterIndexDefault ? null : itemDescriptionTypeDetail.getIndexDefault();
+            var isDefault = filterIsDefault ? null : itemDescriptionTypeDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : itemDescriptionTypeDetail.getSortOrder();
+            var description = filterDescription ? null : itemControl.getBestItemDescriptionTypeDescription(itemDescriptionType, getLanguage());
             Integer minimumHeight = null;
             Integer minimumWidth = null;
             Integer maximumHeight = null;
@@ -124,8 +118,8 @@ public class ItemDescriptionTypeTransferCache
             Boolean scaleFromParent = null;
 
             if(mimeTypeUsageType != null && mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.IMAGE.name())) {
-                ItemImageDescriptionType itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
-                MimeType preferredMimeType = filterPreferredMimeType ? null : itemImageDescriptionType.getPreferredMimeType();
+                var itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
+                var preferredMimeType = filterPreferredMimeType ? null : itemImageDescriptionType.getPreferredMimeType();
 
                 minimumHeight = filterMinimumHeight ? null : itemImageDescriptionType.getMinimumHeight();
                 minimumWidth = filterMinimumWidth ? null : itemImageDescriptionType.getMinimumWidth();

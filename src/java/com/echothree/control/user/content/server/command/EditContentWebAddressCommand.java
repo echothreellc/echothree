@@ -28,10 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
-import com.echothree.model.data.content.server.entity.ContentWebAddressDescription;
-import com.echothree.model.data.content.server.entity.ContentWebAddressDetail;
-import com.echothree.model.data.content.server.value.ContentWebAddressDescriptionValue;
-import com.echothree.model.data.content.server.value.ContentWebAddressDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,8 +86,8 @@ public class EditContentWebAddressCommand
     @Override
     public ContentWebAddress getEntity(EditContentWebAddressResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentWebAddress contentWebAddress = null;
-        String contentWebAddressName = spec.getContentWebAddressName();
+        ContentWebAddress contentWebAddress;
+        var contentWebAddressName = spec.getContentWebAddressName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
@@ -123,8 +119,8 @@ public class EditContentWebAddressCommand
     @Override
     public void doLock(ContentWebAddressEdit edit, ContentWebAddress contentWebAddress) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentWebAddressDescription contentWebAddressDescription = contentControl.getContentWebAddressDescription(contentWebAddress, getPreferredLanguage());
-        ContentWebAddressDetail contentWebAddressDetail = contentWebAddress.getLastDetail();
+        var contentWebAddressDescription = contentControl.getContentWebAddressDescription(contentWebAddress, getPreferredLanguage());
+        var contentWebAddressDetail = contentWebAddress.getLastDetail();
 
         edit.setContentWebAddressName(contentWebAddressDetail.getContentWebAddressName());
         edit.setContentCollectionName(contentWebAddressDetail.getContentCollection().getLastDetail().getContentCollectionName());
@@ -139,11 +135,11 @@ public class EditContentWebAddressCommand
     @Override
     public void canUpdate(ContentWebAddress contentWebAddress) {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentWebAddressName = edit.getContentWebAddressName();
-        ContentWebAddress duplicateContentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+        var contentWebAddressName = edit.getContentWebAddressName();
+        var duplicateContentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
         if(duplicateContentWebAddress == null || contentWebAddress.equals(duplicateContentWebAddress)) {
-            String contentCollectionName = edit.getContentCollectionName();
+            var contentCollectionName = edit.getContentCollectionName();
 
             contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
@@ -159,9 +155,9 @@ public class EditContentWebAddressCommand
     public void doUpdate(ContentWebAddress contentWebAddress) {
         var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
-        ContentWebAddressDetailValue contentWebAddressDetailValue = contentControl.getContentWebAddressDetailValueForUpdate(contentWebAddress);
-        ContentWebAddressDescription contentWebAddressDescription = contentControl.getContentWebAddressDescriptionForUpdate(contentWebAddress, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contentWebAddressDetailValue = contentControl.getContentWebAddressDetailValueForUpdate(contentWebAddress);
+        var contentWebAddressDescription = contentControl.getContentWebAddressDescriptionForUpdate(contentWebAddress, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contentWebAddressDetailValue.setContentWebAddressName(edit.getContentWebAddressName());
         contentWebAddressDetailValue.setContentCollectionPK(contentCollection.getPrimaryKey());
@@ -173,7 +169,7 @@ public class EditContentWebAddressCommand
         } else if(contentWebAddressDescription != null && description == null) {
             contentControl.deleteContentWebAddressDescription(contentWebAddressDescription, partyPK);
         } else if(contentWebAddressDescription != null && description != null) {
-            ContentWebAddressDescriptionValue contentWebAddressDescriptionValue = contentControl.getContentWebAddressDescriptionValue(contentWebAddressDescription);
+            var contentWebAddressDescriptionValue = contentControl.getContentWebAddressDescriptionValue(contentWebAddressDescription);
 
             contentWebAddressDescriptionValue.setDescription(description);
             contentControl.updateContentWebAddressDescriptionFromValue(contentWebAddressDescriptionValue, partyPK);

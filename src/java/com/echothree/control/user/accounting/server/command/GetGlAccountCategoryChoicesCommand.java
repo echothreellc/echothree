@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetGlAccountCategoryChoicesForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetGlAccountCategoryChoicesResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetGlAccountCategoryChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountCategoryChoicesResult result = AccountingResultFactory.getGetGlAccountCategoryChoicesResult();
-        String defaultGlAccountCategoryChoice = form.getDefaultGlAccountCategoryChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AccountingResultFactory.getGetGlAccountCategoryChoicesResult();
+        var defaultGlAccountCategoryChoice = form.getDefaultGlAccountCategoryChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setGlAccountCategoryChoices(accountingControl.getGlAccountCategoryChoices(defaultGlAccountCategoryChoice, getPreferredLanguage(),
                 allowNullChoice));

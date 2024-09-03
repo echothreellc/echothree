@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCategoryItemForm;
 import com.echothree.control.user.content.common.result.GetContentCategoryItemResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -152,7 +149,7 @@ public class ContentCategoryItemTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentCategoryItemForm commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
+            var commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -170,7 +167,7 @@ public class ContentCategoryItemTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCategoryItem(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentCategoryItem(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -178,8 +175,8 @@ public class ContentCategoryItemTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCategoryItemResult result = (GetContentCategoryItemResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCategoryItemResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContentCategoryItem(), scope);
             }

@@ -16,19 +16,13 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.common.ItemOptions;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemHarmonizedTariffScheduleCodeTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCodeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ItemHarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<ItemHarmonizedTariffScheduleCode, ItemHarmonizedTariffScheduleCodeTransfer> {
@@ -50,14 +44,14 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     
     @Override
     public ItemHarmonizedTariffScheduleCodeTransfer getTransfer(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        ItemHarmonizedTariffScheduleCodeTransfer itemHarmonizedTariffScheduleCodeTransfer = get(itemHarmonizedTariffScheduleCode);
+        var itemHarmonizedTariffScheduleCodeTransfer = get(itemHarmonizedTariffScheduleCode);
         
         if(itemHarmonizedTariffScheduleCodeTransfer == null) {
-            ItemHarmonizedTariffScheduleCodeDetail itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getLastDetail();
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getItem());
-            CountryTransfer countryGeoCode = geoControl.getCountryTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getCountryGeoCode());
-            HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeUseType());
-            HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCode());
+            var itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getLastDetail();
+            var item = itemControl.getItemTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getItem());
+            var countryGeoCode = geoControl.getCountryTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getCountryGeoCode());
+            var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeUseType());
+            var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCode());
             
             itemHarmonizedTariffScheduleCodeTransfer = new ItemHarmonizedTariffScheduleCodeTransfer(item, countryGeoCode, harmonizedTariffScheduleCodeUseType,
                     harmonizedTariffScheduleCode);

@@ -18,7 +18,6 @@ package com.echothree.control.user.license.common;
 
 import com.echothree.control.user.license.server.LicenseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class LicenseUtil {
@@ -30,7 +29,7 @@ public class LicenseUtil {
     public static LicenseLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (LicenseLocal)ctx.lookup("ejb:echothree/echothree-server/LicenseBean!com.echothree.control.user.license.server.LicenseLocal");
         }
@@ -42,7 +41,7 @@ public class LicenseUtil {
     public static LicenseRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (LicenseRemote)ctx.lookup("ejb:echothree/echothree-server/LicenseBean!com.echothree.control.user.license.common.LicenseRemote");
         }

@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.FontWeightDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.FontWeightTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.FontWeightDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class FontWeightDescriptionTransferCache
     }
     
     public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(FontWeightDescription fontWeightDescription) {
-        FontWeightDescriptionTransfer fontWeightDescriptionTransfer = get(fontWeightDescription);
+        var fontWeightDescriptionTransfer = get(fontWeightDescription);
         
         if(fontWeightDescriptionTransfer == null) {
-            FontWeightTransfer fontWeightTransfer = coreControl.getFontWeightTransfer(userVisit, fontWeightDescription.getFontWeight());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, fontWeightDescription.getLanguage());
+            var fontWeightTransfer = coreControl.getFontWeightTransfer(userVisit, fontWeightDescription.getFontWeight());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, fontWeightDescription.getLanguage());
             
             fontWeightDescriptionTransfer = new FontWeightDescriptionTransfer(languageTransfer, fontWeightTransfer, fontWeightDescription.getDescription());
             put(fontWeightDescription, fontWeightDescriptionTransfer);

@@ -63,7 +63,7 @@ public class HtsParser {
     }
     
     public boolean setup() {
-        boolean result = true;
+        var result = true;
         
         try {
             setAuthenticationService(AuthenticationUtil.getHome());

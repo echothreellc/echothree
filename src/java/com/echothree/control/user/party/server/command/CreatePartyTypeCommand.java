@@ -20,7 +20,6 @@ import com.echothree.control.user.party.common.form.CreatePartyTypeForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -57,11 +56,11 @@ public class CreatePartyTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType == null) {
-            String parentPartyTypeName = form.getParentPartyTypeName();
+            var parentPartyTypeName = form.getParentPartyTypeName();
             PartyType parentPartyType = null;
 
             if(parentPartyTypeName != null) {
@@ -69,13 +68,13 @@ public class CreatePartyTypeCommand
             }
             if(parentPartyTypeName == null || (parentPartyTypeName != null && parentPartyType != null)) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                String billingAccountSequenceTypeName = form.getBillingAccountSequenceTypeName();
-                SequenceType billingAccountSequenceType = billingAccountSequenceTypeName == null ? null : sequenceControl.getSequenceTypeByName(billingAccountSequenceTypeName);
+                var billingAccountSequenceTypeName = form.getBillingAccountSequenceTypeName();
+                var billingAccountSequenceType = billingAccountSequenceTypeName == null ? null : sequenceControl.getSequenceTypeByName(billingAccountSequenceTypeName);
 
                 if(billingAccountSequenceTypeName == null || billingAccountSequenceType != null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
-                    Boolean allowUserLogins = Boolean.valueOf(form.getAllowUserLogins());
-                    Boolean allowPartyAliases = Boolean.valueOf(form.getAllowPartyAliases());
+                    var allowUserLogins = Boolean.valueOf(form.getAllowUserLogins());
+                    var allowPartyAliases = Boolean.valueOf(form.getAllowPartyAliases());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
 
                     partyControl.createPartyType(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowPartyAliases, isDefault,

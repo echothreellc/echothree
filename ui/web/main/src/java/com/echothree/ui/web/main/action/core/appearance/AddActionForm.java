@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetColorChoicesForm;
-import com.echothree.control.user.core.common.form.GetFontStyleChoicesForm;
-import com.echothree.control.user.core.common.form.GetFontWeightChoicesForm;
 import com.echothree.control.user.core.common.result.GetColorChoicesResult;
 import com.echothree.control.user.core.common.result.GetFontStyleChoicesResult;
 import com.echothree.control.user.core.common.result.GetFontWeightChoicesResult;
 import com.echothree.model.control.core.common.choice.ColorChoicesBean;
 import com.echothree.model.control.core.common.choice.FontStyleChoicesBean;
 import com.echothree.model.control.core.common.choice.FontWeightChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -57,14 +52,14 @@ public class AddActionForm
     private void setupTextColorChoices()
             throws NamingException {
         if(textColorChoices == null) {
-            GetColorChoicesForm commandForm = CoreUtil.getHome().getGetColorChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetColorChoicesForm();
 
             commandForm.setDefaultColorChoice(textColorChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorChoicesResult getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
             textColorChoices = getColorChoicesResult.getColorChoices();
 
             if(textColorChoice == null) {
@@ -76,14 +71,14 @@ public class AddActionForm
     private void setupBackgroundColorChoices()
             throws NamingException {
         if(backgroundColorChoices == null) {
-            GetColorChoicesForm commandForm = CoreUtil.getHome().getGetColorChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetColorChoicesForm();
 
             commandForm.setDefaultColorChoice(backgroundColorChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorChoicesResult getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
             backgroundColorChoices = getColorChoicesResult.getColorChoices();
 
             if(backgroundColorChoice == null) {
@@ -95,14 +90,14 @@ public class AddActionForm
     private void setupFontStyleChoices()
             throws NamingException {
         if(fontStyleChoices == null) {
-            GetFontStyleChoicesForm commandForm = CoreUtil.getHome().getGetFontStyleChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetFontStyleChoicesForm();
 
             commandForm.setDefaultFontStyleChoice(fontStyleChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getFontStyleChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFontStyleChoicesResult getFontStyleChoicesResult = (GetFontStyleChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getFontStyleChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getFontStyleChoicesResult = (GetFontStyleChoicesResult)executionResult.getResult();
             fontStyleChoices = getFontStyleChoicesResult.getFontStyleChoices();
 
             if(fontStyleChoice == null) {
@@ -114,14 +109,14 @@ public class AddActionForm
     private void setupFontWeightChoices()
             throws NamingException {
         if(fontWeightChoices == null) {
-            GetFontWeightChoicesForm commandForm = CoreUtil.getHome().getGetFontWeightChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetFontWeightChoicesForm();
 
             commandForm.setDefaultFontWeightChoice(fontWeightChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getFontWeightChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFontWeightChoicesResult getFontWeightChoicesResult = (GetFontWeightChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getFontWeightChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getFontWeightChoicesResult = (GetFontWeightChoicesResult)executionResult.getResult();
             fontWeightChoices = getFontWeightChoicesResult.getFontWeightChoices();
 
             if(fontWeightChoice == null) {

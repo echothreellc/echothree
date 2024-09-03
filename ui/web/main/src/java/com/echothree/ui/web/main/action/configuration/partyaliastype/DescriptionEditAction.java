@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected PartyAliasTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        PartyAliasTypeDescriptionSpec spec = PartyUtil.getHome().getPartyAliasTypeDescriptionSpec();
+        var spec = PartyUtil.getHome().getPartyAliasTypeDescriptionSpec();
         
         spec.setPartyTypeName(findParameter(request, ParameterConstants.PARTY_TYPE_NAME, actionForm.getPartyTypeName()));
         spec.setPartyAliasTypeName(findParameter(request, ParameterConstants.PARTY_ALIAS_TYPE_NAME, actionForm.getPartyAliasTypeName()));
@@ -63,7 +63,7 @@ public class DescriptionEditAction
     @Override
     protected PartyAliasTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        PartyAliasTypeDescriptionEdit edit = PartyUtil.getHome().getPartyAliasTypeDescriptionEdit();
+        var edit = PartyUtil.getHome().getPartyAliasTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

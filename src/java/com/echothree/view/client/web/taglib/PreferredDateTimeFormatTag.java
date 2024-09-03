@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPreferredDateTimeFormatForm;
 import com.echothree.control.user.party.common.result.GetPreferredDateTimeFormatResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -86,13 +83,13 @@ public class PreferredDateTimeFormatTag
     public int doStartTag()
             throws JspException {
         try {
-            GetPreferredDateTimeFormatForm commandForm = PartyUtil.getHome().getGetPreferredDateTimeFormatForm();
+            var commandForm = PartyUtil.getHome().getGetPreferredDateTimeFormatForm();
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPreferredDateTimeFormat(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getPreferredDateTimeFormat(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -100,8 +97,8 @@ public class PreferredDateTimeFormatTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPreferredDateTimeFormatResult result = (GetPreferredDateTimeFormatResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPreferredDateTimeFormatResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPreferredDateTimeFormat(), scope);
             }

@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDescription;
-import com.echothree.model.data.core.server.value.MimeTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,13 +86,13 @@ public class EditMimeTypeDescriptionCommand
     public MimeTypeDescription getEntity(EditMimeTypeDescriptionResult result) {
         var coreControl = getCoreControl();
         MimeTypeDescription mimeTypeDescription = null;
-        String mimeTypeName = spec.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeName = spec.getMimeTypeName();
+        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +134,7 @@ public class EditMimeTypeDescriptionCommand
     @Override
     public void doUpdate(MimeTypeDescription mimeTypeDescription) {
         var coreControl = getCoreControl();
-        MimeTypeDescriptionValue mimeTypeDescriptionValue = coreControl.getMimeTypeDescriptionValue(mimeTypeDescription);
+        var mimeTypeDescriptionValue = coreControl.getMimeTypeDescriptionValue(mimeTypeDescription);
 
         mimeTypeDescriptionValue.setDescription(edit.getDescription());
 

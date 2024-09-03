@@ -27,11 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.SearchTypeDescription;
-import com.echothree.model.data.search.server.value.SearchTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,17 +87,17 @@ public class EditSearchTypeDescriptionCommand
     public SearchTypeDescription getEntity(EditSearchTypeDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchTypeDescription searchTypeDescription = null;
-        String searchKindName = spec.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = spec.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind != null) {
-            String searchTypeName = spec.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+            var searchTypeName = spec.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
             if(searchType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -145,7 +142,7 @@ public class EditSearchTypeDescriptionCommand
     @Override
     public void doUpdate(SearchTypeDescription searchTypeDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchTypeDescriptionValue searchTypeDescriptionValue = searchControl.getSearchTypeDescriptionValue(searchTypeDescription);
+        var searchTypeDescriptionValue = searchControl.getSearchTypeDescriptionValue(searchTypeDescription);
 
         searchTypeDescriptionValue.setDescription(edit.getDescription());
 

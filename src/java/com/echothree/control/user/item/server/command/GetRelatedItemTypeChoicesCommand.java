@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetRelatedItemTypeChoicesForm;
-import com.echothree.control.user.item.common.result.GetRelatedItemTypeChoicesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetRelatedItemTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetRelatedItemTypeChoicesResult result = ItemResultFactory.getGetRelatedItemTypeChoicesResult();
-        String defaultRelatedItemTypeChoice = form.getDefaultRelatedItemTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetRelatedItemTypeChoicesResult();
+        var defaultRelatedItemTypeChoice = form.getDefaultRelatedItemTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setRelatedItemTypeChoices(itemControl.getRelatedItemTypeChoices(defaultRelatedItemTypeChoice, getPreferredLanguage(), allowNullChoice));
         

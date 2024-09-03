@@ -46,20 +46,20 @@ public abstract class BaseWrapperBuilder {
         Set<E> objectsToRemove = null;
         
         if(transferProperties != null) {
-            Class listContains = getContainedClass(collection);
+            var listContains = getContainedClass(collection);
             
             if(listContains != null) {
-                String expression = transferProperties.getExpression(listContains);
+                var expression = transferProperties.getExpression(listContains);
                 
                 if(expression != null) {
                     ExpressionFactory expressionFactory = new ExpressionFactoryImpl();
-                    String simpleName = StringUtils.getInstance().lowerCaseFirstCharacter(listContains.getSimpleName());
-                    String variableName = simpleName.substring(0, simpleName.length() - 8);
+                    var simpleName = StringUtils.getInstance().lowerCaseFirstCharacter(listContains.getSimpleName());
+                    var variableName = simpleName.substring(0, simpleName.length() - 8);
                     
                     objectsToRemove = new HashSet<>();
 
                     for(var object : collection) {
-                        SimpleContext simpleContext = new SimpleContext();
+                        var simpleContext = new SimpleContext();
 
                         simpleContext.setVariable(variableName, expressionFactory.createValueExpression(object, object.getClass()));
 
@@ -75,7 +75,7 @@ public abstract class BaseWrapperBuilder {
     }
     
     protected <E> void filterCollection(TransferProperties transferProperties, Collection<E> collection) {
-        Set<E> objectsToRemove = getObjectsToRemove(transferProperties, collection);
+        var objectsToRemove = getObjectsToRemove(transferProperties, collection);
         
         if(objectsToRemove != null) {
             collection.removeAll(objectsToRemove);

@@ -17,9 +17,7 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.model.control.employee.common.transfer.TerminationReasonDescriptionTransfer;
-import com.echothree.model.control.employee.common.transfer.TerminationReasonTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.employee.server.entity.TerminationReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,12 +30,12 @@ public class TerminationReasonDescriptionTransferCache
     }
     
     public TerminationReasonDescriptionTransfer getTerminationReasonDescriptionTransfer(TerminationReasonDescription terminationReasonDescription) {
-        TerminationReasonDescriptionTransfer terminationReasonDescriptionTransfer = get(terminationReasonDescription);
+        var terminationReasonDescriptionTransfer = get(terminationReasonDescription);
         
         if(terminationReasonDescriptionTransfer == null) {
-            TerminationReasonTransfer terminationReasonTransfer = employeeControl.getTerminationReasonTransfer(userVisit,
+            var terminationReasonTransfer = employeeControl.getTerminationReasonTransfer(userVisit,
                     terminationReasonDescription.getTerminationReason());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationReasonDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationReasonDescription.getLanguage());
             
             terminationReasonDescriptionTransfer = new TerminationReasonDescriptionTransfer(languageTransfer, terminationReasonTransfer, terminationReasonDescription.getDescription());
             put(terminationReasonDescription, terminationReasonDescriptionTransfer);

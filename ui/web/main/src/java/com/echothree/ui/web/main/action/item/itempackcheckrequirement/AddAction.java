@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.itempackcheckrequirement;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemPackCheckRequirementForm;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,22 +52,22 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        String forwardKey;
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         if(itemName == null) {
             itemName = form.getItemName();
         }
         
         if(wasPost(request)) {
-            CreateItemPackCheckRequirementForm commandForm = ItemUtil.getHome().getCreateItemPackCheckRequirementForm();
+            var commandForm = ItemUtil.getHome().getCreateItemPackCheckRequirementForm();
             
             commandForm.setItemName(itemName);
             commandForm.setUnitOfMeasureTypeName(form.getUnitOfMeasureTypeChoice());
             commandForm.setMinimumQuantity(form.getMinimumQuantity());
             commandForm.setMaximumQuantity(form.getMaximumQuantity());
-            
-            CommandResult commandResult = ItemUtil.getHome().createItemPackCheckRequirement(getUserVisitPK(request), commandForm);
+
+            var commandResult = ItemUtil.getHome().createItemPackCheckRequirement(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -83,17 +79,17 @@ public class AddAction
             form.setItemName(itemName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             if(itemName != null) {
-                GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+                var commandForm = ItemUtil.getHome().getGetItemForm();
                 
                 commandForm.setItemName(itemName);
-                
-                CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResult result = (GetItemResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResult)executionResult.getResult();
                 
                 request.setAttribute(AttributeConstants.ITEM, result.getItem());
             }

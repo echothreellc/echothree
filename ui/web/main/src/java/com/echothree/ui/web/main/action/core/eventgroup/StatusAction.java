@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.core.eventgroup;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.SetEventGroupStatusForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,12 +51,12 @@ public class StatusAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        StatusActionForm actionForm = (StatusActionForm)form;
+        var actionForm = (StatusActionForm)form;
         String forwardKey;
-        String eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
+        var eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
         
         try {
-            SetEventGroupStatusForm commandForm = CoreUtil.getHome().getSetEventGroupStatusForm();
+            var commandForm = CoreUtil.getHome().getSetEventGroupStatusForm();
             
             if(eventGroupName == null)
                 eventGroupName = actionForm.getEventGroupName();
@@ -66,8 +64,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setEventGroupName(eventGroupName);
                 commandForm.setEventGroupStatusChoice(actionForm.getEventGroupStatusChoice());
-                
-                CommandResult commandResult = CoreUtil.getHome().setEventGroupStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = CoreUtil.getHome().setEventGroupStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -83,8 +81,8 @@ public class StatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.EVENT_GROUP_NAME, eventGroupName);
         }

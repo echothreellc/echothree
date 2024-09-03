@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.source;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.DeleteSourceForm;
-import com.echothree.control.user.offer.common.form.GetSourceForm;
 import com.echothree.control.user.offer.common.result.GetSourceResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSourceForm commandForm = OfferUtil.getHome().getGetSourceForm();
+        var commandForm = OfferUtil.getHome().getGetSourceForm();
 
         commandForm.setSourceName(actionForm.getSourceName());
 
-        CommandResult commandResult = OfferUtil.getHome().getSource(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSourceResult result = (GetSourceResult)executionResult.getResult();
+        var commandResult = OfferUtil.getHome().getSource(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSourceResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.SOURCE, result.getSource());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSourceForm commandForm = OfferUtil.getHome().getDeleteSourceForm();
+        var commandForm = OfferUtil.getHome().getDeleteSourceForm();
 
         commandForm.setSourceName(actionForm.getSourceName());
 

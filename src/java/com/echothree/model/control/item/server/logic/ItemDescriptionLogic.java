@@ -23,18 +23,10 @@ import com.echothree.model.control.item.common.exception.UnknownItemDescriptionT
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemBlobDescription;
 import com.echothree.model.data.item.server.entity.ItemDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDetail;
-import com.echothree.model.data.item.server.entity.ItemImageDescription;
-import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemImageType;
-import com.echothree.model.data.item.server.entity.ItemImageTypeDetail;
-import com.echothree.model.data.item.server.entity.ItemStringDescription;
 import com.echothree.model.data.item.server.value.ItemImageDescriptionTypeValue;
 import com.echothree.model.data.item.server.value.ItemImageTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
@@ -47,19 +39,15 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
-import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
@@ -81,14 +69,14 @@ public class ItemDescriptionLogic
 
     public String getIndexDefaultItemDescriptionTypeName() {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemDescriptionType itemDescriptionType = itemControl.getIndexDefaultItemDescriptionType();
+        var itemDescriptionType = itemControl.getIndexDefaultItemDescriptionType();
         
         return itemDescriptionType.getLastDetail().getItemDescriptionTypeName();
     }
     
     public boolean isImage(ItemDescriptionType itemDescriptionType) {
-        MimeTypeUsageType mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
-        boolean result = false;
+        var mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
+        var result = false;
 
         if(mimeTypeUsageType != null) {
             result = mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.IMAGE.name());
@@ -100,13 +88,13 @@ public class ItemDescriptionLogic
     // Find the first available parent ItemDescription.
     public ItemDescription getBestParent(ItemControl itemControl, ItemDescriptionType itemDescriptionType, Item item, Language language) {
         ItemDescription itemDescription = null;
-        ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
+        var itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
 
         if(itemDescriptionTypeDetail.getUseParentIfMissing()) {
-            ItemDescriptionType parentItemDescriptionType = itemDescriptionTypeDetail.getParentItemDescriptionType();
+            var parentItemDescriptionType = itemDescriptionTypeDetail.getParentItemDescriptionType();
 
             if(parentItemDescriptionType != null) {
-                ItemDescription parentItemDescription = itemControl.getItemDescription(parentItemDescriptionType, item, language);
+                var parentItemDescription = itemControl.getItemDescription(parentItemDescriptionType, item, language);
 
                 if(parentItemDescription == null) {
                     // If there isn't a parent, or if the parent is scaled, then try the parent's parent
@@ -125,7 +113,7 @@ public class ItemDescriptionLogic
     public ItemDescription getBestParent(final ItemDescriptionType itemDescriptionType, final Item item, final Party party) {
         var itemControl = Session.getModelController(ItemControl.class);
         var partyControl = Session.getModelController(PartyControl.class);
-        Language language = party == null ? partyControl.getDefaultLanguage() : partyControl.getPreferredLanguage(party);
+        var language = party == null ? partyControl.getDefaultLanguage() : partyControl.getPreferredLanguage(party);
         
         return getBestParent(itemControl, itemDescriptionType, item, language);
     }
@@ -134,7 +122,7 @@ public class ItemDescriptionLogic
     public ItemDescription getBestParentUsingNames(final ExecutionErrorAccumulator eea, final String itemDescriptionTypeName, final Item item,
             final Party party) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+        var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
         
         if(itemDescriptionType == null) {
             handleExecutionError(UnknownItemDescriptionTypeNameException.class, eea, ExecutionErrors.UnknownItemDescriptionTypeName.name(), itemDescriptionTypeName);
@@ -145,15 +133,15 @@ public class ItemDescriptionLogic
     
     // Find the first available parent ItemDescription based on the Party's preferred Language.
     public String getBestStringUsingNames(final ExecutionErrorAccumulator eea, final String itemDescriptionTypeName, final Item item, final Party party) {
-        ItemDescription itemDescription = getBestParentUsingNames(eea, itemDescriptionTypeName, item, party);
+        var itemDescription = getBestParentUsingNames(eea, itemDescriptionTypeName, item, party);
         String stringDescription = null;
         
         if(itemDescription != null) {
-            MimeType mimeType = itemDescription.getLastDetail().getMimeType();
+            var mimeType = itemDescription.getLastDetail().getMimeType();
             
             if(mimeType == null) {
                 var itemControl = Session.getModelController(ItemControl.class);
-                ItemStringDescription itemStringDescription = itemControl.getItemStringDescription(itemDescription);
+                var itemStringDescription = itemControl.getItemStringDescription(itemDescription);
 
                 stringDescription = itemStringDescription.getStringDescription();
             } else {
@@ -167,10 +155,10 @@ public class ItemDescriptionLogic
     // Find the highest quality parent ItemDescription.
     public ItemDescription getBestParentImage(ItemControl itemControl, ItemDescriptionType itemDescriptionType, Item item, Language language) {
         ItemDescription itemDescription = null;
-        ItemDescriptionType parentItemDescriptionType = itemDescriptionType.getLastDetail().getParentItemDescriptionType();
+        var parentItemDescriptionType = itemDescriptionType.getLastDetail().getParentItemDescriptionType();
 
         if(parentItemDescriptionType != null) {
-            ItemDescription parentItemDescription = itemControl.getItemDescription(parentItemDescriptionType, item, language);
+            var parentItemDescription = itemControl.getItemDescription(parentItemDescriptionType, item, language);
 
             if(parentItemDescription == null || itemControl.getItemImageDescription(parentItemDescription).getScaledFromParent()) {
                 // If there isn't a parent, or if the parent is scaled, then try the parent's parent
@@ -186,9 +174,9 @@ public class ItemDescriptionLogic
     }
 
     public ImageReader getImageReader(MimeType mimeType, ItemBlobDescription itemBlobDescription) {
-        MemoryCacheImageInputStream memoryCacheImageInputStream = new MemoryCacheImageInputStream(itemBlobDescription.getBlobDescription().getByteArrayInputStream());
-        Iterator<ImageReader> imageReaders = ImageIO.getImageReadersByMIMEType(mimeType.getLastDetail().getMimeTypeName());
-        ImageReader imageReader = imageReaders.hasNext() ? imageReaders.next() : null;
+        var memoryCacheImageInputStream = new MemoryCacheImageInputStream(itemBlobDescription.getBlobDescription().getByteArrayInputStream());
+        var imageReaders = ImageIO.getImageReadersByMIMEType(mimeType.getLastDetail().getMimeTypeName());
+        var imageReader = imageReaders.hasNext() ? imageReaders.next() : null;
 
         if(imageReader != null) {
             imageReader.setInput(memoryCacheImageInputStream);
@@ -230,8 +218,8 @@ public class ItemDescriptionLogic
      * @return a scaled version of the original {@code BufferedImage}
      */
     public BufferedImage getScaledInstance(BufferedImage img, int targetWidth, int targetHeight, Object hint, boolean higherQuality) {
-        int type = (img.getTransparency() == Transparency.OPAQUE) ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
-        BufferedImage ret = (BufferedImage)img;
+        var type = (img.getTransparency() == Transparency.OPAQUE) ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+        var ret = (BufferedImage)img;
         int w, h;
 
         if(higherQuality) {
@@ -262,8 +250,8 @@ public class ItemDescriptionLogic
                 }
             }
 
-            BufferedImage tmp = new BufferedImage(w, h, type);
-            Graphics2D g2 = tmp.createGraphics();
+            var tmp = new BufferedImage(w, h, type);
+            var g2 = tmp.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
             g2.drawImage(ret, 0, 0, w, h, null);
             g2.dispose();
@@ -276,7 +264,7 @@ public class ItemDescriptionLogic
 
     // http://www.nearinfinity.com/blogs/jim_clark/thumbnail_generation_gotchas.html
     public double scaleToFit(double w1, double h1, double w2, double h2) {
-        double scale = 1.0D;
+        var scale = 1.0D;
 
         if(w1 > h1) {
             if(w1 > w2)
@@ -300,28 +288,28 @@ public class ItemDescriptionLogic
         ItemDescription itemDescription = null;
 
         if(isImage(itemDescriptionType)) {
-            ItemImageDescriptionType itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
+            var itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
 
             if(itemImageDescriptionType.getScaleFromParent()) {
-                Integer preferredHeight = itemImageDescriptionType.getPreferredHeight();
-                Integer preferredWidth = itemImageDescriptionType.getPreferredWidth();
+                var preferredHeight = itemImageDescriptionType.getPreferredHeight();
+                var preferredWidth = itemImageDescriptionType.getPreferredWidth();
 
                 // preferredHeight and preferredWidth are used as the target sizes for the scaling. Without them, it isn't going to happen.
                 if(preferredHeight != null && preferredWidth != null) {
-                    ItemDescription originalItemDescription = getBestParentImage(itemControl, itemDescriptionType, item, language);
+                    var originalItemDescription = getBestParentImage(itemControl, itemDescriptionType, item, language);
 
                     if(originalItemDescription != null) {
-                        ItemDescriptionDetail originalItemDescriptionDetail = originalItemDescription.getLastDetail();
-                        ItemImageDescription originalItemImageDescription = itemControl.getItemImageDescription(originalItemDescription);
+                        var originalItemDescriptionDetail = originalItemDescription.getLastDetail();
+                        var originalItemImageDescription = itemControl.getItemImageDescription(originalItemDescription);
 
                         // BLOBs only.
                         if(originalItemDescriptionDetail.getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.BLOB.name())) {
-                            MimeType originalMimeType = originalItemDescriptionDetail.getMimeType();
-                            MimeType preferredMimeType = itemImageDescriptionType.getPreferredMimeType();
-                            Integer quality = itemImageDescriptionType.getQuality();
-                            ItemImageType originalItemImageType = originalItemImageDescription.getItemImageType();
-                            ItemImageTypeDetail originalItemImageTypeDetail = originalItemImageType.getLastDetail();
-                            ItemBlobDescription originalItemBlobDescription = itemControl.getItemBlobDescription(originalItemDescription);
+                            var originalMimeType = originalItemDescriptionDetail.getMimeType();
+                            var preferredMimeType = itemImageDescriptionType.getPreferredMimeType();
+                            var quality = itemImageDescriptionType.getQuality();
+                            var originalItemImageType = originalItemImageDescription.getItemImageType();
+                            var originalItemImageTypeDetail = originalItemImageType.getLastDetail();
+                            var originalItemBlobDescription = itemControl.getItemBlobDescription(originalItemDescription);
 
                             // ItemImageType settings override any that came from the ItemImageDescriptionType
                             if(originalItemImageTypeDetail.getPreferredMimeType() != null) {
@@ -341,7 +329,7 @@ public class ItemDescriptionLogic
                                 quality = 90; // Default quality
                             }
 
-                            ImageReader imageReader = getImageReader(originalMimeType, originalItemBlobDescription);
+                            var imageReader = getImageReader(originalMimeType, originalItemBlobDescription);
                             if(imageReader != null) {
                                 BufferedImage originalBufferedImage = null;
 
@@ -352,27 +340,27 @@ public class ItemDescriptionLogic
                                 }
 
                                 if(originalBufferedImage != null) {
-                                    int originalHeight = originalBufferedImage.getHeight();
-                                    int originalWidth = originalBufferedImage.getWidth();
-                                    double scale = scaleToFit(originalWidth, originalHeight, preferredWidth, preferredHeight);
-                                    String mimeTypeName = preferredMimeType.getLastDetail().getMimeTypeName();
+                                    var originalHeight = originalBufferedImage.getHeight();
+                                    var originalWidth = originalBufferedImage.getWidth();
+                                    var scale = scaleToFit(originalWidth, originalHeight, preferredWidth, preferredHeight);
+                                    var mimeTypeName = preferredMimeType.getLastDetail().getMimeTypeName();
 
-                                    BufferedImage scaledBufferedImage = getScaledInstance(originalBufferedImage, (int)Math.round(originalWidth * scale),
+                                    var scaledBufferedImage = getScaledInstance(originalBufferedImage, (int)Math.round(originalWidth * scale),
                                                                        (int)Math.round(originalHeight * scale), RenderingHints.VALUE_INTERPOLATION_BILINEAR,
                                                                        true);
 
-                                    Iterator<ImageWriter> imageWriters = ImageIO.getImageWritersByMIMEType(mimeTypeName);
-                                    ImageWriter imageWriter = imageWriters.hasNext() ? imageWriters.next() : null;
+                                    var imageWriters = ImageIO.getImageWritersByMIMEType(mimeTypeName);
+                                    var imageWriter = imageWriters.hasNext() ? imageWriters.next() : null;
 
                                     if(imageWriter != null) {
-                                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                        var byteArrayOutputStream = new ByteArrayOutputStream();
 
                                         try {
-                                            float scaledQuality = (float)quality / 100.0f;
-                                            ImageWriteParam iwp = imageWriter.getDefaultWriteParam();
+                                            var scaledQuality = (float)quality / 100.0f;
+                                            var iwp = imageWriter.getDefaultWriteParam();
 
                                             if(iwp.canWriteCompressed()) {
-                                                String[] compressionTypes = iwp.getCompressionTypes();
+                                                var compressionTypes = iwp.getCompressionTypes();
 
                                                 iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 
@@ -385,7 +373,7 @@ public class ItemDescriptionLogic
                                             }
 
                                             ImageOutputStream imageOutputStream = new MemoryCacheImageOutputStream(byteArrayOutputStream);
-                                            IIOImage img = new IIOImage(scaledBufferedImage, null, null);
+                                            var img = new IIOImage(scaledBufferedImage, null, null);
 
                                             imageWriter.setOutput(imageOutputStream);
                                             imageWriter.write(null, img, iwp);
@@ -461,9 +449,9 @@ public class ItemDescriptionLogic
     }
 
     public ImageDimensions getImageDimensions(String mimeTypeName, ByteArray blobDescription) {
-        MemoryCacheImageInputStream memoryCacheImageInputStream = blobDescription.getMemoryCacheImageInputStream();
-        Iterator<ImageReader> imageReaders = ImageIO.getImageReadersByMIMEType(mimeTypeName);
-        ImageReader imageReader = imageReaders.hasNext() ? imageReaders.next() : null;
+        var memoryCacheImageInputStream = blobDescription.getMemoryCacheImageInputStream();
+        var imageReaders = ImageIO.getImageReadersByMIMEType(mimeTypeName);
+        var imageReader = imageReaders.hasNext() ? imageReaders.next() : null;
         ImageDimensions result = null;
 
         if(imageReader != null) {
@@ -483,13 +471,13 @@ public class ItemDescriptionLogic
 
     public void deleteItemImageDescriptionChildren(ItemDescriptionType itemDescriptionType, Item item, Language language, BasePK deletedBy) {
         var itemControl = Session.getModelController(ItemControl.class);
-        List<ItemDescriptionType> childItemDescriptionTypes = itemControl.getItemDescriptionTypesByParentItemDescriptionType(itemDescriptionType);
+        var childItemDescriptionTypes = itemControl.getItemDescriptionTypesByParentItemDescriptionType(itemDescriptionType);
 
         childItemDescriptionTypes.forEach((childItemDescriptionType) -> {
-            ItemDescription childItemDescription = itemControl.getItemDescriptionForUpdate(childItemDescriptionType, item, language);
-            boolean childWasScaled = true;
+            var childItemDescription = itemControl.getItemDescriptionForUpdate(childItemDescriptionType, item, language);
+            var childWasScaled = true;
             if(childItemDescription != null) {
-                ItemImageDescription childItemImageDescription = itemControl.getItemImageDescription(childItemDescription);
+                var childItemImageDescription = itemControl.getItemImageDescription(childItemDescription);
 
                 childWasScaled = childItemImageDescription.getScaledFromParent();
 
@@ -506,19 +494,19 @@ public class ItemDescriptionLogic
     }
     
     public void deleteItemImageDescriptionChildren(ItemDescription itemDescription, BasePK deletedBy) {
-        ItemDescriptionDetail itemDescriptionDetail = itemDescription.getLastDetail();
+        var itemDescriptionDetail = itemDescription.getLastDetail();
 
         deleteItemImageDescriptionChildren(itemDescriptionDetail.getItemDescriptionType(), itemDescriptionDetail.getItem(), itemDescriptionDetail.getLanguage(), deletedBy);
     }
 
     public void deleteItemDescription(ItemDescription itemDescription, BasePK deletedBy) {
         var itemControl = Session.getModelController(ItemControl.class);
-        MimeTypeUsageType mimeTypeUsageType = itemDescription.getLastDetail().getItemDescriptionType().getLastDetail().getMimeTypeUsageType();
+        var mimeTypeUsageType = itemDescription.getLastDetail().getItemDescriptionType().getLastDetail().getMimeTypeUsageType();
 
         itemControl.deleteItemDescription(itemDescription, deletedBy);
 
         if(mimeTypeUsageType != null &&  mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.IMAGE.name())) {
-            ItemImageDescription itemImageDescription = itemControl.getItemImageDescription(itemDescription);
+            var itemImageDescription = itemControl.getItemImageDescription(itemDescription);
 
             if(!itemImageDescription.getScaledFromParent()) {
                 ItemDescriptionLogic.getInstance().deleteItemImageDescriptionChildren(itemDescription, deletedBy);

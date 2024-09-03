@@ -28,12 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderAdjustmentType;
-import com.echothree.model.data.order.server.entity.OrderAdjustmentTypeDescription;
-import com.echothree.model.data.order.server.entity.OrderAdjustmentTypeDetail;
-import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.order.server.value.OrderAdjustmentTypeDescriptionValue;
-import com.echothree.model.data.order.server.value.OrderAdjustmentTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -95,12 +89,12 @@ public class EditOrderAdjustmentTypeCommand
     public OrderAdjustmentType getEntity(EditOrderAdjustmentTypeResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAdjustmentType orderAdjustmentType = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-            String orderAdjustmentTypeName = spec.getOrderAdjustmentTypeName();
+            var orderAdjustmentTypeName = spec.getOrderAdjustmentTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
@@ -135,8 +129,8 @@ public class EditOrderAdjustmentTypeCommand
     @Override
     public void doLock(OrderAdjustmentTypeEdit edit, OrderAdjustmentType orderAdjustmentType) {
         var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-        OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = orderAdjustmentControl.getOrderAdjustmentTypeDescription(orderAdjustmentType, getPreferredLanguage());
-        OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
+        var orderAdjustmentTypeDescription = orderAdjustmentControl.getOrderAdjustmentTypeDescription(orderAdjustmentType, getPreferredLanguage());
+        var orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
 
         edit.setOrderAdjustmentTypeName(orderAdjustmentTypeDetail.getOrderAdjustmentTypeName());
         edit.setIsDefault(orderAdjustmentTypeDetail.getIsDefault().toString());
@@ -150,13 +144,13 @@ public class EditOrderAdjustmentTypeCommand
     @Override
     public void canUpdate(OrderAdjustmentType orderAdjustmentType) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-            String orderAdjustmentTypeName = edit.getOrderAdjustmentTypeName();
-            OrderAdjustmentType duplicateOrderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+            var orderAdjustmentTypeName = edit.getOrderAdjustmentTypeName();
+            var duplicateOrderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(duplicateOrderAdjustmentType != null && !orderAdjustmentType.equals(duplicateOrderAdjustmentType)) {
                 addExecutionError(ExecutionErrors.DuplicateOrderAdjustmentTypeName.name(), orderTypeName, orderAdjustmentTypeName);
@@ -170,9 +164,9 @@ public class EditOrderAdjustmentTypeCommand
     public void doUpdate(OrderAdjustmentType orderAdjustmentType) {
         var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
         var partyPK = getPartyPK();
-        OrderAdjustmentTypeDetailValue orderAdjustmentTypeDetailValue = orderAdjustmentControl.getOrderAdjustmentTypeDetailValueForUpdate(orderAdjustmentType);
-        OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionForUpdate(orderAdjustmentType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var orderAdjustmentTypeDetailValue = orderAdjustmentControl.getOrderAdjustmentTypeDetailValueForUpdate(orderAdjustmentType);
+        var orderAdjustmentTypeDescription = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionForUpdate(orderAdjustmentType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         orderAdjustmentTypeDetailValue.setOrderAdjustmentTypeName(edit.getOrderAdjustmentTypeName());
         orderAdjustmentTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -187,7 +181,7 @@ public class EditOrderAdjustmentTypeCommand
                 orderAdjustmentControl.deleteOrderAdjustmentTypeDescription(orderAdjustmentTypeDescription, partyPK);
             } else {
                 if(orderAdjustmentTypeDescription != null && description != null) {
-                    OrderAdjustmentTypeDescriptionValue orderAdjustmentTypeDescriptionValue = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionValue(orderAdjustmentTypeDescription);
+                    var orderAdjustmentTypeDescriptionValue = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionValue(orderAdjustmentTypeDescription);
 
                     orderAdjustmentTypeDescriptionValue.setDescription(description);
                     orderAdjustmentControl.updateOrderAdjustmentTypeDescriptionFromValue(orderAdjustmentTypeDescriptionValue, partyPK);

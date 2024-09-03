@@ -20,9 +20,7 @@ import com.echothree.model.control.license.common.LicenseOptions;
 import com.echothree.model.control.license.common.transfer.LicenseTypeTransfer;
 import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.data.license.server.entity.LicenseType;
-import com.echothree.model.data.license.server.entity.LicenseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class LicenseTypeTransferCache
         extends BaseLicenseTransferCache<LicenseType, LicenseTypeTransfer> {
@@ -41,14 +39,14 @@ public class LicenseTypeTransferCache
     }
 
     public LicenseTypeTransfer getLicenseTypeTransfer(LicenseType licenseType) {
-        LicenseTypeTransfer licenseTypeTransfer = get(licenseType);
+        var licenseTypeTransfer = get(licenseType);
 
         if(licenseTypeTransfer == null) {
-            LicenseTypeDetail licenseTypeDetail = licenseType.getLastDetail();
-            String licenseTypeName = licenseTypeDetail.getLicenseTypeName();
-            Boolean isDefault = licenseTypeDetail.getIsDefault();
-            Integer sortOrder = licenseTypeDetail.getSortOrder();
-            String description = licenseControl.getBestLicenseTypeDescription(licenseType, getLanguage());
+            var licenseTypeDetail = licenseType.getLastDetail();
+            var licenseTypeName = licenseTypeDetail.getLicenseTypeName();
+            var isDefault = licenseTypeDetail.getIsDefault();
+            var sortOrder = licenseTypeDetail.getSortOrder();
+            var description = licenseControl.getBestLicenseTypeDescription(licenseType, getLanguage());
 
             licenseTypeTransfer = new LicenseTypeTransfer(licenseTypeName, isDefault, sortOrder, description);
             put(licenseType, licenseTypeTransfer);

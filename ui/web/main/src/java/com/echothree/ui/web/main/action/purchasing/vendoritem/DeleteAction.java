@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritem;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.DeleteVendorItemForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,16 +49,16 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
-        String vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
-        DeleteVendorItemForm commandForm = VendorUtil.getHome().getDeleteVendorItemForm();
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        var vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
+        var commandForm = VendorUtil.getHome().getDeleteVendorItemForm();
         
         commandForm.setVendorName(vendorName);
         commandForm.setVendorItemName(vendorItemName);
         
         VendorUtil.getHome().deleteVendorItem(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.VENDOR_NAME, vendorName);

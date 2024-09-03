@@ -18,9 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEventTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.EventType;
-import com.echothree.model.data.core.server.entity.EventTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class CreateEventTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String eventTypeName = form.getEventTypeName();
-        EventType eventType = coreControl.getEventTypeByName(eventTypeName);
+        var eventTypeName = form.getEventTypeName();
+        var eventType = coreControl.getEventTypeByName(eventTypeName);
         
         if(eventType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                EventTypeDescription eventTypeDescription = coreControl.getEventTypeDescription(eventType, language);
+                var eventTypeDescription = coreControl.getEventTypeDescription(eventType, language);
 
                 if(eventTypeDescription == null) {
                     var description = form.getDescription();

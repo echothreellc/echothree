@@ -17,9 +17,7 @@
 package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.transfer.ContentPageDescriptionTransfer;
-import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.content.server.entity.ContentPageDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ContentPageDescriptionTransferCache
     }
     
     public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(ContentPageDescription contentPageDescription) {
-        ContentPageDescriptionTransfer contentPageDescriptionTransfer = get(contentPageDescription);
+        var contentPageDescriptionTransfer = get(contentPageDescription);
         
         if(contentPageDescriptionTransfer == null) {
-            ContentPageTransfer contentPageTransfer = contentControl.getContentPageTransfer(userVisit, contentPageDescription.getContentPage());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageDescription.getLanguage());
+            var contentPageTransfer = contentControl.getContentPageTransfer(userVisit, contentPageDescription.getContentPage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageDescription.getLanguage());
             
             contentPageDescriptionTransfer = new ContentPageDescriptionTransfer(languageTransfer, contentPageTransfer, contentPageDescription.getDescription());
             put(contentPageDescription, contentPageDescriptionTransfer);

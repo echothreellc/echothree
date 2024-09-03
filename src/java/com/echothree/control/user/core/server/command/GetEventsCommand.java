@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEventsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEventsResult;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -27,7 +26,6 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.core.server.factory.EventFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -78,14 +76,14 @@ public class GetEventsCommand
 
     @Override
     protected Collection<Event> getEntities() {
-        String entityRef = form.getEntityRef();
-        String key = form.getKey();
-        String guid = form.getGuid();
-        String ulid = form.getUlid();
-        String createdByEntityRef = form.getCreatedByEntityRef();
-        String createdByKey = form.getCreatedByKey();
-        String createdByGuid = form.getCreatedByGuid();
-        String createdByUlid = form.getCreatedByUlid();
+        var entityRef = form.getEntityRef();
+        var key = form.getKey();
+        var guid = form.getGuid();
+        var ulid = form.getUlid();
+        var createdByEntityRef = form.getCreatedByEntityRef();
+        var createdByKey = form.getCreatedByKey();
+        var createdByGuid = form.getCreatedByGuid();
+        var createdByUlid = form.getCreatedByUlid();
         var parameterCount = (entityRef == null ? 0 : 1) + (key == null ? 0 : 1) + (guid == null ? 0 : 1) + (ulid == null ? 0 : 1)
                 + (createdByEntityRef == null ? 0 : 1) + (createdByKey == null ? 0 : 1) + (createdByGuid == null ? 0 : 1) + (createdByUlid == null ? 0 : 1);
         Collection<Event> entities = null;
@@ -123,11 +121,11 @@ public class GetEventsCommand
 
     @Override
     protected BaseResult getResult(Collection<Event> entities) {
-        GetEventsResult result = CoreResultFactory.getGetEventsResult();
+        var result = CoreResultFactory.getGetEventsResult();
 
         if(entities != null) {
             var coreControl = getCoreControl();
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setEventCount(eventCount);
 

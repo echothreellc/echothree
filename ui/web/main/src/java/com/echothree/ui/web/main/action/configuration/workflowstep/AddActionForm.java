@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.workflowstep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowStepTypeChoicesForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepTypeChoicesResult;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -46,14 +43,14 @@ public class AddActionForm
     public void setupWorkflowStepTypeChoices()
             throws NamingException {
         if(workflowStepTypeChoices == null) {
-            GetWorkflowStepTypeChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepTypeChoicesForm();
+            var form = WorkflowUtil.getHome().getGetWorkflowStepTypeChoicesForm();
 
             form.setDefaultWorkflowStepTypeChoice(workflowStepTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepTypeChoicesResult result = (GetWorkflowStepTypeChoicesResult)executionResult.getResult();
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepTypeChoicesResult)executionResult.getResult();
             workflowStepTypeChoices = result.getWorkflowStepTypeChoices();
 
             if(workflowStepTypeChoice == null) {

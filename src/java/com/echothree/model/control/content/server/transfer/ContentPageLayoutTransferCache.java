@@ -19,7 +19,6 @@ package com.echothree.model.control.content.server.transfer;
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ContentPageLayoutTransferCache
@@ -33,14 +32,14 @@ public class ContentPageLayoutTransferCache
     }
     
     public ContentPageLayoutTransfer getTransfer(ContentPageLayout contentPageLayout) {
-        ContentPageLayoutTransfer contentPageLayoutTransfer = get(contentPageLayout);
+        var contentPageLayoutTransfer = get(contentPageLayout);
         
         if(contentPageLayoutTransfer == null) {
-            ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
-            String contentPageLayoutName = contentPageLayoutDetail.getContentPageLayoutName();
-            Boolean isDefault = contentPageLayoutDetail.getIsDefault();
-            Integer sortOrder = contentPageLayoutDetail.getSortOrder();
-            String description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage());
+            var contentPageLayoutDetail = contentPageLayout.getLastDetail();
+            var contentPageLayoutName = contentPageLayoutDetail.getContentPageLayoutName();
+            var isDefault = contentPageLayoutDetail.getIsDefault();
+            var sortOrder = contentPageLayoutDetail.getSortOrder();
+            var description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage());
             
             contentPageLayoutTransfer = new ContentPageLayoutTransfer(contentPageLayoutName, isDefault, sortOrder, description);
             put(contentPageLayout, contentPageLayoutTransfer);

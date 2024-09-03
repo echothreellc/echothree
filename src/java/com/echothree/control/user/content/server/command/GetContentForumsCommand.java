@@ -18,12 +18,10 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentForumsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentForumsResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentForum;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -56,7 +54,7 @@ public class GetContentForumsCommand
     @Override
     protected Collection<ContentForum> getEntities() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
+        var contentCollectionName = form.getContentCollectionName();
         Collection<ContentForum> contentForums = null;
         
         contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -72,11 +70,11 @@ public class GetContentForumsCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentForum> entities) {
-        GetContentForumsResult result = ContentResultFactory.getGetContentForumsResult();
+        var result = ContentResultFactory.getGetContentForumsResult();
         
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
             result.setContentForums(contentControl.getContentForumTransfers(userVisit, entities));

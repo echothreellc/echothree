@@ -17,7 +17,6 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.GetScaleUseTypesForm;
-import com.echothree.control.user.scale.common.result.GetScaleUseTypesResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -47,7 +46,7 @@ public class GetScaleUseTypesCommand
     @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        GetScaleUseTypesResult result = ScaleResultFactory.getGetScaleUseTypesResult();
+        var result = ScaleResultFactory.getGetScaleUseTypesResult();
 
         result.setScaleUseTypes(scaleControl.getScaleUseTypeTransfers(getUserVisit()));
         

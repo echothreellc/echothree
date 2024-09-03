@@ -20,12 +20,9 @@ import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.common.CommunicationOptions;
 import com.echothree.model.control.communication.common.transfer.CommunicationEmailSourceTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
-import com.echothree.model.control.communication.common.transfer.CommunicationSourceTypeTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
-import com.echothree.model.data.communication.server.entity.CommunicationSourceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class CommunicationSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationSource, CommunicationSourceTransfer> {
@@ -45,19 +42,19 @@ public class CommunicationSourceTransferCache
     }
     
     public CommunicationSourceTransfer getCommunicationSourceTransfer(CommunicationSource communicationSource) {
-        CommunicationSourceTransfer communicationSourceTransfer = get(communicationSource);
+        var communicationSourceTransfer = get(communicationSource);
         
         if(communicationSourceTransfer == null) {
-            CommunicationSourceDetail communicationSourceDetail = communicationSource.getLastDetail();
-            String communicationSourceName = communicationSourceDetail.getCommunicationSourceName();
-            CommunicationSourceTypeTransfer communicationSourceTypeTransfer = communicationControl.getCommunicationSourceTypeTransfer(userVisit,
+            var communicationSourceDetail = communicationSource.getLastDetail();
+            var communicationSourceName = communicationSourceDetail.getCommunicationSourceName();
+            var communicationSourceTypeTransfer = communicationControl.getCommunicationSourceTypeTransfer(userVisit,
                     communicationSourceDetail.getCommunicationSourceType());
-            Integer sortOrder = communicationSourceDetail.getSortOrder();
-            String description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage());
+            var sortOrder = communicationSourceDetail.getSortOrder();
+            var description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage());
             CommunicationEmailSourceTransfer communicationEmailSourceTransfer = null;
             
             if(includeRelated) {
-                String communicationSourceTypeName = communicationSourceTypeTransfer.getCommunicationSourceTypeName();
+                var communicationSourceTypeName = communicationSourceTypeTransfer.getCommunicationSourceTypeName();
                 
                 if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)) {
                     communicationEmailSourceTransfer = communicationControl.getCommunicationEmailSourceTransfer(userVisit,

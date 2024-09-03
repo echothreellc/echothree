@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteAppearanceDescriptionForm;
-import com.echothree.control.user.core.common.form.GetAppearanceDescriptionForm;
 import com.echothree.control.user.core.common.result.GetAppearanceDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetAppearanceDescriptionForm commandForm = CoreUtil.getHome().getGetAppearanceDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetAppearanceDescriptionForm();
         
         commandForm.setAppearanceName(actionForm.getAppearanceName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getAppearanceDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getAppearanceDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAppearanceDescriptionResult result = (GetAppearanceDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAppearanceDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.APPEARANCE_DESCRIPTION, result.getAppearanceDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteAppearanceDescriptionForm commandForm = CoreUtil.getHome().getDeleteAppearanceDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteAppearanceDescriptionForm();
 
         commandForm.setAppearanceName(actionForm.getAppearanceName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeealias;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreatePartyAliasForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -58,7 +57,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyAliasForm commandForm = PartyUtil.getHome().getCreatePartyAliasForm();
+        var commandForm = PartyUtil.getHome().getCreatePartyAliasForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setPartyAliasTypeName(actionForm.getPartyAliasTypeChoice());

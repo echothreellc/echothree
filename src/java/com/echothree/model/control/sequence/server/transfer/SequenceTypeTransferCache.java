@@ -16,12 +16,9 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
-import com.echothree.model.control.sequence.common.transfer.SequenceChecksumTypeTransfer;
-import com.echothree.model.control.sequence.common.transfer.SequenceEncoderTypeTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.sequence.server.entity.SequenceTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SequenceTypeTransferCache
@@ -35,21 +32,21 @@ public class SequenceTypeTransferCache
     }
     
     public SequenceTypeTransfer getSequenceTypeTransfer(SequenceType sequenceType) {
-        SequenceTypeTransfer sequenceTypeTransfer = get(sequenceType);
+        var sequenceTypeTransfer = get(sequenceType);
         
         if(sequenceTypeTransfer == null) {
-            SequenceTypeDetail sequenceTypeDetail = sequenceType.getLastDetail();
-            String sequenceTypeName = sequenceTypeDetail.getSequenceTypeName();
-            String prefix = sequenceTypeDetail.getPrefix();
-            String suffix = sequenceTypeDetail.getSuffix();
-            SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache();
-            SequenceEncoderTypeTransfer sequenceEncoderType = sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(sequenceTypeDetail.getSequenceEncoderType());
-            SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache();
-            SequenceChecksumTypeTransfer sequenceChecksumType = sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(sequenceTypeDetail.getSequenceChecksumType());
-            Integer chunkSize = sequenceTypeDetail.getChunkSize();
-            Boolean isDefault = sequenceTypeDetail.getIsDefault();
-            Integer sortOrder = sequenceTypeDetail.getSortOrder();
-            String description = sequenceControl.getBestSequenceTypeDescription(sequenceType, getLanguage());
+            var sequenceTypeDetail = sequenceType.getLastDetail();
+            var sequenceTypeName = sequenceTypeDetail.getSequenceTypeName();
+            var prefix = sequenceTypeDetail.getPrefix();
+            var suffix = sequenceTypeDetail.getSuffix();
+            var sequenceEncoderTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache();
+            var sequenceEncoderType = sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(sequenceTypeDetail.getSequenceEncoderType());
+            var sequenceChecksumTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache();
+            var sequenceChecksumType = sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(sequenceTypeDetail.getSequenceChecksumType());
+            var chunkSize = sequenceTypeDetail.getChunkSize();
+            var isDefault = sequenceTypeDetail.getIsDefault();
+            var sortOrder = sequenceTypeDetail.getSortOrder();
+            var description = sequenceControl.getBestSequenceTypeDescription(sequenceType, getLanguage());
             
             sequenceTypeTransfer = new SequenceTypeTransfer(sequenceTypeName, prefix, suffix, sequenceEncoderType,
                     sequenceChecksumType, chunkSize, isDefault, sortOrder, description);

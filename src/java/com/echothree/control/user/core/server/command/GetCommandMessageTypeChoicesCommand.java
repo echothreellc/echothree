@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandMessageTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetCommandMessageTypeChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +60,9 @@ public class GetCommandMessageTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandMessageTypeChoicesResult result = CoreResultFactory.getGetCommandMessageTypeChoicesResult();
-        String defaultCommandMessageTypeChoice = form.getDefaultCommandMessageTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetCommandMessageTypeChoicesResult();
+        var defaultCommandMessageTypeChoice = form.getDefaultCommandMessageTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCommandMessageTypeChoices(coreControl.getCommandMessageTypeChoices(defaultCommandMessageTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

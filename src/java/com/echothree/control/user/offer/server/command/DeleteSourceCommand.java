@@ -21,9 +21,6 @@ import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.OfferUseDetail;
-import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -63,16 +60,16 @@ public class DeleteSourceCommand
     @Override
     protected BaseResult execute() {
         var sourceControl = Session.getModelController(SourceControl.class);
-        String sourceName = form.getSourceName();
-        Source source = sourceControl.getSourceByNameForUpdate(sourceName);
+        var sourceName = form.getSourceName();
+        var source = sourceControl.getSourceByNameForUpdate(sourceName);
 
         if(source != null) {
-            OfferUse offerUse = source.getLastDetail().getOfferUse();
+            var offerUse = source.getLastDetail().getOfferUse();
 
             if(sourceControl.countSourcesByOfferUse(offerUse) > 1) {
                 sourceControl.deleteSource(source, getPartyPK());
             } else {
-                OfferUseDetail offerUseDetail = offerUse.getLastDetail();
+                var offerUseDetail = offerUse.getLastDetail();
                 
                 addExecutionError(ExecutionErrors.CannotDeleteLastSource.name(), offerUseDetail.getOffer().getLastDetail().getOfferName(),
                         offerUseDetail.getUse().getLastDetail().getUseName(), sourceName);

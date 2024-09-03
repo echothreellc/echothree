@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.common.transfer.MoodDescriptionTransfer;
-import com.echothree.model.control.party.common.transfer.MoodTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.MoodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class MoodDescriptionTransferCache
     }
     
     public MoodDescriptionTransfer getMoodDescriptionTransfer(MoodDescription moodDescription) {
-        MoodDescriptionTransfer moodDescriptionTransfer = get(moodDescription);
+        var moodDescriptionTransfer = get(moodDescription);
         
         if(moodDescriptionTransfer == null) {
-            MoodTransfer moodTransfer = partyControl.getMoodTransfer(userVisit, moodDescription.getMood());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, moodDescription.getLanguage());
+            var moodTransfer = partyControl.getMoodTransfer(userVisit, moodDescription.getMood());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, moodDescription.getLanguage());
             
             moodDescriptionTransfer = new MoodDescriptionTransfer(languageTransfer, moodTransfer, moodDescription.getDescription());
             put(moodDescription, moodDescriptionTransfer);

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListChoicesForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListChoicesResult;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
 import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -46,14 +42,14 @@ public class AddActionForm
     public void setupContactListChoices()
             throws NamingException {
         if(contactListChoices == null) {
-            GetContactListChoicesForm form = ContactListUtil.getHome().getGetContactListChoicesForm();
+            var form = ContactListUtil.getHome().getGetContactListChoicesForm();
 
             form.setDefaultContactListChoice(contactListChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListChoicesResult getContactListChoicesResult = (GetContactListChoicesResult)executionResult.getResult();
+            var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContactListChoicesResult = (GetContactListChoicesResult)executionResult.getResult();
             contactListChoices = getContactListChoicesResult.getContactListChoices();
 
             if(contactListChoice == null) {
@@ -65,14 +61,14 @@ public class AddActionForm
     public void setupPreferredContactMechanismPurposeChoices()
             throws NamingException {
         if(preferredContactMechanismPurposeChoices == null) {
-            GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+            var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             form.setDefaultContactMechanismPurposeChoice(preferredContactMechanismPurposeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismPurposeChoicesResult getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
             preferredContactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
 
             if(preferredContactMechanismPurposeChoice == null) {

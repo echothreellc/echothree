@@ -32,15 +32,15 @@ public class Inet4AddressUtils {
     
     // http://darksleep.com/player/JavaAndUnsignedTypes.html
     public String formatInet4Address(Integer inet4Address) {
-        long rawInet4Address = inet4Address & 0xFFFFFFFFL;
-        int inet4Address0 = (int)(rawInet4Address & 0xFF);
-        int inet4Address1 = (int)((rawInet4Address & 0xFF00) >> 8);
-        int inet4Address2 = (int)((rawInet4Address & 0xFF0000) >> 16);
-        int inet4Address3 = (int)(rawInet4Address >> 24);
-        StringBuilder sb = new StringBuilder().append(inet4Address3).append('.').append(inet4Address2).append('.').
-                append(inet4Address1).append('.').append(inet4Address0);
+        var rawInet4Address = inet4Address & 0xFFFFFFFFL;
+        var inet4Address0 = (int)(rawInet4Address & 0xFF);
+        var inet4Address1 = (int)((rawInet4Address & 0xFF00) >> 8);
+        var inet4Address2 = (int)((rawInet4Address & 0xFF0000) >> 16);
+        var inet4Address3 = (int)(rawInet4Address >> 24);
+        var sb = String.valueOf(inet4Address3) + '.' + inet4Address2 + '.' +
+                inet4Address1 + '.' + inet4Address0;
 
-        return sb.toString();
+        return sb;
     }
 
 }

@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;
-import com.echothree.model.data.shipping.server.value.ShippingMethodDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditShippingMethodDescriptionCommand
     public ShippingMethodDescription getEntity(EditShippingMethodDescriptionResult result) {
         var shippingControl = Session.getModelController(ShippingControl.class);
         ShippingMethodDescription shippingMethodDescription = null;
-        String shippingMethodName = spec.getShippingMethodName();
-        ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+        var shippingMethodName = spec.getShippingMethodName();
+        var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
         if(shippingMethod != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditShippingMethodDescriptionCommand
     @Override
     public void doUpdate(ShippingMethodDescription shippingMethodDescription) {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        ShippingMethodDescriptionValue shippingMethodDescriptionValue = shippingControl.getShippingMethodDescriptionValue(shippingMethodDescription);
+        var shippingMethodDescriptionValue = shippingControl.getShippingMethodDescriptionValue(shippingMethodDescription);
         shippingMethodDescriptionValue.setDescription(edit.getDescription());
 
         shippingControl.updateShippingMethodDescriptionFromValue(shippingMethodDescriptionValue, getPartyPK());

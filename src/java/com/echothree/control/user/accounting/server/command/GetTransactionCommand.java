@@ -18,10 +18,8 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetTransactionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetTransactionResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,9 +50,9 @@ public class GetTransactionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionResult result = AccountingResultFactory.getGetTransactionResult();
-        String transactionName = form.getTransactionName();
-        Transaction transaction = accountingControl.getTransactionByName(transactionName);
+        var result = AccountingResultFactory.getGetTransactionResult();
+        var transactionName = form.getTransactionName();
+        var transaction = accountingControl.getTransactionByName(transactionName);
         
         if(transaction != null) {
             result.setTransaction(accountingControl.getTransactionTransfer(getUserVisit(), transaction));

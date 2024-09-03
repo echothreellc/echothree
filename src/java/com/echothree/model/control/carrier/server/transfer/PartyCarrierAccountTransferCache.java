@@ -18,13 +18,10 @@ package com.echothree.model.control.carrier.server.transfer;
 
 
 
-import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierAccountTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.carrier.server.entity.PartyCarrierAccount;
-import com.echothree.model.data.carrier.server.entity.PartyCarrierAccountDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,14 +36,14 @@ public class PartyCarrierAccountTransferCache
     }
     
     public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(PartyCarrierAccount partyCarrierAccount) {
-        PartyCarrierAccountTransfer partyCarrierAccountTransfer = get(partyCarrierAccount);
+        var partyCarrierAccountTransfer = get(partyCarrierAccount);
         
         if(partyCarrierAccountTransfer == null) {
-            PartyCarrierAccountDetail partyCarrierAccountDetail = partyCarrierAccount.getLastDetail();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyCarrierAccountDetail.getParty());
-            CarrierTransfer carrier = carrierControl.getCarrierTransfer(userVisit, partyCarrierAccountDetail.getCarrierParty());
-            String account = partyCarrierAccountDetail.getAccount();
-            Boolean alwaysUseThirdPartyBilling = partyCarrierAccountDetail.getAlwaysUseThirdPartyBilling();
+            var partyCarrierAccountDetail = partyCarrierAccount.getLastDetail();
+            var party = partyControl.getPartyTransfer(userVisit, partyCarrierAccountDetail.getParty());
+            var carrier = carrierControl.getCarrierTransfer(userVisit, partyCarrierAccountDetail.getCarrierParty());
+            var account = partyCarrierAccountDetail.getAccount();
+            var alwaysUseThirdPartyBilling = partyCarrierAccountDetail.getAlwaysUseThirdPartyBilling();
             
             partyCarrierAccountTransfer = new PartyCarrierAccountTransfer(party, carrier, account, alwaysUseThirdPartyBilling);
             put(partyCarrierAccount, partyCarrierAccountTransfer);

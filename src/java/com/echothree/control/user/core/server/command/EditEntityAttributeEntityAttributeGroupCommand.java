@@ -27,11 +27,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
-import com.echothree.model.data.core.server.value.EntityAttributeEntityAttributeGroupValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,10 +86,10 @@ public class EditEntityAttributeEntityAttributeGroupCommand
     @Override
     public EntityAttributeEntityAttributeGroup getEntity(EditEntityAttributeEntityAttributeGroupResult result) {
         EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = null;
-        EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            EntityAttributeGroup entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, spec.getEntityAttributeGroupName());
+            var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, spec.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
@@ -105,8 +101,8 @@ public class EditEntityAttributeEntityAttributeGroupCommand
                 }
 
                 if(entityAttributeEntityAttributeGroup == null) {
-                    EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-                    EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                    var entityAttributeDetail = entityAttribute.getLastDetail();
+                    var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
                     
                     addExecutionError(ExecutionErrors.UnknownEntityAttributeEntityAttributeGroup.name(),
                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
@@ -138,7 +134,7 @@ public class EditEntityAttributeEntityAttributeGroupCommand
     @Override
     public void doUpdate(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup) {
         var coreControl = getCoreControl();
-        EntityAttributeEntityAttributeGroupValue entityAttributeEntityAttributeGroupValue = coreControl.getEntityAttributeEntityAttributeGroupValue(entityAttributeEntityAttributeGroup);
+        var entityAttributeEntityAttributeGroupValue = coreControl.getEntityAttributeEntityAttributeGroupValue(entityAttributeEntityAttributeGroup);
         
         entityAttributeEntityAttributeGroupValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 

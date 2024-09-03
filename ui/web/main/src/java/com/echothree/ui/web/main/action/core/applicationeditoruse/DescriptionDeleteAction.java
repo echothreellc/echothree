@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.applicationeditoruse;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteApplicationEditorUseDescriptionForm;
-import com.echothree.control.user.core.common.form.GetApplicationEditorUseDescriptionForm;
 import com.echothree.control.user.core.common.result.GetApplicationEditorUseDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,16 +61,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetApplicationEditorUseDescriptionForm commandForm = CoreUtil.getHome().getGetApplicationEditorUseDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetApplicationEditorUseDescriptionForm();
         
         commandForm.setApplicationName(actionForm.getApplicationName());
         commandForm.setApplicationEditorUseName(actionForm.getApplicationEditorUseName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getApplicationEditorUseDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getApplicationEditorUseDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationEditorUseDescriptionResult result = (GetApplicationEditorUseDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetApplicationEditorUseDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.APPLICATION_EDITOR_USE_DESCRIPTION, result.getApplicationEditorUseDescription());
         }
@@ -82,7 +79,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteApplicationEditorUseDescriptionForm commandForm = CoreUtil.getHome().getDeleteApplicationEditorUseDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteApplicationEditorUseDescriptionForm();
 
         commandForm.setApplicationName(actionForm.getApplicationName());
         commandForm.setApplicationEditorUseName(actionForm.getApplicationEditorUseName());

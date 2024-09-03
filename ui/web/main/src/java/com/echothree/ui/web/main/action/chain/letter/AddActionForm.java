@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListChoicesForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListChoicesResult;
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.GetLetterSourceChoicesForm;
 import com.echothree.control.user.letter.common.result.GetLetterSourceChoicesResult;
 import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;
 import com.echothree.model.control.letter.common.choice.LetterSourceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -53,14 +49,14 @@ public class AddActionForm
     private void setupLetterSourceChoices() {
         if(letterSourceChoices == null) {
             try {
-                GetLetterSourceChoicesForm commandForm = LetterUtil.getHome().getGetLetterSourceChoicesForm();
+                var commandForm = LetterUtil.getHome().getGetLetterSourceChoicesForm();
                 
                 commandForm.setDefaultLetterSourceChoice(letterSourceChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = LetterUtil.getHome().getLetterSourceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLetterSourceChoicesResult result = (GetLetterSourceChoicesResult)executionResult.getResult();
+
+                var commandResult = LetterUtil.getHome().getLetterSourceChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLetterSourceChoicesResult)executionResult.getResult();
                 letterSourceChoices = result.getLetterSourceChoices();
                 
                 if(letterSourceChoice == null) {
@@ -76,14 +72,14 @@ public class AddActionForm
     private void setupContactListChoices() {
         if(contactListChoices == null) {
             try {
-                GetContactListChoicesForm commandForm = ContactListUtil.getHome().getGetContactListChoicesForm();
+                var commandForm = ContactListUtil.getHome().getGetContactListChoicesForm();
                 
                 commandForm.setDefaultContactListChoice(contactListChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactListChoicesResult result = (GetContactListChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContactListChoicesResult)executionResult.getResult();
                 contactListChoices = result.getContactListChoices();
                 
                 if(contactListChoice == null) {

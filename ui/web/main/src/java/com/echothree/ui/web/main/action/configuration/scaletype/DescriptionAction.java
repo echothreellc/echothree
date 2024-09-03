@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.scaletype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetScaleTypeDescriptionsForm;
 import com.echothree.control.user.scale.common.result.GetScaleTypeDescriptionsResult;
-import com.echothree.model.control.scale.common.transfer.ScaleTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String scaleTypeName = request.getParameter(ParameterConstants.SCALE_TYPE_NAME);
-        GetScaleTypeDescriptionsForm commandForm = ScaleUtil.getHome().getGetScaleTypeDescriptionsForm();
+        var scaleTypeName = request.getParameter(ParameterConstants.SCALE_TYPE_NAME);
+        var commandForm = ScaleUtil.getHome().getGetScaleTypeDescriptionsForm();
 
         commandForm.setScaleTypeName(scaleTypeName);
 
-        CommandResult commandResult = ScaleUtil.getHome().getScaleTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ScaleUtil.getHome().getScaleTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleTypeDescriptionsResult result = (GetScaleTypeDescriptionsResult) executionResult.getResult();
-            ScaleTypeTransfer scaleTypeTransfer = result.getScaleType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleTypeDescriptionsResult) executionResult.getResult();
+            var scaleTypeTransfer = result.getScaleType();
 
             request.setAttribute(AttributeConstants.SCALE_TYPE, scaleTypeTransfer);
             request.setAttribute(AttributeConstants.SCALE_TYPE_DESCRIPTIONS, result.getScaleTypeDescriptions());

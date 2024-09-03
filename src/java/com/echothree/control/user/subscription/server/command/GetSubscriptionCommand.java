@@ -17,11 +17,9 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.GetSubscriptionForm;
-import com.echothree.control.user.subscription.common.result.GetSubscriptionResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,9 +50,9 @@ public class GetSubscriptionCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        GetSubscriptionResult result = SubscriptionResultFactory.getGetSubscriptionResult();
-        String subscriptionName = form.getSubscriptionName();
-        Subscription subscription = subscriptionControl.getSubscriptionByName(subscriptionName);
+        var result = SubscriptionResultFactory.getGetSubscriptionResult();
+        var subscriptionName = form.getSubscriptionName();
+        var subscription = subscriptionControl.getSubscriptionByName(subscriptionName);
         
         if(subscription != null) {
             result.setSubscription(subscriptionControl.getSubscriptionTransfer(getUserVisit(), subscription));

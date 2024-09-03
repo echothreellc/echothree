@@ -17,11 +17,9 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.GetWishlistPriorityChoicesForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistPriorityChoicesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -54,13 +52,13 @@ public class GetWishlistPriorityChoicesCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistPriorityChoicesResult result = WishlistResultFactory.getGetWishlistPriorityChoicesResult();
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var result = WishlistResultFactory.getGetWishlistPriorityChoicesResult();
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String defaultWishlistPriorityChoice = form.getDefaultWishlistPriorityChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultWishlistPriorityChoice = form.getDefaultWishlistPriorityChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setWishlistPriorityChoices(wishlistControl.getWishlistPriorityChoices(defaultWishlistPriorityChoice,
                     getPreferredLanguage(), allowNullChoice, wishlistType));

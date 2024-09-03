@@ -20,9 +20,7 @@ import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
-import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class SearchDefaultOperatorTransferCache
         extends BaseSearchTransferCache<SearchDefaultOperator, SearchDefaultOperatorTransfer> {
@@ -41,14 +39,14 @@ public class SearchDefaultOperatorTransferCache
     }
 
     public SearchDefaultOperatorTransfer getSearchDefaultOperatorTransfer(SearchDefaultOperator searchDefaultOperator) {
-        SearchDefaultOperatorTransfer searchDefaultOperatorTransfer = get(searchDefaultOperator);
+        var searchDefaultOperatorTransfer = get(searchDefaultOperator);
 
         if(searchDefaultOperatorTransfer == null) {
-            SearchDefaultOperatorDetail searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
-            String searchDefaultOperatorName = searchDefaultOperatorDetail.getSearchDefaultOperatorName();
-            Boolean isDefault = searchDefaultOperatorDetail.getIsDefault();
-            Integer sortOrder = searchDefaultOperatorDetail.getSortOrder();
-            String description = searchControl.getBestSearchDefaultOperatorDescription(searchDefaultOperator, getLanguage());
+            var searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
+            var searchDefaultOperatorName = searchDefaultOperatorDetail.getSearchDefaultOperatorName();
+            var isDefault = searchDefaultOperatorDetail.getIsDefault();
+            var sortOrder = searchDefaultOperatorDetail.getSortOrder();
+            var description = searchControl.getBestSearchDefaultOperatorDescription(searchDefaultOperator, getLanguage());
 
             searchDefaultOperatorTransfer = new SearchDefaultOperatorTransfer(searchDefaultOperatorName, isDefault, sortOrder, description);
             put(searchDefaultOperator, searchDefaultOperatorTransfer);

@@ -18,20 +18,14 @@ package com.echothree.control.user.user.server.command;
 
 
 import com.echothree.control.user.user.common.form.GetRecoveryAnswerForm;
-import com.echothree.control.user.user.common.result.GetRecoveryAnswerResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.customer.server.entity.Customer;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.RecoveryAnswer;
-import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -63,16 +57,16 @@ public class GetRecoveryAnswerCommand
     
     @Override
     protected BaseResult execute() {
-        GetRecoveryAnswerResult result = UserResultFactory.getGetRecoveryAnswerResult();
-        String partyName = form.getPartyName();
-        String employeeName = form.getEmployeeName();
-        String customerName = form.getCustomerName();
-        String vendorName = form.getVendorName();
+        var result = UserResultFactory.getGetRecoveryAnswerResult();
+        var partyName = form.getPartyName();
+        var employeeName = form.getEmployeeName();
+        var customerName = form.getCustomerName();
+        var vendorName = form.getVendorName();
         var parameterCount = (partyName == null ? 0 : 1) + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
         
         if(parameterCount < 2) {
-            UserControl userControl = getUserControl();
-            Party self = getParty();
+            var userControl = getUserControl();
+            var self = getParty();
             Party party = null;
             
             if(partyName != null) {
@@ -84,7 +78,7 @@ public class GetRecoveryAnswerCommand
                 }
             } else if(employeeName != null) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                 
                 if(partyEmployee != null) {
                     party = partyEmployee.getParty();
@@ -93,7 +87,7 @@ public class GetRecoveryAnswerCommand
                 }
             } else if(customerName != null) {
                 var customerControl = Session.getModelController(CustomerControl.class);
-                Customer customer = customerControl.getCustomerByName(customerName);
+                var customer = customerControl.getCustomerByName(customerName);
                 
                 if(customer != null) {
                     party = customer.getParty();
@@ -102,7 +96,7 @@ public class GetRecoveryAnswerCommand
                 }
             } else if(vendorName != null) {
                 var vendorControl = Session.getModelController(VendorControl.class);
-                Vendor vendor = vendorControl.getVendorByName(vendorName);
+                var vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {
                     party = vendor.getParty();
@@ -118,7 +112,7 @@ public class GetRecoveryAnswerCommand
             }
             
             if(!hasExecutionErrors()) {
-                RecoveryAnswer recoveryAnswer = userControl.getRecoveryAnswer(party);
+                var recoveryAnswer = userControl.getRecoveryAnswer(party);
                 
                 if(recoveryAnswer != null) {
                     result.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(getUserVisit(), recoveryAnswer));

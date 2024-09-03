@@ -22,9 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,16 +65,16 @@ public class CreateFilterAdjustmentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
-        FilterAdjustmentType filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
+        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                FilterAdjustmentTypeDescription filterTypeDescription = filterControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
+                var filterTypeDescription = filterControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
                 
                 if(filterTypeDescription == null) {
                     var description = form.getDescription();

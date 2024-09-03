@@ -17,20 +17,15 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument.add;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.CreatePartyDocumentForm;
-import com.echothree.control.user.document.common.form.GetDocumentTypeForm;
 import com.echothree.control.user.document.common.result.GetDocumentTypeResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorForm;
 import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
-import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -41,7 +36,6 @@ import java.io.IOException;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.upload.FormFile;
 
 @SproutAction(
     path = "/Purchasing/VendorDocument/Add/Step3",
@@ -72,16 +66,16 @@ public class Step3Action
     
     private void setupVendorTransfer(Step3ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
 
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorResult result = (GetVendorResult)executionResult.getResult();
-            VendorTransfer vendor = result.getVendor();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorResult)executionResult.getResult();
+            var vendor = result.getVendor();
 
             if(vendor != null) {
                 request.setAttribute(AttributeConstants.VENDOR, vendor);
@@ -91,13 +85,13 @@ public class Step3Action
 
     private DocumentTypeTransfer getDocumentTypeTransfer(Step3ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetDocumentTypeForm commandForm = DocumentUtil.getHome().getGetDocumentTypeForm();
+        var commandForm = DocumentUtil.getHome().getGetDocumentTypeForm();
 
         commandForm.setDocumentTypeName(actionForm.getDocumentTypeName());
 
-        CommandResult commandResult = DocumentUtil.getHome().getDocumentType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetDocumentTypeResult result = (GetDocumentTypeResult)executionResult.getResult();
+        var commandResult = DocumentUtil.getHome().getDocumentType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetDocumentTypeResult)executionResult.getResult();
 
         return result.getDocumentType();
     }
@@ -117,9 +111,9 @@ public class Step3Action
     @Override
     public CommandResult doAdd(Step3ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyDocumentForm commandForm = DocumentUtil.getHome().getCreatePartyDocumentForm();
-        DocumentTypeTransfer documentType = getDocumentTypeTransfer(actionForm, request);
-        String mimeTypeUsageTypeName = documentType.getMimeTypeUsageType().getMimeTypeUsageTypeName();
+        var commandForm = DocumentUtil.getHome().getCreatePartyDocumentForm();
+        var documentType = getDocumentTypeTransfer(actionForm, request);
+        var mimeTypeUsageTypeName = documentType.getMimeTypeUsageType().getMimeTypeUsageTypeName();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setDocumentTypeName(actionForm.getDocumentTypeName());
@@ -131,7 +125,7 @@ public class Step3Action
             commandForm.setMimeTypeName(actionForm.getMimeTypeChoice());
             commandForm.setClob(actionForm.getClob());
         } else {
-            FormFile blob = actionForm.getBlob();
+            var blob = actionForm.getBlob();
 
             commandForm.setMimeTypeName(blob.getContentType());
 

@@ -19,7 +19,6 @@ package com.echothree.model.control.offer.server.transfer;
 import com.echothree.model.control.offer.common.transfer.UseTypeTransfer;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.offer.server.entity.UseType;
-import com.echothree.model.data.offer.server.entity.UseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,14 +35,14 @@ public class UseTypeTransferCache
     }
     
     public UseTypeTransfer getUseTypeTransfer(UseType useType) {
-        UseTypeTransfer useTypeTransfer = get(useType);
+        var useTypeTransfer = get(useType);
         
         if(useTypeTransfer == null) {
-            UseTypeDetail useTypeDetail = useType.getLastDetail();
-            String useTypeName = useTypeDetail.getUseTypeName();
-            Boolean isDefault = useTypeDetail.getIsDefault();
-            Integer sortOrder = useTypeDetail.getSortOrder();
-            String description = useTypeControl.getBestUseTypeDescription(useType, getLanguage());
+            var useTypeDetail = useType.getLastDetail();
+            var useTypeName = useTypeDetail.getUseTypeName();
+            var isDefault = useTypeDetail.getIsDefault();
+            var sortOrder = useTypeDetail.getSortOrder();
+            var description = useTypeControl.getBestUseTypeDescription(useType, getLanguage());
             
             useTypeTransfer = new UseTypeTransfer(useTypeName, isDefault, sortOrder, description);
             put(useType, useTypeTransfer);

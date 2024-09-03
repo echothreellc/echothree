@@ -94,7 +94,7 @@ public class CreateLocationCommand
                         var locationUseType = LocationUseTypeLogic.getInstance().getLocationUseTypeByName(this, locationUseTypeName, null, false);
                         
                         if(!hasExecutionErrors()) {
-                            boolean multipleUseError = false;
+                            var multipleUseError = false;
                             
                             if(!locationUseType.getAllowMultiple()) {
                                 if(warehouseControl.countLocationsByLocationUseType(warehouseParty, locationUseType) != 0)

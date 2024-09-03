@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeChainTransfer;
-import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -41,13 +39,13 @@ public class SubscriptionTypeChainTransferCache
     }
     
     public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(SubscriptionTypeChain subscriptionTypeChain) {
-        SubscriptionTypeChainTransfer subscriptionTypeChainTransfer = get(subscriptionTypeChain);
+        var subscriptionTypeChainTransfer = get(subscriptionTypeChain);
         
         if(subscriptionTypeChainTransfer == null) {
-            SubscriptionTypeTransfer subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionTypeChain.getSubscriptionType());
-            ChainTransfer chain = chainControl.getChainTransfer(userVisit, subscriptionTypeChain.getChain());
-            Long unformattedRemainingTime = subscriptionTypeChain.getRemainingTime();
-            String remainingTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRemainingTime);
+            var subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionTypeChain.getSubscriptionType());
+            var chain = chainControl.getChainTransfer(userVisit, subscriptionTypeChain.getChain());
+            var unformattedRemainingTime = subscriptionTypeChain.getRemainingTime();
+            var remainingTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRemainingTime);
             
             subscriptionTypeChainTransfer = new SubscriptionTypeChainTransfer(subscriptionType, chain, unformattedRemainingTime, remainingTime);
             put(subscriptionTypeChain, subscriptionTypeChainTransfer);

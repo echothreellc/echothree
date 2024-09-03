@@ -91,7 +91,7 @@ public final class EntityInstanceTransfer
 
     public String getEntityRef() {
         if(entityRef == null) {
-            entityRef = new StringBuilder(entityType.getComponentVendor().getComponentVendorName()).append('.').append(entityType.getEntityTypeName()).append('.').append(entityUniqueId).toString();
+            entityRef = entityType.getComponentVendor().getComponentVendorName() + '.' + entityType.getEntityTypeName() + '.' + entityUniqueId;
         }
         
         return entityRef;
@@ -111,7 +111,7 @@ public final class EntityInstanceTransfer
 
     public String getDescription() {
         if(description == null) {
-            description = new StringBuilder(entityType.getDescription()).append('-').append(entityUniqueId).toString();
+            description = entityType.getDescription() + '-' + entityUniqueId;
         }
         
         return description;
@@ -155,7 +155,7 @@ public final class EntityInstanceTransfer
         if(o == null || getClass() != o.getClass()) {
             return false;
         }
-        EntityInstanceTransfer that = (EntityInstanceTransfer) o;
+        var that = (EntityInstanceTransfer) o;
         return entityType.equals(that.entityType) && entityUniqueId.equals(that.entityUniqueId);
     }
 

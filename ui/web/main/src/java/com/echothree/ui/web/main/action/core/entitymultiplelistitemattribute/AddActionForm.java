@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.entitymultiplelistitemattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityListItemChoicesForm;
 import com.echothree.control.user.core.common.result.GetEntityListItemChoicesResult;
 import com.echothree.model.control.core.common.choice.EntityListItemChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -42,16 +39,16 @@ public class AddActionForm
     private void setupEntityListItemChoices()
             throws NamingException {
         if(entityListItemChoices == null) {
-            GetEntityListItemChoicesForm commandForm = CoreUtil.getHome().getGetEntityListItemChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetEntityListItemChoicesForm();
 
             commandForm.setEntityRef(entityRef);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setDefaultEntityListItemChoice(entityListItemChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getEntityListItemChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityListItemChoicesResult getEntityListItemChoicesResult = (GetEntityListItemChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEntityListItemChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEntityListItemChoicesResult = (GetEntityListItemChoicesResult)executionResult.getResult();
             entityListItemChoices = getEntityListItemChoicesResult.getEntityListItemChoices();
 
             if(entityListItemChoice == null)

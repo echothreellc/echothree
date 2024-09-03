@@ -18,28 +18,12 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
-import com.echothree.control.user.inventory.common.form.CreatePartyInventoryLevelForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.edit.ItemDescriptionEdit;
-import com.echothree.control.user.item.common.form.CreateItemAliasForm;
-import com.echothree.control.user.item.common.form.CreateItemCountryOfOriginForm;
-import com.echothree.control.user.item.common.form.CreateItemDescriptionForm;
-import com.echothree.control.user.item.common.form.CreateItemKitMemberForm;
-import com.echothree.control.user.item.common.form.CreateItemPackCheckRequirementForm;
-import com.echothree.control.user.item.common.form.CreateItemPriceForm;
-import com.echothree.control.user.item.common.form.CreateItemUnitCustomerTypeLimitForm;
-import com.echothree.control.user.item.common.form.CreateItemUnitLimitForm;
-import com.echothree.control.user.item.common.form.CreateItemUnitOfMeasureTypeForm;
-import com.echothree.control.user.item.common.form.CreateItemUnitPriceLimitForm;
-import com.echothree.control.user.item.common.form.CreateItemVolumeForm;
-import com.echothree.control.user.item.common.form.CreateItemWeightForm;
-import com.echothree.control.user.item.common.form.CreateRelatedItemForm;
-import com.echothree.control.user.item.common.form.EditItemDescriptionForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
-import com.echothree.control.user.item.common.spec.ItemDescriptionSpec;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,9 +33,7 @@ import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHa
 import com.echothree.ui.cli.dataloader.util.data.handler.rating.RatingsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.persistence.type.ByteArray;
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,15 +83,15 @@ public class ItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemAlias")) {
-            CreateItemAliasForm commandForm = ItemFormFactory.getCreateItemAliasForm();
+            var commandForm = ItemFormFactory.getCreateItemAliasForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemAlias(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemDescription")) {
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("itemDescriptionTypeName")) {
                     itemDescriptionTypeName = attrs.getValue(i);
                 } else if(attrs.getQName(i).equals("languageIsoName")) {
@@ -127,77 +109,77 @@ public class ItemHandler
             
             inItemDescription = true;
         } else if(localName.equals("itemUnitOfMeasureType")) {
-            CreateItemUnitOfMeasureTypeForm commandForm = ItemFormFactory.getCreateItemUnitOfMeasureTypeForm();
+            var commandForm = ItemFormFactory.getCreateItemUnitOfMeasureTypeForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemUnitOfMeasureType(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemPrice")) {
-            CreateItemPriceForm commandForm = ItemFormFactory.getCreateItemPriceForm();
+            var commandForm = ItemFormFactory.getCreateItemPriceForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemPrice(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemVolume")) {
-            CreateItemVolumeForm commandForm = ItemFormFactory.getCreateItemVolumeForm();
+            var commandForm = ItemFormFactory.getCreateItemVolumeForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemVolume(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemWeight")) {
-            CreateItemWeightForm commandForm = ItemFormFactory.getCreateItemWeightForm();
+            var commandForm = ItemFormFactory.getCreateItemWeightForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemWeight(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemCountryOfOrigin")) {
-            CreateItemCountryOfOriginForm commandForm = ItemFormFactory.getCreateItemCountryOfOriginForm();
+            var commandForm = ItemFormFactory.getCreateItemCountryOfOriginForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemCountryOfOrigin(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemPackCheckRequirement")) {
-            CreateItemPackCheckRequirementForm commandForm = ItemFormFactory.getCreateItemPackCheckRequirementForm();
+            var commandForm = ItemFormFactory.getCreateItemPackCheckRequirementForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemPackCheckRequirement(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemUnitPriceLimit")) {
-            CreateItemUnitPriceLimitForm commandForm = ItemFormFactory.getCreateItemUnitPriceLimitForm();
+            var commandForm = ItemFormFactory.getCreateItemUnitPriceLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemUnitPriceLimit(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemUnitLimit")) {
-            CreateItemUnitLimitForm commandForm = ItemFormFactory.getCreateItemUnitLimitForm();
+            var commandForm = ItemFormFactory.getCreateItemUnitLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemUnitLimit(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemKitMember")) {
-            CreateItemKitMemberForm commandForm = ItemFormFactory.getCreateItemKitMemberForm();
+            var commandForm = ItemFormFactory.getCreateItemKitMemberForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemKitMember(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemUnitCustomerTypeLimit")) {
-            CreateItemUnitCustomerTypeLimitForm commandForm = ItemFormFactory.getCreateItemUnitCustomerTypeLimitForm();
+            var commandForm = ItemFormFactory.getCreateItemUnitCustomerTypeLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
             itemService.createItemUnitCustomerTypeLimit(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyInventoryLevel")) {
-            CreatePartyInventoryLevelForm commandForm = InventoryFormFactory.getCreatePartyInventoryLevelForm();
+            var commandForm = InventoryFormFactory.getCreatePartyInventoryLevelForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
@@ -208,7 +190,7 @@ public class ItemHandler
             
             inventoryService.createPartyInventoryLevel(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("relatedItem")) {
-            CreateRelatedItemForm commandForm = ItemFormFactory.getCreateRelatedItemForm();
+            var commandForm = ItemFormFactory.getCreateRelatedItemForm();
             
             commandForm.setFromItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
@@ -231,8 +213,8 @@ public class ItemHandler
     public void characters(char ch[], int start, int length)
             throws SAXException {
         if(inItemDescription) {
-            int oldLength = clobDescription != null? clobDescription.length: 0;
-            char []newClob = new char[oldLength + length];
+            var oldLength = clobDescription != null? clobDescription.length: 0;
+            var newClob = new char[oldLength + length];
             
             if(clobDescription != null) {
                 System.arraycopy(clobDescription, 0, newClob, 0, clobDescription.length);
@@ -247,8 +229,8 @@ public class ItemHandler
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         if(localName.equals("itemDescription")) {
-            ItemDescriptionSpec spec = ItemSpecFactory.getItemDescriptionSpec();
-            EditItemDescriptionForm editForm = ItemFormFactory.getEditItemDescriptionForm();
+            var spec = ItemSpecFactory.getItemDescriptionSpec();
+            var editForm = ItemFormFactory.getEditItemDescriptionForm();
 
             spec.setItemName(itemName);
             spec.setItemDescriptionTypeName(itemDescriptionTypeName);
@@ -256,12 +238,12 @@ public class ItemHandler
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemDescription.name())) {
-                    CreateItemDescriptionForm createForm = ItemFormFactory.getCreateItemDescriptionForm();
+                    var createForm = ItemFormFactory.getCreateItemDescriptionForm();
 
                     createForm.setItemName(itemName);
                     createForm.setItemDescriptionTypeName(itemDescriptionTypeName);
@@ -272,15 +254,15 @@ public class ItemHandler
                     createForm.setStringDescription(stringDescription);
 
                     if(path != null) {
-                        File file = new File(path);
-                        long length = file.length();
+                        var file = new File(path);
+                        var length = file.length();
 
                         if(length < Integer.MAX_VALUE) {
                             try {
                                 InputStream is = new FileInputStream(file);
-                                byte[] bytes = new byte[(int)length];
-                                int offset = 0;
-                                int numRead = 0;
+                                var bytes = new byte[(int)length];
+                                var offset = 0;
+                                var numRead = 0;
 
                                 while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
                                     offset += numRead;
@@ -312,14 +294,14 @@ public class ItemHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditItemDescriptionResult result = (EditItemDescriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemDescriptionResult)executionResult.getResult();
 
                 if(result != null) {
-                    ItemDescriptionEdit edit = (ItemDescriptionEdit)result.getEdit();
-                    boolean changed = false;
-                    
-                    String currentMimeTypeName = edit.getMimeTypeName();
+                    var edit = (ItemDescriptionEdit)result.getEdit();
+                    var changed = false;
+
+                    var currentMimeTypeName = edit.getMimeTypeName();
                     if((currentMimeTypeName == null && mimeTypeName != null)
                             || (currentMimeTypeName != null && mimeTypeName == null)
                             || ((currentMimeTypeName != null && mimeTypeName != null ) && !currentMimeTypeName.equals(mimeTypeName))) {
@@ -327,7 +309,7 @@ public class ItemHandler
                         changed = true;
                     }
 
-                    String currentItemImageTypeName = edit.getItemImageTypeName();
+                    var currentItemImageTypeName = edit.getItemImageTypeName();
                     if((currentItemImageTypeName == null && itemImageTypeName != null)
                             || (currentItemImageTypeName != null && itemImageTypeName == null)
                             || ((currentItemImageTypeName != null && itemImageTypeName != null ) && !currentItemImageTypeName.equals(itemImageTypeName))) {
@@ -335,8 +317,8 @@ public class ItemHandler
                         changed = true;
                     }
 
-                    String currentClobDescription = edit.getClobDescription();
-                    String wrappedClobDescription = clobDescription == null ? null : new String(clobDescription);
+                    var currentClobDescription = edit.getClobDescription();
+                    var wrappedClobDescription = clobDescription == null ? null : new String(clobDescription);
                     if((currentClobDescription == null && wrappedClobDescription != null)
                             || (currentClobDescription != null && wrappedClobDescription == null)
                             || ((currentClobDescription != null && wrappedClobDescription != null ) && !currentClobDescription.equals(wrappedClobDescription))) {
@@ -344,7 +326,7 @@ public class ItemHandler
                         changed = true;
                     }
 
-                    String currentStringDescription = edit.getStringDescription();
+                    var currentStringDescription = edit.getStringDescription();
                     if((currentStringDescription == null && stringDescription != null)
                             || (currentStringDescription != null && stringDescription == null)
                             || ((currentStringDescription != null && stringDescription != null ) && !currentStringDescription.equals(stringDescription))) {
@@ -355,15 +337,15 @@ public class ItemHandler
                     // If there's a BLOB, we'll always assume it's changed. They're not returned as
                     // part of the edit.
                     if(path != null) {
-                        File file = new File(path);
-                        long length = file.length();
+                        var file = new File(path);
+                        var length = file.length();
 
                         if(length < Integer.MAX_VALUE) {
                             try {
                                 InputStream is = new FileInputStream(file);
-                                byte[] bytes = new byte[(int)length];
-                                int offset = 0;
-                                int numRead = 0;
+                                var bytes = new byte[(int)length];
+                                var offset = 0;
+                                var numRead = 0;
 
                                 while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
                                     offset += numRead;

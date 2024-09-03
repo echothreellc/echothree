@@ -20,8 +20,6 @@ import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -49,12 +47,12 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKinds(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureKindsResult getUnitOfMeasureKindsResult = (GetUnitOfMeasureKindsResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureKinds(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureKindsResult = (GetUnitOfMeasureKindsResult)executionResult.getResult();
             
             request.setAttribute("unitOfMeasureKinds", getUnitOfMeasureKindsResult.getUnitOfMeasureKinds());
             forwardKey = ForwardConstants.DISPLAY;

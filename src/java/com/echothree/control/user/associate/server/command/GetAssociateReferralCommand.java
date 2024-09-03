@@ -18,9 +18,7 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.GetAssociateReferralForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
-import com.echothree.control.user.associate.common.result.GetAssociateReferralResult;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetAssociateReferralCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociateReferralResult result = AssociateResultFactory.getGetAssociateReferralResult();
-        String associateReferralName = form.getAssociateReferralName();
-        AssociateReferral associateReferral = associateControl.getAssociateReferralByName(associateReferralName);
+        var result = AssociateResultFactory.getGetAssociateReferralResult();
+        var associateReferralName = form.getAssociateReferralName();
+        var associateReferral = associateControl.getAssociateReferralByName(associateReferralName);
         
         if(associateReferral != null) {
             result.setAssociateReferral(associateControl.getAssociateReferralTransfer(getUserVisit(), associateReferral));

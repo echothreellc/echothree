@@ -21,7 +21,6 @@ import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -60,8 +59,8 @@ public class DeletePaymentMethodTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String paymentMethodTypeName = form.getPaymentMethodTypeName();
-        PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByNameForUpdate(this, paymentMethodTypeName);
+        var paymentMethodTypeName = form.getPaymentMethodTypeName();
+        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByNameForUpdate(this, paymentMethodTypeName);
         
         if(!hasExecutionErrors()) {
             PaymentMethodTypeLogic.getInstance().deletePaymentMethodType(this, paymentMethodType, getPartyPK());

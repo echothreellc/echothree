@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.responsibilitytype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.DeleteResponsibilityTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteResponsibilityTypeForm commandForm = EmployeeUtil.getHome().getDeleteResponsibilityTypeForm();
-            String responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getDeleteResponsibilityTypeForm();
+            var responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
             
             commandForm.setResponsibilityTypeName(responsibilityTypeName);
             

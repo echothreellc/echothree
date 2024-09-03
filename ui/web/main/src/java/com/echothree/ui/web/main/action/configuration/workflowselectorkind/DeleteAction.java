@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowselectorkind;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.DeleteWorkflowSelectorKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -27,7 +26,6 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import com.google.common.collect.ImmutableMap;
-import java.util.HashMap;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,11 +50,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        final String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+        final var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
         
         try {
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            DeleteWorkflowSelectorKindForm commandForm = WorkflowUtil.getHome().getDeleteWorkflowSelectorKindForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowSelectorKindForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setSelectorKindName(selectorKindName);
@@ -67,8 +65,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             customActionForward.setParameters(ImmutableMap.<String, String>builder()
                     .put(ParameterConstants.WORKFLOW_NAME, workflowName)

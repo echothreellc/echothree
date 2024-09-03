@@ -17,8 +17,6 @@
 package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.forum.common.transfer.ForumForumThreadTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumForumThread;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,13 +30,13 @@ public class ForumForumThreadTransferCache
     }
     
     public ForumForumThreadTransfer getForumForumThreadTransfer(ForumForumThread forumForumThread) {
-        ForumForumThreadTransfer forumForumThreadTransfer = get(forumForumThread);
+        var forumForumThreadTransfer = get(forumForumThread);
         
         if(forumForumThreadTransfer == null) {
-            ForumTransfer forum = forumControl.getForumTransfer(userVisit, forumForumThread.getForum());
-            ForumThreadTransfer forumThread = forumControl.getForumThreadTransfer(userVisit, forumForumThread.getForumThread());
-            Boolean isDefault = forumForumThread.getIsDefault();
-            Integer sortOrder = forumForumThread.getSortOrder();
+            var forum = forumControl.getForumTransfer(userVisit, forumForumThread.getForum());
+            var forumThread = forumControl.getForumThreadTransfer(userVisit, forumForumThread.getForumThread());
+            var isDefault = forumForumThread.getIsDefault();
+            var sortOrder = forumForumThread.getSortOrder();
             
             forumForumThreadTransfer = new ForumForumThreadTransfer(forum, forumThread, isDefault, sortOrder);
             put(forumForumThread, forumForumThreadTransfer);

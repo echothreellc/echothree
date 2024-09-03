@@ -18,14 +18,10 @@ package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionQuestionTransfer;
-import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassQuestionTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestion;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import java.util.Set;
 
 public class PartyTrainingClassSessionQuestionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionQuestion, PartyTrainingClassSessionQuestionTransfer> {
@@ -45,13 +41,13 @@ public class PartyTrainingClassSessionQuestionTransferCache
     }
     
     public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
-        PartyTrainingClassSessionQuestionTransfer partyTrainingClassSessionQuestionTransfer = get(partyTrainingClassSessionQuestion);
+        var partyTrainingClassSessionQuestionTransfer = get(partyTrainingClassSessionQuestion);
         
         if(partyTrainingClassSessionQuestionTransfer == null) {
-            PartyTrainingClassSessionQuestionDetail partyTrainingClassSessionQuestionDetail = partyTrainingClassSessionQuestion.getLastDetail();
-            PartyTrainingClassSessionTransfer partyTrainingClassSessionTransfer = trainingControl.getPartyTrainingClassSessionTransfer(userVisit, partyTrainingClassSessionQuestionDetail.getPartyTrainingClassSession());
-            TrainingClassQuestionTransfer trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, partyTrainingClassSessionQuestionDetail.getTrainingClassQuestion());
-            Integer sortOrder = partyTrainingClassSessionQuestionDetail.getSortOrder();
+            var partyTrainingClassSessionQuestionDetail = partyTrainingClassSessionQuestion.getLastDetail();
+            var partyTrainingClassSessionTransfer = trainingControl.getPartyTrainingClassSessionTransfer(userVisit, partyTrainingClassSessionQuestionDetail.getPartyTrainingClassSession());
+            var trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, partyTrainingClassSessionQuestionDetail.getTrainingClassQuestion());
+            var sortOrder = partyTrainingClassSessionQuestionDetail.getSortOrder();
 
             partyTrainingClassSessionQuestionTransfer = new PartyTrainingClassSessionQuestionTransfer(partyTrainingClassSessionTransfer,
                     trainingClassQuestionTransfer, sortOrder);

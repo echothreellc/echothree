@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.configuration.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.SetPrinterStatusForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,12 +54,12 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+        var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
         
         try {
-            String printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetPrinterStatusForm commandForm = PrinterUtil.getHome().getSetPrinterStatusForm();
+            var printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
+            var actionForm = (StatusActionForm)form;
+            var commandForm = PrinterUtil.getHome().getSetPrinterStatusForm();
             
             if(printerGroupName == null)
                 printerGroupName = actionForm.getPrinterGroupName();
@@ -71,8 +69,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setPrinterName(printerName);
                 commandForm.setPrinterStatusChoice(actionForm.getPrinterStatusChoice());
-                
-                CommandResult commandResult = PrinterUtil.getHome().setPrinterStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = PrinterUtil.getHome().setPrinterStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -89,8 +87,8 @@ public class StatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.PRINTER_GROUP_NAME, printerGroupName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

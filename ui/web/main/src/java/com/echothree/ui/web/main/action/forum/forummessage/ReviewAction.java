@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forummessage;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumMessageForm;
 import com.echothree.control.user.forum.common.result.GetForumMessageResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.forum.common.ForumOptions;
@@ -26,8 +25,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,8 +53,8 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetForumMessageForm commandForm = ForumUtil.getHome().getGetForumMessageForm();
+        String forwardKey;
+        var commandForm = ForumUtil.getHome().getGetForumMessageForm();
         
         commandForm.setForumMessageName(request.getParameter(ParameterConstants.FORUM_MESSAGE_NAME));
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
@@ -73,12 +70,12 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(request), commandForm);
+        var commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(request), commandForm);
         ForumMessageTransfer forumMessage = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumMessageResult result = (GetForumMessageResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumMessageResult)executionResult.getResult();
             
             forumMessage = result.getForumMessage();
         }

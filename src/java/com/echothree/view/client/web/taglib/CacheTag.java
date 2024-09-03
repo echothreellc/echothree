@@ -18,8 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateCacheEntryForm;
-import com.echothree.control.user.core.common.form.GetCacheEntryForm;
 import com.echothree.control.user.core.common.result.GetCacheEntryResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
@@ -30,13 +28,10 @@ import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.view.client.web.WebConstants;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -117,7 +112,7 @@ public class CacheTag
         
         public void addEntityRefs(Set<String> newEntityRefs) {
             // Add to ourselves, and all our parents (in the cache of nested cache tags).
-            for(EntityRefs currentEntityRefs = this ; currentEntityRefs != null ; currentEntityRefs = currentEntityRefs.getPreviousEntityRefs()) {
+            for(var currentEntityRefs = this; currentEntityRefs != null ; currentEntityRefs = currentEntityRefs.getPreviousEntityRefs()) {
                 currentEntityRefs.getEntityRefs().addAll(newEntityRefs);
             }
         }
@@ -125,7 +120,7 @@ public class CacheTag
     }
 
     protected Lock getCacheEntryLock() {
-        Lock cacheEntryLock = cacheEntryLocks.get(key);
+        var cacheEntryLock = cacheEntryLocks.get(key);
         
         if(cacheEntryLock == null) {
             Lock newCacheEntryLock = new ReentrantLock();
@@ -141,7 +136,7 @@ public class CacheTag
     
     protected String getBaseType()
             throws JspException {
-        String baseType = null;
+        String baseType;
 
         try {
             baseType = new ContentType(pageContext.getResponse().getContentType()).getBaseType();
@@ -161,7 +156,7 @@ public class CacheTag
     }
     
     protected boolean pushEntityRefs() {
-        EntityRefs currentEntityRefs = getEntityRefs();
+        var currentEntityRefs = getEntityRefs();
 
         pageContext.setAttribute(WebConstants.Attribute_ENTITY_REFS, new EntityRefs(currentEntityRefs), PageContext.REQUEST_SCOPE);
         
@@ -169,7 +164,7 @@ public class CacheTag
     }
     
     protected EntityRefs popEntityRefs() {
-        EntityRefs currentEntityRefs = getEntityRefs();
+        var currentEntityRefs = getEntityRefs();
 
         pageContext.setAttribute(WebConstants.Attribute_ENTITY_REFS, currentEntityRefs.getPreviousEntityRefs(), PageContext.REQUEST_SCOPE);
 
@@ -181,9 +176,9 @@ public class CacheTag
         CacheEntryTransfer existingCacheEntry = null;
         
         try {
-            GetCacheEntryForm commandForm = CoreUtil.getHome().getGetCacheEntryForm();
+            var commandForm = CoreUtil.getHome().getGetCacheEntryForm();
             Set<String> commandOptions = new HashSet<>();
-            boolean includeCacheEntryDependencies = hasEnclosingEntityRefs();
+            var includeCacheEntryDependencies = hasEnclosingEntityRefs();
 
             commandForm.setCacheEntryKey(key);
 
@@ -196,7 +191,7 @@ public class CacheTag
             }
             commandForm.setOptions(commandOptions);
 
-            TransferProperties transferProperties = new TransferProperties()
+            var transferProperties = new TransferProperties()
                     .addClassAndProperty(CacheEntryTransfer.class, CoreProperties.MIME_TYPE)
                     .addClassAndProperty(MimeTypeTransfer.class, CoreProperties.MIME_TYPE_NAME);
             // If we're enclosed by another et:cache tag...
@@ -209,15 +204,15 @@ public class CacheTag
             }
             
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = CoreUtil.getHome().getCacheEntry(getUserVisitPK(), commandForm);
+
+            var commandResult = CoreUtil.getHome().getCacheEntry(getUserVisitPK(), commandForm);
             if(commandResult.hasErrors()) {
                 if(!commandResult.containsExecutionError(ExecutionErrors.UnknownCacheEntryKey.name())) {
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCacheEntryResult result = (GetCacheEntryResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCacheEntryResult)executionResult.getResult();
                 
                 existingCacheEntry = result.getCacheEntry();
 
@@ -234,7 +229,7 @@ public class CacheTag
 
     protected void writeExistingCacheEntry(CacheEntryTransfer existingCacheEntry)
             throws JspException {
-        EntityRefs currentEntityRefs = getEntityRefs();
+        var currentEntityRefs = getEntityRefs();
 
         try {
             pageContext.getOut().write(existingCacheEntry.getClob());
@@ -244,10 +239,10 @@ public class CacheTag
 
         // If there is an et:cache tag enclosing this instance, then we need to add any returned dependencies to it.
         if(currentEntityRefs != null) {
-            List<CacheEntryDependencyTransfer> cacheEntryDependencies = existingCacheEntry.getCacheEntryDependencies().getList();
+            var cacheEntryDependencies = existingCacheEntry.getCacheEntryDependencies().getList();
 
             if(cacheEntryDependencies != null) {
-                int size = cacheEntryDependencies.size();
+                var size = cacheEntryDependencies.size();
 
                 if(size != 0) {
                     Set<String> entityRefs = new HashSet<>(cacheEntryDependencies.size());
@@ -266,9 +261,9 @@ public class CacheTag
     public int doStartTag()
             throws JspException {
         // We can only skip the body if the cache has the data.
-        int returnCode = EVAL_BODY_BUFFERED;
-        
-        CacheEntryTransfer cacheEntry = getExistingCacheEntry();
+        var returnCode = EVAL_BODY_BUFFERED;
+
+        var cacheEntry = getExistingCacheEntry();
         
         // Make two attempts at getting the cached content, one before the rendering lock is
         // acquired, and one after it is acquired - covering the case of someone else rendering
@@ -301,11 +296,11 @@ public class CacheTag
     public int doAfterBody()
             throws JspException {
         if(bodyContent != null) {
-            String body = bodyContent.getString();
+            var body = bodyContent.getString();
 
             if(body != null) {
                 try {
-                    CreateCacheEntryForm commandForm = CoreUtil.getHome().getCreateCacheEntryForm();
+                    var commandForm = CoreUtil.getHome().getCreateCacheEntryForm();
 
                     commandForm.setCacheEntryKey(key);
                     commandForm.setMimeTypeName(getBaseType());
@@ -313,14 +308,14 @@ public class CacheTag
                     commandForm.setValidForTimeUnitOfMeasureTypeName(validForTimeUnitOfMeasureTypeName);
                     commandForm.setClob(body);
 
-                    EntityRefs currentEntityRefs = popEntityRefs();
+                    var currentEntityRefs = popEntityRefs();
 
-                    Set<String> entityRefs = currentEntityRefs.getEntityRefs();
+                    var entityRefs = currentEntityRefs.getEntityRefs();
                     if(entityRefs.size() > 0) {
                         commandForm.setEntityRefs(entityRefs);
                     }
 
-                    CommandResult commandResult = CoreUtil.getHome().createCacheEntry(getUserVisitPK(), commandForm);
+                    var commandResult = CoreUtil.getHome().createCacheEntry(getUserVisitPK(), commandForm);
                     if(commandResult.hasErrors() && !commandResult.containsExecutionError(ExecutionErrors.DuplicateCacheEntryKey.name())) {
                         getLog().error(commandResult);
                     }

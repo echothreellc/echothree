@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.common.form.GetWorkAssignmentsForm;
 import com.echothree.control.user.workrequirement.common.result.GetWorkAssignmentsResult;
 import com.echothree.model.data.workrequirement.common.WorkAssignmentConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -126,7 +123,7 @@ public class WorkAssignmentsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetWorkAssignmentsForm commandForm = WorkRequirementUtil.getHome().getGetWorkAssignmentsForm();
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkAssignmentsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setEmployeeName(employeeName);
@@ -140,8 +137,8 @@ public class WorkAssignmentsTag
                 limits.put(WorkAssignmentConstants.ENTITY_TYPE_NAME, new Limit(workAssignmentCount, workAssignmentOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkAssignments(getUserVisitPK(), commandForm);
+
+            var commandResult = WorkRequirementUtil.getHome().getWorkAssignments(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -149,8 +146,8 @@ public class WorkAssignmentsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkAssignmentsResult result = (GetWorkAssignmentsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetWorkAssignmentsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getWorkAssignments()), scope);
 

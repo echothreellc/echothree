@@ -20,18 +20,12 @@ import com.echothree.control.user.cancellationpolicy.common.edit.CancellationPol
 import com.echothree.control.user.cancellationpolicy.common.edit.CancellationReasonDescriptionEdit;
 import com.echothree.control.user.cancellationpolicy.common.form.EditCancellationReasonDescriptionForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
-import com.echothree.control.user.cancellationpolicy.common.result.EditCancellationReasonDescriptionResult;
 import com.echothree.control.user.cancellationpolicy.common.spec.CancellationReasonDescriptionSpec;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonDescription;
-import com.echothree.model.data.cancellationpolicy.server.value.CancellationReasonDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -81,28 +75,28 @@ public class EditCancellationReasonDescriptionCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        EditCancellationReasonDescriptionResult result = CancellationPolicyResultFactory.getEditCancellationReasonDescriptionResult();
-        String cancellationKindName = spec.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var result = CancellationPolicyResultFactory.getEditCancellationReasonDescriptionResult();
+        var cancellationKindName = spec.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationReasonName = spec.getCancellationReasonName();
-            CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+            var cancellationReasonName = spec.getCancellationReasonName();
+            var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
             
             if(cancellationReason != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        CancellationReasonDescription cancellationReasonDescription = cancellationPolicyControl.getCancellationReasonDescription(cancellationReason, language);
+                        var cancellationReasonDescription = cancellationPolicyControl.getCancellationReasonDescription(cancellationReason, language);
                         
                         if(cancellationReasonDescription != null) {
                             result.setCancellationReasonDescription(cancellationPolicyControl.getCancellationReasonDescriptionTransfer(getUserVisit(), cancellationReasonDescription));
                             
                             if(lockEntity(cancellationReason)) {
-                                CancellationReasonDescriptionEdit edit = CancellationPolicyEditFactory.getCancellationReasonDescriptionEdit();
+                                var edit = CancellationPolicyEditFactory.getCancellationReasonDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(cancellationReasonDescription.getDescription());
@@ -115,12 +109,12 @@ public class EditCancellationReasonDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownCancellationReasonDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        CancellationReasonDescriptionValue cancellationReasonDescriptionValue = cancellationPolicyControl.getCancellationReasonDescriptionValueForUpdate(cancellationReason, language);
+                        var cancellationReasonDescriptionValue = cancellationPolicyControl.getCancellationReasonDescriptionValueForUpdate(cancellationReason, language);
                         
                         if(cancellationReasonDescriptionValue != null) {
                             if(lockEntityForUpdate(cancellationReason)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     cancellationReasonDescriptionValue.setDescription(description);
                                     

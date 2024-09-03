@@ -27,16 +27,8 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
-import com.echothree.model.data.chain.server.entity.ChainEntityRoleTypeDescription;
-import com.echothree.model.data.chain.server.entity.ChainEntityRoleTypeDetail;
-import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.chain.server.entity.ChainTypeDetail;
-import com.echothree.model.data.chain.server.value.ChainEntityRoleTypeDescriptionValue;
-import com.echothree.model.data.chain.server.value.ChainEntityRoleTypeDetailValue;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -102,16 +94,16 @@ public class EditChainEntityRoleTypeCommand
     public ChainEntityRoleType getEntity(EditChainEntityRoleTypeResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainEntityRoleType chainEntityRoleType = null;
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
+            var chainTypeName = spec.getChainTypeName();
             
             chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainEntityRoleTypeName = spec.getChainEntityRoleTypeName();
+                var chainEntityRoleTypeName = spec.getChainEntityRoleTypeName();
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
@@ -147,9 +139,9 @@ public class EditChainEntityRoleTypeCommand
     @Override
     public void doLock(ChainEntityRoleTypeEdit edit, ChainEntityRoleType chainEntityRoleType) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescription(chainEntityRoleType, getPreferredLanguage());
-        ChainEntityRoleTypeDetail chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetail();
-        EntityTypeDetail entityTypeDetail = chainEntityRoleTypeDetail.getEntityType().getLastDetail();
+        var chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescription(chainEntityRoleType, getPreferredLanguage());
+        var chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetail();
+        var entityTypeDetail = chainEntityRoleTypeDetail.getEntityType().getLastDetail();
 
         edit.setChainEntityRoleTypeName(chainEntityRoleTypeDetail.getChainEntityRoleTypeName());
         edit.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
@@ -166,19 +158,19 @@ public class EditChainEntityRoleTypeCommand
     @Override
     public void canUpdate(ChainEntityRoleType chainEntityRoleType) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
-        String chainEntityRoleTypeName = edit.getChainEntityRoleTypeName();
-        ChainEntityRoleType duplicateChainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
+        var chainTypeDetail = chainType.getLastDetail();
+        var chainEntityRoleTypeName = edit.getChainEntityRoleTypeName();
+        var duplicateChainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
         if(duplicateChainEntityRoleType != null && !chainEntityRoleType.equals(duplicateChainEntityRoleType)) {
             addExecutionError(ExecutionErrors.DuplicateChainEntityRoleTypeName.name(), chainTypeDetail.getChainTypeName(), chainEntityRoleTypeName);
         } else {
             var coreControl = getCoreControl();
-            String componentVendorName = edit.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = edit.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
-                String entityTypeName = edit.getEntityTypeName();
+                var entityTypeName = edit.getEntityTypeName();
                 
                 entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
@@ -195,9 +187,9 @@ public class EditChainEntityRoleTypeCommand
     public void doUpdate(ChainEntityRoleType chainEntityRoleType) {
         var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
-        ChainEntityRoleTypeDetailValue chainEntityRoleTypeDetailValue = chainControl.getChainEntityRoleTypeDetailValueForUpdate(chainEntityRoleType);
-        ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescriptionForUpdate(chainEntityRoleType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var chainEntityRoleTypeDetailValue = chainControl.getChainEntityRoleTypeDetailValueForUpdate(chainEntityRoleType);
+        var chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescriptionForUpdate(chainEntityRoleType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         chainEntityRoleTypeDetailValue.setChainEntityRoleTypeName(edit.getChainEntityRoleTypeName());
         chainEntityRoleTypeDetailValue.setEntityTypePK(entityType.getPrimaryKey());
@@ -210,7 +202,7 @@ public class EditChainEntityRoleTypeCommand
         } else if(chainEntityRoleTypeDescription != null && description == null) {
             chainControl.deleteChainEntityRoleTypeDescription(chainEntityRoleTypeDescription, partyPK);
         } else if(chainEntityRoleTypeDescription != null && description != null) {
-            ChainEntityRoleTypeDescriptionValue chainEntityRoleTypeDescriptionValue = chainControl.getChainEntityRoleTypeDescriptionValue(chainEntityRoleTypeDescription);
+            var chainEntityRoleTypeDescriptionValue = chainControl.getChainEntityRoleTypeDescriptionValue(chainEntityRoleTypeDescription);
 
             chainEntityRoleTypeDescriptionValue.setDescription(description);
             chainControl.updateChainEntityRoleTypeDescriptionFromValue(chainEntityRoleTypeDescriptionValue, partyPK);

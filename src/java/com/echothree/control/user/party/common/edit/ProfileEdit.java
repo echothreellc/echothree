@@ -19,7 +19,6 @@ package com.echothree.control.user.party.common.edit;
 import com.echothree.control.user.icon.common.spec.IconSpec;
 import com.echothree.control.user.party.common.spec.BirthdayFormatSpec;
 import com.echothree.control.user.party.common.spec.GenderSpec;
-import com.echothree.control.user.party.common.spec.MoodSpec;
 import com.echothree.util.common.form.BaseEdit;
 
 public interface ProfileEdit

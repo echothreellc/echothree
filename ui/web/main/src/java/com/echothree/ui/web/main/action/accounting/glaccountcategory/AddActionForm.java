@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.accounting.glaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountCategoryChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountCategoryChoicesResult;
 import com.echothree.model.control.accounting.common.choice.GlAccountCategoryChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +42,14 @@ public class AddActionForm
     private void setupParentGlAccountCategoryChoices() {
         if(parentGlAccountCategoryChoices == null) {
             try {
-                GetGlAccountCategoryChoicesForm form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
                 
                 form.setDefaultGlAccountCategoryChoice(parentGlAccountCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountCategoryChoicesResult getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
                 parentGlAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
                 
                 if(parentGlAccountCategoryChoice == null)

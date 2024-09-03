@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeDescriptionTransfer;
-import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class PrinterGroupUseTypeDescriptionTransferCache
     }
     
     public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
-        PrinterGroupUseTypeDescriptionTransfer printerGroupUseTypeDescriptionTransfer = get(printerGroupUseTypeDescription);
+        var printerGroupUseTypeDescriptionTransfer = get(printerGroupUseTypeDescription);
         
         if(printerGroupUseTypeDescriptionTransfer == null) {
-            PrinterGroupUseTypeTransfer printerGroupUseTypeTransfer = printerControl.getPrinterGroupUseTypeTransfer(userVisit, printerGroupUseTypeDescription.getPrinterGroupUseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, printerGroupUseTypeDescription.getLanguage());
+            var printerGroupUseTypeTransfer = printerControl.getPrinterGroupUseTypeTransfer(userVisit, printerGroupUseTypeDescription.getPrinterGroupUseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, printerGroupUseTypeDescription.getLanguage());
             
             printerGroupUseTypeDescriptionTransfer = new PrinterGroupUseTypeDescriptionTransfer(languageTransfer, printerGroupUseTypeTransfer, printerGroupUseTypeDescription.getDescription());
             put(printerGroupUseTypeDescription, printerGroupUseTypeDescriptionTransfer);

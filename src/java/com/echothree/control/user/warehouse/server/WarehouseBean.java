@@ -16,30 +16,6 @@
 
 package com.echothree.control.user.warehouse.server;
 
-import com.echothree.control.user.filter.common.form.CreateFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
-import com.echothree.control.user.filter.common.form.DeleteFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.DeleteFilterKindForm;
-import com.echothree.control.user.filter.common.form.EditFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.EditFilterKindForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindChoicesForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionsForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindsForm;
-import com.echothree.control.user.filter.common.form.SetDefaultFilterKindForm;
-import com.echothree.control.user.filter.server.command.CreateFilterKindCommand;
-import com.echothree.control.user.filter.server.command.CreateFilterKindDescriptionCommand;
-import com.echothree.control.user.filter.server.command.DeleteFilterKindCommand;
-import com.echothree.control.user.filter.server.command.DeleteFilterKindDescriptionCommand;
-import com.echothree.control.user.filter.server.command.EditFilterKindCommand;
-import com.echothree.control.user.filter.server.command.EditFilterKindDescriptionCommand;
-import com.echothree.control.user.filter.server.command.GetFilterKindChoicesCommand;
-import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
-import com.echothree.control.user.filter.server.command.GetFilterKindDescriptionCommand;
-import com.echothree.control.user.filter.server.command.GetFilterKindDescriptionsCommand;
-import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
-import com.echothree.control.user.filter.server.command.SetDefaultFilterKindCommand;
 import com.echothree.control.user.warehouse.common.WarehouseRemote;
 import com.echothree.control.user.warehouse.common.form.*;
 import com.echothree.control.user.warehouse.server.command.*;

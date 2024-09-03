@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeGroupChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityAttributeGroupChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +60,9 @@ public class GetEntityAttributeGroupChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAttributeGroupChoicesResult result = CoreResultFactory.getGetEntityAttributeGroupChoicesResult();
-        String defaultEntityAttributeGroupChoice = form.getDefaultEntityAttributeGroupChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetEntityAttributeGroupChoicesResult();
+        var defaultEntityAttributeGroupChoice = form.getDefaultEntityAttributeGroupChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setEntityAttributeGroupChoices(coreControl.getEntityAttributeGroupChoices(defaultEntityAttributeGroupChoice, getPreferredLanguage(), allowNullChoice));
         

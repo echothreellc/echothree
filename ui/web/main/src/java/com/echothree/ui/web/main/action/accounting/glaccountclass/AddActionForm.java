@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.accounting.glaccountclass;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountClassChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountClassChoicesResult;
 import com.echothree.model.control.accounting.common.choice.GlAccountClassChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +42,14 @@ public class AddActionForm
     private void setupParentGlAccountClassChoices() {
         if(parentGlAccountClassChoices == null) {
             try {
-                GetGlAccountClassChoicesForm form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
                 
                 form.setDefaultGlAccountClassChoice(parentGlAccountClassChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountClassChoicesResult getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
                 parentGlAccountClassChoices = getGlAccountClassChoicesResult.getGlAccountClassChoices();
                 
                 if(parentGlAccountClassChoice == null)

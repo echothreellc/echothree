@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.GetCommentStatusChoicesForm;
 import com.echothree.control.user.comment.common.result.GetCommentStatusChoicesResult;
 import com.echothree.model.control.comment.common.choice.CommentStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class CommentStatusActionForm
     public void setupCommentStatusChoices() {
         if(commentStatusChoices == null) {
             try {
-                GetCommentStatusChoicesForm form = CommentUtil.getHome().getGetCommentStatusChoicesForm();
+                var form = CommentUtil.getHome().getGetCommentStatusChoicesForm();
                 
                 form.setCommentName(commentName);
                 form.setDefaultCommentStatusChoice(commentStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CommentUtil.getHome().getCommentStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCommentStatusChoicesResult result = (GetCommentStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = CommentUtil.getHome().getCommentStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCommentStatusChoicesResult)executionResult.getResult();
                 commentStatusChoices = result.getCommentStatusChoices();
                 
                 if(commentStatusChoice == null)

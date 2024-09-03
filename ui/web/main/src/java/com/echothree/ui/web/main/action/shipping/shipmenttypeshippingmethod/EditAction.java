@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.shipping.shipmenttypeshippingmethod;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.edit.ShipmentTypeShippingMethodEdit;
-import com.echothree.control.user.shipment.common.form.EditShipmentTypeShippingMethodForm;
 import com.echothree.control.user.shipment.common.result.EditShipmentTypeShippingMethodResult;
-import com.echothree.control.user.shipment.common.spec.ShipmentTypeShippingMethodSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
+        var shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditShipmentTypeShippingMethodForm commandForm = ShipmentUtil.getHome().getEditShipmentTypeShippingMethodForm();
-                ShipmentTypeShippingMethodSpec spec = ShipmentUtil.getHome().getShipmentTypeShippingMethodSpec();
-                String shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
+                var actionForm = (EditActionForm)form;
+                var commandForm = ShipmentUtil.getHome().getEditShipmentTypeShippingMethodForm();
+                var spec = ShipmentUtil.getHome().getShipmentTypeShippingMethodSpec();
+                var shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
                 
                 if(shipmentTypeName == null)
                     shipmentTypeName = actionForm.getShipmentTypeName();
@@ -80,21 +75,21 @@ public class EditAction
                 spec.setShippingMethodName(shippingMethodName);
                 
                 if(wasPost(request)) {
-                    ShipmentTypeShippingMethodEdit edit = ShipmentUtil.getHome().getShipmentTypeShippingMethodEdit();
+                    var edit = ShipmentUtil.getHome().getShipmentTypeShippingMethodEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = ShipmentUtil.getHome().editShipmentTypeShippingMethod(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ShipmentUtil.getHome().editShipmentTypeShippingMethod(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditShipmentTypeShippingMethodResult result = (EditShipmentTypeShippingMethodResult)executionResult.getResult();
+                            var result = (EditShipmentTypeShippingMethodResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -107,13 +102,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ShipmentUtil.getHome().editShipmentTypeShippingMethod(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditShipmentTypeShippingMethodResult result = (EditShipmentTypeShippingMethodResult)executionResult.getResult();
+
+                    var commandResult = ShipmentUtil.getHome().editShipmentTypeShippingMethod(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditShipmentTypeShippingMethodResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ShipmentTypeShippingMethodEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setShipmentTypeName(shipmentTypeName);
@@ -133,8 +128,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SHIPMENT_TYPE_NAME, shipmentTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

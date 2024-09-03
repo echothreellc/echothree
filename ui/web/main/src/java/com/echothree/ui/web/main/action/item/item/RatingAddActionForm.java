@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.form.GetRatingTypeListItemChoicesForm;
 import com.echothree.control.user.rating.common.result.GetRatingTypeListItemChoicesResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.rating.common.choice.RatingTypeListItemChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,7 +41,7 @@ public class RatingAddActionForm
     private void setupRatingTypeListItemChoices() {
         if(ratingTypeListItemChoices == null) {
             try {
-                GetRatingTypeListItemChoicesForm commandForm = RatingUtil.getHome().getGetRatingTypeListItemChoicesForm();
+                var commandForm = RatingUtil.getHome().getGetRatingTypeListItemChoicesForm();
                 
                 if(ratingName == null) {
                     commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
@@ -55,10 +52,10 @@ public class RatingAddActionForm
                 }
                 commandForm.setDefaultRatingTypeListItemChoice(ratingTypeListItemChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = RatingUtil.getHome().getRatingTypeListItemChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetRatingTypeListItemChoicesResult getRatingTypeListItemChoicesResult = (GetRatingTypeListItemChoicesResult)executionResult.getResult();
+
+                var commandResult = RatingUtil.getHome().getRatingTypeListItemChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getRatingTypeListItemChoicesResult = (GetRatingTypeListItemChoicesResult)executionResult.getResult();
                 ratingTypeListItemChoices = getRatingTypeListItemChoicesResult.getRatingTypeListItemChoices();
                 
                 if(ratingTypeListItemChoice == null) {

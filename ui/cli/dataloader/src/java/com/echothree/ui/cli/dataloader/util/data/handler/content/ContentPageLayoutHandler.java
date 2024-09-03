@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentPageLayoutAreaForm;
-import com.echothree.control.user.content.common.form.CreateContentPageLayoutDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -51,9 +49,9 @@ public class ContentPageLayoutHandler
         if(localName.equals("contentPageLayoutDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +59,7 @@ public class ContentPageLayoutHandler
             }
             
             try {
-                CreateContentPageLayoutDescriptionForm createContentPageLayoutDescriptionForm = ContentFormFactory.getCreateContentPageLayoutDescriptionForm();
+                var createContentPageLayoutDescriptionForm = ContentFormFactory.getCreateContentPageLayoutDescriptionForm();
                 
                 createContentPageLayoutDescriptionForm.setContentPageLayoutName(contentPageLayoutName);
                 createContentPageLayoutDescriptionForm.setLanguageIsoName(languageIsoName);
@@ -75,9 +73,9 @@ public class ContentPageLayoutHandler
             String contentPageAreaTypeName = null;
             String showDescriptionField = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentPageAreaTypeName"))
                     contentPageAreaTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("showDescriptionField"))
@@ -87,7 +85,7 @@ public class ContentPageLayoutHandler
             }
             
             try {
-                CreateContentPageLayoutAreaForm createContentPageLayoutAreaForm = ContentFormFactory.getCreateContentPageLayoutAreaForm();
+                var createContentPageLayoutAreaForm = ContentFormFactory.getCreateContentPageLayoutAreaForm();
                 
                 createContentPageLayoutAreaForm.setContentPageLayoutName(contentPageLayoutName);
                 createContentPageLayoutAreaForm.setContentPageAreaTypeName(contentPageAreaTypeName);

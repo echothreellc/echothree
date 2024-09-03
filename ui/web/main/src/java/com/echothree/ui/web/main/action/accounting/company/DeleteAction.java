@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.DeleteCompanyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteCompanyForm commandForm = PartyUtil.getHome().getDeleteCompanyForm();
-            String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+            var commandForm = PartyUtil.getHome().getDeleteCompanyForm();
+            var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
             
             commandForm.setCompanyName(companyName);
             

@@ -121,7 +121,7 @@ public class BatchSearchEvaluator
             resultSet = super.executeSearch(eea);
             
             if(batchStatusWorkflowStep != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByBatchStatusWorkflowStep(batchStatusWorkflowStep);
+                var entityInstancePKHolder = getEntityInstancePKHolderByBatchStatusWorkflowStep(batchStatusWorkflowStep);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -131,7 +131,7 @@ public class BatchSearchEvaluator
             }
             
             if(countParameters() == 0 && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByBatchType(batchType);
+                var entityInstancePKHolder = getEntityInstancePKHolderByBatchType(batchType);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;

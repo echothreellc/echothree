@@ -23,7 +23,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRole;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -70,12 +69,12 @@ public class CreateSecurityRoleCommand
     protected BaseResult execute() {
         var result = SecurityResultFactory.getCreateSecurityRoleResult();
         var securityControl = Session.getModelController(SecurityControl.class);
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         SecurityRole securityRole = null;
 
         if(securityRoleGroup != null) {
-            String securityRoleName = form.getSecurityRoleName();
+            var securityRoleName = form.getSecurityRoleName();
 
             securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             

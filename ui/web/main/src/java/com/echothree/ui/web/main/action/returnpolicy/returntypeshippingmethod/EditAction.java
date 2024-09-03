@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.returnpolicy.returntypeshippingmethod;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.edit.ReturnTypeShippingMethodEdit;
-import com.echothree.control.user.returnpolicy.common.form.EditReturnTypeShippingMethodForm;
 import com.echothree.control.user.returnpolicy.common.result.EditReturnTypeShippingMethodResult;
-import com.echothree.control.user.returnpolicy.common.spec.ReturnTypeShippingMethodSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-        String returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditReturnTypeShippingMethodForm commandForm = ReturnPolicyUtil.getHome().getEditReturnTypeShippingMethodForm();
-                ReturnTypeShippingMethodSpec spec = ReturnPolicyUtil.getHome().getReturnTypeShippingMethodSpec();
-                String shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
+                var actionForm = (EditActionForm)form;
+                var commandForm = ReturnPolicyUtil.getHome().getEditReturnTypeShippingMethodForm();
+                var spec = ReturnPolicyUtil.getHome().getReturnTypeShippingMethodSpec();
+                var shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
                 
                 if(returnKindName == null)
                     returnKindName = actionForm.getReturnKindName();
@@ -84,21 +79,21 @@ public class EditAction
                 spec.setShippingMethodName(shippingMethodName);
                 
                 if(wasPost(request)) {
-                    ReturnTypeShippingMethodEdit edit = ReturnPolicyUtil.getHome().getReturnTypeShippingMethodEdit();
+                    var edit = ReturnPolicyUtil.getHome().getReturnTypeShippingMethodEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnTypeShippingMethod(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnTypeShippingMethod(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditReturnTypeShippingMethodResult result = (EditReturnTypeShippingMethodResult)executionResult.getResult();
+                            var result = (EditReturnTypeShippingMethodResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -111,13 +106,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnTypeShippingMethod(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditReturnTypeShippingMethodResult result = (EditReturnTypeShippingMethodResult)executionResult.getResult();
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnTypeShippingMethod(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditReturnTypeShippingMethodResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ReturnTypeShippingMethodEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setReturnKindName(returnKindName);
@@ -138,8 +133,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindName);
             request.setAttribute(AttributeConstants.RETURN_TYPE_NAME, returnTypeName);

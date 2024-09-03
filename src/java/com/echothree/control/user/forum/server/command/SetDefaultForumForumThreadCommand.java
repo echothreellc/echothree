@@ -18,9 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.SetDefaultForumForumThreadForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.forum.server.value.ForumForumThreadValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,15 +49,15 @@ public class SetDefaultForumForumThreadCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            String forumThreadName = form.getForumThreadName();
-            ForumThread forumThread = forumControl.getForumThreadByName(forumThreadName);
+            var forumThreadName = form.getForumThreadName();
+            var forumThread = forumControl.getForumThreadByName(forumThreadName);
             
             if(forumThread != null) {
-                ForumForumThreadValue forumForumThreadValue = forumControl.getForumForumThreadValueForUpdate(forum, forumThread);
+                var forumForumThreadValue = forumControl.getForumForumThreadValueForUpdate(forum, forumThread);
                 
                 if(forumForumThreadValue != null) {
                     forumForumThreadValue.setIsDefault(Boolean.TRUE);

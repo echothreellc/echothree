@@ -16,20 +16,9 @@
 
 package com.echothree.model.control.campaign.server.transfer;
 
-import com.echothree.model.control.campaign.common.transfer.CampaignContentTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignMediumTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignSourceTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignTransfer;
 import com.echothree.model.control.campaign.common.transfer.UserVisitCampaignTransfer;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.campaign.server.entity.Campaign;
-import com.echothree.model.data.campaign.server.entity.CampaignContent;
-import com.echothree.model.data.campaign.server.entity.CampaignMedium;
-import com.echothree.model.data.campaign.server.entity.CampaignSource;
-import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.campaign.server.entity.UserVisitCampaign;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -45,23 +34,23 @@ public class UserVisitCampaignTransferCache
     }
 
     public UserVisitCampaignTransfer getUserVisitCampaignTransfer(UserVisitCampaign userVisitCampaign) {
-        UserVisitCampaignTransfer userVisitCampaignTransfer = get(userVisitCampaign);
+        var userVisitCampaignTransfer = get(userVisitCampaign);
 
         if(userVisitCampaignTransfer == null) {
-            UserVisitTransfer userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userVisit);
-            Integer userVisitCampaignSequence = userVisitCampaign.getUserVisitCampaignSequence();
-            Long unformattedTime = userVisitCampaign.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
-            Campaign campaign = userVisitCampaign.getCampaign();
-            CampaignTransfer campaignTransfer = campaign == null ? null : campaignControl.getCampaignTransfer(userVisit, campaign);
-            CampaignSource campaignSource = userVisitCampaign.getCampaignSource();
-            CampaignSourceTransfer campaignSourceTransfer = campaignSource == null ? null : campaignControl.getCampaignSourceTransfer(userVisit, campaignSource);
-            CampaignMedium campaignMedium = userVisitCampaign.getCampaignMedium();
-            CampaignMediumTransfer campaignMediumTransfer = campaignMedium == null ? null : campaignControl.getCampaignMediumTransfer(userVisit, campaignMedium);
-            CampaignTerm campaignTerm = userVisitCampaign.getCampaignTerm();
-            CampaignTermTransfer campaignTermTransfer = campaignTerm == null ? null : campaignControl.getCampaignTermTransfer(userVisit, campaignTerm);
-            CampaignContent campaignContent = userVisitCampaign.getCampaignContent();
-            CampaignContentTransfer campaignContentTransfer = campaignContent == null ? null : campaignControl.getCampaignContentTransfer(userVisit, campaignContent);
+            var userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userVisit);
+            var userVisitCampaignSequence = userVisitCampaign.getUserVisitCampaignSequence();
+            var unformattedTime = userVisitCampaign.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
+            var campaign = userVisitCampaign.getCampaign();
+            var campaignTransfer = campaign == null ? null : campaignControl.getCampaignTransfer(userVisit, campaign);
+            var campaignSource = userVisitCampaign.getCampaignSource();
+            var campaignSourceTransfer = campaignSource == null ? null : campaignControl.getCampaignSourceTransfer(userVisit, campaignSource);
+            var campaignMedium = userVisitCampaign.getCampaignMedium();
+            var campaignMediumTransfer = campaignMedium == null ? null : campaignControl.getCampaignMediumTransfer(userVisit, campaignMedium);
+            var campaignTerm = userVisitCampaign.getCampaignTerm();
+            var campaignTermTransfer = campaignTerm == null ? null : campaignControl.getCampaignTermTransfer(userVisit, campaignTerm);
+            var campaignContent = userVisitCampaign.getCampaignContent();
+            var campaignContentTransfer = campaignContent == null ? null : campaignControl.getCampaignContentTransfer(userVisit, campaignContent);
 
             userVisitCampaignTransfer = new UserVisitCampaignTransfer(userVisitTransfer, userVisitCampaignSequence, unformattedTime, time, campaignTransfer,
                     campaignSourceTransfer, campaignMediumTransfer, campaignTermTransfer, campaignContentTransfer);

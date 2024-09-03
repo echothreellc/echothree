@@ -17,16 +17,12 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUsesForm;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUsesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,10 +65,10 @@ public class GetHarmonizedTariffScheduleCodeUsesCommand
     
     @Override
     protected BaseResult execute() {
-        GetHarmonizedTariffScheduleCodeUsesResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUsesResult();
-        String countryName = form.getCountryName();
-        String harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
-        String harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUsesResult();
+        var countryName = form.getCountryName();
+        var harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
+        var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
         var parameterCount = (countryName == null  && harmonizedTariffScheduleCodeName == null && harmonizedTariffScheduleCodeUseTypeName != null ? 0 : 1)
                 + (countryName != null  && harmonizedTariffScheduleCodeName != null && harmonizedTariffScheduleCodeUseTypeName == null ? 0 : 1);
 
@@ -80,7 +76,7 @@ public class GetHarmonizedTariffScheduleCodeUsesCommand
             var itemControl = Session.getModelController(ItemControl.class);
 
             if(harmonizedTariffScheduleCodeUseTypeName != null) {
-                HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
+                var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
                 if(harmonizedTariffScheduleCodeUseType != null) {
                     result.setHarmonizedTariffScheduleCodeUseType(itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(getUserVisit(), harmonizedTariffScheduleCodeUseType));
@@ -90,10 +86,10 @@ public class GetHarmonizedTariffScheduleCodeUsesCommand
                 }
             } else {
                 var geoControl = Session.getModelController(GeoControl.class);
-                GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+                var geoCode = geoControl.getCountryByAlias(countryName);
 
                 if(geoCode != null) {
-                    HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
+                    var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
 
                     if(harmonizedTariffScheduleCode != null) {
                     result.setHarmonizedTariffScheduleCode(itemControl.getHarmonizedTariffScheduleCodeTransfer(getUserVisit(), harmonizedTariffScheduleCode));

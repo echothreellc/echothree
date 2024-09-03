@@ -85,7 +85,7 @@ public class GetEntityAttributesCommand
 
             entityAttributeTypes = new ArrayList<>();
 
-            for(int i = 0; i < entityAttributeTypeNamesToCheckLength && !hasExecutionErrors(); i++) {
+            for(var i = 0; i < entityAttributeTypeNamesToCheckLength && !hasExecutionErrors(); i++) {
                 var entityAttributeTypeName = entityAttributeTypeNamesToCheck[i];
                 var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 

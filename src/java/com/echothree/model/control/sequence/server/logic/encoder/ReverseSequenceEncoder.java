@@ -36,7 +36,7 @@ public class ReverseSequenceEncoder
         var codePoints = value.codePoints().toArray();
         var result = new StringBuilder();
 
-        for(int i = codePoints.length - 1; i > -1; i--) {
+        for(var i = codePoints.length - 1; i > -1; i--) {
             result.appendCodePoint(codePoints[i]);
         }
 

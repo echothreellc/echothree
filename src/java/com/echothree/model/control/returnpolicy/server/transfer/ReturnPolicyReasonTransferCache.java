@@ -17,8 +17,6 @@
 package com.echothree.model.control.returnpolicy.server.transfer;
 
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyReasonTransfer;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicyReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,13 +30,13 @@ public class ReturnPolicyReasonTransferCache
     }
     
     public ReturnPolicyReasonTransfer getReturnPolicyReasonTransfer(ReturnPolicyReason returnPolicyReason) {
-        ReturnPolicyReasonTransfer returnPolicyReasonTransfer = get(returnPolicyReason);
+        var returnPolicyReasonTransfer = get(returnPolicyReason);
         
         if(returnPolicyReasonTransfer == null) {
-            ReturnPolicyTransfer returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyReason.getReturnPolicy());
-            ReturnReasonTransfer returnReason = returnPolicyControl.getReturnReasonTransfer(userVisit, returnPolicyReason.getReturnReason());
-            Boolean isDefault = returnPolicyReason.getIsDefault();
-            Integer sortOrder = returnPolicyReason.getSortOrder();
+            var returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyReason.getReturnPolicy());
+            var returnReason = returnPolicyControl.getReturnReasonTransfer(userVisit, returnPolicyReason.getReturnReason());
+            var isDefault = returnPolicyReason.getIsDefault();
+            var sortOrder = returnPolicyReason.getSortOrder();
             
             returnPolicyReasonTransfer = new ReturnPolicyReasonTransfer(returnPolicy, returnReason, isDefault, sortOrder);
             put(returnPolicyReason, returnPolicyReasonTransfer);

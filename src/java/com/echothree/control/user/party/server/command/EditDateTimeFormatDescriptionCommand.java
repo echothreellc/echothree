@@ -19,14 +19,9 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.edit.DateTimeFormatDescriptionEdit;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
 import com.echothree.control.user.party.common.form.EditDateTimeFormatDescriptionForm;
-import com.echothree.control.user.party.common.result.EditDateTimeFormatDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.DateTimeFormatDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.DateTimeFormatDescription;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.value.DateTimeFormatDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,23 +59,23 @@ public class EditDateTimeFormatDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditDateTimeFormatDescriptionResult result = PartyResultFactory.getEditDateTimeFormatDescriptionResult();
-        String dateTimeFormatName = spec.getDateTimeFormatName();
-        DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+        var result = PartyResultFactory.getEditDateTimeFormatDescriptionResult();
+        var dateTimeFormatName = spec.getDateTimeFormatName();
+        var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
         
         if(dateTimeFormat != null) {
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    DateTimeFormatDescription dateTimeFormatDescription = partyControl.getDateTimeFormatDescription(dateTimeFormat, language);
+                    var dateTimeFormatDescription = partyControl.getDateTimeFormatDescription(dateTimeFormat, language);
                     
                     if(dateTimeFormatDescription != null) {
                         result.setDateTimeFormatDescription(partyControl.getDateTimeFormatDescriptionTransfer(getUserVisit(), dateTimeFormatDescription));
                         
                         if(lockEntity(dateTimeFormat)) {
-                            DateTimeFormatDescriptionEdit edit = PartyEditFactory.getDateTimeFormatDescriptionEdit();
+                            var edit = PartyEditFactory.getDateTimeFormatDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(dateTimeFormatDescription.getDescription());
@@ -93,12 +88,12 @@ public class EditDateTimeFormatDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownDateTimeFormatDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    DateTimeFormatDescriptionValue dateTimeFormatDescriptionValue = partyControl.getDateTimeFormatDescriptionValueForUpdate(dateTimeFormat, language);
+                    var dateTimeFormatDescriptionValue = partyControl.getDateTimeFormatDescriptionValueForUpdate(dateTimeFormat, language);
                     
                     if(dateTimeFormatDescriptionValue != null) {
                         if(lockEntityForUpdate(dateTimeFormat)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 dateTimeFormatDescriptionValue.setDescription(description);
                                 

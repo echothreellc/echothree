@@ -26,21 +26,17 @@ import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.core.server.entity.Command;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.user.server.entity.UserVisitStatus;
 import com.echothree.model.data.user.server.factory.UserVisitFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.CommandResult;
@@ -61,7 +57,6 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import com.echothree.util.server.persistence.ThreadUtils;
 import com.google.common.base.Charsets;
-import java.util.List;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
 import org.apache.commons.logging.Log;
@@ -110,8 +105,8 @@ public abstract class BaseCommand
     
     private void setupNames() {
         Class c = this.getClass();
-        String className = c.getName();
-        int nameOffset = className.lastIndexOf('.');
+        var className = c.getName();
+        var nameOffset = className.lastIndexOf('.');
         
         componentVendorName = ComponentVendors.ECHO_THREE.name();
         commandName = new String(className.getBytes(Charsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 8, Charsets.UTF_8);
@@ -135,7 +130,7 @@ public abstract class BaseCommand
     
     public Party getCompanyParty() {
         Party companyParty = null;
-        PartyRelationship partyRelationship = userSession.getPartyRelationship();
+        var partyRelationship = userSession.getPartyRelationship();
         
         if(partyRelationship != null) {
             companyParty = partyRelationship.getFromParty();
@@ -171,8 +166,8 @@ public abstract class BaseCommand
     }
     
     public String getPartyTypeName() {
-        PartyType partyType = getPartyType();
-        String partyTypeName = partyType == null ? null : partyType.getPartyTypeName();
+        var partyType = getPartyType();
+        var partyTypeName = partyType == null ? null : partyType.getPartyTypeName();
 
         return partyTypeName;
     }
@@ -287,10 +282,10 @@ public abstract class BaseCommand
             userSession = getUserControl().getUserSessionByUserVisit(userVisit);
 
             if(userSession != null && checkIdentityVerifiedTime) {
-                Long identityVerifiedTime = userSession.getIdentityVerifiedTime();
+                var identityVerifiedTime = userSession.getIdentityVerifiedTime();
 
                 if(identityVerifiedTime != null) {
-                    long timeSinceLastCommand = session.START_TIME - userVisit.getLastCommandTime();
+                    var timeSinceLastCommand = session.START_TIME - userVisit.getLastCommandTime();
 
                     // If it has been > 15 minutes since their last command, invalidate the UserSession.
                     if(timeSinceLastCommand > 15 * 60 * 1000) {
@@ -307,15 +302,15 @@ public abstract class BaseCommand
     
     // Returns true if everything passes.
     protected boolean checkCommandSecurityDefinition() {
-        boolean passed = true;
-        CommandSecurityDefinition myCommandSecurityDefinition = getCommandSecurityDefinition();
+        var passed = true;
+        var myCommandSecurityDefinition = getCommandSecurityDefinition();
         
         if(myCommandSecurityDefinition != null) {
-            String partyTypeName = getParty() == null ? null : party.getLastDetail().getPartyType().getPartyTypeName();
-            boolean foundPartyType = false;
-            boolean foundPartySecurityRole = false;
+            var partyTypeName = getParty() == null ? null : party.getLastDetail().getPartyType().getPartyTypeName();
+            var foundPartyType = false;
+            var foundPartySecurityRole = false;
 
-            for(PartyTypeDefinition partyTypeDefinition : myCommandSecurityDefinition.getPartyTypeDefinitions()) {
+            for(var partyTypeDefinition : myCommandSecurityDefinition.getPartyTypeDefinitions()) {
                 if(partyTypeName == null) {
                     if(partyTypeDefinition.getPartyTypeName() == null) {
                         foundPartyType = true;
@@ -324,16 +319,16 @@ public abstract class BaseCommand
                     }
                 } else {
                     if(partyTypeDefinition.getPartyTypeName().equals(partyTypeName)) {
-                        List<SecurityRoleDefinition> securityRoleDefinitions = partyTypeDefinition.getSecurityRoleDefinitions();
+                        var securityRoleDefinitions = partyTypeDefinition.getSecurityRoleDefinitions();
 
                         if(securityRoleDefinitions == null) {
                             foundPartySecurityRole = true;
                         } else {
-                            SecurityRoleLogic securityRoleLogic = SecurityRoleLogic.getInstance();
+                            var securityRoleLogic = SecurityRoleLogic.getInstance();
 
                             for(var securityRoleDefinition : securityRoleDefinitions) {
-                                String securityRoleGroupName = securityRoleDefinition.getSecurityRoleGroupName();
-                                String securityRoleName = securityRoleDefinition.getSecurityRoleName();
+                                var securityRoleGroupName = securityRoleDefinition.getSecurityRoleGroupName();
+                                var securityRoleName = securityRoleDefinition.getSecurityRoleName();
 
                                 if(securityRoleGroupName != null && securityRoleName != null) {
                                     foundPartySecurityRole = securityRoleLogic.hasSecurityRoleUsingNames(this, party, securityRoleGroupName,
@@ -489,7 +484,7 @@ public abstract class BaseCommand
 
         setupSession();
 
-        SecurityResult securityResult = null;
+        SecurityResult securityResult;
         ValidationResult validationResult = null;
         ExecutionResult executionResult;
         CommandResult commandResult;
@@ -518,7 +513,7 @@ public abstract class BaseCommand
             if((securityResult != null && securityResult.getHasMessages())
                     || (executionResult.getHasWarnings() || executionResult.getHasErrors())
                     || (validationResult != null && validationResult.getHasErrors())) {
-                Language preferredLanguage = getPreferredLanguage();
+                var preferredLanguage = getPreferredLanguage();
 
                 if(securityResult != null) {
                     MessageUtils.getInstance().fillInMessages(preferredLanguage, CommandMessageTypes.Security.name(), securityResult.getSecurityMessages());
@@ -540,7 +535,7 @@ public abstract class BaseCommand
 
                     // TODO: Check PartyTypeAuditPolicy to see if the command should be logged
                     if(logCommand) {
-                        ComponentVendor componentVendor = getCoreControl().getComponentVendorByName(getComponentVendorName());
+                        var componentVendor = getCoreControl().getComponentVendorByName(getComponentVendorName());
 
                         if(componentVendor != null) {
                             getCommandName();
@@ -553,20 +548,20 @@ public abstract class BaseCommand
                                 }
                             }
 
-                            Command command = coreControl.getCommandByName(componentVendor, commandName);
+                            var command = coreControl.getCommandByName(componentVendor, commandName);
 
                             if(command == null) {
                                 command = coreControl.createCommand(componentVendor, commandName, 1, party == null ? null : party.getPrimaryKey());
                             }
 
                             if(command != null) {
-                                UserVisitStatus userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
+                                var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
 
                                 if(userVisitStatus != null) {
                                     Integer userVisitCommandSequence = userVisitStatus.getUserVisitCommandSequence() + 1;
-                                    Boolean hadSecurityErrors = securityResult == null ? null : securityResult.getHasMessages();
-                                    Boolean hadValidationErrors = validationResult == null ? null : validationResult.getHasErrors();
-                                    Boolean hasExecutionErrors = executionResult.getHasErrors();
+                                    var hadSecurityErrors = securityResult == null ? null : securityResult.getHasMessages();
+                                    var hadValidationErrors = validationResult == null ? null : validationResult.getHasErrors();
+                                    var hasExecutionErrors = executionResult.getHasErrors();
 
                                     userVisitStatus.setUserVisitCommandSequence(userVisitCommandSequence);
 

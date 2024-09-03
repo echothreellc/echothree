@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateComponentStageForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -48,9 +47,9 @@ public class ComponentStagesHandler
             String componentStageName = null;
             String description = null;
             String relativeAge = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("componentStageName"))
                     componentStageName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class ComponentStagesHandler
             }
             
             try {
-                CreateComponentStageForm createComponentStageForm = CoreFormFactory.getCreateComponentStageForm();
+                var createComponentStageForm = CoreFormFactory.getCreateComponentStageForm();
                 
                 createComponentStageForm.setComponentStageName(componentStageName);
                 createComponentStageForm.setDescription(description);

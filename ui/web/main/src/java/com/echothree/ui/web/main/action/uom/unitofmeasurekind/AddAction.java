@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekind;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -49,19 +47,19 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        AddActionForm actionForm = (AddActionForm)form;
+        String forwardKey;
+        var actionForm = (AddActionForm)form;
         
         if(wasPost(request)) {
-            CreateUnitOfMeasureKindForm commandForm = UomUtil.getHome().getCreateUnitOfMeasureKindForm();
+            var commandForm = UomUtil.getHome().getCreateUnitOfMeasureKindForm();
             
             commandForm.setUnitOfMeasureKindName(actionForm.getUnitOfMeasureKindName());
             commandForm.setFractionDigits(actionForm.getFractionDigits());
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = UomUtil.getHome().createUnitOfMeasureKind(getUserVisitPK(request), commandForm);
+
+            var commandResult = UomUtil.getHome().createUnitOfMeasureKind(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

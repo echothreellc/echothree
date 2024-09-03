@@ -26,19 +26,12 @@ public class Index {
     static final int indexMultiple = 3;
     
     static public String indexTypeToString(int type) {
-        String result = null;
-        switch(type) {
-            case indexPrimaryKey:
-                result = "PrimaryKey";
-                break;
-            case indexUnique:
-                result = "Unique";
-                break;
-            case indexMultiple:
-                result = "Multiple";
-                break;
-        }
-        return result;
+        return switch(type) {
+            case indexPrimaryKey -> "PrimaryKey";
+            case indexUnique -> "Unique";
+            case indexMultiple -> "Multiple";
+            default -> null;
+        };
     }
     
     Table table;
@@ -54,15 +47,13 @@ public class Index {
         this.table = table;
         this.name = name;
         this.nameWasSpecified = name != null;
-        
-        if(type.equals("PrimaryKey"))
-            this.type = indexPrimaryKey;
-        else if(type.equals("Unique"))
-            this.type = indexUnique;
-        else if(type.equals("Multiple"))
-            this.type = indexMultiple;
-        else
-            throw new Exception("Illegal index type " + type);
+
+        switch(type) {
+            case "PrimaryKey" -> this.type = indexPrimaryKey;
+            case "Unique" -> this.type = indexUnique;
+            case "Multiple" -> this.type = indexMultiple;
+            default -> throw new Exception("Illegal index type " + type);
+        }
         
         indexColumns = new LinkedHashSet<>();
     }
@@ -91,8 +82,8 @@ public class Index {
         if(name == null) {
             name = columnName;
         }
-        
-        Column column = table.getColumn(columnName);
+
+        var column = table.getColumn(columnName);
         
         if(indexColumns.contains(column)) {
             throw new Exception("Index " + name + " trying to use the column " + columnName + " more than once in table " + table.getNamePlural());
@@ -116,10 +107,7 @@ public class Index {
     }
     
     public boolean isColumnInIndex(Column matchColumn) {
-        if (indexColumns.stream().anyMatch((theColumn) -> (theColumn == matchColumn))) {
-            return true;
-        }
-        return false;
+        return indexColumns.stream().anyMatch((theColumn) -> (theColumn == matchColumn));
     }
     
 }

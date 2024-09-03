@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.forum.forumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumThreadsForm;
 import com.echothree.control.user.forum.common.result.GetForumThreadsResult;
 import com.echothree.model.control.forum.common.ForumOptions;
-import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.data.forum.common.ForumThreadConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -63,9 +59,9 @@ public class MainAction
 
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws NamingException {
-        String forwardKey = null;
-        GetForumThreadsForm commandForm = ForumUtil.getHome().getGetForumThreadsForm();
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        String forwardKey;
+        var commandForm = ForumUtil.getHome().getGetForumThreadsForm();
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
 
         commandForm.setForumName(forumName);
         commandForm.setIncludeFutureForumThreads(Boolean.TRUE.toString());
@@ -77,17 +73,17 @@ public class MainAction
         options.add(ForumOptions.ForumMessagePartIncludeString);
         commandForm.setOptions(options);
 
-        String offsetParameter = request.getParameter(new ParamEncoder("forumThread").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-        Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 5;
+        var offsetParameter = request.getParameter(new ParamEncoder("forumThread").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+        var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 5;
 
         Map<String, Limit> limits = new HashMap<>();
         limits.put(ForumThreadConstants.ENTITY_TYPE_NAME, new Limit("5", offset == null ? null : offset.toString()));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = ForumUtil.getHome().getForumThreads(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumThreadsResult result = (GetForumThreadsResult)executionResult.getResult();
-        ForumTransfer forum = result.getForum();
+        var commandResult = ForumUtil.getHome().getForumThreads(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumThreadsResult)executionResult.getResult();
+        var forum = result.getForum();
 
         if(forum == null) {
             forwardKey = ForwardConstants.ERROR_404;

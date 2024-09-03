@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntrancePartyTypeTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
@@ -38,11 +36,11 @@ public class WorkflowEntrancePartyTypeTransferCache
     }
     
     public WorkflowEntrancePartyTypeTransfer getWorkflowEntrancePartyTypeTransfer(WorkflowEntrancePartyType workflowEntrancePartyType) {
-        WorkflowEntrancePartyTypeTransfer workflowEntrancePartyTypeTransfer = get(workflowEntrancePartyType);
+        var workflowEntrancePartyTypeTransfer = get(workflowEntrancePartyType);
         
         if(workflowEntrancePartyTypeTransfer == null) {
-            WorkflowEntranceTransfer workflowEntrance = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrancePartyType.getWorkflowEntrance());
-            PartyTypeTransfer partyType = partyControl.getPartyTypeTransfer(userVisit, workflowEntrancePartyType.getPartyType());
+            var workflowEntrance = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrancePartyType.getWorkflowEntrance());
+            var partyType = partyControl.getPartyTypeTransfer(userVisit, workflowEntrancePartyType.getPartyType());
             
             workflowEntrancePartyTypeTransfer = new WorkflowEntrancePartyTypeTransfer(workflowEntrance, partyType);
             put(workflowEntrancePartyType, workflowEntrancePartyTypeTransfer);

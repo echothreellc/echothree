@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.accounting.glaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.CreateGlAccountCategoryForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,18 +52,18 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateGlAccountCategoryForm commandForm = AccountingUtil.getHome().getCreateGlAccountCategoryForm();
+                    var commandForm = AccountingUtil.getHome().getCreateGlAccountCategoryForm();
                     
                     commandForm.setGlAccountCategoryName(actionForm.getGlAccountCategoryName());
                     commandForm.setParentGlAccountCategoryName(actionForm.getParentGlAccountCategoryChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().createGlAccountCategory(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().createGlAccountCategory(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

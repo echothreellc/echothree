@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.party.client.helper.NameSuffixesHelper;
 import com.echothree.control.user.party.client.helper.PersonalTitlesHelper;
-import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
-import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.NowhereHandler;
@@ -28,7 +26,6 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -149,14 +146,14 @@ public class InitialDataParser
     
     public void loadPersonalTitles()
             throws NamingException, SAXException {
-        PersonalTitleChoicesBean personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(getUserVisit(), Boolean.TRUE);
-        Iterator<String> valueIter = personalTitleChoices.getValues().iterator();
-        Iterator<String> labelIter = personalTitleChoices.getLabels().iterator();
+        var personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(getUserVisit(), Boolean.TRUE);
+        var valueIter = personalTitleChoices.getValues().iterator();
+        var labelIter = personalTitleChoices.getLabels().iterator();
         
         personalTitles = new HashMap<>(personalTitleChoices.getLabels().size());
         while(valueIter.hasNext()) {
-            String value = valueIter.next();
-            String label = labelIter.next();
+            var value = valueIter.next();
+            var label = labelIter.next();
             
             addPersonalTitle(value, label);
         }
@@ -174,14 +171,14 @@ public class InitialDataParser
     
     public void loadNameSuffixes()
             throws NamingException, SAXException {
-        NameSuffixChoicesBean nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(getUserVisit(), Boolean.TRUE);
-        Iterator<String> valueIter = nameSuffixChoices.getValues().iterator();
-        Iterator<String> labelIter = nameSuffixChoices.getLabels().iterator();
+        var nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(getUserVisit(), Boolean.TRUE);
+        var valueIter = nameSuffixChoices.getValues().iterator();
+        var labelIter = nameSuffixChoices.getLabels().iterator();
         
         nameSuffixes = new HashMap<>(nameSuffixChoices.getLabels().size());
         while(valueIter.hasNext()) {
-            String value = valueIter.next();
-            String label = labelIter.next();
+            var value = valueIter.next();
+            var label = labelIter.next();
             
             addNameSuffix(value, label);
         }
@@ -283,7 +280,7 @@ public class InitialDataParser
     
     /** Prints the error message. */
     protected void printError(String type, SAXParseException ex) {
-        String systemId = ex.getSystemId();
+        var systemId = ex.getSystemId();
 
         System.err.print("[");
         System.err.print(type);
@@ -294,7 +291,7 @@ public class InitialDataParser
         }
 
         if (systemId != null) {
-            int index = systemId.lastIndexOf('/');
+            var index = systemId.lastIndexOf('/');
 
             if (index != -1) {
                 systemId = systemId.substring(index + 1);

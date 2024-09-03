@@ -18,17 +18,10 @@ package com.echothree.model.control.picklist.server.transfer;
 
 import com.echothree.model.control.picklist.common.transfer.PicklistTypeTransfer;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
-import com.echothree.model.data.picklist.server.entity.PicklistTypeDetail;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.server.persistence.Session;
 
 public class PicklistTypeTransferCache
@@ -45,22 +38,22 @@ public class PicklistTypeTransferCache
     }
     
     public PicklistTypeTransfer getPicklistTypeTransfer(PicklistType picklistType) {
-        PicklistTypeTransfer picklistTypeTransfer = get(picklistType);
+        var picklistTypeTransfer = get(picklistType);
         
         if(picklistTypeTransfer == null) {
-            PicklistTypeDetail picklistTypeDetail = picklistType.getLastDetail();
-            String picklistTypeName = picklistTypeDetail.getPicklistTypeName();
-            PicklistType parentPicklistType = picklistTypeDetail.getParentPicklistType();
-            PicklistTypeTransfer parentPicklistTypeTransfer = parentPicklistType == null? null: getPicklistTypeTransfer(parentPicklistType);
-            SequenceType picklistSequenceType = picklistTypeDetail.getPicklistSequenceType();
-            SequenceTypeTransfer picklistSequenceTypeTransfer = picklistSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, picklistSequenceType);
-            Workflow picklistWorkflow = picklistTypeDetail.getPicklistWorkflow();
-            WorkflowTransfer picklistWorkflowTransfer = picklistWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, picklistWorkflow);
-            WorkflowEntrance picklistWorkflowEntrance = picklistTypeDetail.getPicklistWorkflowEntrance();
-            WorkflowEntranceTransfer picklistWorkflowEntranceTransfer = picklistWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, picklistWorkflowEntrance);
-            Boolean isDefault = picklistTypeDetail.getIsDefault();
-            Integer sortOrder = picklistTypeDetail.getSortOrder();
-            String description = picklistControl.getBestPicklistTypeDescription(picklistType, getLanguage());
+            var picklistTypeDetail = picklistType.getLastDetail();
+            var picklistTypeName = picklistTypeDetail.getPicklistTypeName();
+            var parentPicklistType = picklistTypeDetail.getParentPicklistType();
+            var parentPicklistTypeTransfer = parentPicklistType == null? null: getPicklistTypeTransfer(parentPicklistType);
+            var picklistSequenceType = picklistTypeDetail.getPicklistSequenceType();
+            var picklistSequenceTypeTransfer = picklistSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, picklistSequenceType);
+            var picklistWorkflow = picklistTypeDetail.getPicklistWorkflow();
+            var picklistWorkflowTransfer = picklistWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, picklistWorkflow);
+            var picklistWorkflowEntrance = picklistTypeDetail.getPicklistWorkflowEntrance();
+            var picklistWorkflowEntranceTransfer = picklistWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, picklistWorkflowEntrance);
+            var isDefault = picklistTypeDetail.getIsDefault();
+            var sortOrder = picklistTypeDetail.getSortOrder();
+            var description = picklistControl.getBestPicklistTypeDescription(picklistType, getLanguage());
             
             picklistTypeTransfer = new PicklistTypeTransfer(picklistTypeName, parentPicklistTypeTransfer, picklistSequenceTypeTransfer, picklistWorkflowTransfer,
                     picklistWorkflowEntranceTransfer, isDefault, sortOrder, description);

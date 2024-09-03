@@ -17,7 +17,6 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeRelationshipTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,11 +30,11 @@ public class GeoCodeRelationshipTransferCache
     }
     
     public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(GeoCodeRelationship geoCodeRelationship) {
-        GeoCodeRelationshipTransfer geoCodeRelationshipTransfer = get(geoCodeRelationship);
+        var geoCodeRelationshipTransfer = get(geoCodeRelationship);
         
         if(geoCodeRelationshipTransfer == null) {
-            GeoCodeTransfer fromGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getFromGeoCode());
-            GeoCodeTransfer toGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getToGeoCode());
+            var fromGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getFromGeoCode());
+            var toGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getToGeoCode());
             
             geoCodeRelationshipTransfer = new GeoCodeRelationshipTransfer(fromGeoCode, toGeoCode);
             put(geoCodeRelationship, geoCodeRelationshipTransfer);

@@ -21,7 +21,6 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.letter.server.value.LetterSourceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultLetterSourceCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        String letterSourceName = form.getLetterSourceName();
-        LetterSourceDetailValue letterSourceDetailValue = letterControl.getLetterSourceDetailValueByNameForUpdate(letterSourceName);
+        var letterSourceName = form.getLetterSourceName();
+        var letterSourceDetailValue = letterControl.getLetterSourceDetailValueByNameForUpdate(letterSourceName);
         
         if(letterSourceDetailValue != null) {
             letterSourceDetailValue.setIsDefault(Boolean.TRUE);

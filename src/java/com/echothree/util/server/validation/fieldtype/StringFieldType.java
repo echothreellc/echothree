@@ -32,12 +32,12 @@ public class StringFieldType
     
     @Override
     public String validate() {
-        Long minimumValue = fieldDefinition.getMinimumValue();
-        Long maximumValue = fieldDefinition.getMaximumValue();
-        boolean hadErrors = false;
+        var minimumValue = fieldDefinition.getMinimumValue();
+        var maximumValue = fieldDefinition.getMaximumValue();
+        var hadErrors = false;
         
         if(minimumValue != null || maximumValue != null) {
-            int length = fieldValue.codePointCount(0, fieldValue.length());
+            var length = fieldValue.codePointCount(0, fieldValue.length());
             
             if(minimumValue != null && length < minimumValue) {
                 validationMessages.add(fieldName, new Message(Validator.ERROR_MINIMUM_LENGTH, minimumValue));

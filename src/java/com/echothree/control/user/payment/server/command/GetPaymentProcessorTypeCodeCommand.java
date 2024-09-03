@@ -66,7 +66,7 @@ public class GetPaymentProcessorTypeCodeCommand
 
     @Override
     protected PaymentProcessorTypeCode getEntity() {
-        PaymentProcessorTypeCode paymentProcessorTypeCode = PaymentProcessorTypeCodeLogic.getInstance().getPaymentProcessorTypeCodeByNames(this,
+        var paymentProcessorTypeCode = PaymentProcessorTypeCodeLogic.getInstance().getPaymentProcessorTypeCodeByNames(this,
                 form.getPaymentProcessorTypeName(), form.getPaymentProcessorTypeCodeTypeName(), form.getPaymentProcessorTypeCodeName());
 
         if(paymentProcessorTypeCode != null) {

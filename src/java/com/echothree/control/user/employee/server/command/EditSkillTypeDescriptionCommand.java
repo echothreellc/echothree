@@ -19,15 +19,10 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.SkillTypeDescriptionEdit;
 import com.echothree.control.user.employee.common.form.EditSkillTypeDescriptionForm;
-import com.echothree.control.user.employee.common.result.EditSkillTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.SkillTypeDescriptionSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.employee.server.entity.SkillType;
-import com.echothree.model.data.employee.server.entity.SkillTypeDescription;
-import com.echothree.model.data.employee.server.value.SkillTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,24 +60,24 @@ public class EditSkillTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditSkillTypeDescriptionResult result = EmployeeResultFactory.getEditSkillTypeDescriptionResult();
-        String skillTypeName = spec.getSkillTypeName();
-        SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+        var result = EmployeeResultFactory.getEditSkillTypeDescriptionResult();
+        var skillTypeName = spec.getSkillTypeName();
+        var skillType = employeeControl.getSkillTypeByName(skillTypeName);
         
         if(skillType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    SkillTypeDescription skillTypeDescription = employeeControl.getSkillTypeDescription(skillType, language);
+                    var skillTypeDescription = employeeControl.getSkillTypeDescription(skillType, language);
                     
                     if(skillTypeDescription != null) {
                         result.setSkillTypeDescription(employeeControl.getSkillTypeDescriptionTransfer(getUserVisit(), skillTypeDescription));
                         
                         if(lockEntity(skillType)) {
-                            SkillTypeDescriptionEdit edit = EmployeeEditFactory.getSkillTypeDescriptionEdit();
+                            var edit = EmployeeEditFactory.getSkillTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(skillTypeDescription.getDescription());
@@ -95,12 +90,12 @@ public class EditSkillTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownSkillTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    SkillTypeDescriptionValue skillTypeDescriptionValue = employeeControl.getSkillTypeDescriptionValueForUpdate(skillType, language);
+                    var skillTypeDescriptionValue = employeeControl.getSkillTypeDescriptionValueForUpdate(skillType, language);
                     
                     if(skillTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(skillType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 skillTypeDescriptionValue.setDescription(description);
                                 

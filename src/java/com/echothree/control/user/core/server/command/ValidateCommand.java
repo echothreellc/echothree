@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.ValidateForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.ValidateResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.form.ValidationResult;
@@ -40,7 +39,7 @@ public class ValidateCommand
 
     @Override
     protected BaseResult execute() {
-        ValidateResult result = CoreResultFactory.getValidateResult();
+        var result = CoreResultFactory.getValidateResult();
 
         result.setBaseForm(form.getBaseForm());
 

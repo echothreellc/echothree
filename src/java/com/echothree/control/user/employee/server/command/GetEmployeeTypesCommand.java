@@ -18,7 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetEmployeeTypesForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetEmployeeTypesResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +60,7 @@ public class GetEmployeeTypesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetEmployeeTypesResult result = EmployeeResultFactory.getGetEmployeeTypesResult();
+        var result = EmployeeResultFactory.getGetEmployeeTypesResult();
         
         result.setEmployeeTypes(employeeControl.getEmployeeTypeTransfers(getUserVisit()));
         

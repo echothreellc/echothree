@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.common.transfer.PartyAliasTypeDescriptionTransfer;
-import com.echothree.model.control.party.common.transfer.PartyAliasTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class PartyAliasTypeDescriptionTransferCache
     }
     
     public PartyAliasTypeDescriptionTransfer getPartyAliasTypeDescriptionTransfer(PartyAliasTypeDescription partyAliasTypeDescription) {
-        PartyAliasTypeDescriptionTransfer partyAliasTypeDescriptionTransfer = get(partyAliasTypeDescription);
+        var partyAliasTypeDescriptionTransfer = get(partyAliasTypeDescription);
         
         if(partyAliasTypeDescriptionTransfer == null) {
-            PartyAliasTypeTransfer partyAliasTypeTransfer = partyControl.getPartyAliasTypeTransfer(userVisit, partyAliasTypeDescription.getPartyAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, partyAliasTypeDescription.getLanguage());
+            var partyAliasTypeTransfer = partyControl.getPartyAliasTypeTransfer(userVisit, partyAliasTypeDescription.getPartyAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, partyAliasTypeDescription.getLanguage());
             
             partyAliasTypeDescriptionTransfer = new PartyAliasTypeDescriptionTransfer(languageTransfer, partyAliasTypeTransfer, partyAliasTypeDescription.getDescription());
             put(partyAliasTypeDescription, partyAliasTypeDescriptionTransfer);

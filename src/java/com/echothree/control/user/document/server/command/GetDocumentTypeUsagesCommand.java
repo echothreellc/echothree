@@ -18,15 +18,11 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetDocumentTypeUsagesForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetDocumentTypeUsagesResult;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -68,16 +64,16 @@ public class GetDocumentTypeUsagesCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypeUsagesResult result = DocumentResultFactory.getGetDocumentTypeUsagesResult();
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        String documentTypeName = form.getDocumentTypeName();
+        var result = DocumentResultFactory.getGetDocumentTypeUsagesResult();
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var documentTypeName = form.getDocumentTypeName();
         var parameterCount = (documentTypeUsageTypeName == null ? 0 : 1) + (documentTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             if(documentTypeUsageTypeName != null) {
-                DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+                var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
                 if(documentTypeUsageType != null) {
                     result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsageType));
@@ -86,7 +82,7 @@ public class GetDocumentTypeUsagesCommand
                     addExecutionError(ExecutionErrors.UnknownDocumentTypeUsageTypeName.name(), documentTypeUsageTypeName);
                 }
             } else if(documentTypeName != null) {
-                DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+                var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
                 if(documentType != null) {
                     result.setDocumentType(documentControl.getDocumentTypeTransfer(userVisit, documentType));

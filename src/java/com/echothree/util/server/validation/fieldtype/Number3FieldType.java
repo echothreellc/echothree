@@ -22,7 +22,6 @@ import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
-import java.util.regex.Matcher;
 
 public class Number3FieldType
         extends BaseFieldType {
@@ -34,9 +33,9 @@ public class Number3FieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.Number3.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.Number3.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;

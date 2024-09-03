@@ -50,7 +50,7 @@ public class CreateUserVisitTrackCommand
     
     @Override
     protected BaseResult execute() {
-        String trackValue = form.getTrackValue();
+        var trackValue = form.getTrackValue();
         var parameterCount = trackValue == null ? 0 : 1;
 
         if(parameterCount > 0) {

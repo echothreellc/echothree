@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryService;
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.CreateLotTimeTypeForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -43,7 +42,7 @@ public class LotTimeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("lotTimeType")) {
-            CreateLotTimeTypeForm commandForm = InventoryFormFactory.getCreateLotTimeTypeForm();
+            var commandForm = InventoryFormFactory.getCreateLotTimeTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetDateTimeFormatsForm;
-import com.echothree.control.user.party.common.result.GetDateTimeFormatsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -56,7 +55,7 @@ public class GetDateTimeFormatsCommand
     
     @Override
     protected BaseResult getResult(Collection<DateTimeFormat> entities) {
-        GetDateTimeFormatsResult result = PartyResultFactory.getGetDateTimeFormatsResult();
+        var result = PartyResultFactory.getGetDateTimeFormatsResult();
         var partyControl = Session.getModelController(PartyControl.class);
         
         result.setDateTimeFormats(partyControl.getDateTimeFormatTransfers(getUserVisit(), entities));

@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.filter.filteradjustment;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.GetFilterAdjustmentDescriptionsForm;
 import com.echothree.control.user.filter.common.result.GetFilterAdjustmentDescriptionsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,16 +51,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
-            GetFilterAdjustmentDescriptionsForm getFilterAdjustmentDescriptionsForm = FilterUtil.getHome().getGetFilterAdjustmentDescriptionsForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+            var getFilterAdjustmentDescriptionsForm = FilterUtil.getHome().getGetFilterAdjustmentDescriptionsForm();
             
             getFilterAdjustmentDescriptionsForm.setFilterKindName(filterKindName);
             getFilterAdjustmentDescriptionsForm.setFilterAdjustmentName(filterAdjustmentName);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentDescriptions(getUserVisitPK(request), getFilterAdjustmentDescriptionsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentDescriptionsResult getFilterAdjustmentDescriptionsResult = (GetFilterAdjustmentDescriptionsResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterAdjustmentDescriptions(getUserVisitPK(request), getFilterAdjustmentDescriptionsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getFilterAdjustmentDescriptionsResult = (GetFilterAdjustmentDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("filterKind", getFilterAdjustmentDescriptionsResult.getFilterKind());
             request.setAttribute("filterAdjustment", getFilterAdjustmentDescriptionsResult.getFilterAdjustment());

@@ -18,7 +18,6 @@ package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.SetDefaultClubForm;
 import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.data.club.server.value.ClubDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultClubCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubName = form.getClubName();
-        ClubDetailValue clubDetailValue = clubControl.getClubDetailValueByNameForUpdate(clubName);
+        var clubName = form.getClubName();
+        var clubDetailValue = clubControl.getClubDetailValueByNameForUpdate(clubName);
         
         if(clubDetailValue != null) {
             clubDetailValue.setIsDefault(Boolean.TRUE);

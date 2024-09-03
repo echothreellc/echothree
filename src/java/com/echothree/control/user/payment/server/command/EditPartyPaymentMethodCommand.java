@@ -31,19 +31,8 @@ import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCard;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCardSecurityCode;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodDetail;
-import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardSecurityCodeValue;
-import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardValue;
-import com.echothree.model.data.payment.server.value.PartyPaymentMethodDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -119,8 +108,8 @@ public class EditPartyPaymentMethodCommand
     @Override
     public PartyPaymentMethod getEntity(EditPartyPaymentMethodResult result) {
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        PartyPaymentMethod partyPaymentMethod = null;
-        String partyPaymentMethodName = spec.getPartyPaymentMethodName();
+        PartyPaymentMethod partyPaymentMethod;
+        var partyPaymentMethodName = spec.getPartyPaymentMethodName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName);
@@ -129,8 +118,8 @@ public class EditPartyPaymentMethodCommand
         }
 
         if(partyPaymentMethod != null) {
-            Party party = getParty();
-            String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+            var party = getParty();
+            var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
             // If the executing Party is a CUSTOMER, and the PartyPaymentMethod isn't for the executing Party,
             // return a UnknownPartyPaymentMethodName error.
@@ -165,8 +154,8 @@ public class EditPartyPaymentMethodCommand
     @Override
     public void doLock(PartyPaymentMethodEdit edit, PartyPaymentMethod partyPaymentMethod) {
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
-        String paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
+        var partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
+        var paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
 
         edit.setDescription(partyPaymentMethodDetail.getDescription());
         edit.setDeleteWhenUnused(partyPaymentMethodDetail.getDeleteWhenUnused().toString());
@@ -174,18 +163,18 @@ public class EditPartyPaymentMethodCommand
         edit.setSortOrder(partyPaymentMethodDetail.getSortOrder().toString());
 
         if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-            PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = partyPaymentMethodControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
-            PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
-            boolean includeCreditCardNumber = SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, getParty(),
+            var partyPaymentMethodCreditCard = partyPaymentMethodControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
+            var partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
+            var includeCreditCardNumber = SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, getParty(),
                     SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.CreditCard.name());
 
             if(partyPaymentMethodCreditCard != null) {
-                PersonalTitle personalTitle = partyPaymentMethodCreditCard.getPersonalTitle();
-                NameSuffix nameSuffix = partyPaymentMethodCreditCard.getNameSuffix();
-                Integer expirationMonth = partyPaymentMethodCreditCard.getExpirationMonth();
-                Integer expirationYear = partyPaymentMethodCreditCard.getExpirationYear();
-                PartyContactMechanism billingPartyContactMechanism = partyPaymentMethodCreditCard.getBillingPartyContactMechanism();
-                PartyContactMechanism issuerPartyContactMechanism = partyPaymentMethodCreditCard.getIssuerPartyContactMechanism();
+                var personalTitle = partyPaymentMethodCreditCard.getPersonalTitle();
+                var nameSuffix = partyPaymentMethodCreditCard.getNameSuffix();
+                var expirationMonth = partyPaymentMethodCreditCard.getExpirationMonth();
+                var expirationYear = partyPaymentMethodCreditCard.getExpirationYear();
+                var billingPartyContactMechanism = partyPaymentMethodCreditCard.getBillingPartyContactMechanism();
+                var issuerPartyContactMechanism = partyPaymentMethodCreditCard.getIssuerPartyContactMechanism();
 
                 edit.setPersonalTitleId(personalTitle == null? null: personalTitle.getPrimaryKey().getEntityId().toString());
                 edit.setFirstName(partyPaymentMethodCreditCard.getFirstName());
@@ -224,9 +213,9 @@ public class EditPartyPaymentMethodCommand
     @Override
     public void doUpdate(PartyPaymentMethod partyPaymentMethod) {
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        PartyPK executingPartyPK = getPartyPK();
-        PartyPaymentMethodDetailValue partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueForUpdate(partyPaymentMethod);
-        String paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
+        var executingPartyPK = getPartyPK();
+        var partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueForUpdate(partyPaymentMethod);
+        var paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
 
         partyPaymentMethodDetailValue.setDescription(edit.getDescription());
         partyPaymentMethodDetailValue.setDeleteWhenUnused(Boolean.valueOf(edit.getDeleteWhenUnused()));
@@ -238,31 +227,31 @@ public class EditPartyPaymentMethodCommand
         if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
             var contactControl = Session.getModelController(ContactControl.class);
             var partyControl = Session.getModelController(PartyControl.class);
-            Party party = getPartyFromPartyPaymentMethod(partyPaymentMethod);
-            Soundex soundex = new Soundex();
-            String personalTitleId = edit.getPersonalTitleId();
-            PersonalTitle personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
-            String firstName = edit.getFirstName();
-            String middleName = edit.getMiddleName();
-            String lastName = edit.getLastName();
-            String nameSuffixId = edit.getNameSuffixId();
-            NameSuffix nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
-            String name = edit.getName();
-            String number = edit.getNumber();
-            String securityCode = edit.getSecurityCode();
-            String strExpirationMonth = edit.getExpirationMonth();
-            Integer expirationMonth = strExpirationMonth != null? Integer.valueOf(strExpirationMonth): null;
-            String strExpirationYear = edit.getExpirationYear();
-            Integer expirationYear = strExpirationYear != null? Integer.valueOf(strExpirationYear): null;
-            String billingContactMechanismName = edit.getBillingContactMechanismName();
-            ContactMechanism billingContactMechanism = billingContactMechanismName == null ? null : contactControl.getContactMechanismByName(billingContactMechanismName);
-            PartyContactMechanism billingPartyContactMechanism = billingContactMechanism == null? null: contactControl.getPartyContactMechanism(party, billingContactMechanism);
-            String issuerName = edit.getIssuerName();
-            String issuerContactMechanismName = edit.getIssuerContactMechanismName();
-            ContactMechanism issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
-            PartyContactMechanism issuerPartyContactMechanism = issuerContactMechanism == null? null: contactControl.getPartyContactMechanism(party, issuerContactMechanism);
-            PartyPaymentMethodCreditCardValue partyPaymentMethodCreditCardValue = partyPaymentMethodControl.getPartyPaymentMethodCreditCardValueForUpdate(partyPaymentMethod);
-            PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
+            var party = getPartyFromPartyPaymentMethod(partyPaymentMethod);
+            var soundex = new Soundex();
+            var personalTitleId = edit.getPersonalTitleId();
+            var personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
+            var firstName = edit.getFirstName();
+            var middleName = edit.getMiddleName();
+            var lastName = edit.getLastName();
+            var nameSuffixId = edit.getNameSuffixId();
+            var nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
+            var name = edit.getName();
+            var number = edit.getNumber();
+            var securityCode = edit.getSecurityCode();
+            var strExpirationMonth = edit.getExpirationMonth();
+            var expirationMonth = strExpirationMonth != null? Integer.valueOf(strExpirationMonth): null;
+            var strExpirationYear = edit.getExpirationYear();
+            var expirationYear = strExpirationYear != null? Integer.valueOf(strExpirationYear): null;
+            var billingContactMechanismName = edit.getBillingContactMechanismName();
+            var billingContactMechanism = billingContactMechanismName == null ? null : contactControl.getContactMechanismByName(billingContactMechanismName);
+            var billingPartyContactMechanism = billingContactMechanism == null? null: contactControl.getPartyContactMechanism(party, billingContactMechanism);
+            var issuerName = edit.getIssuerName();
+            var issuerContactMechanismName = edit.getIssuerContactMechanismName();
+            var issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
+            var issuerPartyContactMechanism = issuerContactMechanism == null? null: contactControl.getPartyContactMechanism(party, issuerContactMechanism);
+            var partyPaymentMethodCreditCardValue = partyPaymentMethodControl.getPartyPaymentMethodCreditCardValueForUpdate(partyPaymentMethod);
+            var partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
 
             String firstNameSdx;
             try {
@@ -310,7 +299,7 @@ public class EditPartyPaymentMethodCommand
                     partyPaymentMethodControl.deletePartyPaymentMethodCreditCardSecurityCode(partyPaymentMethodCreditCardSecurityCode, executingPartyPK);
                 } else {
                     if(partyPaymentMethodCreditCardSecurityCode != null && securityCode != null) {
-                        PartyPaymentMethodCreditCardSecurityCodeValue partyPaymentMethodCreditCardSecurityCodeValue = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCodeValueForUpdate(partyPaymentMethod);
+                        var partyPaymentMethodCreditCardSecurityCodeValue = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCodeValueForUpdate(partyPaymentMethod);
 
                         partyPaymentMethodCreditCardSecurityCodeValue.setSecurityCode(partyPaymentMethodControl.encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode));
                         partyPaymentMethodControl.updatePartyPaymentMethodCreditCardSecurityCodeFromValue(partyPaymentMethodCreditCardSecurityCodeValue, executingPartyPK);

@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCatalogsForm;
 import com.echothree.control.user.content.common.result.GetContentCatalogsResult;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -147,7 +144,7 @@ public class ContentCatalogsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentCatalogsForm commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
+            var commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
             Map<String, Limit> limits = new HashMap<>();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -165,7 +162,7 @@ public class ContentCatalogsTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCatalogs(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentCatalogs(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -173,8 +170,8 @@ public class ContentCatalogsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCatalogsResult result = (GetContentCatalogsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCatalogsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getContentCatalogs()), scope);
                 

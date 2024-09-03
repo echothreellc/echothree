@@ -41,24 +41,11 @@ import com.echothree.model.control.search.common.transfer.SearchTypeDescriptionT
 import com.echothree.model.control.search.common.transfer.SearchTypeTransfer;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeDescriptionTransfer;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeTransfer;
-import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeDescriptionTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchDefaultOperatorDescriptionTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchDefaultOperatorTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchKindTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchResultActionTypeDescriptionTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchResultActionTypeTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchSortDirectionDescriptionTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchSortDirectionTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchSortOrderTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchTransferCaches;
-import com.echothree.model.control.search.server.transfer.SearchTypeTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchUseTypeDescriptionTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchUseTypeTransferCache;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexField;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
@@ -66,11 +53,8 @@ import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.common.pk.PartySearchTypePreferencePK;
 import com.echothree.model.data.search.common.pk.SearchCheckSpellingActionTypePK;
 import com.echothree.model.data.search.common.pk.SearchDefaultOperatorPK;
-import com.echothree.model.data.search.common.pk.SearchKindPK;
 import com.echothree.model.data.search.common.pk.SearchResultActionTypePK;
 import com.echothree.model.data.search.common.pk.SearchSortDirectionPK;
-import com.echothree.model.data.search.common.pk.SearchSortOrderPK;
-import com.echothree.model.data.search.common.pk.SearchTypePK;
 import com.echothree.model.data.search.common.pk.SearchUseTypePK;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearchResult;
@@ -78,34 +62,25 @@ import com.echothree.model.data.search.server.entity.CachedSearch;
 import com.echothree.model.data.search.server.entity.CachedSearchIndexField;
 import com.echothree.model.data.search.server.entity.CachedSearchStatus;
 import com.echothree.model.data.search.server.entity.PartySearchTypePreference;
-import com.echothree.model.data.search.server.entity.PartySearchTypePreferenceDetail;
 import com.echothree.model.data.search.server.entity.Search;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDescription;
-import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDetail;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDescription;
-import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDetail;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchKindDescription;
-import com.echothree.model.data.search.server.entity.SearchKindDetail;
 import com.echothree.model.data.search.server.entity.SearchResult;
 import com.echothree.model.data.search.server.entity.SearchResultAction;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
 import com.echothree.model.data.search.server.entity.SearchResultActionTypeDescription;
-import com.echothree.model.data.search.server.entity.SearchResultActionTypeDetail;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortDirectionDescription;
-import com.echothree.model.data.search.server.entity.SearchSortDirectionDetail;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.search.server.entity.SearchSortOrderDescription;
-import com.echothree.model.data.search.server.entity.SearchSortOrderDetail;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.SearchTypeDescription;
-import com.echothree.model.data.search.server.entity.SearchTypeDetail;
 import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.search.server.entity.SearchUseTypeDescription;
-import com.echothree.model.data.search.server.entity.SearchUseTypeDetail;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.factory.CachedExecutedSearchFactory;
 import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
@@ -174,7 +149,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -206,11 +180,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchUseType createSearchUseType(String searchUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SearchUseType defaultSearchUseType = getDefaultSearchUseType();
-        boolean defaultFound = defaultSearchUseType != null;
+        var defaultSearchUseType = getDefaultSearchUseType();
+        var defaultFound = defaultSearchUseType != null;
 
         if(defaultFound && isDefault) {
-            SearchUseTypeDetailValue defaultSearchUseTypeDetailValue = getDefaultSearchUseTypeDetailValueForUpdate();
+            var defaultSearchUseTypeDetailValue = getDefaultSearchUseTypeDetailValueForUpdate();
 
             defaultSearchUseTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateSearchUseTypeFromValue(defaultSearchUseTypeDetailValue, false, createdBy);
@@ -218,8 +192,8 @@ public class SearchControl
             isDefault = Boolean.TRUE;
         }
 
-        SearchUseType searchUseType = SearchUseTypeFactory.getInstance().create();
-        SearchUseTypeDetail searchUseTypeDetail = SearchUseTypeDetailFactory.getInstance().create(searchUseType, searchUseTypeName, isDefault, sortOrder, session.START_TIME_LONG,
+        var searchUseType = SearchUseTypeFactory.getInstance().create();
+        var searchUseTypeDetail = SearchUseTypeDetailFactory.getInstance().create(searchUseType, searchUseTypeName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -235,8 +209,8 @@ public class SearchControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchUseType */
     public SearchUseType getSearchUseTypeByEntityInstance(EntityInstance entityInstance) {
-        SearchUseTypePK pk = new SearchUseTypePK(entityInstance.getEntityUniqueId());
-        SearchUseType searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new SearchUseTypePK(entityInstance.getEntityUniqueId());
+        var searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return searchUseType;
     }
@@ -351,9 +325,9 @@ public class SearchControl
     }
 
     public List<SearchUseTypeTransfer> getSearchUseTypeTransfers(UserVisit userVisit) {
-        List<SearchUseType> searchUseTypes = getSearchUseTypes();
+        var searchUseTypes = getSearchUseTypes();
         List<SearchUseTypeTransfer> searchUseTypeTransfers = new ArrayList<>(searchUseTypes.size());
-        SearchUseTypeTransferCache searchUseTypeTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeTransferCache();
+        var searchUseTypeTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeTransferCache();
 
         searchUseTypes.forEach((searchUseType) ->
                 searchUseTypeTransfers.add(searchUseTypeTransferCache.getSearchUseTypeTransfer(searchUseType))
@@ -363,7 +337,7 @@ public class SearchControl
     }
 
     public SearchUseTypeChoicesBean getSearchUseTypeChoices(String defaultSearchUseTypeChoice, Language language, boolean allowNullChoice) {
-        List<SearchUseType> searchUseTypes = getSearchUseTypes();
+        var searchUseTypes = getSearchUseTypes();
         var size = searchUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -379,7 +353,7 @@ public class SearchControl
         }
 
         for(var searchUseType : searchUseTypes) {
-            SearchUseTypeDetail searchUseTypeDetail = searchUseType.getLastDetail();
+            var searchUseTypeDetail = searchUseType.getLastDetail();
 
             var label = getBestSearchUseTypeDescription(searchUseType, language);
             var value = searchUseTypeDetail.getSearchUseTypeName();
@@ -398,25 +372,25 @@ public class SearchControl
 
     private void updateSearchUseTypeFromValue(SearchUseTypeDetailValue searchUseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(searchUseTypeDetailValue.hasBeenModified()) {
-            SearchUseType searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchUseTypeDetailValue.getSearchUseTypePK());
-            SearchUseTypeDetail searchUseTypeDetail = searchUseType.getActiveDetailForUpdate();
+            var searchUseTypeDetail = searchUseType.getActiveDetailForUpdate();
 
             searchUseTypeDetail.setThruTime(session.START_TIME_LONG);
             searchUseTypeDetail.store();
 
-            SearchUseTypePK searchUseTypePK = searchUseTypeDetail.getSearchUseTypePK(); // Not updated
-            String searchUseTypeName = searchUseTypeDetailValue.getSearchUseTypeName();
-            Boolean isDefault = searchUseTypeDetailValue.getIsDefault();
-            Integer sortOrder = searchUseTypeDetailValue.getSortOrder();
+            var searchUseTypePK = searchUseTypeDetail.getSearchUseTypePK(); // Not updated
+            var searchUseTypeName = searchUseTypeDetailValue.getSearchUseTypeName();
+            var isDefault = searchUseTypeDetailValue.getIsDefault();
+            var sortOrder = searchUseTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                SearchUseType defaultSearchUseType = getDefaultSearchUseType();
-                boolean defaultFound = defaultSearchUseType != null && !defaultSearchUseType.equals(searchUseType);
+                var defaultSearchUseType = getDefaultSearchUseType();
+                var defaultFound = defaultSearchUseType != null && !defaultSearchUseType.equals(searchUseType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SearchUseTypeDetailValue defaultSearchUseTypeDetailValue = getDefaultSearchUseTypeDetailValueForUpdate();
+                    var defaultSearchUseTypeDetailValue = getDefaultSearchUseTypeDetailValueForUpdate();
 
                     defaultSearchUseTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateSearchUseTypeFromValue(defaultSearchUseTypeDetailValue, false, updatedBy);
@@ -441,7 +415,7 @@ public class SearchControl
     }
 
     private void deleteSearchUseType(SearchUseType searchUseType, boolean checkDefault, BasePK deletedBy) {
-        SearchUseTypeDetail searchUseTypeDetail = searchUseType.getLastDetailForUpdate();
+        var searchUseTypeDetail = searchUseType.getLastDetailForUpdate();
 
         deleteSearchUseTypeDescriptionsBySearchUseType(searchUseType, deletedBy);
         deleteSearchesBySearchUseType(searchUseType, deletedBy);
@@ -452,17 +426,17 @@ public class SearchControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            SearchUseType defaultSearchUseType = getDefaultSearchUseType();
+            var defaultSearchUseType = getDefaultSearchUseType();
 
             if(defaultSearchUseType == null) {
-                List<SearchUseType> searchUseTypes = getSearchUseTypesForUpdate();
+                var searchUseTypes = getSearchUseTypesForUpdate();
 
                 if(!searchUseTypes.isEmpty()) {
-                    Iterator<SearchUseType> iter = searchUseTypes.iterator();
+                    var iter = searchUseTypes.iterator();
                     if(iter.hasNext()) {
                         defaultSearchUseType = iter.next();
                     }
-                    SearchUseTypeDetailValue searchUseTypeDetailValue = Objects.requireNonNull(defaultSearchUseType).getLastDetailForUpdate().getSearchUseTypeDetailValue().clone();
+                    var searchUseTypeDetailValue = Objects.requireNonNull(defaultSearchUseType).getLastDetailForUpdate().getSearchUseTypeDetailValue().clone();
 
                     searchUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchUseTypeFromValue(searchUseTypeDetailValue, false, deletedBy);
@@ -490,7 +464,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchUseTypeDescription createSearchUseTypeDescription(SearchUseType searchUseType, Language language, String description, BasePK createdBy) {
-        SearchUseTypeDescription searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
+        var searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(searchUseType.getPrimaryKey(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -570,7 +544,7 @@ public class SearchControl
 
     public String getBestSearchUseTypeDescription(SearchUseType searchUseType, Language language) {
         String description;
-        SearchUseTypeDescription searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, language);
+        var searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, language);
 
         if(searchUseTypeDescription == null && !language.getIsDefault()) {
             searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, getPartyControl().getDefaultLanguage());
@@ -590,9 +564,9 @@ public class SearchControl
     }
 
     public List<SearchUseTypeDescriptionTransfer> getSearchUseTypeDescriptionTransfersBySearchUseType(UserVisit userVisit, SearchUseType searchUseType) {
-        List<SearchUseTypeDescription> searchUseTypeDescriptions = getSearchUseTypeDescriptionsBySearchUseType(searchUseType);
+        var searchUseTypeDescriptions = getSearchUseTypeDescriptionsBySearchUseType(searchUseType);
         List<SearchUseTypeDescriptionTransfer> searchUseTypeDescriptionTransfers = new ArrayList<>(searchUseTypeDescriptions.size());
-        SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeDescriptionTransferCache();
+        var searchUseTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeDescriptionTransferCache();
 
         searchUseTypeDescriptions.forEach((searchUseTypeDescription) ->
                 searchUseTypeDescriptionTransfers.add(searchUseTypeDescriptionTransferCache.getSearchUseTypeDescriptionTransfer(searchUseTypeDescription))
@@ -603,15 +577,15 @@ public class SearchControl
 
     public void updateSearchUseTypeDescriptionFromValue(SearchUseTypeDescriptionValue searchUseTypeDescriptionValue, BasePK updatedBy) {
         if(searchUseTypeDescriptionValue.hasBeenModified()) {
-            SearchUseTypeDescription searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     searchUseTypeDescriptionValue.getPrimaryKey());
 
             searchUseTypeDescription.setThruTime(session.START_TIME_LONG);
             searchUseTypeDescription.store();
 
-            SearchUseType searchUseType = searchUseTypeDescription.getSearchUseType();
-            Language language = searchUseTypeDescription.getLanguage();
-            String description = searchUseTypeDescriptionValue.getDescription();
+            var searchUseType = searchUseTypeDescription.getSearchUseType();
+            var language = searchUseTypeDescription.getLanguage();
+            var description = searchUseTypeDescriptionValue.getDescription();
 
             searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -628,7 +602,7 @@ public class SearchControl
     }
 
     public void deleteSearchUseTypeDescriptionsBySearchUseType(SearchUseType searchUseType, BasePK deletedBy) {
-        List<SearchUseTypeDescription> searchUseTypeDescriptions = getSearchUseTypeDescriptionsBySearchUseTypeForUpdate(searchUseType);
+        var searchUseTypeDescriptions = getSearchUseTypeDescriptionsBySearchUseTypeForUpdate(searchUseType);
 
         searchUseTypeDescriptions.forEach((searchUseTypeDescription) -> 
                 deleteSearchUseTypeDescription(searchUseTypeDescription, deletedBy)
@@ -640,11 +614,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchResultActionType createSearchResultActionType(String searchResultActionTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SearchResultActionType defaultSearchResultActionType = getDefaultSearchResultActionType();
-        boolean defaultFound = defaultSearchResultActionType != null;
+        var defaultSearchResultActionType = getDefaultSearchResultActionType();
+        var defaultFound = defaultSearchResultActionType != null;
 
         if(defaultFound && isDefault) {
-            SearchResultActionTypeDetailValue defaultSearchResultActionTypeDetailValue = getDefaultSearchResultActionTypeDetailValueForUpdate();
+            var defaultSearchResultActionTypeDetailValue = getDefaultSearchResultActionTypeDetailValueForUpdate();
 
             defaultSearchResultActionTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateSearchResultActionTypeFromValue(defaultSearchResultActionTypeDetailValue, false, createdBy);
@@ -652,8 +626,8 @@ public class SearchControl
             isDefault = Boolean.TRUE;
         }
 
-        SearchResultActionType searchResultActionType = SearchResultActionTypeFactory.getInstance().create();
-        SearchResultActionTypeDetail searchResultActionTypeDetail = SearchResultActionTypeDetailFactory.getInstance().create(searchResultActionType, searchResultActionTypeName, isDefault, sortOrder, session.START_TIME_LONG,
+        var searchResultActionType = SearchResultActionTypeFactory.getInstance().create();
+        var searchResultActionTypeDetail = SearchResultActionTypeDetailFactory.getInstance().create(searchResultActionType, searchResultActionTypeName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -805,7 +779,7 @@ public class SearchControl
 
     public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit, Collection<SearchResultActionType> searchResultActionTypes) {
         List<SearchResultActionTypeTransfer> searchResultActionTypeTransfers = new ArrayList<>(searchResultActionTypes.size());
-        SearchResultActionTypeTransferCache searchResultActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache();
+        var searchResultActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache();
 
         searchResultActionTypes.forEach((searchResultActionType) ->
                 searchResultActionTypeTransfers.add(searchResultActionTypeTransferCache.getSearchResultActionTypeTransfer(searchResultActionType))
@@ -819,7 +793,7 @@ public class SearchControl
     }
 
     public SearchResultActionTypeChoicesBean getSearchResultActionTypeChoices(String defaultSearchResultActionTypeChoice, Language language, boolean allowNullChoice) {
-        List<SearchResultActionType> searchResultActionTypes = getSearchResultActionTypes();
+        var searchResultActionTypes = getSearchResultActionTypes();
         var size = searchResultActionTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -835,7 +809,7 @@ public class SearchControl
         }
 
         for(var searchResultActionType : searchResultActionTypes) {
-            SearchResultActionTypeDetail searchResultActionTypeDetail = searchResultActionType.getLastDetail();
+            var searchResultActionTypeDetail = searchResultActionType.getLastDetail();
 
             var label = getBestSearchResultActionTypeDescription(searchResultActionType, language);
             var value = searchResultActionTypeDetail.getSearchResultActionTypeName();
@@ -854,25 +828,25 @@ public class SearchControl
 
     private void updateSearchResultActionTypeFromValue(SearchResultActionTypeDetailValue searchResultActionTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(searchResultActionTypeDetailValue.hasBeenModified()) {
-            SearchResultActionType searchResultActionType = SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchResultActionType = SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchResultActionTypeDetailValue.getSearchResultActionTypePK());
-            SearchResultActionTypeDetail searchResultActionTypeDetail = searchResultActionType.getActiveDetailForUpdate();
+            var searchResultActionTypeDetail = searchResultActionType.getActiveDetailForUpdate();
 
             searchResultActionTypeDetail.setThruTime(session.START_TIME_LONG);
             searchResultActionTypeDetail.store();
 
-            SearchResultActionTypePK searchResultActionTypePK = searchResultActionTypeDetail.getSearchResultActionTypePK(); // Not updated
-            String searchResultActionTypeName = searchResultActionTypeDetailValue.getSearchResultActionTypeName();
-            Boolean isDefault = searchResultActionTypeDetailValue.getIsDefault();
-            Integer sortOrder = searchResultActionTypeDetailValue.getSortOrder();
+            var searchResultActionTypePK = searchResultActionTypeDetail.getSearchResultActionTypePK(); // Not updated
+            var searchResultActionTypeName = searchResultActionTypeDetailValue.getSearchResultActionTypeName();
+            var isDefault = searchResultActionTypeDetailValue.getIsDefault();
+            var sortOrder = searchResultActionTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                SearchResultActionType defaultSearchResultActionType = getDefaultSearchResultActionType();
-                boolean defaultFound = defaultSearchResultActionType != null && !defaultSearchResultActionType.equals(searchResultActionType);
+                var defaultSearchResultActionType = getDefaultSearchResultActionType();
+                var defaultFound = defaultSearchResultActionType != null && !defaultSearchResultActionType.equals(searchResultActionType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SearchResultActionTypeDetailValue defaultSearchResultActionTypeDetailValue = getDefaultSearchResultActionTypeDetailValueForUpdate();
+                    var defaultSearchResultActionTypeDetailValue = getDefaultSearchResultActionTypeDetailValueForUpdate();
 
                     defaultSearchResultActionTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateSearchResultActionTypeFromValue(defaultSearchResultActionTypeDetailValue, false, updatedBy);
@@ -897,7 +871,7 @@ public class SearchControl
     }
 
     private void deleteSearchResultActionType(SearchResultActionType searchResultActionType, boolean checkDefault, BasePK deletedBy) {
-        SearchResultActionTypeDetail searchResultActionTypeDetail = searchResultActionType.getLastDetailForUpdate();
+        var searchResultActionTypeDetail = searchResultActionType.getLastDetailForUpdate();
 
         deleteSearchResultActionsBySearchResultActionType(searchResultActionType, deletedBy);
         deleteSearchResultActionTypeDescriptionsBySearchResultActionType(searchResultActionType, deletedBy);
@@ -908,17 +882,17 @@ public class SearchControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            SearchResultActionType defaultSearchResultActionType = getDefaultSearchResultActionType();
+            var defaultSearchResultActionType = getDefaultSearchResultActionType();
 
             if(defaultSearchResultActionType == null) {
-                List<SearchResultActionType> searchResultActionTypes = getSearchResultActionTypesForUpdate();
+                var searchResultActionTypes = getSearchResultActionTypesForUpdate();
 
                 if(!searchResultActionTypes.isEmpty()) {
-                    Iterator<SearchResultActionType> iter = searchResultActionTypes.iterator();
+                    var iter = searchResultActionTypes.iterator();
                     if(iter.hasNext()) {
                         defaultSearchResultActionType = iter.next();
                     }
-                    SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = Objects.requireNonNull(defaultSearchResultActionType).getLastDetailForUpdate().getSearchResultActionTypeDetailValue().clone();
+                    var searchResultActionTypeDetailValue = Objects.requireNonNull(defaultSearchResultActionType).getLastDetailForUpdate().getSearchResultActionTypeDetailValue().clone();
 
                     searchResultActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, false, deletedBy);
@@ -946,7 +920,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchResultActionTypeDescription createSearchResultActionTypeDescription(SearchResultActionType searchResultActionType, Language language, String description, BasePK createdBy) {
-        SearchResultActionTypeDescription searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
+        var searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1026,7 +1000,7 @@ public class SearchControl
 
     public String getBestSearchResultActionTypeDescription(SearchResultActionType searchResultActionType, Language language) {
         String description;
-        SearchResultActionTypeDescription searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, language);
+        var searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, language);
 
         if(searchResultActionTypeDescription == null && !language.getIsDefault()) {
             searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, getPartyControl().getDefaultLanguage());
@@ -1046,9 +1020,9 @@ public class SearchControl
     }
 
     public List<SearchResultActionTypeDescriptionTransfer> getSearchResultActionTypeDescriptionTransfersBySearchResultActionType(UserVisit userVisit, SearchResultActionType searchResultActionType) {
-        List<SearchResultActionTypeDescription> searchResultActionTypeDescriptions = getSearchResultActionTypeDescriptionsBySearchResultActionType(searchResultActionType);
+        var searchResultActionTypeDescriptions = getSearchResultActionTypeDescriptionsBySearchResultActionType(searchResultActionType);
         List<SearchResultActionTypeDescriptionTransfer> searchResultActionTypeDescriptionTransfers = new ArrayList<>(searchResultActionTypeDescriptions.size());
-        SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeDescriptionTransferCache();
+        var searchResultActionTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeDescriptionTransferCache();
 
         searchResultActionTypeDescriptions.forEach((searchResultActionTypeDescription) ->
                 searchResultActionTypeDescriptionTransfers.add(searchResultActionTypeDescriptionTransferCache.getSearchResultActionTypeDescriptionTransfer(searchResultActionTypeDescription))
@@ -1059,15 +1033,15 @@ public class SearchControl
 
     public void updateSearchResultActionTypeDescriptionFromValue(SearchResultActionTypeDescriptionValue searchResultActionTypeDescriptionValue, BasePK updatedBy) {
         if(searchResultActionTypeDescriptionValue.hasBeenModified()) {
-            SearchResultActionTypeDescription searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     searchResultActionTypeDescriptionValue.getPrimaryKey());
 
             searchResultActionTypeDescription.setThruTime(session.START_TIME_LONG);
             searchResultActionTypeDescription.store();
 
-            SearchResultActionType searchResultActionType = searchResultActionTypeDescription.getSearchResultActionType();
-            Language language = searchResultActionTypeDescription.getLanguage();
-            String description = searchResultActionTypeDescriptionValue.getDescription();
+            var searchResultActionType = searchResultActionTypeDescription.getSearchResultActionType();
+            var language = searchResultActionTypeDescription.getLanguage();
+            var description = searchResultActionTypeDescriptionValue.getDescription();
 
             searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1084,7 +1058,7 @@ public class SearchControl
     }
 
     public void deleteSearchResultActionTypeDescriptionsBySearchResultActionType(SearchResultActionType searchResultActionType, BasePK deletedBy) {
-        List<SearchResultActionTypeDescription> searchResultActionTypeDescriptions = getSearchResultActionTypeDescriptionsBySearchResultActionTypeForUpdate(searchResultActionType);
+        var searchResultActionTypeDescriptions = getSearchResultActionTypeDescriptionsBySearchResultActionTypeForUpdate(searchResultActionType);
 
         searchResultActionTypeDescriptions.forEach((searchResultActionTypeDescription) -> 
                 deleteSearchResultActionTypeDescription(searchResultActionTypeDescription, deletedBy)
@@ -1096,11 +1070,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchCheckSpellingActionType createSearchCheckSpellingActionType(String searchCheckSpellingActionTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SearchCheckSpellingActionType defaultSearchCheckSpellingActionType = getDefaultSearchCheckSpellingActionType();
-        boolean defaultFound = defaultSearchCheckSpellingActionType != null;
+        var defaultSearchCheckSpellingActionType = getDefaultSearchCheckSpellingActionType();
+        var defaultFound = defaultSearchCheckSpellingActionType != null;
 
         if(defaultFound && isDefault) {
-            SearchCheckSpellingActionTypeDetailValue defaultSearchCheckSpellingActionTypeDetailValue = getDefaultSearchCheckSpellingActionTypeDetailValueForUpdate();
+            var defaultSearchCheckSpellingActionTypeDetailValue = getDefaultSearchCheckSpellingActionTypeDetailValueForUpdate();
 
             defaultSearchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateSearchCheckSpellingActionTypeFromValue(defaultSearchCheckSpellingActionTypeDetailValue, false, createdBy);
@@ -1108,8 +1082,8 @@ public class SearchControl
             isDefault = Boolean.TRUE;
         }
 
-        SearchCheckSpellingActionType searchCheckSpellingActionType = SearchCheckSpellingActionTypeFactory.getInstance().create();
-        SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail = SearchCheckSpellingActionTypeDetailFactory.getInstance().create(searchCheckSpellingActionType, searchCheckSpellingActionTypeName, isDefault, sortOrder, session.START_TIME_LONG,
+        var searchCheckSpellingActionType = SearchCheckSpellingActionTypeFactory.getInstance().create();
+        var searchCheckSpellingActionTypeDetail = SearchCheckSpellingActionTypeDetailFactory.getInstance().create(searchCheckSpellingActionType, searchCheckSpellingActionTypeName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1271,7 +1245,7 @@ public class SearchControl
     }
 
     public SearchCheckSpellingActionTypeChoicesBean getSearchCheckSpellingActionTypeChoices(String defaultSearchCheckSpellingActionTypeChoice, Language language, boolean allowNullChoice) {
-        List<SearchCheckSpellingActionType> searchCheckSpellingActionTypes = getSearchCheckSpellingActionTypes();
+        var searchCheckSpellingActionTypes = getSearchCheckSpellingActionTypes();
         var size = searchCheckSpellingActionTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1287,7 +1261,7 @@ public class SearchControl
         }
 
         for(var searchCheckSpellingActionType : searchCheckSpellingActionTypes) {
-            SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
+            var searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
 
             var label = getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
             var value = searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypeName();
@@ -1306,25 +1280,25 @@ public class SearchControl
 
     private void updateSearchCheckSpellingActionTypeFromValue(SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(searchCheckSpellingActionTypeDetailValue.hasBeenModified()) {
-            SearchCheckSpellingActionType searchCheckSpellingActionType = SearchCheckSpellingActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchCheckSpellingActionType = SearchCheckSpellingActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchCheckSpellingActionTypeDetailValue.getSearchCheckSpellingActionTypePK());
-            SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getActiveDetailForUpdate();
+            var searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getActiveDetailForUpdate();
 
             searchCheckSpellingActionTypeDetail.setThruTime(session.START_TIME_LONG);
             searchCheckSpellingActionTypeDetail.store();
 
-            SearchCheckSpellingActionTypePK searchCheckSpellingActionTypePK = searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypePK(); // Not updated
-            String searchCheckSpellingActionTypeName = searchCheckSpellingActionTypeDetailValue.getSearchCheckSpellingActionTypeName();
-            Boolean isDefault = searchCheckSpellingActionTypeDetailValue.getIsDefault();
-            Integer sortOrder = searchCheckSpellingActionTypeDetailValue.getSortOrder();
+            var searchCheckSpellingActionTypePK = searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypePK(); // Not updated
+            var searchCheckSpellingActionTypeName = searchCheckSpellingActionTypeDetailValue.getSearchCheckSpellingActionTypeName();
+            var isDefault = searchCheckSpellingActionTypeDetailValue.getIsDefault();
+            var sortOrder = searchCheckSpellingActionTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                SearchCheckSpellingActionType defaultSearchCheckSpellingActionType = getDefaultSearchCheckSpellingActionType();
-                boolean defaultFound = defaultSearchCheckSpellingActionType != null && !defaultSearchCheckSpellingActionType.equals(searchCheckSpellingActionType);
+                var defaultSearchCheckSpellingActionType = getDefaultSearchCheckSpellingActionType();
+                var defaultFound = defaultSearchCheckSpellingActionType != null && !defaultSearchCheckSpellingActionType.equals(searchCheckSpellingActionType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SearchCheckSpellingActionTypeDetailValue defaultSearchCheckSpellingActionTypeDetailValue = getDefaultSearchCheckSpellingActionTypeDetailValueForUpdate();
+                    var defaultSearchCheckSpellingActionTypeDetailValue = getDefaultSearchCheckSpellingActionTypeDetailValueForUpdate();
 
                     defaultSearchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateSearchCheckSpellingActionTypeFromValue(defaultSearchCheckSpellingActionTypeDetailValue, false, updatedBy);
@@ -1349,7 +1323,7 @@ public class SearchControl
     }
 
     private void deleteSearchCheckSpellingActionType(SearchCheckSpellingActionType searchCheckSpellingActionType, boolean checkDefault, BasePK deletedBy) {
-        SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetailForUpdate();
+        var searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetailForUpdate();
 
         deleteSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(searchCheckSpellingActionType, deletedBy);
         
@@ -1359,17 +1333,17 @@ public class SearchControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            SearchCheckSpellingActionType defaultSearchCheckSpellingActionType = getDefaultSearchCheckSpellingActionType();
+            var defaultSearchCheckSpellingActionType = getDefaultSearchCheckSpellingActionType();
 
             if(defaultSearchCheckSpellingActionType == null) {
-                List<SearchCheckSpellingActionType> searchCheckSpellingActionTypes = getSearchCheckSpellingActionTypesForUpdate();
+                var searchCheckSpellingActionTypes = getSearchCheckSpellingActionTypesForUpdate();
 
                 if(!searchCheckSpellingActionTypes.isEmpty()) {
-                    Iterator<SearchCheckSpellingActionType> iter = searchCheckSpellingActionTypes.iterator();
+                    var iter = searchCheckSpellingActionTypes.iterator();
                     if(iter.hasNext()) {
                         defaultSearchCheckSpellingActionType = iter.next();
                     }
-                    SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = Objects.requireNonNull(defaultSearchCheckSpellingActionType).getLastDetailForUpdate().getSearchCheckSpellingActionTypeDetailValue().clone();
+                    var searchCheckSpellingActionTypeDetailValue = Objects.requireNonNull(defaultSearchCheckSpellingActionType).getLastDetailForUpdate().getSearchCheckSpellingActionTypeDetailValue().clone();
 
                     searchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchCheckSpellingActionTypeFromValue(searchCheckSpellingActionTypeDetailValue, false, deletedBy);
@@ -1397,7 +1371,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchCheckSpellingActionTypeDescription createSearchCheckSpellingActionTypeDescription(SearchCheckSpellingActionType searchCheckSpellingActionType, Language language, String description, BasePK createdBy) {
-        SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
+        var searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1477,7 +1451,7 @@ public class SearchControl
 
     public String getBestSearchCheckSpellingActionTypeDescription(SearchCheckSpellingActionType searchCheckSpellingActionType, Language language) {
         String description;
-        SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
+        var searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
 
         if(searchCheckSpellingActionTypeDescription == null && !language.getIsDefault()) {
             searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getPartyControl().getDefaultLanguage());
@@ -1497,9 +1471,9 @@ public class SearchControl
     }
 
     public List<SearchCheckSpellingActionTypeDescriptionTransfer> getSearchCheckSpellingActionTypeDescriptionTransfersBySearchCheckSpellingActionType(UserVisit userVisit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        List<SearchCheckSpellingActionTypeDescription> searchCheckSpellingActionTypeDescriptions = getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(searchCheckSpellingActionType);
+        var searchCheckSpellingActionTypeDescriptions = getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(searchCheckSpellingActionType);
         List<SearchCheckSpellingActionTypeDescriptionTransfer> searchCheckSpellingActionTypeDescriptionTransfers = new ArrayList<>(searchCheckSpellingActionTypeDescriptions.size());
-        SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeDescriptionTransferCache();
+        var searchCheckSpellingActionTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeDescriptionTransferCache();
 
         searchCheckSpellingActionTypeDescriptions.forEach((searchCheckSpellingActionTypeDescription) ->
                 searchCheckSpellingActionTypeDescriptionTransfers.add(searchCheckSpellingActionTypeDescriptionTransferCache.getSearchCheckSpellingActionTypeDescriptionTransfer(searchCheckSpellingActionTypeDescription))
@@ -1510,15 +1484,15 @@ public class SearchControl
 
     public void updateSearchCheckSpellingActionTypeDescriptionFromValue(SearchCheckSpellingActionTypeDescriptionValue searchCheckSpellingActionTypeDescriptionValue, BasePK updatedBy) {
         if(searchCheckSpellingActionTypeDescriptionValue.hasBeenModified()) {
-            SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     searchCheckSpellingActionTypeDescriptionValue.getPrimaryKey());
 
             searchCheckSpellingActionTypeDescription.setThruTime(session.START_TIME_LONG);
             searchCheckSpellingActionTypeDescription.store();
 
-            SearchCheckSpellingActionType searchCheckSpellingActionType = searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionType();
-            Language language = searchCheckSpellingActionTypeDescription.getLanguage();
-            String description = searchCheckSpellingActionTypeDescriptionValue.getDescription();
+            var searchCheckSpellingActionType = searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionType();
+            var language = searchCheckSpellingActionTypeDescription.getLanguage();
+            var description = searchCheckSpellingActionTypeDescriptionValue.getDescription();
 
             searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1535,7 +1509,7 @@ public class SearchControl
     }
 
     public void deleteSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(SearchCheckSpellingActionType searchCheckSpellingActionType, BasePK deletedBy) {
-        List<SearchCheckSpellingActionTypeDescription> searchCheckSpellingActionTypeDescriptions = getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionTypeForUpdate(searchCheckSpellingActionType);
+        var searchCheckSpellingActionTypeDescriptions = getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionTypeForUpdate(searchCheckSpellingActionType);
 
         searchCheckSpellingActionTypeDescriptions.forEach((searchCheckSpellingActionTypeDescription) -> 
                 deleteSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionTypeDescription, deletedBy)
@@ -1547,11 +1521,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchDefaultOperator createSearchDefaultOperator(String searchDefaultOperatorName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SearchDefaultOperator defaultSearchDefaultOperator = getDefaultSearchDefaultOperator();
-        boolean defaultFound = defaultSearchDefaultOperator != null;
+        var defaultSearchDefaultOperator = getDefaultSearchDefaultOperator();
+        var defaultFound = defaultSearchDefaultOperator != null;
 
         if(defaultFound && isDefault) {
-            SearchDefaultOperatorDetailValue defaultSearchDefaultOperatorDetailValue = getDefaultSearchDefaultOperatorDetailValueForUpdate();
+            var defaultSearchDefaultOperatorDetailValue = getDefaultSearchDefaultOperatorDetailValueForUpdate();
 
             defaultSearchDefaultOperatorDetailValue.setIsDefault(Boolean.FALSE);
             updateSearchDefaultOperatorFromValue(defaultSearchDefaultOperatorDetailValue, false, createdBy);
@@ -1559,8 +1533,8 @@ public class SearchControl
             isDefault = Boolean.TRUE;
         }
 
-        SearchDefaultOperator searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().create();
-        SearchDefaultOperatorDetail searchDefaultOperatorDetail = SearchDefaultOperatorDetailFactory.getInstance().create(searchDefaultOperator, searchDefaultOperatorName, isDefault, sortOrder, session.START_TIME_LONG,
+        var searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().create();
+        var searchDefaultOperatorDetail = SearchDefaultOperatorDetailFactory.getInstance().create(searchDefaultOperator, searchDefaultOperatorName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1576,8 +1550,8 @@ public class SearchControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchDefaultOperator */
     public SearchDefaultOperator getSearchDefaultOperatorByEntityInstance(EntityInstance entityInstance) {
-        SearchDefaultOperatorPK pk = new SearchDefaultOperatorPK(entityInstance.getEntityUniqueId());
-        SearchDefaultOperator searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new SearchDefaultOperatorPK(entityInstance.getEntityUniqueId());
+        var searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return searchDefaultOperator;
     }
@@ -1692,9 +1666,9 @@ public class SearchControl
     }
 
     public List<SearchDefaultOperatorTransfer> getSearchDefaultOperatorTransfers(UserVisit userVisit) {
-        List<SearchDefaultOperator> searchDefaultOperators = getSearchDefaultOperators();
+        var searchDefaultOperators = getSearchDefaultOperators();
         List<SearchDefaultOperatorTransfer> searchDefaultOperatorTransfers = new ArrayList<>(searchDefaultOperators.size());
-        SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorTransferCache();
+        var searchDefaultOperatorTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorTransferCache();
 
         searchDefaultOperators.forEach((searchDefaultOperator) ->
                 searchDefaultOperatorTransfers.add(searchDefaultOperatorTransferCache.getSearchDefaultOperatorTransfer(searchDefaultOperator))
@@ -1704,7 +1678,7 @@ public class SearchControl
     }
 
     public SearchDefaultOperatorChoicesBean getSearchDefaultOperatorChoices(String defaultSearchDefaultOperatorChoice, Language language, boolean allowNullChoice) {
-        List<SearchDefaultOperator> searchDefaultOperators = getSearchDefaultOperators();
+        var searchDefaultOperators = getSearchDefaultOperators();
         var size = searchDefaultOperators.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1720,7 +1694,7 @@ public class SearchControl
         }
 
         for(var searchDefaultOperator : searchDefaultOperators) {
-            SearchDefaultOperatorDetail searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
+            var searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
 
             var label = getBestSearchDefaultOperatorDescription(searchDefaultOperator, language);
             var value = searchDefaultOperatorDetail.getSearchDefaultOperatorName();
@@ -1739,25 +1713,25 @@ public class SearchControl
 
     private void updateSearchDefaultOperatorFromValue(SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(searchDefaultOperatorDetailValue.hasBeenModified()) {
-            SearchDefaultOperator searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchDefaultOperatorDetailValue.getSearchDefaultOperatorPK());
-            SearchDefaultOperatorDetail searchDefaultOperatorDetail = searchDefaultOperator.getActiveDetailForUpdate();
+            var searchDefaultOperatorDetail = searchDefaultOperator.getActiveDetailForUpdate();
 
             searchDefaultOperatorDetail.setThruTime(session.START_TIME_LONG);
             searchDefaultOperatorDetail.store();
 
-            SearchDefaultOperatorPK searchDefaultOperatorPK = searchDefaultOperatorDetail.getSearchDefaultOperatorPK(); // Not updated
-            String searchDefaultOperatorName = searchDefaultOperatorDetailValue.getSearchDefaultOperatorName();
-            Boolean isDefault = searchDefaultOperatorDetailValue.getIsDefault();
-            Integer sortOrder = searchDefaultOperatorDetailValue.getSortOrder();
+            var searchDefaultOperatorPK = searchDefaultOperatorDetail.getSearchDefaultOperatorPK(); // Not updated
+            var searchDefaultOperatorName = searchDefaultOperatorDetailValue.getSearchDefaultOperatorName();
+            var isDefault = searchDefaultOperatorDetailValue.getIsDefault();
+            var sortOrder = searchDefaultOperatorDetailValue.getSortOrder();
 
             if(checkDefault) {
-                SearchDefaultOperator defaultSearchDefaultOperator = getDefaultSearchDefaultOperator();
-                boolean defaultFound = defaultSearchDefaultOperator != null && !defaultSearchDefaultOperator.equals(searchDefaultOperator);
+                var defaultSearchDefaultOperator = getDefaultSearchDefaultOperator();
+                var defaultFound = defaultSearchDefaultOperator != null && !defaultSearchDefaultOperator.equals(searchDefaultOperator);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SearchDefaultOperatorDetailValue defaultSearchDefaultOperatorDetailValue = getDefaultSearchDefaultOperatorDetailValueForUpdate();
+                    var defaultSearchDefaultOperatorDetailValue = getDefaultSearchDefaultOperatorDetailValueForUpdate();
 
                     defaultSearchDefaultOperatorDetailValue.setIsDefault(Boolean.FALSE);
                     updateSearchDefaultOperatorFromValue(defaultSearchDefaultOperatorDetailValue, false, updatedBy);
@@ -1782,7 +1756,7 @@ public class SearchControl
     }
 
     private void deleteSearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, boolean checkDefault, BasePK deletedBy) {
-        SearchDefaultOperatorDetail searchDefaultOperatorDetail = searchDefaultOperator.getLastDetailForUpdate();
+        var searchDefaultOperatorDetail = searchDefaultOperator.getLastDetailForUpdate();
 
         deleteSearchDefaultOperatorDescriptionsBySearchDefaultOperator(searchDefaultOperator, deletedBy);
         deletePartySearchTypePreferencesBySearchDefaultOperator(searchDefaultOperator, deletedBy);
@@ -1794,17 +1768,17 @@ public class SearchControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            SearchDefaultOperator defaultSearchDefaultOperator = getDefaultSearchDefaultOperator();
+            var defaultSearchDefaultOperator = getDefaultSearchDefaultOperator();
 
             if(defaultSearchDefaultOperator == null) {
-                List<SearchDefaultOperator> searchDefaultOperators = getSearchDefaultOperatorsForUpdate();
+                var searchDefaultOperators = getSearchDefaultOperatorsForUpdate();
 
                 if(!searchDefaultOperators.isEmpty()) {
-                    Iterator<SearchDefaultOperator> iter = searchDefaultOperators.iterator();
+                    var iter = searchDefaultOperators.iterator();
                     if(iter.hasNext()) {
                         defaultSearchDefaultOperator = iter.next();
                     }
-                    SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = Objects.requireNonNull(defaultSearchDefaultOperator).getLastDetailForUpdate().getSearchDefaultOperatorDetailValue().clone();
+                    var searchDefaultOperatorDetailValue = Objects.requireNonNull(defaultSearchDefaultOperator).getLastDetailForUpdate().getSearchDefaultOperatorDetailValue().clone();
 
                     searchDefaultOperatorDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchDefaultOperatorFromValue(searchDefaultOperatorDetailValue, false, deletedBy);
@@ -1832,7 +1806,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchDefaultOperatorDescription createSearchDefaultOperatorDescription(SearchDefaultOperator searchDefaultOperator, Language language, String description, BasePK createdBy) {
-        SearchDefaultOperatorDescription searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
+        var searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1912,7 +1886,7 @@ public class SearchControl
 
     public String getBestSearchDefaultOperatorDescription(SearchDefaultOperator searchDefaultOperator, Language language) {
         String description;
-        SearchDefaultOperatorDescription searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, language);
+        var searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, language);
 
         if(searchDefaultOperatorDescription == null && !language.getIsDefault()) {
             searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, getPartyControl().getDefaultLanguage());
@@ -1932,9 +1906,9 @@ public class SearchControl
     }
 
     public List<SearchDefaultOperatorDescriptionTransfer> getSearchDefaultOperatorDescriptionTransfersBySearchDefaultOperator(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator) {
-        List<SearchDefaultOperatorDescription> searchDefaultOperatorDescriptions = getSearchDefaultOperatorDescriptionsBySearchDefaultOperator(searchDefaultOperator);
+        var searchDefaultOperatorDescriptions = getSearchDefaultOperatorDescriptionsBySearchDefaultOperator(searchDefaultOperator);
         List<SearchDefaultOperatorDescriptionTransfer> searchDefaultOperatorDescriptionTransfers = new ArrayList<>(searchDefaultOperatorDescriptions.size());
-        SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorDescriptionTransferCache();
+        var searchDefaultOperatorDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorDescriptionTransferCache();
 
         searchDefaultOperatorDescriptions.forEach((searchDefaultOperatorDescription) ->
                 searchDefaultOperatorDescriptionTransfers.add(searchDefaultOperatorDescriptionTransferCache.getSearchDefaultOperatorDescriptionTransfer(searchDefaultOperatorDescription))
@@ -1945,15 +1919,15 @@ public class SearchControl
 
     public void updateSearchDefaultOperatorDescriptionFromValue(SearchDefaultOperatorDescriptionValue searchDefaultOperatorDescriptionValue, BasePK updatedBy) {
         if(searchDefaultOperatorDescriptionValue.hasBeenModified()) {
-            SearchDefaultOperatorDescription searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     searchDefaultOperatorDescriptionValue.getPrimaryKey());
 
             searchDefaultOperatorDescription.setThruTime(session.START_TIME_LONG);
             searchDefaultOperatorDescription.store();
 
-            SearchDefaultOperator searchDefaultOperator = searchDefaultOperatorDescription.getSearchDefaultOperator();
-            Language language = searchDefaultOperatorDescription.getLanguage();
-            String description = searchDefaultOperatorDescriptionValue.getDescription();
+            var searchDefaultOperator = searchDefaultOperatorDescription.getSearchDefaultOperator();
+            var language = searchDefaultOperatorDescription.getLanguage();
+            var description = searchDefaultOperatorDescriptionValue.getDescription();
 
             searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1970,7 +1944,7 @@ public class SearchControl
     }
 
     public void deleteSearchDefaultOperatorDescriptionsBySearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, BasePK deletedBy) {
-        List<SearchDefaultOperatorDescription> searchDefaultOperatorDescriptions = getSearchDefaultOperatorDescriptionsBySearchDefaultOperatorForUpdate(searchDefaultOperator);
+        var searchDefaultOperatorDescriptions = getSearchDefaultOperatorDescriptionsBySearchDefaultOperatorForUpdate(searchDefaultOperator);
 
         searchDefaultOperatorDescriptions.forEach((searchDefaultOperatorDescription) -> 
                 deleteSearchDefaultOperatorDescription(searchDefaultOperatorDescription, deletedBy)
@@ -1982,11 +1956,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchSortDirection createSearchSortDirection(String searchSortDirectionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SearchSortDirection defaultSearchSortDirection = getDefaultSearchSortDirection();
-        boolean defaultFound = defaultSearchSortDirection != null;
+        var defaultSearchSortDirection = getDefaultSearchSortDirection();
+        var defaultFound = defaultSearchSortDirection != null;
 
         if(defaultFound && isDefault) {
-            SearchSortDirectionDetailValue defaultSearchSortDirectionDetailValue = getDefaultSearchSortDirectionDetailValueForUpdate();
+            var defaultSearchSortDirectionDetailValue = getDefaultSearchSortDirectionDetailValueForUpdate();
 
             defaultSearchSortDirectionDetailValue.setIsDefault(Boolean.FALSE);
             updateSearchSortDirectionFromValue(defaultSearchSortDirectionDetailValue, false, createdBy);
@@ -1994,8 +1968,8 @@ public class SearchControl
             isDefault = Boolean.TRUE;
         }
 
-        SearchSortDirection searchSortDirection = SearchSortDirectionFactory.getInstance().create();
-        SearchSortDirectionDetail searchSortDirectionDetail = SearchSortDirectionDetailFactory.getInstance().create(searchSortDirection, searchSortDirectionName, isDefault, sortOrder, session.START_TIME_LONG,
+        var searchSortDirection = SearchSortDirectionFactory.getInstance().create();
+        var searchSortDirectionDetail = SearchSortDirectionDetailFactory.getInstance().create(searchSortDirection, searchSortDirectionName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2011,8 +1985,8 @@ public class SearchControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchSortDirection */
     public SearchSortDirection getSearchSortDirectionByEntityInstance(EntityInstance entityInstance) {
-        SearchSortDirectionPK pk = new SearchSortDirectionPK(entityInstance.getEntityUniqueId());
-        SearchSortDirection searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new SearchSortDirectionPK(entityInstance.getEntityUniqueId());
+        var searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return searchSortDirection;
     }
@@ -2127,9 +2101,9 @@ public class SearchControl
     }
 
     public List<SearchSortDirectionTransfer> getSearchSortDirectionTransfers(UserVisit userVisit) {
-        List<SearchSortDirection> searchSortDirections = getSearchSortDirections();
+        var searchSortDirections = getSearchSortDirections();
         List<SearchSortDirectionTransfer> searchSortDirectionTransfers = new ArrayList<>(searchSortDirections.size());
-        SearchSortDirectionTransferCache searchSortDirectionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionTransferCache();
+        var searchSortDirectionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionTransferCache();
 
         searchSortDirections.forEach((searchSortDirection) ->
                 searchSortDirectionTransfers.add(searchSortDirectionTransferCache.getSearchSortDirectionTransfer(searchSortDirection))
@@ -2139,7 +2113,7 @@ public class SearchControl
     }
 
     public SearchSortDirectionChoicesBean getSearchSortDirectionChoices(String defaultSearchSortDirectionChoice, Language language, boolean allowNullChoice) {
-        List<SearchSortDirection> searchSortDirections = getSearchSortDirections();
+        var searchSortDirections = getSearchSortDirections();
         var size = searchSortDirections.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2155,7 +2129,7 @@ public class SearchControl
         }
 
         for(var searchSortDirection : searchSortDirections) {
-            SearchSortDirectionDetail searchSortDirectionDetail = searchSortDirection.getLastDetail();
+            var searchSortDirectionDetail = searchSortDirection.getLastDetail();
 
             var label = getBestSearchSortDirectionDescription(searchSortDirection, language);
             var value = searchSortDirectionDetail.getSearchSortDirectionName();
@@ -2174,25 +2148,25 @@ public class SearchControl
 
     private void updateSearchSortDirectionFromValue(SearchSortDirectionDetailValue searchSortDirectionDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(searchSortDirectionDetailValue.hasBeenModified()) {
-            SearchSortDirection searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchSortDirectionDetailValue.getSearchSortDirectionPK());
-            SearchSortDirectionDetail searchSortDirectionDetail = searchSortDirection.getActiveDetailForUpdate();
+            var searchSortDirectionDetail = searchSortDirection.getActiveDetailForUpdate();
 
             searchSortDirectionDetail.setThruTime(session.START_TIME_LONG);
             searchSortDirectionDetail.store();
 
-            SearchSortDirectionPK searchSortDirectionPK = searchSortDirectionDetail.getSearchSortDirectionPK(); // Not updated
-            String searchSortDirectionName = searchSortDirectionDetailValue.getSearchSortDirectionName();
-            Boolean isDefault = searchSortDirectionDetailValue.getIsDefault();
-            Integer sortOrder = searchSortDirectionDetailValue.getSortOrder();
+            var searchSortDirectionPK = searchSortDirectionDetail.getSearchSortDirectionPK(); // Not updated
+            var searchSortDirectionName = searchSortDirectionDetailValue.getSearchSortDirectionName();
+            var isDefault = searchSortDirectionDetailValue.getIsDefault();
+            var sortOrder = searchSortDirectionDetailValue.getSortOrder();
 
             if(checkDefault) {
-                SearchSortDirection defaultSearchSortDirection = getDefaultSearchSortDirection();
-                boolean defaultFound = defaultSearchSortDirection != null && !defaultSearchSortDirection.equals(searchSortDirection);
+                var defaultSearchSortDirection = getDefaultSearchSortDirection();
+                var defaultFound = defaultSearchSortDirection != null && !defaultSearchSortDirection.equals(searchSortDirection);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SearchSortDirectionDetailValue defaultSearchSortDirectionDetailValue = getDefaultSearchSortDirectionDetailValueForUpdate();
+                    var defaultSearchSortDirectionDetailValue = getDefaultSearchSortDirectionDetailValueForUpdate();
 
                     defaultSearchSortDirectionDetailValue.setIsDefault(Boolean.FALSE);
                     updateSearchSortDirectionFromValue(defaultSearchSortDirectionDetailValue, false, updatedBy);
@@ -2217,7 +2191,7 @@ public class SearchControl
     }
 
     private void deleteSearchSortDirection(SearchSortDirection searchSortDirection, boolean checkDefault, BasePK deletedBy) {
-        SearchSortDirectionDetail searchSortDirectionDetail = searchSortDirection.getLastDetailForUpdate();
+        var searchSortDirectionDetail = searchSortDirection.getLastDetailForUpdate();
 
         deleteSearchSortDirectionDescriptionsBySearchSortDirection(searchSortDirection, deletedBy);
         deletePartySearchTypePreferencesBySearchSortDirection(searchSortDirection, deletedBy);
@@ -2229,17 +2203,17 @@ public class SearchControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            SearchSortDirection defaultSearchSortDirection = getDefaultSearchSortDirection();
+            var defaultSearchSortDirection = getDefaultSearchSortDirection();
 
             if(defaultSearchSortDirection == null) {
-                List<SearchSortDirection> searchSortDirections = getSearchSortDirectionsForUpdate();
+                var searchSortDirections = getSearchSortDirectionsForUpdate();
 
                 if(!searchSortDirections.isEmpty()) {
-                    Iterator<SearchSortDirection> iter = searchSortDirections.iterator();
+                    var iter = searchSortDirections.iterator();
                     if(iter.hasNext()) {
                         defaultSearchSortDirection = iter.next();
                     }
-                    SearchSortDirectionDetailValue searchSortDirectionDetailValue = Objects.requireNonNull(defaultSearchSortDirection).getLastDetailForUpdate().getSearchSortDirectionDetailValue().clone();
+                    var searchSortDirectionDetailValue = Objects.requireNonNull(defaultSearchSortDirection).getLastDetailForUpdate().getSearchSortDirectionDetailValue().clone();
 
                     searchSortDirectionDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchSortDirectionFromValue(searchSortDirectionDetailValue, false, deletedBy);
@@ -2267,7 +2241,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchSortDirectionDescription createSearchSortDirectionDescription(SearchSortDirection searchSortDirection, Language language, String description, BasePK createdBy) {
-        SearchSortDirectionDescription searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
+        var searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2347,7 +2321,7 @@ public class SearchControl
 
     public String getBestSearchSortDirectionDescription(SearchSortDirection searchSortDirection, Language language) {
         String description;
-        SearchSortDirectionDescription searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, language);
+        var searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, language);
 
         if(searchSortDirectionDescription == null && !language.getIsDefault()) {
             searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, getPartyControl().getDefaultLanguage());
@@ -2367,9 +2341,9 @@ public class SearchControl
     }
 
     public List<SearchSortDirectionDescriptionTransfer> getSearchSortDirectionDescriptionTransfersBySearchSortDirection(UserVisit userVisit, SearchSortDirection searchSortDirection) {
-        List<SearchSortDirectionDescription> searchSortDirectionDescriptions = getSearchSortDirectionDescriptionsBySearchSortDirection(searchSortDirection);
+        var searchSortDirectionDescriptions = getSearchSortDirectionDescriptionsBySearchSortDirection(searchSortDirection);
         List<SearchSortDirectionDescriptionTransfer> searchSortDirectionDescriptionTransfers = new ArrayList<>(searchSortDirectionDescriptions.size());
-        SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionDescriptionTransferCache();
+        var searchSortDirectionDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionDescriptionTransferCache();
 
         searchSortDirectionDescriptions.forEach((searchSortDirectionDescription) ->
                 searchSortDirectionDescriptionTransfers.add(searchSortDirectionDescriptionTransferCache.getSearchSortDirectionDescriptionTransfer(searchSortDirectionDescription))
@@ -2380,15 +2354,15 @@ public class SearchControl
 
     public void updateSearchSortDirectionDescriptionFromValue(SearchSortDirectionDescriptionValue searchSortDirectionDescriptionValue, BasePK updatedBy) {
         if(searchSortDirectionDescriptionValue.hasBeenModified()) {
-            SearchSortDirectionDescription searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     searchSortDirectionDescriptionValue.getPrimaryKey());
 
             searchSortDirectionDescription.setThruTime(session.START_TIME_LONG);
             searchSortDirectionDescription.store();
 
-            SearchSortDirection searchSortDirection = searchSortDirectionDescription.getSearchSortDirection();
-            Language language = searchSortDirectionDescription.getLanguage();
-            String description = searchSortDirectionDescriptionValue.getDescription();
+            var searchSortDirection = searchSortDirectionDescription.getSearchSortDirection();
+            var language = searchSortDirectionDescription.getLanguage();
+            var description = searchSortDirectionDescriptionValue.getDescription();
 
             searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2405,7 +2379,7 @@ public class SearchControl
     }
 
     public void deleteSearchSortDirectionDescriptionsBySearchSortDirection(SearchSortDirection searchSortDirection, BasePK deletedBy) {
-        List<SearchSortDirectionDescription> searchSortDirectionDescriptions = getSearchSortDirectionDescriptionsBySearchSortDirectionForUpdate(searchSortDirection);
+        var searchSortDirectionDescriptions = getSearchSortDirectionDescriptionsBySearchSortDirectionForUpdate(searchSortDirection);
 
         searchSortDirectionDescriptions.forEach((searchSortDirectionDescription) -> 
                 deleteSearchSortDirectionDescription(searchSortDirectionDescription, deletedBy)
@@ -2417,11 +2391,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchKind createSearchKind(String searchKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SearchKind defaultSearchKind = getDefaultSearchKind();
-        boolean defaultFound = defaultSearchKind != null;
+        var defaultSearchKind = getDefaultSearchKind();
+        var defaultFound = defaultSearchKind != null;
 
         if(defaultFound && isDefault) {
-            SearchKindDetailValue defaultSearchKindDetailValue = getDefaultSearchKindDetailValueForUpdate();
+            var defaultSearchKindDetailValue = getDefaultSearchKindDetailValueForUpdate();
 
             defaultSearchKindDetailValue.setIsDefault(Boolean.FALSE);
             updateSearchKindFromValue(defaultSearchKindDetailValue, false, createdBy);
@@ -2429,8 +2403,8 @@ public class SearchControl
             isDefault = Boolean.TRUE;
         }
 
-        SearchKind searchKind = SearchKindFactory.getInstance().create();
-        SearchKindDetail searchKindDetail = SearchKindDetailFactory.getInstance().create(searchKind, searchKindName, isDefault, sortOrder,
+        var searchKind = SearchKindFactory.getInstance().create();
+        var searchKindDetail = SearchKindDetailFactory.getInstance().create(searchKind, searchKindName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2548,7 +2522,7 @@ public class SearchControl
     }
 
     public SearchKindChoicesBean getSearchKindChoices(String defaultSearchKindChoice, Language language, boolean allowNullChoice) {
-        List<SearchKind> searchKinds = getSearchKinds();
+        var searchKinds = getSearchKinds();
         var size = searchKinds.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2564,7 +2538,7 @@ public class SearchControl
         }
 
         for(var searchKind : searchKinds) {
-            SearchKindDetail searchKindDetail = searchKind.getLastDetail();
+            var searchKindDetail = searchKind.getLastDetail();
 
             var label = getBestSearchKindDescription(searchKind, language);
             var value = searchKindDetail.getSearchKindName();
@@ -2586,9 +2560,9 @@ public class SearchControl
     }
 
     public List<SearchKindTransfer> getSearchKindTransfers(UserVisit userVisit) {
-        List<SearchKind> searchKinds = getSearchKinds();
+        var searchKinds = getSearchKinds();
         List<SearchKindTransfer> searchKindTransfers = new ArrayList<>(searchKinds.size());
-        SearchKindTransferCache searchKindTransferCache = getSearchTransferCaches(userVisit).getSearchKindTransferCache();
+        var searchKindTransferCache = getSearchTransferCaches(userVisit).getSearchKindTransferCache();
 
         searchKinds.forEach((searchKind) ->
                 searchKindTransfers.add(searchKindTransferCache.getSearchKindTransfer(searchKind))
@@ -2598,25 +2572,25 @@ public class SearchControl
     }
 
     private void updateSearchKindFromValue(SearchKindDetailValue searchKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        SearchKind searchKind = SearchKindFactory.getInstance().getEntityFromPK(session,
+        var searchKind = SearchKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, searchKindDetailValue.getSearchKindPK());
-        SearchKindDetail searchKindDetail = searchKind.getActiveDetailForUpdate();
+        var searchKindDetail = searchKind.getActiveDetailForUpdate();
 
         searchKindDetail.setThruTime(session.START_TIME_LONG);
         searchKindDetail.store();
 
-        SearchKindPK searchKindPK = searchKindDetail.getSearchKindPK();
-        String searchKindName = searchKindDetailValue.getSearchKindName();
-        Boolean isDefault = searchKindDetailValue.getIsDefault();
-        Integer sortOrder = searchKindDetailValue.getSortOrder();
+        var searchKindPK = searchKindDetail.getSearchKindPK();
+        var searchKindName = searchKindDetailValue.getSearchKindName();
+        var isDefault = searchKindDetailValue.getIsDefault();
+        var sortOrder = searchKindDetailValue.getSortOrder();
 
         if(checkDefault) {
-            SearchKind defaultSearchKind = getDefaultSearchKind();
-            boolean defaultFound = defaultSearchKind != null && !defaultSearchKind.equals(searchKind);
+            var defaultSearchKind = getDefaultSearchKind();
+            var defaultFound = defaultSearchKind != null && !defaultSearchKind.equals(searchKind);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                SearchKindDetailValue defaultSearchKindDetailValue = getDefaultSearchKindDetailValueForUpdate();
+                var defaultSearchKindDetailValue = getDefaultSearchKindDetailValueForUpdate();
 
                 defaultSearchKindDetailValue.setIsDefault(Boolean.FALSE);
                 updateSearchKindFromValue(defaultSearchKindDetailValue, false, updatedBy);
@@ -2644,24 +2618,24 @@ public class SearchControl
         deleteSearchTypesBySearchKind(searchKind, deletedBy);
         deleteSearchKindDescriptionsBySearchKind(searchKind, deletedBy);
 
-        SearchKindDetail searchKindDetail = searchKind.getLastDetailForUpdate();
+        var searchKindDetail = searchKind.getLastDetailForUpdate();
         searchKindDetail.setThruTime(session.START_TIME_LONG);
         searchKind.setActiveDetail(null);
         searchKind.store();
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            SearchKind defaultSearchKind = getDefaultSearchKind();
+            var defaultSearchKind = getDefaultSearchKind();
 
             if(defaultSearchKind == null) {
-                List<SearchKind> searchKinds = getSearchKindsForUpdate();
+                var searchKinds = getSearchKindsForUpdate();
 
                 if(!searchKinds.isEmpty()) {
-                    Iterator<SearchKind> iter = searchKinds.iterator();
+                    var iter = searchKinds.iterator();
                     if(iter.hasNext()) {
                         defaultSearchKind = iter.next();
                     }
-                    SearchKindDetailValue searchKindDetailValue = Objects.requireNonNull(defaultSearchKind).getLastDetailForUpdate().getSearchKindDetailValue().clone();
+                    var searchKindDetailValue = Objects.requireNonNull(defaultSearchKind).getLastDetailForUpdate().getSearchKindDetailValue().clone();
 
                     searchKindDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchKindFromValue(searchKindDetailValue, false, deletedBy);
@@ -2690,7 +2664,7 @@ public class SearchControl
 
     public SearchKindDescription createSearchKindDescription(SearchKind searchKind, Language language, String description,
             BasePK createdBy) {
-        SearchKindDescription searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind,
+        var searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(searchKind.getPrimaryKey(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2770,7 +2744,7 @@ public class SearchControl
 
     public String getBestSearchKindDescription(SearchKind searchKind, Language language) {
         String description;
-        SearchKindDescription searchKindDescription = getSearchKindDescription(searchKind, language);
+        var searchKindDescription = getSearchKindDescription(searchKind, language);
 
         if(searchKindDescription == null && !language.getIsDefault()) {
             searchKindDescription = getSearchKindDescription(searchKind, getPartyControl().getDefaultLanguage());
@@ -2790,7 +2764,7 @@ public class SearchControl
     }
 
     public List<SearchKindDescriptionTransfer> getSearchKindDescriptionTransfersBySearchKind(UserVisit userVisit, SearchKind searchKind) {
-        List<SearchKindDescription> searchKindDescriptions = getSearchKindDescriptionsBySearchKind(searchKind);
+        var searchKindDescriptions = getSearchKindDescriptionsBySearchKind(searchKind);
         List<SearchKindDescriptionTransfer> searchKindDescriptionTransfers = new ArrayList<>(searchKindDescriptions.size());
 
         searchKindDescriptions.forEach((searchKindDescription) -> {
@@ -2802,15 +2776,15 @@ public class SearchControl
 
     public void updateSearchKindDescriptionFromValue(SearchKindDescriptionValue searchKindDescriptionValue, BasePK updatedBy) {
         if(searchKindDescriptionValue.hasBeenModified()) {
-            SearchKindDescription searchKindDescription = SearchKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchKindDescription = SearchKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchKindDescriptionValue.getPrimaryKey());
 
             searchKindDescription.setThruTime(session.START_TIME_LONG);
             searchKindDescription.store();
 
-            SearchKind searchKind = searchKindDescription.getSearchKind();
-            Language language = searchKindDescription.getLanguage();
-            String description = searchKindDescriptionValue.getDescription();
+            var searchKind = searchKindDescription.getSearchKind();
+            var language = searchKindDescription.getLanguage();
+            var description = searchKindDescriptionValue.getDescription();
 
             searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2827,7 +2801,7 @@ public class SearchControl
     }
 
     public void deleteSearchKindDescriptionsBySearchKind(SearchKind searchKind, BasePK deletedBy) {
-        List<SearchKindDescription> searchKindDescriptions = getSearchKindDescriptionsBySearchKindForUpdate(searchKind);
+        var searchKindDescriptions = getSearchKindDescriptionsBySearchKindForUpdate(searchKind);
 
         searchKindDescriptions.forEach((searchKindDescription) -> 
                 deleteSearchKindDescription(searchKindDescription, deletedBy)
@@ -2839,11 +2813,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchType createSearchType(SearchKind searchKind, String searchTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SearchType defaultSearchType = getDefaultSearchType(searchKind);
-        boolean defaultFound = defaultSearchType != null;
+        var defaultSearchType = getDefaultSearchType(searchKind);
+        var defaultFound = defaultSearchType != null;
 
         if(defaultFound && isDefault) {
-            SearchTypeDetailValue defaultSearchTypeDetailValue = getDefaultSearchTypeDetailValueForUpdate(searchKind);
+            var defaultSearchTypeDetailValue = getDefaultSearchTypeDetailValueForUpdate(searchKind);
 
             defaultSearchTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateSearchTypeFromValue(defaultSearchTypeDetailValue, false, createdBy);
@@ -2851,8 +2825,8 @@ public class SearchControl
             isDefault = Boolean.TRUE;
         }
 
-        SearchType searchType = SearchTypeFactory.getInstance().create();
-        SearchTypeDetail searchTypeDetail = SearchTypeDetailFactory.getInstance().create(session, searchType, searchKind, searchTypeName, isDefault, sortOrder,
+        var searchType = SearchTypeFactory.getInstance().create();
+        var searchTypeDetail = SearchTypeDetailFactory.getInstance().create(session, searchType, searchKind, searchTypeName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2977,7 +2951,7 @@ public class SearchControl
 
     public SearchTypeChoicesBean getSearchTypeChoices(String defaultSearchTypeChoice, Language language,
             boolean allowNullChoice, SearchKind searchKind) {
-        List<SearchType> searchTypes = getSearchTypes(searchKind);
+        var searchTypes = getSearchTypes(searchKind);
         var size = searchTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2993,7 +2967,7 @@ public class SearchControl
         }
 
         for(var searchType : searchTypes) {
-            SearchTypeDetail searchTypeDetail = searchType.getLastDetail();
+            var searchTypeDetail = searchType.getLastDetail();
             var label = getBestSearchTypeDescription(searchType, language);
             var value = searchTypeDetail.getSearchTypeName();
 
@@ -3014,9 +2988,9 @@ public class SearchControl
     }
 
     public List<SearchTypeTransfer> getSearchTypeTransfersBySearchKind(UserVisit userVisit, SearchKind searchKind) {
-        List<SearchType> searchTypes = getSearchTypes(searchKind);
+        var searchTypes = getSearchTypes(searchKind);
         List<SearchTypeTransfer> searchTypeTransfers = new ArrayList<>(searchTypes.size());
-        SearchTypeTransferCache searchTypeTransferCache = getSearchTransferCaches(userVisit).getSearchTypeTransferCache();
+        var searchTypeTransferCache = getSearchTransferCaches(userVisit).getSearchTypeTransferCache();
 
         searchTypes.forEach((searchType) ->
                 searchTypeTransfers.add(searchTypeTransferCache.getSearchTypeTransfer(searchType))
@@ -3028,27 +3002,27 @@ public class SearchControl
     private void updateSearchTypeFromValue(SearchTypeDetailValue searchTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(searchTypeDetailValue.hasBeenModified()) {
-            SearchType searchType = SearchTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchType = SearchTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchTypeDetailValue.getSearchTypePK());
-            SearchTypeDetail searchTypeDetail = searchType.getActiveDetailForUpdate();
+            var searchTypeDetail = searchType.getActiveDetailForUpdate();
 
             searchTypeDetail.setThruTime(session.START_TIME_LONG);
             searchTypeDetail.store();
 
-            SearchTypePK searchTypePK = searchTypeDetail.getSearchTypePK();
-            SearchKind searchKind = searchTypeDetail.getSearchKind();
-            SearchKindPK searchKindPK = searchKind.getPrimaryKey();
-            String searchTypeName = searchTypeDetailValue.getSearchTypeName();
-            Boolean isDefault = searchTypeDetailValue.getIsDefault();
-            Integer sortOrder = searchTypeDetailValue.getSortOrder();
+            var searchTypePK = searchTypeDetail.getSearchTypePK();
+            var searchKind = searchTypeDetail.getSearchKind();
+            var searchKindPK = searchKind.getPrimaryKey();
+            var searchTypeName = searchTypeDetailValue.getSearchTypeName();
+            var isDefault = searchTypeDetailValue.getIsDefault();
+            var sortOrder = searchTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                SearchType defaultSearchType = getDefaultSearchType(searchKind);
-                boolean defaultFound = defaultSearchType != null && !defaultSearchType.equals(searchType);
+                var defaultSearchType = getDefaultSearchType(searchKind);
+                var defaultFound = defaultSearchType != null && !defaultSearchType.equals(searchType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SearchTypeDetailValue defaultSearchTypeDetailValue = getDefaultSearchTypeDetailValueForUpdate(searchKind);
+                    var defaultSearchTypeDetailValue = getDefaultSearchTypeDetailValueForUpdate(searchKind);
 
                     defaultSearchTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateSearchTypeFromValue(defaultSearchTypeDetailValue, false, updatedBy);
@@ -3079,23 +3053,23 @@ public class SearchControl
         
         removeUserVisitSearchesBySearchType(searchType);
 
-        SearchTypeDetail searchTypeDetail = searchType.getLastDetailForUpdate();
+        var searchTypeDetail = searchType.getLastDetailForUpdate();
         searchTypeDetail.setThruTime(session.START_TIME_LONG);
         searchType.setActiveDetail(null);
         searchType.store();
 
         // Check for default, and pick one if necessary
-        SearchKind searchKind = searchTypeDetail.getSearchKind();
-        SearchType defaultSearchType = getDefaultSearchType(searchKind);
+        var searchKind = searchTypeDetail.getSearchKind();
+        var defaultSearchType = getDefaultSearchType(searchKind);
         if(defaultSearchType == null) {
-            List<SearchType> searchTypes = getSearchTypesForUpdate(searchKind);
+            var searchTypes = getSearchTypesForUpdate(searchKind);
 
             if(!searchTypes.isEmpty()) {
-                Iterator<SearchType> iter = searchTypes.iterator();
+                var iter = searchTypes.iterator();
                 if(iter.hasNext()) {
                     defaultSearchType = iter.next();
                 }
-                SearchTypeDetailValue searchTypeDetailValue = Objects.requireNonNull(defaultSearchType).getLastDetailForUpdate().getSearchTypeDetailValue().clone();
+                var searchTypeDetailValue = Objects.requireNonNull(defaultSearchType).getLastDetailForUpdate().getSearchTypeDetailValue().clone();
 
                 searchTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSearchTypeFromValue(searchTypeDetailValue, false, deletedBy);
@@ -3106,7 +3080,7 @@ public class SearchControl
     }
 
     public void deleteSearchTypesBySearchKind(SearchKind searchKind, BasePK deletedBy) {
-        List<SearchType> searchTypes = getSearchTypesForUpdate(searchKind);
+        var searchTypes = getSearchTypesForUpdate(searchKind);
 
         searchTypes.forEach((searchType) -> 
                 deleteSearchType(searchType, deletedBy)
@@ -3119,7 +3093,7 @@ public class SearchControl
 
     public SearchTypeDescription createSearchTypeDescription(SearchType searchType, Language language, String description,
             BasePK createdBy) {
-        SearchTypeDescription searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType,
+        var searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(searchType.getPrimaryKey(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3199,7 +3173,7 @@ public class SearchControl
 
     public String getBestSearchTypeDescription(SearchType searchType, Language language) {
         String description;
-        SearchTypeDescription searchTypeDescription = getSearchTypeDescription(searchType, language);
+        var searchTypeDescription = getSearchTypeDescription(searchType, language);
 
         if(searchTypeDescription == null && !language.getIsDefault()) {
             searchTypeDescription = getSearchTypeDescription(searchType, getPartyControl().getDefaultLanguage());
@@ -3219,7 +3193,7 @@ public class SearchControl
     }
 
     public List<SearchTypeDescriptionTransfer> getSearchTypeDescriptionTransfersBySearchType(UserVisit userVisit, SearchType searchType) {
-        List<SearchTypeDescription> searchTypeDescriptions = getSearchTypeDescriptionsBySearchType(searchType);
+        var searchTypeDescriptions = getSearchTypeDescriptionsBySearchType(searchType);
         List<SearchTypeDescriptionTransfer> searchTypeDescriptionTransfers = new ArrayList<>(searchTypeDescriptions.size());
 
         searchTypeDescriptions.forEach((searchTypeDescription) -> {
@@ -3231,15 +3205,15 @@ public class SearchControl
 
     public void updateSearchTypeDescriptionFromValue(SearchTypeDescriptionValue searchTypeDescriptionValue, BasePK updatedBy) {
         if(searchTypeDescriptionValue.hasBeenModified()) {
-            SearchTypeDescription searchTypeDescription = SearchTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchTypeDescription = SearchTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchTypeDescriptionValue.getPrimaryKey());
 
             searchTypeDescription.setThruTime(session.START_TIME_LONG);
             searchTypeDescription.store();
 
-            SearchType searchType = searchTypeDescription.getSearchType();
-            Language language = searchTypeDescription.getLanguage();
-            String description = searchTypeDescriptionValue.getDescription();
+            var searchType = searchTypeDescription.getSearchType();
+            var language = searchTypeDescription.getLanguage();
+            var description = searchTypeDescriptionValue.getDescription();
 
             searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3256,7 +3230,7 @@ public class SearchControl
     }
 
     public void deleteSearchTypeDescriptionsBySearchType(SearchType searchType, BasePK deletedBy) {
-        List<SearchTypeDescription> searchTypeDescriptions = getSearchTypeDescriptionsBySearchTypeForUpdate(searchType);
+        var searchTypeDescriptions = getSearchTypeDescriptionsBySearchTypeForUpdate(searchType);
 
         searchTypeDescriptions.forEach((searchTypeDescription) -> 
                 deleteSearchTypeDescription(searchTypeDescription, deletedBy)
@@ -3268,11 +3242,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public SearchSortOrder createSearchSortOrder(SearchKind searchKind, String searchSortOrderName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SearchSortOrder defaultSearchSortOrder = getDefaultSearchSortOrder(searchKind);
-        boolean defaultFound = defaultSearchSortOrder != null;
+        var defaultSearchSortOrder = getDefaultSearchSortOrder(searchKind);
+        var defaultFound = defaultSearchSortOrder != null;
 
         if(defaultFound && isDefault) {
-            SearchSortOrderDetailValue defaultSearchSortOrderDetailValue = getDefaultSearchSortOrderDetailValueForUpdate(searchKind);
+            var defaultSearchSortOrderDetailValue = getDefaultSearchSortOrderDetailValueForUpdate(searchKind);
 
             defaultSearchSortOrderDetailValue.setIsDefault(Boolean.FALSE);
             updateSearchSortOrderFromValue(defaultSearchSortOrderDetailValue, false, createdBy);
@@ -3280,8 +3254,8 @@ public class SearchControl
             isDefault = Boolean.TRUE;
         }
 
-        SearchSortOrder searchSortOrder = SearchSortOrderFactory.getInstance().create();
-        SearchSortOrderDetail searchSortOrderDetail = SearchSortOrderDetailFactory.getInstance().create(session, searchSortOrder, searchKind, searchSortOrderName, isDefault, sortOrder,
+        var searchSortOrder = SearchSortOrderFactory.getInstance().create();
+        var searchSortOrderDetail = SearchSortOrderDetailFactory.getInstance().create(session, searchSortOrder, searchKind, searchSortOrderName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -3406,7 +3380,7 @@ public class SearchControl
 
     public SearchSortOrderChoicesBean getSearchSortOrderChoices(String defaultSearchSortOrderChoice, Language language,
             boolean allowNullChoice, SearchKind searchKind) {
-        List<SearchSortOrder> searchSortOrders = getSearchSortOrders(searchKind);
+        var searchSortOrders = getSearchSortOrders(searchKind);
         var size = searchSortOrders.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3422,7 +3396,7 @@ public class SearchControl
         }
 
         for(var searchSortOrder : searchSortOrders) {
-            SearchSortOrderDetail searchSortOrderDetail = searchSortOrder.getLastDetail();
+            var searchSortOrderDetail = searchSortOrder.getLastDetail();
             var label = getBestSearchSortOrderDescription(searchSortOrder, language);
             var value = searchSortOrderDetail.getSearchSortOrderName();
 
@@ -3443,9 +3417,9 @@ public class SearchControl
     }
 
     public List<SearchSortOrderTransfer> getSearchSortOrderTransfersBySearchKind(UserVisit userVisit, SearchKind searchKind) {
-        List<SearchSortOrder> searchSortOrders = getSearchSortOrders(searchKind);
+        var searchSortOrders = getSearchSortOrders(searchKind);
         List<SearchSortOrderTransfer> searchSortOrderTransfers = new ArrayList<>(searchSortOrders.size());
-        SearchSortOrderTransferCache searchSortOrderTransferCache = getSearchTransferCaches(userVisit).getSearchSortOrderTransferCache();
+        var searchSortOrderTransferCache = getSearchTransferCaches(userVisit).getSearchSortOrderTransferCache();
 
         searchSortOrders.forEach((searchSortOrder) ->
                 searchSortOrderTransfers.add(searchSortOrderTransferCache.getSearchSortOrderTransfer(searchSortOrder))
@@ -3457,27 +3431,27 @@ public class SearchControl
     private void updateSearchSortOrderFromValue(SearchSortOrderDetailValue searchSortOrderDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(searchSortOrderDetailValue.hasBeenModified()) {
-            SearchSortOrder searchSortOrder = SearchSortOrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchSortOrder = SearchSortOrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchSortOrderDetailValue.getSearchSortOrderPK());
-            SearchSortOrderDetail searchSortOrderDetail = searchSortOrder.getActiveDetailForUpdate();
+            var searchSortOrderDetail = searchSortOrder.getActiveDetailForUpdate();
 
             searchSortOrderDetail.setThruTime(session.START_TIME_LONG);
             searchSortOrderDetail.store();
 
-            SearchSortOrderPK searchSortOrderPK = searchSortOrderDetail.getSearchSortOrderPK();
-            SearchKind searchKind = searchSortOrderDetail.getSearchKind();
-            SearchKindPK searchKindPK = searchKind.getPrimaryKey();
-            String searchSortOrderName = searchSortOrderDetailValue.getSearchSortOrderName();
-            Boolean isDefault = searchSortOrderDetailValue.getIsDefault();
-            Integer sortOrder = searchSortOrderDetailValue.getSortOrder();
+            var searchSortOrderPK = searchSortOrderDetail.getSearchSortOrderPK();
+            var searchKind = searchSortOrderDetail.getSearchKind();
+            var searchKindPK = searchKind.getPrimaryKey();
+            var searchSortOrderName = searchSortOrderDetailValue.getSearchSortOrderName();
+            var isDefault = searchSortOrderDetailValue.getIsDefault();
+            var sortOrder = searchSortOrderDetailValue.getSortOrder();
 
             if(checkDefault) {
-                SearchSortOrder defaultSearchSortOrder = getDefaultSearchSortOrder(searchKind);
-                boolean defaultFound = defaultSearchSortOrder != null && !defaultSearchSortOrder.equals(searchSortOrder);
+                var defaultSearchSortOrder = getDefaultSearchSortOrder(searchKind);
+                var defaultFound = defaultSearchSortOrder != null && !defaultSearchSortOrder.equals(searchSortOrder);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SearchSortOrderDetailValue defaultSearchSortOrderDetailValue = getDefaultSearchSortOrderDetailValueForUpdate(searchKind);
+                    var defaultSearchSortOrderDetailValue = getDefaultSearchSortOrderDetailValueForUpdate(searchKind);
 
                     defaultSearchSortOrderDetailValue.setIsDefault(Boolean.FALSE);
                     updateSearchSortOrderFromValue(defaultSearchSortOrderDetailValue, false, updatedBy);
@@ -3505,24 +3479,24 @@ public class SearchControl
         deleteSearchSortOrderDescriptionsBySearchSortOrder(searchSortOrder, deletedBy);
         deletePartySearchTypePreferencesBySearchSortOrder(searchSortOrder, deletedBy);
         deleteCachedSearchesBySearchSortOrder(searchSortOrder, deletedBy);
-        
-        SearchSortOrderDetail searchSortOrderDetail = searchSortOrder.getLastDetailForUpdate();
+
+        var searchSortOrderDetail = searchSortOrder.getLastDetailForUpdate();
         searchSortOrderDetail.setThruTime(session.START_TIME_LONG);
         searchSortOrder.setActiveDetail(null);
         searchSortOrder.store();
 
         // Check for default, and pick one if necessary
-        SearchKind searchKind = searchSortOrderDetail.getSearchKind();
-        SearchSortOrder defaultSearchSortOrder = getDefaultSearchSortOrder(searchKind);
+        var searchKind = searchSortOrderDetail.getSearchKind();
+        var defaultSearchSortOrder = getDefaultSearchSortOrder(searchKind);
         if(defaultSearchSortOrder == null) {
-            List<SearchSortOrder> searchSortOrders = getSearchSortOrdersForUpdate(searchKind);
+            var searchSortOrders = getSearchSortOrdersForUpdate(searchKind);
 
             if(!searchSortOrders.isEmpty()) {
-                Iterator<SearchSortOrder> iter = searchSortOrders.iterator();
+                var iter = searchSortOrders.iterator();
                 if(iter.hasNext()) {
                     defaultSearchSortOrder = iter.next();
                 }
-                SearchSortOrderDetailValue searchSortOrderDetailValue = Objects.requireNonNull(defaultSearchSortOrder).getLastDetailForUpdate().getSearchSortOrderDetailValue().clone();
+                var searchSortOrderDetailValue = Objects.requireNonNull(defaultSearchSortOrder).getLastDetailForUpdate().getSearchSortOrderDetailValue().clone();
 
                 searchSortOrderDetailValue.setIsDefault(Boolean.TRUE);
                 updateSearchSortOrderFromValue(searchSortOrderDetailValue, false, deletedBy);
@@ -3533,7 +3507,7 @@ public class SearchControl
     }
 
     public void deleteSearchSortOrdersBySearchKind(SearchKind searchKind, BasePK deletedBy) {
-        List<SearchSortOrder> searchSortOrders = getSearchSortOrdersForUpdate(searchKind);
+        var searchSortOrders = getSearchSortOrdersForUpdate(searchKind);
 
         searchSortOrders.forEach((searchSortOrder) -> 
                 deleteSearchSortOrder(searchSortOrder, deletedBy)
@@ -3546,7 +3520,7 @@ public class SearchControl
 
     public SearchSortOrderDescription createSearchSortOrderDescription(SearchSortOrder searchSortOrder, Language language, String description,
             BasePK createdBy) {
-        SearchSortOrderDescription searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder,
+        var searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3626,7 +3600,7 @@ public class SearchControl
 
     public String getBestSearchSortOrderDescription(SearchSortOrder searchSortOrder, Language language) {
         String description;
-        SearchSortOrderDescription searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, language);
+        var searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, language);
 
         if(searchSortOrderDescription == null && !language.getIsDefault()) {
             searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, getPartyControl().getDefaultLanguage());
@@ -3646,7 +3620,7 @@ public class SearchControl
     }
 
     public List<SearchSortOrderDescriptionTransfer> getSearchSortOrderDescriptionTransfersBySearchSortOrder(UserVisit userVisit, SearchSortOrder searchSortOrder) {
-        List<SearchSortOrderDescription> searchSortOrderDescriptions = getSearchSortOrderDescriptionsBySearchSortOrder(searchSortOrder);
+        var searchSortOrderDescriptions = getSearchSortOrderDescriptionsBySearchSortOrder(searchSortOrder);
         List<SearchSortOrderDescriptionTransfer> searchSortOrderDescriptionTransfers = new ArrayList<>(searchSortOrderDescriptions.size());
 
         searchSortOrderDescriptions.forEach((searchSortOrderDescription) -> {
@@ -3658,15 +3632,15 @@ public class SearchControl
 
     public void updateSearchSortOrderDescriptionFromValue(SearchSortOrderDescriptionValue searchSortOrderDescriptionValue, BasePK updatedBy) {
         if(searchSortOrderDescriptionValue.hasBeenModified()) {
-            SearchSortOrderDescription searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      searchSortOrderDescriptionValue.getPrimaryKey());
 
             searchSortOrderDescription.setThruTime(session.START_TIME_LONG);
             searchSortOrderDescription.store();
 
-            SearchSortOrder searchSortOrder = searchSortOrderDescription.getSearchSortOrder();
-            Language language = searchSortOrderDescription.getLanguage();
-            String description = searchSortOrderDescriptionValue.getDescription();
+            var searchSortOrder = searchSortOrderDescription.getSearchSortOrder();
+            var language = searchSortOrderDescription.getLanguage();
+            var description = searchSortOrderDescriptionValue.getDescription();
 
             searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3683,7 +3657,7 @@ public class SearchControl
     }
 
     public void deleteSearchSortOrderDescriptionsBySearchSortOrder(SearchSortOrder searchSortOrder, BasePK deletedBy) {
-        List<SearchSortOrderDescription> searchSortOrderDescriptions = getSearchSortOrderDescriptionsBySearchSortOrderForUpdate(searchSortOrder);
+        var searchSortOrderDescriptions = getSearchSortOrderDescriptionsBySearchSortOrderForUpdate(searchSortOrder);
 
         searchSortOrderDescriptions.forEach((searchSortOrderDescription) -> 
                 deleteSearchSortOrderDescription(searchSortOrderDescription, deletedBy)
@@ -3696,7 +3670,7 @@ public class SearchControl
     
     public Search createSearch(Party party, Boolean partyVerified, SearchType searchType, Long executedTime, SearchUseType searchUseType,
             CachedSearch cachedSearch, BasePK createdBy) {
-        Search search = SearchFactory.getInstance().create(party, partyVerified, searchType, executedTime, searchUseType, cachedSearch,
+        var search = SearchFactory.getInstance().create(party, partyVerified, searchType, executedTime, searchUseType, cachedSearch,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(search.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
@@ -3944,7 +3918,7 @@ public class SearchControl
 
     public CachedSearch createCachedSearch(Index index, String querySha1Hash, String query, String parsedQuerySha1Hash, String parsedQuery,
             SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, BasePK createdBy) {
-        CachedSearch cachedSearch = CachedSearchFactory.getInstance().create(index, querySha1Hash, query, parsedQuerySha1Hash, parsedQuery,
+        var cachedSearch = CachedSearchFactory.getInstance().create(index, querySha1Hash, query, parsedQuerySha1Hash, parsedQuery,
                 searchDefaultOperator, searchSortOrder, searchSortDirection, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(cachedSearch.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
@@ -4080,7 +4054,7 @@ public class SearchControl
     }
     
     public void deleteCachedSearch(CachedSearch cachedSearch, BasePK deletedBy) {
-        CachedExecutedSearch cachedExecutedSearch = getCachedExecutedSearchForUpdate(cachedSearch);
+        var cachedExecutedSearch = getCachedExecutedSearchForUpdate(cachedSearch);
         
         if(cachedExecutedSearch != null) {
             deleteCachedExecutedSearch(cachedExecutedSearch, deletedBy);
@@ -4147,13 +4121,13 @@ public class SearchControl
     }
 
     public CachedSearchStatus getCachedSearchStatus(CachedSearch cachedSearch) {
-        CachedSearchStatus cachedSearchStatus = getCachedSearchStatus(cachedSearch, EntityPermission.READ_ONLY);
+        var cachedSearchStatus = getCachedSearchStatus(cachedSearch, EntityPermission.READ_ONLY);
 
         return cachedSearchStatus == null ? createCachedSearchStatus(cachedSearch) : cachedSearchStatus;
     }
 
     public CachedSearchStatus getCachedSearchStatusForUpdate(CachedSearch cachedSearch) {
-        CachedSearchStatus cachedSearchStatus = getCachedSearchStatus(cachedSearch, EntityPermission.READ_WRITE);
+        var cachedSearchStatus = getCachedSearchStatus(cachedSearch, EntityPermission.READ_WRITE);
 
         return cachedSearchStatus == null
                 ? CachedSearchStatusFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, createCachedSearchStatus(cachedSearch).getPrimaryKey())
@@ -4165,7 +4139,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public CachedSearchIndexField createCachedSearchIndexField(CachedSearch cachedSearch, IndexField indexField, BasePK createdBy) {
-        CachedSearchIndexField cachedSearchIndexField = CachedSearchIndexFieldFactory.getInstance().create(cachedSearch, indexField, session.START_TIME_LONG,
+        var cachedSearchIndexField = CachedSearchIndexFieldFactory.getInstance().create(cachedSearch, indexField, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(cachedSearch.getPrimaryKey(), EventTypes.MODIFY, cachedSearchIndexField.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4265,7 +4239,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public CachedExecutedSearch createCachedExecutedSearch(CachedSearch cachedSearch, BasePK createdBy) {
-        CachedExecutedSearch cachedExecutedSearch = CachedExecutedSearchFactory.getInstance().create(cachedSearch, session.START_TIME_LONG,
+        var cachedExecutedSearch = CachedExecutedSearchFactory.getInstance().create(cachedSearch, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(cachedSearch.getPrimaryKey(), EventTypes.MODIFY, cachedExecutedSearch.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4548,8 +4522,8 @@ public class SearchControl
 
     public PartySearchTypePreference createPartySearchTypePreference(Party party, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, BasePK createdBy) {
-        PartySearchTypePreference partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().create();
-        PartySearchTypePreferenceDetail partySearchTypePreferenceDetail = PartySearchTypePreferenceDetailFactory.getInstance().create(partySearchTypePreference,
+        var partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().create();
+        var partySearchTypePreferenceDetail = PartySearchTypePreferenceDetailFactory.getInstance().create(partySearchTypePreference,
                 party, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -4565,8 +4539,8 @@ public class SearchControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartySearchTypePreference */
     public PartySearchTypePreference getPartySearchTypePreferenceByEntityInstance(EntityInstance entityInstance) {
-        PartySearchTypePreferencePK pk = new PartySearchTypePreferencePK(entityInstance.getEntityUniqueId());
-        PartySearchTypePreference partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new PartySearchTypePreferencePK(entityInstance.getEntityUniqueId());
+        var partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return partySearchTypePreference;
     }
@@ -4707,19 +4681,19 @@ public class SearchControl
 
     public void updatePartySearchTypePreferenceFromValue(PartySearchTypePreferenceDetailValue partySearchTypePreferenceDetailValue, BasePK updatedBy) {
         if(partySearchTypePreferenceDetailValue.hasBeenModified()) {
-            PartySearchTypePreference partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partySearchTypePreferenceDetailValue.getPartySearchTypePreferencePK());
-            PartySearchTypePreferenceDetail partySearchTypePreferenceDetail = partySearchTypePreference.getActiveDetailForUpdate();
+            var partySearchTypePreferenceDetail = partySearchTypePreference.getActiveDetailForUpdate();
 
             partySearchTypePreferenceDetail.setThruTime(session.START_TIME_LONG);
             partySearchTypePreferenceDetail.store();
 
-            PartySearchTypePreferencePK partySearchTypePreferencePK = partySearchTypePreferenceDetail.getPartySearchTypePreferencePK(); // Not updated
-            PartyPK partyPK = partySearchTypePreferenceDetail.getPartyPK(); // Not updated
-            SearchTypePK searchTypePK = partySearchTypePreferenceDetail.getSearchTypePK(); // Not updated
-            SearchDefaultOperatorPK searchDefaultOperatorPK = partySearchTypePreferenceDetailValue.getSearchDefaultOperatorPK();
-            SearchSortOrderPK searchSortOrderPK = partySearchTypePreferenceDetailValue.getSearchSortOrderPK();
-            SearchSortDirectionPK searchSortDirectionPK = partySearchTypePreferenceDetailValue.getSearchSortDirectionPK();
+            var partySearchTypePreferencePK = partySearchTypePreferenceDetail.getPartySearchTypePreferencePK(); // Not updated
+            var partyPK = partySearchTypePreferenceDetail.getPartyPK(); // Not updated
+            var searchTypePK = partySearchTypePreferenceDetail.getSearchTypePK(); // Not updated
+            var searchDefaultOperatorPK = partySearchTypePreferenceDetailValue.getSearchDefaultOperatorPK();
+            var searchSortOrderPK = partySearchTypePreferenceDetailValue.getSearchSortOrderPK();
+            var searchSortDirectionPK = partySearchTypePreferenceDetailValue.getSearchSortDirectionPK();
             
             partySearchTypePreferenceDetail = PartySearchTypePreferenceDetailFactory.getInstance().create(partySearchTypePreferencePK, partyPK, searchTypePK,
                     searchDefaultOperatorPK, searchSortOrderPK, searchSortDirectionPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4732,7 +4706,7 @@ public class SearchControl
     }
 
     public void deletePartySearchTypePreference(PartySearchTypePreference partySearchTypePreference, BasePK deletedBy) {
-        PartySearchTypePreferenceDetail partySearchTypePreferenceDetail = partySearchTypePreference.getLastDetailForUpdate();
+        var partySearchTypePreferenceDetail = partySearchTypePreference.getLastDetailForUpdate();
 
         partySearchTypePreferenceDetail.setThruTime(session.START_TIME_LONG);
         partySearchTypePreference.setActiveDetail(null);
@@ -4773,7 +4747,7 @@ public class SearchControl
     
     public SearchResultAction createSearchResultAction(Search search, SearchResultActionType searchResultActionType, Long actionTime,
             EntityInstance entityInstance, BasePK createdBy) {
-        SearchResultAction searchResultAction = SearchResultActionFactory.getInstance().create(search, searchResultActionType, actionTime, entityInstance,
+        var searchResultAction = SearchResultActionFactory.getInstance().create(search, searchResultActionType, actionTime, entityInstance,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(search.getPrimaryKey(), EventTypes.MODIFY, searchResultAction.getPrimaryKey(), EventTypes.CREATE, createdBy);

@@ -18,7 +18,6 @@ package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.GetBatchTypeChoicesForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
-import com.echothree.control.user.batch.common.result.GetBatchTypeChoicesResult;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetBatchTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchTypeChoicesResult result = BatchResultFactory.getGetBatchTypeChoicesResult();
-        String defaultBatchTypeChoice = form.getDefaultBatchTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = BatchResultFactory.getGetBatchTypeChoicesResult();
+        var defaultBatchTypeChoice = form.getDefaultBatchTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setBatchTypeChoices(batchControl.getBatchTypeChoices(defaultBatchTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

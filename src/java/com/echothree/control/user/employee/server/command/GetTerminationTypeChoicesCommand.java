@@ -19,7 +19,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetTerminationTypeChoicesForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetTerminationTypeChoicesResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -65,9 +64,9 @@ public class GetTerminationTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetTerminationTypeChoicesResult result = EmployeeResultFactory.getGetTerminationTypeChoicesResult();
-        String defaultTerminationTypeChoice = form.getDefaultTerminationTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = EmployeeResultFactory.getGetTerminationTypeChoicesResult();
+        var defaultTerminationTypeChoice = form.getDefaultTerminationTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTerminationTypeChoices(employeeControl.getTerminationTypeChoices(defaultTerminationTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

@@ -18,12 +18,8 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.GetCustomerTypePaymentMethodForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.result.GetCustomerTypePaymentMethodResult;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
-import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -55,17 +51,17 @@ public class GetCustomerTypePaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerTypePaymentMethodResult result = CustomerResultFactory.getGetCustomerTypePaymentMethodResult();
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var result = CustomerResultFactory.getGetCustomerTypePaymentMethodResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-            String paymentMethodName = form.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethodName = form.getPaymentMethodName();
+            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
             
             if(paymentMethod != null) {
-                CustomerTypePaymentMethod customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);
+                var customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);
                 
                 if(customerTypePaymentMethod != null) {
                     result.setCustomerTypePaymentMethod(customerControl.getCustomerTypePaymentMethodTransfer(getUserVisit(), customerTypePaymentMethod));

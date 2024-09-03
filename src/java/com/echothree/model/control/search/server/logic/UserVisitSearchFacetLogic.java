@@ -41,7 +41,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class UserVisitSearchFacetLogic
@@ -126,7 +125,7 @@ public class UserVisitSearchFacetLogic
                     final var addedUserVisitSearchFacetIntegerTransfers = new ArrayList<UserVisitSearchFacetIntegerTransfer>();
                     final var integerAttribute = entityIntegerAttributeFacetResult.getIntegerAttribute();
 
-                    for(Iterator<EntityIntegerRangeDetail> iter = entityIntegerRangeDetails.iterator(); iter.hasNext(); ) {
+                    for(var iter = entityIntegerRangeDetails.iterator(); iter.hasNext(); ) {
                         final var entityIntegerRangeDetail = iter.next();
                         final var minimumIntegerValue = entityIntegerRangeDetail.getMinimumIntegerValue();
                         final var maximumIntegerValue = entityIntegerRangeDetail.getMaximumIntegerValue();
@@ -173,7 +172,7 @@ public class UserVisitSearchFacetLogic
                     final var addedUserVisitSearchFacetLongTransfers = new ArrayList<UserVisitSearchFacetLongTransfer>();
                     final var longAttribute = entityLongAttributeFacetResult.getLongAttribute();
 
-                    for(Iterator<EntityLongRangeDetail> iter = entityLongRangeDetails.iterator(); iter.hasNext(); ) {
+                    for(var iter = entityLongRangeDetails.iterator(); iter.hasNext(); ) {
                         final var entityLongRangeDetail = iter.next();
                         final var minimumLongValue = entityLongRangeDetail.getMinimumLongValue();
                         final var maximumLongValue = entityLongRangeDetail.getMaximumLongValue();
@@ -258,7 +257,7 @@ public class UserVisitSearchFacetLogic
                     final var addedUserVisitSearchFacetIntegerObjects = new ArrayList<UserVisitSearchFacetIntegerObject>();
                     final var integerAttribute = entityIntegerAttributeFacetResult.getIntegerAttribute();
 
-                    for(Iterator<EntityIntegerRangeDetail> iter = entityIntegerRangeDetails.iterator(); iter.hasNext(); ) {
+                    for(var iter = entityIntegerRangeDetails.iterator(); iter.hasNext(); ) {
                         final var entityIntegerRangeDetail = iter.next();
                         final var minimumIntegerValue = entityIntegerRangeDetail.getMinimumIntegerValue();
                         final var maximumIntegerValue = entityIntegerRangeDetail.getMaximumIntegerValue();
@@ -305,7 +304,7 @@ public class UserVisitSearchFacetLogic
                     final var addedUserVisitSearchFacetLongObjects = new ArrayList<UserVisitSearchFacetLongObject>();
                     final var longAttribute = entityLongAttributeFacetResult.getLongAttribute();
 
-                    for(Iterator<EntityLongRangeDetail> iter = entityLongRangeDetails.iterator(); iter.hasNext(); ) {
+                    for(var iter = entityLongRangeDetails.iterator(); iter.hasNext(); ) {
                         final var entityLongRangeDetail = iter.next();
                         final var minimumLongValue = entityLongRangeDetail.getMinimumLongValue();
                         final var maximumLongValue = entityLongRangeDetail.getMaximumLongValue();

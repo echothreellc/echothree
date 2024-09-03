@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.offer.Add;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDepartmentsForm;
 import com.echothree.control.user.party.common.result.GetDepartmentsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,16 +52,16 @@ public class Step2Action
         String forwardKey;
         
         try {
-            String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-            String divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
-            GetDepartmentsForm commandForm = PartyUtil.getHome().getGetDepartmentsForm();
+            var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+            var divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
+            var commandForm = PartyUtil.getHome().getGetDepartmentsForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDepartments(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDepartmentsResult result = (GetDepartmentsResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getDepartments(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDepartmentsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.DIVISION, result.getDivision());
             request.setAttribute(AttributeConstants.DEPARTMENTS, result.getDepartments());

@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListDescription;
-import com.echothree.model.data.contactlist.server.value.ContactListDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditContactListDescriptionCommand
     public ContactListDescription getEntity(EditContactListDescriptionResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListDescription contactListDescription = null;
-        String contactListName = spec.getContactListName();
-        ContactList contactList = contactListControl.getContactListByName(contactListName);
+        var contactListName = spec.getContactListName();
+        var contactList = contactListControl.getContactListByName(contactListName);
 
         if(contactList != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditContactListDescriptionCommand
     @Override
     public void doUpdate(ContactListDescription contactListDescription) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListDescriptionValue contactListDescriptionValue = contactListControl.getContactListDescriptionValue(contactListDescription);
+        var contactListDescriptionValue = contactListControl.getContactListDescriptionValue(contactListDescription);
 
         contactListDescriptionValue.setDescription(edit.getDescription());
 

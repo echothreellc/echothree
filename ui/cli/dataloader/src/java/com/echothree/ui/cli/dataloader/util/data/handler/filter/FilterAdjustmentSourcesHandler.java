@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.FilterService;
-import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentSourceForm;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,9 +48,9 @@ public class FilterAdjustmentSourcesHandler
             String allowedForInitialAmount = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("filterAdjustmentSourceName"))
                     filterAdjustmentSourceName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("allowedForInitialAmount"))
@@ -63,7 +62,7 @@ public class FilterAdjustmentSourcesHandler
             }
             
             try {
-                CreateFilterAdjustmentSourceForm commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceForm();
+                var commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceForm();
                 
                 commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
                 commandForm.setAllowedForInitialAmount(allowedForInitialAmount);

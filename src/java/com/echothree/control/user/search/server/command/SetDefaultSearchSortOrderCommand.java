@@ -21,8 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.value.SearchSortOrderDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,12 +62,12 @@ public class SetDefaultSearchSortOrderCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
-            String searchSortOrderName = form.getSearchSortOrderName();
-            SearchSortOrderDetailValue searchSortOrderDetailValue = searchControl.getSearchSortOrderDetailValueByNameForUpdate(searchKind,
+            var searchSortOrderName = form.getSearchSortOrderName();
+            var searchSortOrderDetailValue = searchControl.getSearchSortOrderDetailValueByNameForUpdate(searchKind,
                     searchSortOrderName);
             
             if(searchSortOrderDetailValue != null) {

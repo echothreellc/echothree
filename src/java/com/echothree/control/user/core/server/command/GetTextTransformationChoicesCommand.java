@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetTextTransformationChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetTextTransformationChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +60,9 @@ public class GetTextTransformationChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetTextTransformationChoicesResult result = CoreResultFactory.getGetTextTransformationChoicesResult();
-        String defaultTextTransformationChoice = form.getDefaultTextTransformationChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetTextTransformationChoicesResult();
+        var defaultTextTransformationChoice = form.getDefaultTextTransformationChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTextTransformationChoices(coreControl.getTextTransformationChoices(defaultTextTransformationChoice, getPreferredLanguage(), allowNullChoice));
         

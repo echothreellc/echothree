@@ -33,7 +33,7 @@ public class LatitudeFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
+        var hadErrors = false;
         
         fieldValue = DecimalUtils.getInstance().parse("-", ".", 6, fieldValue);
         

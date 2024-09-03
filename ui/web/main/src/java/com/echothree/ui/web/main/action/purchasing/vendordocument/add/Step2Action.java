@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument.add;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.GetDocumentTypeUsagesForm;
 import com.echothree.control.user.document.common.result.GetDocumentTypeUsagesResult;
 import com.echothree.ui.web.main.action.purchasing.vendordocument.BaseVendorDocumentAction;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,14 +48,14 @@ public class Step2Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetDocumentTypeUsagesForm commandForm = DocumentUtil.getHome().getGetDocumentTypeUsagesForm();
-        String documentTypeUsageTypeName = request.getParameter(ParameterConstants.DOCUMENT_TYPE_USAGE_TYPE_NAME);
+        var commandForm = DocumentUtil.getHome().getGetDocumentTypeUsagesForm();
+        var documentTypeUsageTypeName = request.getParameter(ParameterConstants.DOCUMENT_TYPE_USAGE_TYPE_NAME);
 
         commandForm.setDocumentTypeUsageTypeName(documentTypeUsageTypeName);
 
-        CommandResult commandResult = DocumentUtil.getHome().getDocumentTypeUsages(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetDocumentTypeUsagesResult result = (GetDocumentTypeUsagesResult)executionResult.getResult();
+        var commandResult = DocumentUtil.getHome().getDocumentTypeUsages(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetDocumentTypeUsagesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.DOCUMENT_TYPE_USAGES, result.getDocumentTypeUsages());
 

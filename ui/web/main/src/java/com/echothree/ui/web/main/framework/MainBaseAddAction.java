@@ -54,7 +54,7 @@ public abstract class MainBaseAddAction<A extends ActionForm>
             if(wasCanceled(request)) {
                 forwardKey = getCancelForward(actionForm);
             } else {
-                CommandResult commandResult = doAdd(actionForm, request);
+                var commandResult = doAdd(actionForm, request);
 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);

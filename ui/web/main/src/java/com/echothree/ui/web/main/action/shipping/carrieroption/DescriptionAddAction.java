@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.shipping.carrieroption;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.CreateCarrierOptionDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,15 +54,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-        String carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
+        var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+        var carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCarrierOptionDescriptionForm commandForm = CarrierUtil.getHome().getCreateCarrierOptionDescriptionForm();
+                    var commandForm = CarrierUtil.getHome().getCreateCarrierOptionDescriptionForm();
                     
                     if(carrierName == null)
                         carrierName = actionForm.getCarrierName();
@@ -75,8 +73,8 @@ public class DescriptionAddAction
                     commandForm.setCarrierOptionName(carrierOptionName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CarrierUtil.getHome().createCarrierOptionDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CarrierUtil.getHome().createCarrierOptionDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +91,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CARRIER_NAME, carrierName);
             request.setAttribute(AttributeConstants.CARRIER_OPTION_NAME, carrierOptionName);

@@ -22,7 +22,6 @@ import com.echothree.model.control.campaign.server.logic.CampaignLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.Campaign;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,11 +64,11 @@ public class SetCampaignStatusCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignName = form.getCampaignName();
-        Campaign campaign = campaignControl.getCampaignByName(campaignName);
+        var campaignName = form.getCampaignName();
+        var campaign = campaignControl.getCampaignByName(campaignName);
         
         if(campaign != null) {
-            String campaignStatusChoice = form.getCampaignStatusChoice();
+            var campaignStatusChoice = form.getCampaignStatusChoice();
             
             CampaignLogic.getInstance().setCampaignStatus(session, this, campaign, campaignStatusChoice, getPartyPK());
         } else {

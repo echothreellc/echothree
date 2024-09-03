@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.employeealias;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyAliasForm;
 import com.echothree.control.user.party.common.result.GetPartyAliasResult;
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
-import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,16 +42,16 @@ public class EmployeeAliasUtil {
 
     public void setupEmployee(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(MainBaseAction.getUserVisitPK(request), commandForm);
+        var commandResult = EmployeeUtil.getHome().getEmployee(MainBaseAction.getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
-            EmployeeTransfer employee = result.getEmployee();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeResult)executionResult.getResult();
+            var employee = result.getEmployee();
 
             if(employee != null) {
                 request.setAttribute(AttributeConstants.EMPLOYEE, employee);
@@ -71,14 +66,14 @@ public class EmployeeAliasUtil {
 
     public void setupPartyAliasTransfer(HttpServletRequest request, String partyName, String partyAliasTypeName)
             throws NamingException {
-        GetPartyAliasForm commandForm = PartyUtil.getHome().getGetPartyAliasForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setPartyAliasTypeName(partyAliasTypeName);
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyAliasResult result = (GetPartyAliasResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyAliasResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_ALIAS, result.getPartyAlias());
     }

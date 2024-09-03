@@ -20,16 +20,10 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.choice.OrderLineAdjustmentTypeChoicesBean;
 import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeTransfer;
-import com.echothree.model.control.order.server.transfer.OrderLineAdjustmentTypeDescriptionTransferCache;
-import com.echothree.model.control.order.server.transfer.OrderLineAdjustmentTypeTransferCache;
-import com.echothree.model.data.order.common.pk.OrderLineAdjustmentTypePK;
-import com.echothree.model.data.order.common.pk.OrderTypePK;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustment;
-import com.echothree.model.data.order.server.entity.OrderLineAdjustmentDetail;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDescription;
-import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDetail;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.factory.OrderLineAdjustmentDetailFactory;
 import com.echothree.model.data.order.server.factory.OrderLineAdjustmentFactory;
@@ -44,12 +38,10 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -68,11 +60,11 @@ public class OrderLineAdjustmentControl
 
     public OrderLineAdjustmentType createOrderLineAdjustmentType(OrderType orderType, String orderLineAdjustmentTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        OrderLineAdjustmentType defaultOrderLineAdjustmentType = getDefaultOrderLineAdjustmentType(orderType);
-        boolean defaultFound = defaultOrderLineAdjustmentType != null;
+        var defaultOrderLineAdjustmentType = getDefaultOrderLineAdjustmentType(orderType);
+        var defaultFound = defaultOrderLineAdjustmentType != null;
 
         if(defaultFound && isDefault) {
-            OrderLineAdjustmentTypeDetailValue defaultOrderLineAdjustmentTypeDetailValue = getDefaultOrderLineAdjustmentTypeDetailValueForUpdate(orderType);
+            var defaultOrderLineAdjustmentTypeDetailValue = getDefaultOrderLineAdjustmentTypeDetailValueForUpdate(orderType);
 
             defaultOrderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateOrderLineAdjustmentTypeFromValue(defaultOrderLineAdjustmentTypeDetailValue, false, createdBy);
@@ -80,8 +72,8 @@ public class OrderLineAdjustmentControl
             isDefault = Boolean.TRUE;
         }
 
-        OrderLineAdjustmentType orderLineAdjustmentType = OrderLineAdjustmentTypeFactory.getInstance().create();
-        OrderLineAdjustmentTypeDetail orderLineAdjustmentTypeDetail = OrderLineAdjustmentTypeDetailFactory.getInstance().create(orderLineAdjustmentType, 
+        var orderLineAdjustmentType = OrderLineAdjustmentTypeFactory.getInstance().create();
+        var orderLineAdjustmentTypeDetail = OrderLineAdjustmentTypeDetailFactory.getInstance().create(orderLineAdjustmentType,
                 orderType, orderLineAdjustmentTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -210,9 +202,9 @@ public class OrderLineAdjustmentControl
     }
 
     public List<OrderLineAdjustmentTypeTransfer> getOrderLineAdjustmentTypeTransfers(UserVisit userVisit, OrderType orderType) {
-        List<OrderLineAdjustmentType> orderLineAdjustmentTypes = getOrderLineAdjustmentTypes(orderType);
+        var orderLineAdjustmentTypes = getOrderLineAdjustmentTypes(orderType);
         List<OrderLineAdjustmentTypeTransfer> orderLineAdjustmentTypeTransfers = new ArrayList<>(orderLineAdjustmentTypes.size());
-        OrderLineAdjustmentTypeTransferCache orderLineAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeTransferCache();
+        var orderLineAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeTransferCache();
 
         orderLineAdjustmentTypes.forEach((orderLineAdjustmentType) ->
                 orderLineAdjustmentTypeTransfers.add(orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(orderLineAdjustmentType))
@@ -223,7 +215,7 @@ public class OrderLineAdjustmentControl
 
     public OrderLineAdjustmentTypeChoicesBean getOrderLineAdjustmentTypeChoices(String defaultOrderLineAdjustmentTypeChoice, Language language, boolean allowNullChoice,
             OrderType orderType) {
-        List<OrderLineAdjustmentType> orderLineAdjustmentTypes = getOrderLineAdjustmentTypes(orderType);
+        var orderLineAdjustmentTypes = getOrderLineAdjustmentTypes(orderType);
         var size = orderLineAdjustmentTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -239,7 +231,7 @@ public class OrderLineAdjustmentControl
         }
 
         for(var orderLineAdjustmentType : orderLineAdjustmentTypes) {
-            OrderLineAdjustmentTypeDetail orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
+            var orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
 
             var label = getBestOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
             var value = orderLineAdjustmentTypeDetail.getOrderLineAdjustmentTypeName();
@@ -259,27 +251,27 @@ public class OrderLineAdjustmentControl
     private void updateOrderLineAdjustmentTypeFromValue(OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderLineAdjustmentTypeDetailValue.hasBeenModified()) {
-            OrderLineAdjustmentType orderLineAdjustmentType = OrderLineAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderLineAdjustmentType = OrderLineAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      orderLineAdjustmentTypeDetailValue.getOrderLineAdjustmentTypePK());
-            OrderLineAdjustmentTypeDetail orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getActiveDetailForUpdate();
+            var orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getActiveDetailForUpdate();
 
             orderLineAdjustmentTypeDetail.setThruTime(session.START_TIME_LONG);
             orderLineAdjustmentTypeDetail.store();
 
-            OrderType orderType = orderLineAdjustmentTypeDetail.getOrderType(); // Not updated
-            OrderTypePK orderTypePK = orderType.getPrimaryKey(); // Not updated
-            OrderLineAdjustmentTypePK orderLineAdjustmentTypePK = orderLineAdjustmentTypeDetail.getOrderLineAdjustmentTypePK(); // Not updated
-            String orderLineAdjustmentTypeName = orderLineAdjustmentTypeDetailValue.getOrderLineAdjustmentTypeName();
-            Boolean isDefault = orderLineAdjustmentTypeDetailValue.getIsDefault();
-            Integer sortOrder = orderLineAdjustmentTypeDetailValue.getSortOrder();
+            var orderType = orderLineAdjustmentTypeDetail.getOrderType(); // Not updated
+            var orderTypePK = orderType.getPrimaryKey(); // Not updated
+            var orderLineAdjustmentTypePK = orderLineAdjustmentTypeDetail.getOrderLineAdjustmentTypePK(); // Not updated
+            var orderLineAdjustmentTypeName = orderLineAdjustmentTypeDetailValue.getOrderLineAdjustmentTypeName();
+            var isDefault = orderLineAdjustmentTypeDetailValue.getIsDefault();
+            var sortOrder = orderLineAdjustmentTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                OrderLineAdjustmentType defaultOrderLineAdjustmentType = getDefaultOrderLineAdjustmentType(orderType);
-                boolean defaultFound = defaultOrderLineAdjustmentType != null && !defaultOrderLineAdjustmentType.equals(orderLineAdjustmentType);
+                var defaultOrderLineAdjustmentType = getDefaultOrderLineAdjustmentType(orderType);
+                var defaultFound = defaultOrderLineAdjustmentType != null && !defaultOrderLineAdjustmentType.equals(orderLineAdjustmentType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OrderLineAdjustmentTypeDetailValue defaultOrderLineAdjustmentTypeDetailValue = getDefaultOrderLineAdjustmentTypeDetailValueForUpdate(orderType);
+                    var defaultOrderLineAdjustmentTypeDetailValue = getDefaultOrderLineAdjustmentTypeDetailValueForUpdate(orderType);
 
                     defaultOrderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateOrderLineAdjustmentTypeFromValue(defaultOrderLineAdjustmentTypeDetailValue, false, updatedBy);
@@ -307,23 +299,23 @@ public class OrderLineAdjustmentControl
         // TODO: deleteOrderLineAdjustmentsByOrderLineAdjustmentType(orderLineAdjustmentType, deletedBy);
         deleteOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(orderLineAdjustmentType, deletedBy);
 
-        OrderLineAdjustmentTypeDetail orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetailForUpdate();
+        var orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetailForUpdate();
         orderLineAdjustmentTypeDetail.setThruTime(session.START_TIME_LONG);
         orderLineAdjustmentType.setActiveDetail(null);
         orderLineAdjustmentType.store();
 
         // Check for default, and pick one if necessary
-        OrderType orderType = orderLineAdjustmentTypeDetail.getOrderType();
-        OrderLineAdjustmentType defaultOrderLineAdjustmentType = getDefaultOrderLineAdjustmentType(orderType);
+        var orderType = orderLineAdjustmentTypeDetail.getOrderType();
+        var defaultOrderLineAdjustmentType = getDefaultOrderLineAdjustmentType(orderType);
         if(defaultOrderLineAdjustmentType == null) {
-            List<OrderLineAdjustmentType> orderLineAdjustmentTypes = getOrderLineAdjustmentTypesForUpdate(orderType);
+            var orderLineAdjustmentTypes = getOrderLineAdjustmentTypesForUpdate(orderType);
 
             if(!orderLineAdjustmentTypes.isEmpty()) {
-                Iterator<OrderLineAdjustmentType> iter = orderLineAdjustmentTypes.iterator();
+                var iter = orderLineAdjustmentTypes.iterator();
                 if(iter.hasNext()) {
                     defaultOrderLineAdjustmentType = iter.next();
                 }
-                OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = Objects.requireNonNull(defaultOrderLineAdjustmentType).getLastDetailForUpdate().getOrderLineAdjustmentTypeDetailValue().clone();
+                var orderLineAdjustmentTypeDetailValue = Objects.requireNonNull(defaultOrderLineAdjustmentType).getLastDetailForUpdate().getOrderLineAdjustmentTypeDetailValue().clone();
 
                 orderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderLineAdjustmentTypeFromValue(orderLineAdjustmentTypeDetailValue, false, deletedBy);
@@ -338,7 +330,7 @@ public class OrderLineAdjustmentControl
     // --------------------------------------------------------------------------------
 
     public OrderLineAdjustmentTypeDescription createOrderLineAdjustmentTypeDescription(OrderLineAdjustmentType orderLineAdjustmentType, Language language, String description, BasePK createdBy) {
-        OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().create(orderLineAdjustmentType, language, description,
+        var orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().create(orderLineAdjustmentType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -417,7 +409,7 @@ public class OrderLineAdjustmentControl
 
     public String getBestOrderLineAdjustmentTypeDescription(OrderLineAdjustmentType orderLineAdjustmentType, Language language) {
         String description;
-        OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
+        var orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
 
         if(orderLineAdjustmentTypeDescription == null && !language.getIsDefault()) {
             orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getPartyControl().getDefaultLanguage());
@@ -437,9 +429,9 @@ public class OrderLineAdjustmentControl
     }
 
     public List<OrderLineAdjustmentTypeDescriptionTransfer> getOrderLineAdjustmentTypeDescriptionTransfersByOrderLineAdjustmentType(UserVisit userVisit, OrderLineAdjustmentType orderLineAdjustmentType) {
-        List<OrderLineAdjustmentTypeDescription> orderLineAdjustmentTypeDescriptions = getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(orderLineAdjustmentType);
+        var orderLineAdjustmentTypeDescriptions = getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(orderLineAdjustmentType);
         List<OrderLineAdjustmentTypeDescriptionTransfer> orderLineAdjustmentTypeDescriptionTransfers = new ArrayList<>(orderLineAdjustmentTypeDescriptions.size());
-        OrderLineAdjustmentTypeDescriptionTransferCache orderLineAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeDescriptionTransferCache();
+        var orderLineAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeDescriptionTransferCache();
 
         orderLineAdjustmentTypeDescriptions.forEach((orderLineAdjustmentTypeDescription) ->
                 orderLineAdjustmentTypeDescriptionTransfers.add(orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(orderLineAdjustmentTypeDescription))
@@ -450,15 +442,15 @@ public class OrderLineAdjustmentControl
 
     public void updateOrderLineAdjustmentTypeDescriptionFromValue(OrderLineAdjustmentTypeDescriptionValue orderLineAdjustmentTypeDescriptionValue, BasePK updatedBy) {
         if(orderLineAdjustmentTypeDescriptionValue.hasBeenModified()) {
-            OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderLineAdjustmentTypeDescriptionValue.getPrimaryKey());
 
             orderLineAdjustmentTypeDescription.setThruTime(session.START_TIME_LONG);
             orderLineAdjustmentTypeDescription.store();
 
-            OrderLineAdjustmentType orderLineAdjustmentType = orderLineAdjustmentTypeDescription.getOrderLineAdjustmentType();
-            Language language = orderLineAdjustmentTypeDescription.getLanguage();
-            String description = orderLineAdjustmentTypeDescriptionValue.getDescription();
+            var orderLineAdjustmentType = orderLineAdjustmentTypeDescription.getOrderLineAdjustmentType();
+            var language = orderLineAdjustmentTypeDescription.getLanguage();
+            var description = orderLineAdjustmentTypeDescriptionValue.getDescription();
 
             orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().create(orderLineAdjustmentType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -475,7 +467,7 @@ public class OrderLineAdjustmentControl
     }
 
     public void deleteOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(OrderLineAdjustmentType orderLineAdjustmentType, BasePK deletedBy) {
-        List<OrderLineAdjustmentTypeDescription> orderLineAdjustmentTypeDescriptions = getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentTypeForUpdate(orderLineAdjustmentType);
+        var orderLineAdjustmentTypeDescriptions = getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentTypeForUpdate(orderLineAdjustmentType);
 
         orderLineAdjustmentTypeDescriptions.forEach((orderLineAdjustmentTypeDescription) -> 
                 deleteOrderLineAdjustmentTypeDescription(orderLineAdjustmentTypeDescription, deletedBy)
@@ -488,8 +480,8 @@ public class OrderLineAdjustmentControl
 
     public OrderLineAdjustment createOrderLineAdjustment(OrderLine orderLine, Integer orderLineAdjustmentSequence,
             OrderLineAdjustmentType orderLineAdjustmentType, Long amount, BasePK createdBy) {
-        OrderLineAdjustment orderLineAdjustment = OrderLineAdjustmentFactory.getInstance().create();
-        OrderLineAdjustmentDetail orderLineAdjustmentDetail = OrderLineAdjustmentDetailFactory.getInstance().create(session,
+        var orderLineAdjustment = OrderLineAdjustmentFactory.getInstance().create();
+        var orderLineAdjustmentDetail = OrderLineAdjustmentDetailFactory.getInstance().create(session,
                 orderLineAdjustment, orderLine, orderLineAdjustmentSequence, orderLineAdjustmentType, amount,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -506,7 +498,7 @@ public class OrderLineAdjustmentControl
     }
 
     private List<OrderLineAdjustment> getOrderLineAdjustmentsByOrderLine(OrderLine orderLine, EntityPermission entityPermission) {
-        List<OrderLineAdjustment> orderLineAdjustments = null;
+        List<OrderLineAdjustment> orderLineAdjustments;
 
         try {
             String query = null;
@@ -523,7 +515,7 @@ public class OrderLineAdjustmentControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderLineAdjustmentFactory.getInstance().prepareStatement(query);
+            var ps = OrderLineAdjustmentFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
 
@@ -544,7 +536,7 @@ public class OrderLineAdjustmentControl
     }
 
     public void deleteOrderLineAdjustment(OrderLineAdjustment orderLineAdjustment, BasePK deletedBy) {
-        OrderLineAdjustmentDetail orderLineAdjustmentDetail = orderLineAdjustment.getLastDetailForUpdate();
+        var orderLineAdjustmentDetail = orderLineAdjustment.getLastDetailForUpdate();
         orderLineAdjustmentDetail.setThruTime(session.START_TIME_LONG);
         orderLineAdjustment.setActiveDetail(null);
         orderLineAdjustment.store();
@@ -553,7 +545,7 @@ public class OrderLineAdjustmentControl
     }
 
     public void deleteOrderLineAdjustmentsByOrderLine(OrderLine orderLine, BasePK deletedBy) {
-        List<OrderLineAdjustment> orderLineAdjustments = getOrderLineAdjustmentsByOrderLineForUpdate(orderLine);
+        var orderLineAdjustments = getOrderLineAdjustmentsByOrderLineForUpdate(orderLine);
 
         orderLineAdjustments.forEach((orderLineAdjustment) -> 
                 deleteOrderLineAdjustment(orderLineAdjustment, deletedBy)

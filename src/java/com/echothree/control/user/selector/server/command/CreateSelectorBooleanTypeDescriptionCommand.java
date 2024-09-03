@@ -19,9 +19,6 @@ package com.echothree.control.user.selector.server.command;
 import com.echothree.control.user.selector.common.form.CreateSelectorBooleanTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.selector.server.entity.SelectorBooleanType;
-import com.echothree.model.data.selector.server.entity.SelectorBooleanTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateSelectorBooleanTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorBooleanTypeName = form.getSelectorBooleanTypeName();
-        SelectorBooleanType selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
+        var selectorBooleanTypeName = form.getSelectorBooleanTypeName();
+        var selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
         
         if(selectorBooleanType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SelectorBooleanTypeDescription selectorBooleanTypeDescription = selectorControl.getSelectorBooleanTypeDescription(selectorBooleanType, language);
+                var selectorBooleanTypeDescription = selectorControl.getSelectorBooleanTypeDescription(selectorBooleanType, language);
                 
                 if(selectorBooleanTypeDescription == null) {
                     var description = form.getDescription();

@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasuretype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetSymbolPositionChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetSymbolPositionChoicesResult;
 import com.echothree.model.control.accounting.common.choice.SymbolPositionChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -49,14 +46,14 @@ public class AddActionForm
     private void setupSymbolPositionChoices() {
         if(symbolPositionChoices == null) {
             try {
-                GetSymbolPositionChoicesForm commandForm = AccountingUtil.getHome().getGetSymbolPositionChoicesForm();
+                var commandForm = AccountingUtil.getHome().getGetSymbolPositionChoicesForm();
                 
                 commandForm.setDefaultSymbolPositionChoice(symbolPositionChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getSymbolPositionChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSymbolPositionChoicesResult getSymbolPositionChoicesResult = (GetSymbolPositionChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getSymbolPositionChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getSymbolPositionChoicesResult = (GetSymbolPositionChoicesResult)executionResult.getResult();
                 symbolPositionChoices = getSymbolPositionChoicesResult.getSymbolPositionChoices();
                 
                 if(symbolPositionChoice == null) {

@@ -17,7 +17,6 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.GetLetterSourcesForm;
-import com.echothree.control.user.letter.common.result.GetLetterSourcesResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -61,7 +60,7 @@ public class GetLetterSourcesCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        GetLetterSourcesResult result = LetterResultFactory.getGetLetterSourcesResult();
+        var result = LetterResultFactory.getGetLetterSourcesResult();
         
         result.setLetterSources(letterControl.getLetterSourceTransfers(getUserVisit()));
         

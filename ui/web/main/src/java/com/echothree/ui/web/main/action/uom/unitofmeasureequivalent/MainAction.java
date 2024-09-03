@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasureequivalent;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureEquivalentsForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureEquivalentsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,14 +48,14 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetUnitOfMeasureEquivalentsForm commandForm = UomUtil.getHome().getGetUnitOfMeasureEquivalentsForm();
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var commandForm = UomUtil.getHome().getGetUnitOfMeasureEquivalentsForm();
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
         
         commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-        
-        CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureEquivalents(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetUnitOfMeasureEquivalentsResult result = (GetUnitOfMeasureEquivalentsResult)executionResult.getResult();
+
+        var commandResult = UomUtil.getHome().getUnitOfMeasureEquivalents(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUnitOfMeasureEquivalentsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND, result.getUnitOfMeasureKind());
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_EQUIVALENTS, result.getUnitOfMeasureEquivalents());

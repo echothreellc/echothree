@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationNameElementDescriptionTransfer;
-import com.echothree.model.control.warehouse.common.transfer.LocationNameElementTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationNameElementDescription;
@@ -32,12 +30,12 @@ public class LocationNameElementDescriptionTransferCache
     }
     
     public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(LocationNameElementDescription locationNameElementDescription) {
-        LocationNameElementDescriptionTransfer locationNameElementDescriptionTransfer = get(locationNameElementDescription);
+        var locationNameElementDescriptionTransfer = get(locationNameElementDescription);
         
         if(locationNameElementDescriptionTransfer == null) {
-            LocationNameElementTransferCache locationNameElementTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
-            LocationNameElementTransfer locationNameElementTransfer = locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElementDescription.getLocationNameElement());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, locationNameElementDescription.getLanguage());
+            var locationNameElementTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
+            var locationNameElementTransfer = locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElementDescription.getLocationNameElement());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationNameElementDescription.getLanguage());
             
             locationNameElementDescriptionTransfer = new LocationNameElementDescriptionTransfer(languageTransfer, locationNameElementTransfer, locationNameElementDescription.getDescription());
             put(locationNameElementDescription, locationNameElementDescriptionTransfer);

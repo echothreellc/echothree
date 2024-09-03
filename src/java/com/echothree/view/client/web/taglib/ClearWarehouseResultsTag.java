@@ -18,8 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.ClearWarehouseResultsForm;
-import com.echothree.util.common.command.CommandResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -74,11 +72,11 @@ public class ClearWarehouseResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            ClearWarehouseResultsForm commandForm = SearchUtil.getHome().getClearWarehouseResultsForm();
+            var commandForm = SearchUtil.getHome().getClearWarehouseResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
-            
-            CommandResult commandResult = SearchUtil.getHome().clearWarehouseResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().clearWarehouseResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {

@@ -18,9 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateMoodDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Mood;
-import com.echothree.model.data.party.server.entity.MoodDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,15 +50,15 @@ public class CreateMoodDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String moodName = form.getMoodName();
-        Mood mood = partyControl.getMoodByName(moodName);
+        var moodName = form.getMoodName();
+        var mood = partyControl.getMoodByName(moodName);
         
         if(mood != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                MoodDescription moodDescription = partyControl.getMoodDescription(mood, language);
+                var moodDescription = partyControl.getMoodDescription(mood, language);
                 
                 if(moodDescription == null) {
                     var description = form.getDescription();

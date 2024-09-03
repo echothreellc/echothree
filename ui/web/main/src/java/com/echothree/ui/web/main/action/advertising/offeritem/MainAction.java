@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offeritem;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetOfferItemsForm;
 import com.echothree.control.user.offer.common.result.GetOfferItemsResult;
-import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -59,22 +55,22 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetOfferItemsForm commandForm = OfferUtil.getHome().getGetOfferItemsForm();
+        String forwardKey;
+        var commandForm = OfferUtil.getHome().getGetOfferItemsForm();
 
         commandForm.setOfferName(request.getParameter(ParameterConstants.OFFER_NAME));
 
-        String offsetParameter = request.getParameter(new ParamEncoder("offerItem").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-        Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+        var offsetParameter = request.getParameter(new ParamEncoder("offerItem").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+        var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
         Map<String, Limit> limits = new HashMap<>();
         limits.put(OfferItemConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = OfferUtil.getHome().getOfferItems(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetOfferItemsResult result = (GetOfferItemsResult)executionResult.getResult();
-        OfferTransfer offer = result.getOffer();
+        var commandResult = OfferUtil.getHome().getOfferItems(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetOfferItemsResult)executionResult.getResult();
+        var offer = result.getOffer();
 
         if(offer == null) {
             forwardKey = ForwardConstants.ERROR_404;

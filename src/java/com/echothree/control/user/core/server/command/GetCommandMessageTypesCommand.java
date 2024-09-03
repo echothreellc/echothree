@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandMessageTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetCommandMessageTypesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -59,7 +58,7 @@ public class GetCommandMessageTypesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandMessageTypesResult result = CoreResultFactory.getGetCommandMessageTypesResult();
+        var result = CoreResultFactory.getGetCommandMessageTypesResult();
         
         result.setCommandMessageTypes(coreControl.getCommandMessageTypeTransfers(getUserVisit()));
         

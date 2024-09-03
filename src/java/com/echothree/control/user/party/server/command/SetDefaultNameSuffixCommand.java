@@ -18,8 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.SetDefaultNameSuffixForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.common.pk.NameSuffixPK;
-import com.echothree.model.data.party.server.value.NameSuffixDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,11 +48,11 @@ public class SetDefaultNameSuffixCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String nameSuffixId = form.getNameSuffixId();
-        NameSuffixPK nameSuffixPK = partyControl.convertNameSuffixIdToPK(nameSuffixId);
+        var nameSuffixId = form.getNameSuffixId();
+        var nameSuffixPK = partyControl.convertNameSuffixIdToPK(nameSuffixId);
         
         if(nameSuffixPK != null) {
-             NameSuffixDetailValue nameSuffixDetailValue = partyControl.getNameSuffixDetailValueByPKForUpdate(nameSuffixPK);
+            var nameSuffixDetailValue = partyControl.getNameSuffixDetailValueByPKForUpdate(nameSuffixPK);
              
              nameSuffixDetailValue.setIsDefault(Boolean.TRUE);
              partyControl.updateNameSuffixFromValue(nameSuffixDetailValue, getPartyPK());

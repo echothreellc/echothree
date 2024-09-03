@@ -19,7 +19,6 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.GetCommunicationEventPurposeChoicesForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
-import com.echothree.control.user.communication.common.result.GetCommunicationEventPurposeChoicesResult;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +50,9 @@ public class GetCommunicationEventPurposeChoicesCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        GetCommunicationEventPurposeChoicesResult result = CommunicationResultFactory.getGetCommunicationEventPurposeChoicesResult();
-        String defaultCommunicationEventPurposeChoice = form.getDefaultCommunicationEventPurposeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CommunicationResultFactory.getGetCommunicationEventPurposeChoicesResult();
+        var defaultCommunicationEventPurposeChoice = form.getDefaultCommunicationEventPurposeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCommunicationEventPurposeChoices(communicationControl.getCommunicationEventPurposeChoices(defaultCommunicationEventPurposeChoice,
                 getPreferredLanguage(), allowNullChoice));

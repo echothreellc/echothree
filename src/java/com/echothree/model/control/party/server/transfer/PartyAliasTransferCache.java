@@ -17,8 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyAliasTransfer;
-import com.echothree.model.control.party.common.transfer.PartyAliasTypeTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -34,12 +32,12 @@ public class PartyAliasTransferCache
     }
     
     public PartyAliasTransfer getPartyAliasTransfer(PartyAlias partyAlias) {
-        PartyAliasTransfer partyAliasTransfer = get(partyAlias);
+        var partyAliasTransfer = get(partyAlias);
         
         if(partyAliasTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyAlias.getParty());
-            PartyAliasTypeTransfer partyAliasType = partyControl.getPartyAliasTypeTransfer(userVisit, partyAlias.getPartyAliasType());
-            String alias = partyAlias.getAlias();
+            var party = partyControl.getPartyTransfer(userVisit, partyAlias.getParty());
+            var partyAliasType = partyControl.getPartyAliasTypeTransfer(userVisit, partyAlias.getPartyAliasType());
+            var alias = partyAlias.getAlias();
             
             partyAliasTransfer = new PartyAliasTransfer(party, partyAliasType, alias);
             put(partyAlias, partyAliasTransfer);

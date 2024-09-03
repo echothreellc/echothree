@@ -26,7 +26,6 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -54,7 +53,7 @@ public class PaymentProcessorActionTypeLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        PaymentProcessorActionType paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
+        var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
 
         if(paymentProcessorActionType == null) {
             paymentProcessorActionType = paymentProcessorActionTypeControl.createPaymentProcessorActionType(paymentProcessorActionTypeName, isDefault, sortOrder, createdBy);
@@ -72,7 +71,7 @@ public class PaymentProcessorActionTypeLogic
     public PaymentProcessorActionType getPaymentProcessorActionTypeByName(final ExecutionErrorAccumulator eea, final String paymentProcessorActionTypeName,
             final EntityPermission entityPermission) {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        PaymentProcessorActionType paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName, entityPermission);
+        var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName, entityPermission);
 
         if(paymentProcessorActionType == null) {
             handleExecutionError(UnknownPaymentProcessorActionTypeNameException.class, eea, ExecutionErrors.UnknownPaymentProcessorActionTypeName.name(), paymentProcessorActionTypeName);
@@ -93,7 +92,7 @@ public class PaymentProcessorActionTypeLogic
             final PaymentProcessorActionTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorActionType paymentProcessorActionType = null;
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        String paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
+        var paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
         var parameterCount = (paymentProcessorActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

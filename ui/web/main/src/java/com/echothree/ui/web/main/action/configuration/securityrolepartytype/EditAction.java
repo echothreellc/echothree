@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected SecurityRolePartyTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        SecurityRolePartyTypeSpec spec = SecurityUtil.getHome().getSecurityRolePartyTypeSpec();
+        var spec = SecurityUtil.getHome().getSecurityRolePartyTypeSpec();
         
         spec.setSecurityRoleGroupName(findParameter(request, ParameterConstants.SECURITY_ROLE_GROUP_NAME, actionForm.getSecurityRoleGroupName()));
         spec.setSecurityRoleName(findParameter(request, ParameterConstants.SECURITY_ROLE_NAME, actionForm.getSecurityRoleName()));
@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected SecurityRolePartyTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        SecurityRolePartyTypeEdit edit = SecurityUtil.getHome().getSecurityRolePartyTypeEdit();
+        var edit = SecurityUtil.getHome().getSecurityRolePartyTypeEdit();
 
         edit.setPartySelectorName(actionForm.getPartySelectorChoice());
         

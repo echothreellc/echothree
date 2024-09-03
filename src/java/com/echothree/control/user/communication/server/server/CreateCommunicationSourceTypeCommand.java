@@ -18,7 +18,6 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.CreateCommunicationSourceTypeForm;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.communication.server.entity.CommunicationSourceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,8 +50,8 @@ public class CreateCommunicationSourceTypeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationSourceTypeName = form.getCommunicationSourceTypeName();
-        CommunicationSourceType communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
+        var communicationSourceTypeName = form.getCommunicationSourceTypeName();
+        var communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
         
         if(communicationSourceType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

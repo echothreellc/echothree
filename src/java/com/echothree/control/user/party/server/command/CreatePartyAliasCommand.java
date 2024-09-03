@@ -21,10 +21,6 @@ import com.echothree.control.user.party.server.command.util.PartyAliasUtil;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.party.server.entity.PartyAliasTypeDetail;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -38,7 +34,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreatePartyAliasCommand
@@ -67,22 +62,22 @@ public class CreatePartyAliasCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            PartyType partyType = party.getLastDetail().getPartyType();
-            String partyAliasTypeName = form.getPartyAliasTypeName();
-            PartyAliasType partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+            var partyType = party.getLastDetail().getPartyType();
+            var partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
             if(partyAliasType != null) {
-                PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetail();
-                String validationPattern = partyAliasTypeDetail.getValidationPattern();
-                String alias = form.getAlias();
+                var partyAliasTypeDetail = partyAliasType.getLastDetail();
+                var validationPattern = partyAliasTypeDetail.getValidationPattern();
+                var alias = form.getAlias();
 
                 if(validationPattern != null) {
-                    Pattern pattern = Pattern.compile(validationPattern);
-                    Matcher m = pattern.matcher(alias);
+                    var pattern = Pattern.compile(validationPattern);
+                    var m = pattern.matcher(alias);
 
                     if(!m.matches()) {
                         addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);

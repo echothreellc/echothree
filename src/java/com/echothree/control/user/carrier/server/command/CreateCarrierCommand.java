@@ -18,7 +18,6 @@ package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.CreateCarrierForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
-import com.echothree.control.user.carrier.common.result.CreateCarrierResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -29,16 +28,7 @@ import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.carrier.server.entity.CarrierType;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -92,29 +82,29 @@ public class CreateCarrierCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        CreateCarrierResult result = CarrierResultFactory.getCreateCarrierResult();
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var result = CarrierResultFactory.getCreateCarrierResult();
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier == null) {
-            String carrierTypeName = form.getCarrierTypeName();
-            CarrierType carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
+            var carrierTypeName = form.getCarrierTypeName();
+            var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
             
             if(carrierType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
-                Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+                var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
+                var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
                 
                 if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                    String preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
-                    TimeZone preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                    var preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
+                    var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
                     
                     if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                        String preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
-                        DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                        var preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
+                        var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
                         
                         if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                            String preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
+                            var preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
                             Currency preferredCurrency;
                             
                             if(preferredCurrencyIsoName == null)
@@ -125,15 +115,15 @@ public class CreateCarrierCommand
                             }
                             
                             if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                String geoCodeSelectorName = form.getGeoCodeSelectorName();
+                                var geoCodeSelectorName = form.getGeoCodeSelectorName();
                                 Selector geoCodeSelector = null;
 
                                 if(geoCodeSelectorName != null) {
                                     var selectorControl = Session.getModelController(SelectorControl.class);
-                                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
+                                    var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                                     if(selectorKind != null) {
-                                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                                        var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                                 SelectorTypes.CARRIER.name());
 
                                         if(selectorType != null) {
@@ -148,15 +138,15 @@ public class CreateCarrierCommand
                                 }
 
                                 if(geoCodeSelectorName == null || geoCodeSelector != null) {
-                                    String itemSelectorName = form.getItemSelectorName();
+                                    var itemSelectorName = form.getItemSelectorName();
                                     Selector itemSelector = null;
 
                                     if(itemSelectorName != null) {
                                         var selectorControl = Session.getModelController(SelectorControl.class);
-                                        SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                                        var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                                         if(selectorKind != null) {
-                                            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                                            var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                                     SelectorTypes.CARRIER.name());
 
                                             if(selectorType != null) {
@@ -171,14 +161,14 @@ public class CreateCarrierCommand
                                     }
 
                                     if(itemSelectorName == null || itemSelector != null) {
-                                        PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CARRIER.name());
+                                        var partyType = partyControl.getPartyTypeByName(PartyTypes.CARRIER.name());
                                         BasePK createdBy = getPartyPK();
-                                        String name = form.getName();
-                                        String accountValidationPattern = form.getAccountValidationPattern();
+                                        var name = form.getName();
+                                        var accountValidationPattern = form.getAccountValidationPattern();
                                         var isDefault = Boolean.valueOf(form.getIsDefault());
                                         var sortOrder = Integer.valueOf(form.getSortOrder());
 
-                                        Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone,
+                                        var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone,
                                                 preferredDateTimeFormat, createdBy);
                                         partyControl.createPartyGroup(party, name, createdBy);
                                         carrier = carrierControl.createCarrier(party, carrierName, carrierType, geoCodeSelector, itemSelector,
@@ -209,7 +199,7 @@ public class CreateCarrierCommand
         }
         
         if(carrier != null) {
-            Party party = carrier.getParty();
+            var party = carrier.getParty();
             
             result.setEntityRef(party.getPrimaryKey().getEntityRef());
             result.setCarrierName(carrier.getCarrierName());

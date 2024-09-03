@@ -17,19 +17,16 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.edit.PartyPaymentMethodEdit;
 import com.echothree.control.user.payment.common.form.EditPartyPaymentMethodForm;
 import com.echothree.control.user.payment.common.result.EditPartyPaymentMethodResult;
 import com.echothree.control.user.payment.common.spec.PartyPaymentMethodSpec;
-import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,7 +53,7 @@ public class EditAction
     @Override
     protected PartyPaymentMethodSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyPaymentMethodSpec spec = PaymentUtil.getHome().getPartyPaymentMethodSpec();
+        var spec = PaymentUtil.getHome().getPartyPaymentMethodSpec();
 
         spec.setPartyPaymentMethodName(findParameter(request, ParameterConstants.PARTY_PAYMENT_METHOD_NAME, actionForm.getPartyPaymentMethodName()));
         
@@ -66,7 +63,7 @@ public class EditAction
     @Override
     protected PartyPaymentMethodEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyPaymentMethodEdit edit = PaymentUtil.getHome().getPartyPaymentMethodEdit();
+        var edit = PaymentUtil.getHome().getPartyPaymentMethodEdit();
 
         edit.setDescription(actionForm.getDescription());
         edit.setDeleteWhenUnused(actionForm.getDeleteWhenUnused().toString());
@@ -120,13 +117,13 @@ public class EditAction
     
     public void setupCustomerTransfer(String partyName, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -134,10 +131,10 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPartyPaymentMethodForm commandForm)
             throws Exception {
-        CommandResult commandResult = PaymentUtil.getHome().editPartyPaymentMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditPartyPaymentMethodResult result = (EditPartyPaymentMethodResult)executionResult.getResult();
-        PartyPaymentMethodTransfer partyPaymentMethod = result.getPartyPaymentMethod();
+        var commandResult = PaymentUtil.getHome().editPartyPaymentMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditPartyPaymentMethodResult)executionResult.getResult();
+        var partyPaymentMethod = result.getPartyPaymentMethod();
 
         if(partyPaymentMethod != null) {
             request.setAttribute(AttributeConstants.PARTY_PAYMENT_METHOD, partyPaymentMethod);

@@ -53,7 +53,7 @@ public class SecurityRoleGroupSearchEvaluator
     @Override
     public SortField[] getSortFields(String searchSortOrderName) {
         SortField[] sortFields = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
+        var reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
@@ -82,7 +82,7 @@ public class SecurityRoleGroupSearchEvaluator
         if(resultSet == null || resultSet.size() > 0) {
             if(q != null) {
                 if(resultSet == null || resultSet.size() > 0) {
-                    EntityInstancePKHolder entityInstancePKHolder = executeQuery(eea);
+                    var entityInstancePKHolder = executeQuery(eea);
 
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -98,7 +98,7 @@ public class SecurityRoleGroupSearchEvaluator
     
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
-        EntityInstancePKHolder resultSet = super.executeSearch(eea);
+        var resultSet = super.executeSearch(eea);
         
         resultSet = executeQSearch(eea, resultSet);
         

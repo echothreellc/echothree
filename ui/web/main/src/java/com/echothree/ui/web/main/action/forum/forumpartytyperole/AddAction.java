@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.forum.forumpartytyperole;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.CreateForumPartyTypeRoleForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,21 +52,21 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        String forwardKey;
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(forumName == null)
             forumName = actionForm.getForumName();
         
         if(wasPost(request)) {
-            CreateForumPartyTypeRoleForm commandForm = ForumUtil.getHome().getCreateForumPartyTypeRoleForm();
+            var commandForm = ForumUtil.getHome().getCreateForumPartyTypeRoleForm();
             
             commandForm.setForumName(forumName);
             commandForm.setPartyTypeName(actionForm.getPartyTypeChoice());
             commandForm.setForumRoleTypeName(actionForm.getForumRoleTypeChoice());
-            
-            CommandResult commandResult = ForumUtil.getHome().createForumPartyTypeRole(getUserVisitPK(request), commandForm);
+
+            var commandResult = ForumUtil.getHome().createForumPartyTypeRole(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -80,8 +78,8 @@ public class AddAction
             actionForm.setForumName(forumName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_NAME, forumName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

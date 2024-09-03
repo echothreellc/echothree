@@ -38,7 +38,6 @@ public class DatabaseUpdateTasks {
     List<CurrentTable> extraTables;
     List<CurrentColumn> extraColumns;
     
-    /** Creates new DatabaseUpdateTasks */
     /** Creates a new instance of DatabaseUpdateTasks */
     public DatabaseUpdateTasks() {
         tablesNeeded = new ArrayList<>();
@@ -129,23 +128,15 @@ public class DatabaseUpdateTasks {
     }
     
     public void addExtraColumn(CurrentColumn cc) {
-        cc.getIndexes().stream().forEach((ci) -> {
-            addExtraIndex(ci);
-        });
-        cc.getForeignKeys().stream().forEach((cfk) -> {
-            addExtraForeignKey(cfk);
-        });
-        cc.getTargetForeignKeys().stream().forEach((cfk) -> {
-            addExtraForeignKey(cfk);
-        });
+        cc.getIndexes().stream().forEach(this::addExtraIndex);
+        cc.getForeignKeys().stream().forEach(this::addExtraForeignKey);
+        cc.getTargetForeignKeys().stream().forEach(this::addExtraForeignKey);
         
         extraColumns.add(cc);
     }
     
     public void addExtraColumns(List<CurrentColumn> ccs) {
-        ccs.stream().forEach((cc) -> {
-            addExtraColumn(cc);
-        });
+        ccs.stream().forEach(this::addExtraColumn);
     }
     
     public List<CurrentColumn> getExtraColumns() {

@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GenerateGuidForm;
 import com.echothree.control.user.core.common.result.GenerateGuidResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,11 +51,11 @@ public class GenerateGuidAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GenerateGuidForm commandForm = CoreUtil.getHome().getGenerateGuidForm();
-        String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-        String key = request.getParameter(ParameterConstants.KEY);
-        String guid = request.getParameter(ParameterConstants.GUID);
-        String ulid = request.getParameter(ParameterConstants.ULID);
+        var commandForm = CoreUtil.getHome().getGenerateGuidForm();
+        var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+        var key = request.getParameter(ParameterConstants.KEY);
+        var guid = request.getParameter(ParameterConstants.GUID);
+        var ulid = request.getParameter(ParameterConstants.ULID);
 
         commandForm.setEntityRef(entityRef);
         commandForm.setKey(key);
@@ -66,18 +63,18 @@ public class GenerateGuidAction
         commandForm.setUlid(ulid);
         commandForm.setForceRegeneration(request.getParameter(ParameterConstants.FORCE_REGENERATION));
 
-        CommandResult commandResult = CoreUtil.getHome().generateGuid(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().generateGuid(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GenerateGuidResult result = (GenerateGuidResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GenerateGuidResult)executionResult.getResult();
             
             guid = result.getGuid();
             
             forwardKey = ForwardConstants.DISPLAY;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? ForwardConstants.ERROR_404 : forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? ForwardConstants.ERROR_404 : forwardKey));
 
         if(forwardKey != null) {
             Map<String, String> parameters = new HashMap<>(1);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.skilltype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.DeleteSkillTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteSkillTypeForm commandForm = EmployeeUtil.getHome().getDeleteSkillTypeForm();
-            String skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getDeleteSkillTypeForm();
+            var skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
             
             commandForm.setSkillTypeName(skillTypeName);
             

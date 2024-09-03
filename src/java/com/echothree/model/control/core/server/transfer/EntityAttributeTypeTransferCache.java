@@ -23,7 +23,6 @@ import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class EntityAttributeTypeTransferCache
         extends BaseCoreTransferCache<EntityAttributeType, EntityAttributeTypeTransfer> {
@@ -50,11 +49,11 @@ public class EntityAttributeTypeTransferCache
     }
     
     public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(EntityAttributeType entityAttributeType) {
-        EntityAttributeTypeTransfer entityAttributeTypeTransfer = get(entityAttributeType);
+        var entityAttributeTypeTransfer = get(entityAttributeType);
         
         if(entityAttributeTypeTransfer == null) {
-            String entityAttributeTypeName = filterEntityAttributeTypeName ? null : entityAttributeType.getEntityAttributeTypeName();
-            String description = filterDescription ? null : coreControl.getBestEntityAttributeTypeDescription(entityAttributeType, getLanguage());
+            var entityAttributeTypeName = filterEntityAttributeTypeName ? null : entityAttributeType.getEntityAttributeTypeName();
+            var description = filterDescription ? null : coreControl.getBestEntityAttributeTypeDescription(entityAttributeType, getLanguage());
             
             entityAttributeTypeTransfer = new EntityAttributeTypeTransfer(entityAttributeTypeName, description);
             put(entityAttributeType, entityAttributeTypeTransfer);

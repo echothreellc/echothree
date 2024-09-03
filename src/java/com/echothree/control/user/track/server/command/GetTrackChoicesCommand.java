@@ -17,7 +17,6 @@
 package com.echothree.control.user.track.server.command;
 
 import com.echothree.control.user.track.common.form.GetTrackChoicesForm;
-import com.echothree.control.user.track.common.result.GetTrackChoicesResult;
 import com.echothree.control.user.track.common.result.TrackResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetTrackChoicesCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        GetTrackChoicesResult result = TrackResultFactory.getGetTrackChoicesResult();
-        String defaultTrackChoice = form.getDefaultTrackChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = TrackResultFactory.getGetTrackChoicesResult();
+        var defaultTrackChoice = form.getDefaultTrackChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTrackChoices(trackControl.getTrackChoices(defaultTrackChoice, getPreferredLanguage(), allowNullChoice));
         

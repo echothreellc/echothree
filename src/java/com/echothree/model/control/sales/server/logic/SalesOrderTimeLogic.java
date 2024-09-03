@@ -41,7 +41,7 @@ public class SalesOrderTimeLogic
     }
     
     public void createOrderTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderTimeTypeName, final Long time, final BasePK createdBy) {
-        Order order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
+        var order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             createOrderTime(eea, order, orderTimeTypeName, time, createdBy);
@@ -55,7 +55,7 @@ public class SalesOrderTimeLogic
     }
 
     public void updateOrderTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderTimeTypeName, final Long time, final BasePK updatedBy) {
-        Order order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
+        var order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             updateOrderTime(eea, order, orderTimeTypeName, time, updatedBy);
@@ -69,7 +69,7 @@ public class SalesOrderTimeLogic
     }
 
     public OrderTimeTransfer getOrderTimeTransfer(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String orderName, final String orderTimeTypeName) {
-        Order order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
+        var order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
         OrderTimeTransfer result = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -84,13 +84,13 @@ public class SalesOrderTimeLogic
     }
 
     public List<OrderTimeTransfer> getOrderTimeTransfersByOrder(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String orderName) {
-        Order order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
+        var order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
         
         return OrderTimeLogic.getInstance().getOrderTimeTransfersByOrder(eea, userVisit, order);
     }
 
     public void deleteOrderTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderTimeTypeName, final BasePK deletedBy) {
-        Order order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
+        var order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             deleteOrderTime(eea, order, orderTimeTypeName, deletedBy);

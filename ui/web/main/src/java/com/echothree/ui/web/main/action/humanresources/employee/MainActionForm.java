@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowStepChoicesForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -55,15 +52,15 @@ public class MainActionForm
     private void setupEmployeeStatusChoices()
             throws NamingException {
         if(employeeStatusChoices == null) {
-            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+            var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
             form.setWorkflowName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
             form.setDefaultWorkflowStepChoice(employeeStatusChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
             employeeStatusChoices = result.getWorkflowStepChoices();
 
             if(employeeStatusChoice == null) {
@@ -75,15 +72,15 @@ public class MainActionForm
     private void setupEmployeeAvailabilityChoices()
             throws NamingException {
         if(employeeAvailabilityChoices == null) {
-            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+            var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
             form.setWorkflowName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY);
             form.setDefaultWorkflowStepChoice(employeeAvailabilityChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
             employeeAvailabilityChoices = result.getWorkflowStepChoices();
         }
     }

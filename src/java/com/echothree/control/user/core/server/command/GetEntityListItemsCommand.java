@@ -18,17 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityListItemsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityListItemsResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
-import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -36,9 +29,6 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.CommandSecurityDefinition;
-import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -73,15 +63,15 @@ public class GetEntityListItemsCommand
                 form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
                 
         if(!hasExecutionErrors()) {
-            EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-            String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+            var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+            var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
             if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
                 entities = getCoreControl().getEntityListItems(entityAttribute);
             } else {
-                EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-                EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                var entityAttributeDetail = entityAttribute.getLastDetail();
+                var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
                 
                 addExecutionError(ExecutionErrors.InvalidEntityAttributeType.name(),
                         entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -96,7 +86,7 @@ public class GetEntityListItemsCommand
     @Override
     protected BaseResult getResult(Collection<EntityListItem> entities) {
             var coreControl = getCoreControl();
-        GetEntityListItemsResult result = CoreResultFactory.getGetEntityListItemsResult();
+        var result = CoreResultFactory.getGetEntityListItemsResult();
         
         if(entities != null) {
             if(session.hasLimit(EntityListItemFactory.class)) {

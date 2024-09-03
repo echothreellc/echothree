@@ -17,8 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateMimeTypeFileExtensionForm;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,12 +48,12 @@ public class CreateMimeTypeFileExtensionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
-            String fileExtension = form.getFileExtension();
-            MimeTypeFileExtension mimeTypeFileExtension = coreControl.getMimeTypeFileExtension(fileExtension);
+            var fileExtension = form.getFileExtension();
+            var mimeTypeFileExtension = coreControl.getMimeTypeFileExtension(fileExtension);
             
             if(mimeTypeFileExtension == null) {
                 var isDefault = Boolean.valueOf(form.getIsDefault());

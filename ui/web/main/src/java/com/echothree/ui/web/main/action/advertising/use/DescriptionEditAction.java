@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.use;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.edit.UseDescriptionEdit;
-import com.echothree.control.user.offer.common.form.EditUseDescriptionForm;
 import com.echothree.control.user.offer.common.result.EditUseDescriptionResult;
-import com.echothree.control.user.offer.common.spec.UseDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String useName = request.getParameter(ParameterConstants.USE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var useName = request.getParameter(ParameterConstants.USE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditUseDescriptionForm commandForm = OfferUtil.getHome().getEditUseDescriptionForm();
-                UseDescriptionSpec spec = OfferUtil.getHome().getUseDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = OfferUtil.getHome().getEditUseDescriptionForm();
+                var spec = OfferUtil.getHome().getUseDescriptionSpec();
                 
                 if(useName == null)
                     useName = actionForm.getUseName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    UseDescriptionEdit edit = OfferUtil.getHome().getUseDescriptionEdit();
+                    var edit = OfferUtil.getHome().getUseDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editUseDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().editUseDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditUseDescriptionResult result = (EditUseDescriptionResult)executionResult.getResult();
+                            var result = (EditUseDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editUseDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditUseDescriptionResult result = (EditUseDescriptionResult)executionResult.getResult();
+
+                    var commandResult = OfferUtil.getHome().editUseDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditUseDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        UseDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setUseName(useName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.USE_NAME, useName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

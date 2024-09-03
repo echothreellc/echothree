@@ -19,19 +19,12 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
 import com.echothree.control.user.party.common.edit.PartyTypeLockoutPolicyEdit;
 import com.echothree.control.user.party.common.form.EditPartyTypeLockoutPolicyForm;
-import com.echothree.control.user.party.common.result.EditPartyTypeLockoutPolicyResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.PartyTypeSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
-import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicyDetail;
-import com.echothree.model.data.party.server.value.PartyTypeLockoutPolicyDetailValue;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -73,30 +66,30 @@ public class EditPartyTypeLockoutPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditPartyTypeLockoutPolicyResult result = PartyResultFactory.getEditPartyTypeLockoutPolicyResult();
-        String partyTypeName = spec.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var result = PartyResultFactory.getEditPartyTypeLockoutPolicyResult();
+        var partyTypeName = spec.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            PartyTypeLockoutPolicy partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
+            var partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
             
             if(partyTypeLockoutPolicy != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                 
                 if(timeUnitOfMeasureKind != null) {
                     if(editMode.equals(EditMode.LOCK)) {
                         result.setPartyType(partyControl.getPartyTypeTransfer(getUserVisit(), partyType));
                         
                         if(lockEntity(partyTypeLockoutPolicy)) {
-                            PartyTypeLockoutPolicyEdit edit = PartyEditFactory.getPartyTypeLockoutPolicyEdit();
-                            PartyTypeLockoutPolicyDetail partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getLastDetail();
-                            Integer lockoutFailureCount = partyTypeLockoutPolicyDetail.getLockoutFailureCount();
-                            Long resetFailureCountTime = partyTypeLockoutPolicyDetail.getResetFailureCountTime();
-                            Conversion resetFailureCountTimeConversion = resetFailureCountTime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, resetFailureCountTime).convertToHighestUnitOfMeasureType();
-                            Boolean manualLockoutReset = partyTypeLockoutPolicyDetail.getManualLockoutReset();
-                            Long lockoutInactiveTime = partyTypeLockoutPolicyDetail.getLockoutInactiveTime();
-                            Conversion lockoutInactiveTimeConversion = lockoutInactiveTime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, lockoutInactiveTime).convertToHighestUnitOfMeasureType();
+                            var edit = PartyEditFactory.getPartyTypeLockoutPolicyEdit();
+                            var partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getLastDetail();
+                            var lockoutFailureCount = partyTypeLockoutPolicyDetail.getLockoutFailureCount();
+                            var resetFailureCountTime = partyTypeLockoutPolicyDetail.getResetFailureCountTime();
+                            var resetFailureCountTimeConversion = resetFailureCountTime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, resetFailureCountTime).convertToHighestUnitOfMeasureType();
+                            var manualLockoutReset = partyTypeLockoutPolicyDetail.getManualLockoutReset();
+                            var lockoutInactiveTime = partyTypeLockoutPolicyDetail.getLockoutInactiveTime();
+                            var lockoutInactiveTimeConversion = lockoutInactiveTime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, lockoutInactiveTime).convertToHighestUnitOfMeasureType();
                             
                             result.setEdit(edit);
                             edit.setLockoutFailureCount(lockoutFailureCount == null? null: lockoutFailureCount.toString());
@@ -117,36 +110,36 @@ public class EditPartyTypeLockoutPolicyCommand
                     } else if(editMode.equals(EditMode.ABANDON)) {
                         unlockEntity(partyTypeLockoutPolicy);
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        PartyTypeLockoutPolicyDetailValue partyTypeLockoutPolicyDetailValue = partyControl.getPartyTypeLockoutPolicyDetailValueForUpdate(partyTypeLockoutPolicy);
+                        var partyTypeLockoutPolicyDetailValue = partyControl.getPartyTypeLockoutPolicyDetailValueForUpdate(partyTypeLockoutPolicy);
                         
                         if(partyTypeLockoutPolicyDetailValue != null) {
-                            String rawResetFailureCountTime = edit.getResetFailureCountTime();
-                            String resetFailureCountTimeUnitOfMeasureTypeName = edit.getResetFailureCountTimeUnitOfMeasureTypeName();
-                            int resetFailureCountTimeParameterCount = (rawResetFailureCountTime == null ? 0 : 1) + (resetFailureCountTimeUnitOfMeasureTypeName == null ? 0 : 1);
-                            String rawLockoutInactiveTime = edit.getLockoutInactiveTime();
-                            String lockoutInactiveTimeUnitOfMeasureTypeName = edit.getLockoutInactiveTimeUnitOfMeasureTypeName();
-                            int lockoutInactiveTimeParameterCount = (rawLockoutInactiveTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
+                            var rawResetFailureCountTime = edit.getResetFailureCountTime();
+                            var resetFailureCountTimeUnitOfMeasureTypeName = edit.getResetFailureCountTimeUnitOfMeasureTypeName();
+                            var resetFailureCountTimeParameterCount = (rawResetFailureCountTime == null ? 0 : 1) + (resetFailureCountTimeUnitOfMeasureTypeName == null ? 0 : 1);
+                            var rawLockoutInactiveTime = edit.getLockoutInactiveTime();
+                            var lockoutInactiveTimeUnitOfMeasureTypeName = edit.getLockoutInactiveTimeUnitOfMeasureTypeName();
+                            var lockoutInactiveTimeParameterCount = (rawLockoutInactiveTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
                             
                             if((resetFailureCountTimeParameterCount == 0 || resetFailureCountTimeParameterCount == 2) &&
                                     (lockoutInactiveTimeParameterCount == 0 || lockoutInactiveTimeParameterCount == 2)) {
-                                UnitOfMeasureType resetFailureCountTimeUnitOfMeasureType = resetFailureCountTimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
+                                var resetFailureCountTimeUnitOfMeasureType = resetFailureCountTimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
                                         resetFailureCountTimeUnitOfMeasureTypeName);
                                 
                                 if(resetFailureCountTimeUnitOfMeasureTypeName == null || resetFailureCountTimeUnitOfMeasureType != null) {
-                                    UnitOfMeasureType lockoutInactiveTimeUnitOfMeasureType = lockoutInactiveTimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
+                                    var lockoutInactiveTimeUnitOfMeasureType = lockoutInactiveTimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
                                             lockoutInactiveTimeUnitOfMeasureTypeName);
                                     
                                     if(lockoutInactiveTimeUnitOfMeasureTypeName == null || lockoutInactiveTimeUnitOfMeasureType != null) {
                                         if(lockEntityForUpdate(partyTypeLockoutPolicy)) {
                                             try {
-                                                String rawLockoutFailureCount = edit.getLockoutFailureCount();
-                                                Integer lockoutFailureCount = rawLockoutFailureCount == null? null: Integer.valueOf(rawLockoutFailureCount);
-                                                Long resetFailureCountTime = rawResetFailureCountTime == null? null: Long.valueOf(rawResetFailureCountTime);
-                                                Conversion resetFailureCountTimeConversion = resetFailureCountTime == null? null: new Conversion(uomControl, resetFailureCountTimeUnitOfMeasureType, resetFailureCountTime).convertToLowestUnitOfMeasureType();
-                                                String rawManualLockoutReset = edit.getManualLockoutReset();
-                                                Boolean manualLockoutReset = rawManualLockoutReset == null? null: Boolean.valueOf(rawManualLockoutReset);
-                                                Long lockoutInactiveTime = rawLockoutInactiveTime == null? null: Long.valueOf(rawLockoutInactiveTime);
-                                                Conversion lockoutInactiveTimeConversion = lockoutInactiveTime == null? null: new Conversion(uomControl, lockoutInactiveTimeUnitOfMeasureType, lockoutInactiveTime).convertToLowestUnitOfMeasureType();
+                                                var rawLockoutFailureCount = edit.getLockoutFailureCount();
+                                                var lockoutFailureCount = rawLockoutFailureCount == null? null: Integer.valueOf(rawLockoutFailureCount);
+                                                var resetFailureCountTime = rawResetFailureCountTime == null? null: Long.valueOf(rawResetFailureCountTime);
+                                                var resetFailureCountTimeConversion = resetFailureCountTime == null? null: new Conversion(uomControl, resetFailureCountTimeUnitOfMeasureType, resetFailureCountTime).convertToLowestUnitOfMeasureType();
+                                                var rawManualLockoutReset = edit.getManualLockoutReset();
+                                                var manualLockoutReset = rawManualLockoutReset == null? null: Boolean.valueOf(rawManualLockoutReset);
+                                                var lockoutInactiveTime = rawLockoutInactiveTime == null? null: Long.valueOf(rawLockoutInactiveTime);
+                                                var lockoutInactiveTimeConversion = lockoutInactiveTime == null? null: new Conversion(uomControl, lockoutInactiveTimeUnitOfMeasureType, lockoutInactiveTime).convertToLowestUnitOfMeasureType();
                                                 
                                                 partyTypeLockoutPolicyDetailValue.setLockoutFailureCount(lockoutFailureCount);
                                                 partyTypeLockoutPolicyDetailValue.setResetFailureCountTime(resetFailureCountTimeConversion == null? null: resetFailureCountTimeConversion.getQuantity());

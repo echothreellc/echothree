@@ -18,13 +18,10 @@ package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.TrainingClassQuestionTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
-import com.echothree.model.data.training.server.entity.TrainingClassQuestionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import java.util.Set;
 
 public class TrainingClassQuestionTransferCache
         extends BaseTrainingTransferCache<TrainingClassQuestion, TrainingClassQuestionTransfer> {
@@ -44,15 +41,15 @@ public class TrainingClassQuestionTransferCache
     }
     
     public TrainingClassQuestionTransfer getTrainingClassQuestionTransfer(TrainingClassQuestion trainingClassQuestion) {
-        TrainingClassQuestionTransfer trainingClassQuestionTransfer = get(trainingClassQuestion);
+        var trainingClassQuestionTransfer = get(trainingClassQuestion);
         
         if(trainingClassQuestionTransfer == null) {
-            TrainingClassQuestionDetail trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
-            TrainingClassSectionTransfer trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassQuestionDetail.getTrainingClassSection());
-            String trainingClassQuestionName = trainingClassQuestionDetail.getTrainingClassQuestionName();
-            Boolean askingRequired = trainingClassQuestionDetail.getAskingRequired();
-            Boolean passingRequired = trainingClassQuestionDetail.getPassingRequired();
-            Integer sortOrder = trainingClassQuestionDetail.getSortOrder();
+            var trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
+            var trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassQuestionDetail.getTrainingClassSection());
+            var trainingClassQuestionName = trainingClassQuestionDetail.getTrainingClassQuestionName();
+            var askingRequired = trainingClassQuestionDetail.getAskingRequired();
+            var passingRequired = trainingClassQuestionDetail.getPassingRequired();
+            var sortOrder = trainingClassQuestionDetail.getSortOrder();
             
             trainingClassQuestionTransfer = new TrainingClassQuestionTransfer(trainingClassSection, trainingClassQuestionName, askingRequired, passingRequired,
                     sortOrder);

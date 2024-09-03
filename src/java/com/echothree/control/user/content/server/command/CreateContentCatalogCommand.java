@@ -28,12 +28,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -88,23 +83,23 @@ public class CreateContentCatalogCommand
         ContentCatalog contentCatalog = null;
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
+            var contentCatalogName = form.getContentCatalogName();
             
             contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog == null) {
-                String defaultOfferName = form.getDefaultOfferName();
-                String defaultUseName = form.getDefaultUseName();
-                String defaultSourceName = form.getDefaultSourceName();
+                var defaultOfferName = form.getDefaultOfferName();
+                var defaultUseName = form.getDefaultUseName();
+                var defaultSourceName = form.getDefaultSourceName();
                 OfferUse defaultOfferUse = null;
 
                 if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
                     var offerControl = Session.getModelController(OfferControl.class);
-                    Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
+                    var defaultOffer = offerControl.getOfferByName(defaultOfferName);
                     
                     if(defaultOffer != null) {
                         var useControl = Session.getModelController(UseControl.class);
-                        Use defaultUse = useControl.getUseByName(defaultUseName);
+                        var defaultUse = useControl.getUseByName(defaultUseName);
                         
                         if(defaultUse != null) {
                             var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -121,7 +116,7 @@ public class CreateContentCatalogCommand
                     }
                 } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
                     var sourceControl = Session.getModelController(SourceControl.class);
-                    Source source = sourceControl.getSourceByName(defaultSourceName);
+                    var source = sourceControl.getSourceByName(defaultSourceName);
                     
                     if(source != null) {
                         defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -146,7 +141,7 @@ public class CreateContentCatalogCommand
                             defaultOfferUse, null, Boolean.FALSE, 0, partyPK);
                     
                     if(description != null) {
-                        Language language = getPreferredLanguage();
+                        var language = getPreferredLanguage();
                         
                         contentControl.createContentCatalogDescription(contentCatalog, language, description, partyPK);
                     }

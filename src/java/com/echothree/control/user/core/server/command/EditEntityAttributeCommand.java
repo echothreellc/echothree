@@ -32,10 +32,8 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.value.EntityAttributeLongValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -180,7 +178,7 @@ public class EditEntityAttributeCommand
                     unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
 
                     if(unitOfMeasureType != null) {
-                        UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
+                        var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
 
                         edit.setUnitOfMeasureKindName(unitOfMeasureTypeDetail.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName());
                         edit.setUnitOfMeasureTypeName(unitOfMeasureTypeDetail.getUnitOfMeasureTypeName());
@@ -202,7 +200,7 @@ public class EditEntityAttributeCommand
                     unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
 
                     if(unitOfMeasureType != null) {
-                        UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
+                        var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
 
                         edit.setUnitOfMeasureKindName(unitOfMeasureTypeDetail.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName());
                         edit.setUnitOfMeasureTypeName(unitOfMeasureTypeDetail.getUnitOfMeasureTypeName());
@@ -374,7 +372,7 @@ public class EditEntityAttributeCommand
                     if(upperRangeLongValue == null && upperLimitLongValue == null && lowerLimitLongValue == null && lowerRangeLongValue == null) {
                         coreControl.deleteEntityAttributeLong(entityAttributeLong, partyPK);
                     } else {
-                        EntityAttributeLongValue entityAttributeLongValue = coreControl.getEntityAttributeLongValue(entityAttributeLong);
+                        var entityAttributeLongValue = coreControl.getEntityAttributeLongValue(entityAttributeLong);
 
                         entityAttributeLongValue.setUpperRangeLongValue(upperRangeLongValue);
                         entityAttributeLongValue.setUpperLimitLongValue(upperLimitLongValue);

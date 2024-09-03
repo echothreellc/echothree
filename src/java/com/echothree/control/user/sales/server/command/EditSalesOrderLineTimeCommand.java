@@ -25,11 +25,7 @@ import com.echothree.control.user.sales.common.spec.SalesOrderLineTimeSpec;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderLineTime;
-import com.echothree.model.data.order.server.entity.OrderTimeType;
-import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.order.server.value.OrderLineTimeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -77,16 +73,16 @@ public class EditSalesOrderLineTimeCommand
 
     @Override
     public OrderLineTime getEntity(EditSalesOrderLineTimeResult result) {
-        String orderName = spec.getOrderName();
-        String orderLineSequence = spec.getOrderLineSequence();
-        OrderLine orderLine = SalesOrderLineLogic.getInstance().getOrderLineByName(this, orderName, orderLineSequence);
+        var orderName = spec.getOrderName();
+        var orderLineSequence = spec.getOrderLineSequence();
+        var orderLine = SalesOrderLineLogic.getInstance().getOrderLineByName(this, orderName, orderLineSequence);
         OrderLineTime orderLineTime = null;
         
         if(!hasExecutionErrors()) {
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-            OrderType orderType = orderLine.getLastDetail().getOrder().getLastDetail().getOrderType();
-            String orderTimeTypeName = spec.getOrderTimeTypeName();
-            OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+            var orderType = orderLine.getLastDetail().getOrder().getLastDetail().getOrderType();
+            var orderTimeTypeName = spec.getOrderTimeTypeName();
+            var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -124,8 +120,8 @@ public class EditSalesOrderLineTimeCommand
     @Override
     public void doUpdate(OrderLineTime orderLineTime) {
         var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-        OrderLineTimeValue orderLineTimeValue = orderTimeControl.getOrderLineTimeValue(orderLineTime);
-        Long time = Long.valueOf(edit.getTime());
+        var orderLineTimeValue = orderTimeControl.getOrderLineTimeValue(orderLineTime);
+        var time = Long.valueOf(edit.getTime());
         
         orderLineTimeValue.setTime(time);
 

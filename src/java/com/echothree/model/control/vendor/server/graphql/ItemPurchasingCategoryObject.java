@@ -74,7 +74,7 @@ public class ItemPurchasingCategoryObject
     @GraphQLField
     @GraphQLDescription("parent item purchasing category")
     public ItemPurchasingCategoryObject getParentItemPurchasingCategory() {
-        ItemPurchasingCategory parentItemPurchasingCategory = getItemPurchasingCategoryDetail().getParentItemPurchasingCategory();
+        var parentItemPurchasingCategory = getItemPurchasingCategoryDetail().getParentItemPurchasingCategory();
         
         return parentItemPurchasingCategory == null ? null : new ItemPurchasingCategoryObject(parentItemPurchasingCategory);
     }

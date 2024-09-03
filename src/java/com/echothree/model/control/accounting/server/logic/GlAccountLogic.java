@@ -158,7 +158,7 @@ public class GlAccountLogic
             final String glAccountCategoryName, final String unknownDefaultGlAccountError) {
         GlAccount glAccount = null;
 
-        for(int i = 0 ; glAccount == null && i < glAccounts.length ; i++) {
+        for(var i = 0; glAccount == null && i < glAccounts.length ; i++) {
             glAccount = glAccounts[i];
         }
 

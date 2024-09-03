@@ -19,9 +19,6 @@ package com.echothree.control.user.selector.server.command;
 import com.echothree.control.user.selector.common.form.CreateSelectorNodeTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
-import com.echothree.model.data.selector.server.entity.SelectorNodeTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateSelectorNodeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorNodeTypeName = form.getSelectorNodeTypeName();
-        SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+        var selectorNodeTypeName = form.getSelectorNodeTypeName();
+        var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
         
         if(selectorNodeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SelectorNodeTypeDescription selectorNodeTypeDescription = selectorControl.getSelectorNodeTypeDescription(selectorNodeType, language);
+                var selectorNodeTypeDescription = selectorControl.getSelectorNodeTypeDescription(selectorNodeType, language);
                 
                 if(selectorNodeTypeDescription == null) {
                     var description = form.getDescription();

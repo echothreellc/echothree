@@ -21,9 +21,6 @@ import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Appearance;
-import com.echothree.model.data.core.server.entity.EntityAppearance;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,15 +62,15 @@ public class CreateEntityAppearanceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityRef = form.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            EntityAppearance entityAppearance = coreControl.getEntityAppearance(entityInstance);
+            var entityAppearance = coreControl.getEntityAppearance(entityInstance);
 
             if(entityAppearance == null) {
-                String appearanceName = form.getAppearanceName();
-                Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+                var appearanceName = form.getAppearanceName();
+                var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
 
                 if(!hasExecutionErrors()) {
                     coreControl.createEntityAppearance(entityInstance, appearance, getPartyPK());

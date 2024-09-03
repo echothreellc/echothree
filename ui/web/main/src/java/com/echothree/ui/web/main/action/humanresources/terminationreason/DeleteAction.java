@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.terminationreason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.DeleteTerminationReasonForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteTerminationReasonForm commandForm = EmployeeUtil.getHome().getDeleteTerminationReasonForm();
-            String terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
+            var commandForm = EmployeeUtil.getHome().getDeleteTerminationReasonForm();
+            var terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
             
             commandForm.setTerminationReasonName(terminationReasonName);
             

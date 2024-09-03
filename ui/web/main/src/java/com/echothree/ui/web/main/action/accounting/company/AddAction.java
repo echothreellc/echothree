@@ -17,12 +17,8 @@
 package com.echothree.ui.web.main.action.accounting.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreateCompanyForm;
-import com.echothree.control.user.party.common.result.CreateCompanyResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,7 +49,7 @@ public class AddAction
         String forwardKey;
         
         if(wasPost(request)) {
-            CreateCompanyForm commandForm = PartyUtil.getHome().getCreateCompanyForm();
+            var commandForm = PartyUtil.getHome().getCreateCompanyForm();
             
             commandForm.setCompanyName(actionForm.getCompanyName());
             commandForm.setName(actionForm.getName());
@@ -63,8 +59,8 @@ public class AddAction
             commandForm.setPreferredDateTimeFormatName(actionForm.getDateTimeFormatChoice());
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
-            
-            CommandResult commandResult = PartyUtil.getHome().createCompany(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createCompany(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

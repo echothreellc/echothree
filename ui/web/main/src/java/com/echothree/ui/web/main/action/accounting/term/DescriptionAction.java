@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.term;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.GetTermDescriptionsForm;
 import com.echothree.control.user.term.common.result.GetTermDescriptionsResult;
-import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String TermName = request.getParameter(ParameterConstants.TERM_NAME);
-            GetTermDescriptionsForm commandForm = TermUtil.getHome().getGetTermDescriptionsForm();
+            var TermName = request.getParameter(ParameterConstants.TERM_NAME);
+            var commandForm = TermUtil.getHome().getGetTermDescriptionsForm();
             
             commandForm.setTermName(TermName);
-            
-            CommandResult commandResult = TermUtil.getHome().getTermDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTermDescriptionsResult result = (GetTermDescriptionsResult)executionResult.getResult();
-            TermTransfer termTransfer = result.getTerm();
+
+            var commandResult = TermUtil.getHome().getTermDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTermDescriptionsResult)executionResult.getResult();
+            var termTransfer = result.getTerm();
             
             request.setAttribute(AttributeConstants.TERM, termTransfer);
             request.setAttribute(AttributeConstants.TERM_NAME, termTransfer.getTermName());

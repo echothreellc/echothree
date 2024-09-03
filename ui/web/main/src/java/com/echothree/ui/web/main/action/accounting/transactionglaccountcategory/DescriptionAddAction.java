@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.transactionglaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.CreateTransactionGlAccountCategoryDescriptionForm;
-import com.echothree.control.user.accounting.common.form.GetTransactionGlAccountCategoryForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionGlAccountCategoryResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,15 +54,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionGlAccountCategoryForm commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setTransactionGlAccountCategoryName(actionForm.getTransactionGlAccountCategoryName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionGlAccountCategory(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategory(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionGlAccountCategoryResult result = (GetTransactionGlAccountCategoryResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionGlAccountCategoryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORY, result.getTransactionGlAccountCategory());
         }
@@ -74,7 +71,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTransactionGlAccountCategoryDescriptionForm commandForm = AccountingUtil.getHome().getCreateTransactionGlAccountCategoryDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getCreateTransactionGlAccountCategoryDescriptionForm();
 
         commandForm.setTransactionTypeName( actionForm.getTransactionTypeName());
         commandForm.setTransactionGlAccountCategoryName( actionForm.getTransactionGlAccountCategoryName());

@@ -18,10 +18,8 @@ package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.GetClubForm;
 import com.echothree.control.user.club.common.result.ClubResultFactory;
-import com.echothree.control.user.club.common.result.GetClubResult;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,9 +50,9 @@ public class GetClubCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        GetClubResult result = ClubResultFactory.getGetClubResult();
-        String clubName = form.getClubName();
-        Club club = clubControl.getClubByName(clubName);
+        var result = ClubResultFactory.getGetClubResult();
+        var clubName = form.getClubName();
+        var club = clubControl.getClubByName(clubName);
         
         if(club != null) {
             result.setClub(clubControl.getClubTransfer(getUserVisit(), club));

@@ -22,7 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -67,15 +66,15 @@ public class SetEmployeeAvailabilityCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
+        var employeeName = form.getEmployeeName();
+        var partyName = form.getPartyName();
         var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount < 2) {
             Party party = null;
             
             if(employeeName != null) {
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                 
                 if(partyEmployee != null) {
                     party = partyEmployee.getParty();
@@ -94,7 +93,7 @@ public class SetEmployeeAvailabilityCommand
             }
             
             if(!hasExecutionErrors()) {
-                String employeeAvailabilityChoice = form.getEmployeeAvailabilityChoice();
+                var employeeAvailabilityChoice = form.getEmployeeAvailabilityChoice();
                 
                 employeeControl.setEmployeeAvailability(this, party, employeeAvailabilityChoice, getPartyPK());
             }

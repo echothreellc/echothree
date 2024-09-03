@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDivisionsForm;
 import com.echothree.control.user.party.common.result.GetDivisionsResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import javax.naming.NamingException;
@@ -93,15 +90,15 @@ public class DivisionsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetDivisionsForm commandForm = PartyUtil.getHome().getGetDivisionsForm();
+            var commandForm = PartyUtil.getHome().getGetDivisionsForm();
             
             commandForm.setCompanyName(companyName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDivisions(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getDivisions(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -109,8 +106,8 @@ public class DivisionsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetDivisionsResult result = (GetDivisionsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetDivisionsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getDivisions()), scope);
             }

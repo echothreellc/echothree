@@ -17,13 +17,10 @@
 package com.echothree.control.user.party.client.helper;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPersonalTitleChoicesForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
 import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 
 public class PersonalTitlesHelper {
@@ -43,14 +40,14 @@ public class PersonalTitlesHelper {
     public PersonalTitleChoicesBean getPersonalTitleChoices(final UserVisitPK userVisitPK, final Boolean allowNullChoice)
             throws NamingException {
         PersonalTitleChoicesBean personalTitleChoices = null;
-        GetPersonalTitleChoicesForm commandForm = PartyFormFactory.getGetPersonalTitleChoicesForm();
+        var commandForm = PartyFormFactory.getGetPersonalTitleChoicesForm();
 
         commandForm.setAllowNullChoice(allowNullChoice.toString());
 
-        CommandResult commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
+        var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPersonalTitleChoicesResult result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
 
             personalTitleChoices = result.getPersonalTitleChoices();
         }

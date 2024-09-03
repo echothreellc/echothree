@@ -78,7 +78,7 @@ public class Database {
             var databaseDefinitionParser = new DatabaseDefinitionParser(theDatabases);
             databaseDefinitionParser.parse("/DatabaseDefinition.xml");
 
-            com.echothree.ui.cli.database.util.Database echothreeDatabase = theDatabases.getDatabase("echothree");
+            var echothreeDatabase = theDatabases.getDatabase("echothree");
 
             if(doCharacterSetAndCollation || doStructure || doEmpty) {
                 var myUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseUtilities(configuration, doVerbose, echothreeDatabase);

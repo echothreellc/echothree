@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.leavereason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetLeaveReasonForm;
 import com.echothree.control.user.employee.common.result.GetLeaveReasonResult;
 import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetLeaveReasonForm commandForm = EmployeeUtil.getHome().getGetLeaveReasonForm();
+        String forwardKey;
+        var commandForm = EmployeeUtil.getHome().getGetLeaveReasonForm();
 
         commandForm.setLeaveReasonName(request.getParameter(ParameterConstants.LEAVE_REASON_NAME));
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveReason(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeaveReason(getUserVisitPK(request), commandForm);
         LeaveReasonTransfer leaveReason = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveReasonResult result = (GetLeaveReasonResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveReasonResult)executionResult.getResult();
             
             leaveReason = result.getLeaveReason();
         }

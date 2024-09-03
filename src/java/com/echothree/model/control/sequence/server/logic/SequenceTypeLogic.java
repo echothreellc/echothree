@@ -25,7 +25,6 @@ import com.echothree.model.control.sequence.common.exception.DuplicateSequenceTy
 import com.echothree.model.control.sequence.common.exception.UnknownDefaultSequenceTypeException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceTypeNameException;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;

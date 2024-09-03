@@ -17,7 +17,6 @@
 package com.echothree.model.control.picklist.server.transfer;
 
 import com.echothree.model.control.picklist.common.transfer.PicklistTimeTransfer;
-import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeTransfer;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,12 +30,12 @@ public class PicklistTimeTransferCache
     }
     
     public PicklistTimeTransfer getPicklistTimeTransfer(PicklistTime picklistTime) {
-        PicklistTimeTransfer picklistTimeTransfer = get(picklistTime);
+        var picklistTimeTransfer = get(picklistTime);
         
         if(picklistTimeTransfer == null) {
-            PicklistTimeTypeTransfer picklistTimeType = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTime.getPicklistTimeType());
-            Long unformattedTime = picklistTime.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
+            var picklistTimeType = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTime.getPicklistTimeType());
+            var unformattedTime = picklistTime.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
             
             picklistTimeTransfer = new PicklistTimeTransfer(picklistTimeType, unformattedTime, time);
             put(picklistTime, picklistTimeTransfer);

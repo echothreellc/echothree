@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontypeuse;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypeUseTypeChoicesForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionTypeUseTypeChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemDescriptionTypeUseTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,14 +37,14 @@ public class AddActionForm
     public void setupItemDescriptionTypeUseTypeChoices() {
         if(itemDescriptionTypeUseTypeChoices == null) {
             try {
-                GetItemDescriptionTypeUseTypeChoicesForm form = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeChoicesForm();
 
                 form.setDefaultItemDescriptionTypeUseTypeChoice(itemDescriptionTypeUseTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemDescriptionTypeUseTypeChoicesResult getItemDescriptionTypeUseTypeChoicesResult = (GetItemDescriptionTypeUseTypeChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemDescriptionTypeUseTypeChoicesResult = (GetItemDescriptionTypeUseTypeChoicesResult)executionResult.getResult();
                 itemDescriptionTypeUseTypeChoices = getItemDescriptionTypeUseTypeChoicesResult.getItemDescriptionTypeUseTypeChoices();
 
                 if(itemDescriptionTypeUseTypeChoice == null) {

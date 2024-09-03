@@ -21,9 +21,6 @@ import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Application;
-import com.echothree.model.data.core.server.entity.Editor;
-import com.echothree.model.data.core.server.value.ApplicationEditorDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,16 +61,16 @@ public class SetDefaultApplicationEditorCommand
     
     @Override
     protected BaseResult execute() {
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            String editorName = form.getEditorName();
-            Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
+            var editorName = form.getEditorName();
+            var editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                ApplicationEditorDetailValue applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(application, editor);
+                var applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(application, editor);
                 
                 if(applicationEditorDetailValue != null) {
                     applicationEditorDetailValue.setIsDefault(Boolean.TRUE);

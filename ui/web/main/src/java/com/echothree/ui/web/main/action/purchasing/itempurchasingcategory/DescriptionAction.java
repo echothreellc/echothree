@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.purchasing.itempurchasingcategory;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetItemPurchasingCategoryDescriptionsForm;
 import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryDescriptionsResult;
-import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategoryTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
-            GetItemPurchasingCategoryDescriptionsForm commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryDescriptionsForm();
+            var itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
+            var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryDescriptionsForm();
             
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategoryDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemPurchasingCategoryDescriptionsResult result = (GetItemPurchasingCategoryDescriptionsResult)executionResult.getResult();
-            ItemPurchasingCategoryTransfer itemPurchasingCategoryTransfer = result.getItemPurchasingCategory();
+
+            var commandResult = VendorUtil.getHome().getItemPurchasingCategoryDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemPurchasingCategoryDescriptionsResult)executionResult.getResult();
+            var itemPurchasingCategoryTransfer = result.getItemPurchasingCategory();
             
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORY, itemPurchasingCategoryTransfer);
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORY_NAME, itemPurchasingCategoryTransfer.getItemPurchasingCategoryName());

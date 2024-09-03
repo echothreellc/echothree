@@ -49,8 +49,8 @@ public class EditAction
     @Override
     protected TransactionTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TransactionTypeSpec spec = AccountingUtil.getHome().getTransactionTypeSpec();
-        String originalTransactionTypeName = request.getParameter(ParameterConstants.ORIGINAL_TRANSACTION_TYPE_NAME);
+        var spec = AccountingUtil.getHome().getTransactionTypeSpec();
+        var originalTransactionTypeName = request.getParameter(ParameterConstants.ORIGINAL_TRANSACTION_TYPE_NAME);
 
         if(originalTransactionTypeName == null) {
             originalTransactionTypeName = actionForm.getOriginalTransactionTypeName();
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected TransactionTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TransactionTypeEdit edit = AccountingUtil.getHome().getTransactionTypeEdit();
+        var edit = AccountingUtil.getHome().getTransactionTypeEdit();
 
         edit.setTransactionTypeName(actionForm.getTransactionTypeName());
         edit.setSortOrder(actionForm.getSortOrder());

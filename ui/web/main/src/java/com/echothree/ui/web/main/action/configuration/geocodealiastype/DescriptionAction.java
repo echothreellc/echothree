@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocodealiastype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeAliasTypeDescriptionsForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeAliasTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,16 +52,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
-            String geoCodeAliasTypeName = request.getParameter(ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME);
-            GetGeoCodeAliasTypeDescriptionsForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeDescriptionsForm();
+            var geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
+            var geoCodeAliasTypeName = request.getParameter(ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME);
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeDescriptionsForm();
             
             commandForm.setGeoCodeTypeName(geoCodeTypeName);
             commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasTypeDescriptionsResult result = (GetGeoCodeAliasTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = GeoUtil.getHome().getGeoCodeAliasTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE, result.getGeoCodeAliasType());
             request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE_DESCRIPTIONS, result.getGeoCodeAliasTypeDescriptions());

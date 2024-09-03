@@ -19,14 +19,9 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.edit.GenderDescriptionEdit;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
 import com.echothree.control.user.party.common.form.EditGenderDescriptionForm;
-import com.echothree.control.user.party.common.result.EditGenderDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.GenderDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Gender;
-import com.echothree.model.data.party.server.entity.GenderDescription;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.value.GenderDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,23 +59,23 @@ public class EditGenderDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditGenderDescriptionResult result = PartyResultFactory.getEditGenderDescriptionResult();
-        String genderName = spec.getGenderName();
-        Gender gender = partyControl.getGenderByName(genderName);
+        var result = PartyResultFactory.getEditGenderDescriptionResult();
+        var genderName = spec.getGenderName();
+        var gender = partyControl.getGenderByName(genderName);
         
         if(gender != null) {
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    GenderDescription genderDescription = partyControl.getGenderDescription(gender, language);
+                    var genderDescription = partyControl.getGenderDescription(gender, language);
                     
                     if(genderDescription != null) {
                         result.setGenderDescription(partyControl.getGenderDescriptionTransfer(getUserVisit(), genderDescription));
                         
                         if(lockEntity(gender)) {
-                            GenderDescriptionEdit edit = PartyEditFactory.getGenderDescriptionEdit();
+                            var edit = PartyEditFactory.getGenderDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(genderDescription.getDescription());
@@ -93,12 +88,12 @@ public class EditGenderDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownGenderDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GenderDescriptionValue genderDescriptionValue = partyControl.getGenderDescriptionValueForUpdate(gender, language);
+                    var genderDescriptionValue = partyControl.getGenderDescriptionValueForUpdate(gender, language);
                     
                     if(genderDescriptionValue != null) {
                         if(lockEntityForUpdate(gender)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 genderDescriptionValue.setDescription(description);
                                 

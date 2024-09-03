@@ -18,7 +18,6 @@ package com.echothree.control.user.security.common;
 
 import com.echothree.control.user.security.server.SecurityLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class SecurityUtil {
@@ -30,7 +29,7 @@ public class SecurityUtil {
     public static SecurityLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (SecurityLocal)ctx.lookup("ejb:echothree/echothree-server/SecurityBean!com.echothree.control.user.security.server.SecurityLocal");
         }
@@ -42,7 +41,7 @@ public class SecurityUtil {
     public static SecurityRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (SecurityRemote)ctx.lookup("ejb:echothree/echothree-server/SecurityBean!com.echothree.control.user.security.common.SecurityRemote");
         }

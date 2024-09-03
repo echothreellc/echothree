@@ -18,14 +18,12 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetColorForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetColorResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.core.server.entity.Color;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,7 +59,7 @@ public class GetColorCommand
     protected Color getEntity() {
         var coreControl = getCoreControl();
         Color color = null;
-        String colorName = form.getColorName();
+        var colorName = form.getColorName();
         var parameterCount = (colorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,7 +87,7 @@ public class GetColorCommand
     @Override
     protected BaseResult getResult(Color color) {
         var coreControl = getCoreControl();
-        GetColorResult result = CoreResultFactory.getGetColorResult();
+        var result = CoreResultFactory.getGetColorResult();
 
         if(color != null) {
             result.setColor(coreControl.getColorTransfer(getUserVisit(), color));

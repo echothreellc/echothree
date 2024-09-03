@@ -28,9 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
-import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
-import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDetail;
-import com.echothree.model.data.accounting.server.value.ItemAccountingCategoryDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -113,8 +110,8 @@ public class EditItemAccountingCategoryCommand
     @Override
     public void doLock(ItemAccountingCategoryEdit edit, ItemAccountingCategory itemAccountingCategory) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        ItemAccountingCategoryDescription itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, getPreferredLanguage());
-        ItemAccountingCategoryDetail itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
+        var itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, getPreferredLanguage());
+        var itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
 
         parentItemAccountingCategory = itemAccountingCategoryDetail.getParentItemAccountingCategory();
 
@@ -131,11 +128,11 @@ public class EditItemAccountingCategoryCommand
     @Override
     public void canUpdate(ItemAccountingCategory itemAccountingCategory) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String itemAccountingCategoryName = edit.getItemAccountingCategoryName();
-        ItemAccountingCategory duplicateItemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
+        var itemAccountingCategoryName = edit.getItemAccountingCategoryName();
+        var duplicateItemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
 
         if(duplicateItemAccountingCategory == null || itemAccountingCategory.equals(duplicateItemAccountingCategory)) {
-            String parentItemAccountingCategoryName = edit.getParentItemAccountingCategoryName();
+            var parentItemAccountingCategoryName = edit.getParentItemAccountingCategoryName();
 
             parentItemAccountingCategory = parentItemAccountingCategoryName == null? null: accountingControl.getItemAccountingCategoryByName(parentItemAccountingCategoryName);
 
@@ -173,7 +170,7 @@ public class EditItemAccountingCategoryCommand
         } else if(itemAccountingCategoryDescription != null && description == null) {
             accountingControl.deleteItemAccountingCategoryDescription(itemAccountingCategoryDescription, partyPK);
         } else if(itemAccountingCategoryDescription != null && description != null) {
-            ItemAccountingCategoryDescriptionValue itemAccountingCategoryDescriptionValue = accountingControl.getItemAccountingCategoryDescriptionValue(itemAccountingCategoryDescription);
+            var itemAccountingCategoryDescriptionValue = accountingControl.getItemAccountingCategoryDescriptionValue(itemAccountingCategoryDescription);
 
             itemAccountingCategoryDescriptionValue.setDescription(description);
             accountingControl.updateItemAccountingCategoryDescriptionFromValue(itemAccountingCategoryDescriptionValue, partyPK);

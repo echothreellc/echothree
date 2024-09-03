@@ -17,15 +17,10 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationtype;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationKindForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationKindResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -49,14 +44,14 @@ public class AddActionForm
     
     private String getSequenceTypeName()
             throws NamingException {
-        GetCancellationKindForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindForm();
+        var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindForm();
         
         commandForm.setCancellationKindName(cancellationKindName);
-        
-        CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationKind(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCancellationKindResult result = (GetCancellationKindResult)executionResult.getResult();
-        CancellationKindTransfer cancellationKindTransfer = result.getCancellationKind();
+
+        var commandResult = CancellationPolicyUtil.getHome().getCancellationKind(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCancellationKindResult)executionResult.getResult();
+        var cancellationKindTransfer = result.getCancellationKind();
         
         return cancellationKindTransfer.getCancellationSequenceType().getSequenceTypeName();
     }
@@ -64,15 +59,15 @@ public class AddActionForm
     public void setupCancellationSequenceChoices() {
         if(cancellationSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 form.setSequenceTypeName(getSequenceTypeName());
                 form.setDefaultSequenceChoice(cancellationSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 cancellationSequenceChoices = result.getSequenceChoices();
                 
                 if(cancellationSequenceChoice == null)

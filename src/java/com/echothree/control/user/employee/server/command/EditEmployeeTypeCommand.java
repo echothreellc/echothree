@@ -19,18 +19,12 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.EmployeeTypeEdit;
 import com.echothree.control.user.employee.common.form.EditEmployeeTypeForm;
-import com.echothree.control.user.employee.common.result.EditEmployeeTypeResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.EmployeeTypeSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.EmployeeType;
-import com.echothree.model.data.employee.server.entity.EmployeeTypeDescription;
-import com.echothree.model.data.employee.server.entity.EmployeeTypeDetail;
-import com.echothree.model.data.employee.server.value.EmployeeTypeDescriptionValue;
-import com.echothree.model.data.employee.server.value.EmployeeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -81,19 +75,19 @@ public class EditEmployeeTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditEmployeeTypeResult result = EmployeeResultFactory.getEditEmployeeTypeResult();
+        var result = EmployeeResultFactory.getEditEmployeeTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String employeeTypeName = spec.getEmployeeTypeName();
-            EmployeeType employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
+            var employeeTypeName = spec.getEmployeeTypeName();
+            var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
             
             if(employeeType != null) {
                 result.setEmployeeType(employeeControl.getEmployeeTypeTransfer(getUserVisit(), employeeType));
                 
                 if(lockEntity(employeeType)) {
-                    EmployeeTypeDescription employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, getPreferredLanguage());
-                    EmployeeTypeEdit edit = EmployeeEditFactory.getEmployeeTypeEdit();
-                    EmployeeTypeDetail employeeTypeDetail = employeeType.getLastDetail();
+                    var employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, getPreferredLanguage());
+                    var edit = EmployeeEditFactory.getEmployeeTypeEdit();
+                    var employeeTypeDetail = employeeType.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setEmployeeTypeName(employeeTypeDetail.getEmployeeTypeName());
@@ -111,20 +105,20 @@ public class EditEmployeeTypeCommand
                 addExecutionError(ExecutionErrors.UnknownEmployeeTypeName.name(), employeeTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String employeeTypeName = spec.getEmployeeTypeName();
-            EmployeeType employeeType = employeeControl.getEmployeeTypeByNameForUpdate(employeeTypeName);
+            var employeeTypeName = spec.getEmployeeTypeName();
+            var employeeType = employeeControl.getEmployeeTypeByNameForUpdate(employeeTypeName);
             
             if(employeeType != null) {
                 employeeTypeName = edit.getEmployeeTypeName();
-                EmployeeType duplicateEmployeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
+                var duplicateEmployeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
                 
                 if(duplicateEmployeeType == null || employeeType.equals(duplicateEmployeeType)) {
                     if(lockEntityForUpdate(employeeType)) {
                         try {
                             var partyPK = getPartyPK();
-                            EmployeeTypeDetailValue employeeTypeDetailValue = employeeControl.getEmployeeTypeDetailValueForUpdate(employeeType);
-                            EmployeeTypeDescription employeeTypeDescription = employeeControl.getEmployeeTypeDescriptionForUpdate(employeeType, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var employeeTypeDetailValue = employeeControl.getEmployeeTypeDetailValueForUpdate(employeeType);
+                            var employeeTypeDescription = employeeControl.getEmployeeTypeDescriptionForUpdate(employeeType, getPreferredLanguage());
+                            var description = edit.getDescription();
                             
                             employeeTypeDetailValue.setEmployeeTypeName(edit.getEmployeeTypeName());
                             employeeTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -137,7 +131,7 @@ public class EditEmployeeTypeCommand
                             } else if(employeeTypeDescription != null && description == null) {
                                 employeeControl.deleteEmployeeTypeDescription(employeeTypeDescription, partyPK);
                             } else if(employeeTypeDescription != null && description != null) {
-                                EmployeeTypeDescriptionValue employeeTypeDescriptionValue = employeeControl.getEmployeeTypeDescriptionValue(employeeTypeDescription);
+                                var employeeTypeDescriptionValue = employeeControl.getEmployeeTypeDescriptionValue(employeeTypeDescription);
                                 
                                 employeeTypeDescriptionValue.setDescription(description);
                                 employeeControl.updateEmployeeTypeDescriptionFromValue(employeeTypeDescriptionValue, partyPK);

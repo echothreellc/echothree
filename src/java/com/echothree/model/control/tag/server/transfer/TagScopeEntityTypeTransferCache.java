@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.tag.common.transfer.TagScopeEntityTypeTransfer;
-import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -37,11 +35,11 @@ public class TagScopeEntityTypeTransferCache
     }
     
     public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(TagScopeEntityType tagScopeEntityType) {
-        TagScopeEntityTypeTransfer tagScopeEntityTypeTransfer = get(tagScopeEntityType);
+        var tagScopeEntityTypeTransfer = get(tagScopeEntityType);
         
         if(tagScopeEntityTypeTransfer == null) {
-            TagScopeTransfer tagScope = tagControl.getTagScopeTransfer(userVisit, tagScopeEntityType.getTagScope());
-            EntityTypeTransfer entityType = coreControl.getEntityTypeTransfer(userVisit, tagScopeEntityType.getEntityType());
+            var tagScope = tagControl.getTagScopeTransfer(userVisit, tagScopeEntityType.getTagScope());
+            var entityType = coreControl.getEntityTypeTransfer(userVisit, tagScopeEntityType.getEntityType());
             
             tagScopeEntityTypeTransfer = new TagScopeEntityTypeTransfer(tagScope, entityType);
             put(tagScopeEntityType, tagScopeEntityTypeTransfer);

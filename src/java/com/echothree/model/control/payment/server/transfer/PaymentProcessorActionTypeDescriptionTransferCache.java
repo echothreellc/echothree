@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorActionTypeDescriptionTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorActionTypeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class PaymentProcessorActionTypeDescriptionTransferCache
     
     @Override
     public PaymentProcessorActionTypeDescriptionTransfer getTransfer(PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription) {
-        PaymentProcessorActionTypeDescriptionTransfer paymentProcessorActionTypeDescriptionTransfer = get(paymentProcessorActionTypeDescription);
+        var paymentProcessorActionTypeDescriptionTransfer = get(paymentProcessorActionTypeDescription);
         
         if(paymentProcessorActionTypeDescriptionTransfer == null) {
-            PaymentProcessorActionTypeTransfer paymentProcessorActionTypeTransfer = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfer(userVisit, paymentProcessorActionTypeDescription.getPaymentProcessorActionType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorActionTypeDescription.getLanguage());
+            var paymentProcessorActionTypeTransfer = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfer(userVisit, paymentProcessorActionTypeDescription.getPaymentProcessorActionType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorActionTypeDescription.getLanguage());
             
             paymentProcessorActionTypeDescriptionTransfer = new PaymentProcessorActionTypeDescriptionTransfer(languageTransfer, paymentProcessorActionTypeTransfer, paymentProcessorActionTypeDescription.getDescription());
             put(paymentProcessorActionTypeDescription, paymentProcessorActionTypeDescriptionTransfer);

@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnpolicy;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.CreateReturnPolicyTranslationForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,15 +54,15 @@ public class TranslationAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-        String returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
         
         try {
             if(forwardKey == null) {
-                TranslationAddActionForm actionForm = (TranslationAddActionForm)form;
+                var actionForm = (TranslationAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateReturnPolicyTranslationForm commandForm = ReturnPolicyUtil.getHome().getCreateReturnPolicyTranslationForm();
+                    var commandForm = ReturnPolicyUtil.getHome().getCreateReturnPolicyTranslationForm();
                     
                     if(returnKindName == null)
                         returnKindName = actionForm.getReturnKindName();
@@ -77,8 +75,8 @@ public class TranslationAddAction
                     commandForm.setDescription(actionForm.getDescription());
                     commandForm.setPolicyMimeTypeName(actionForm.getPolicyMimeTypeChoice());
                     commandForm.setPolicy(actionForm.getPolicy());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().createReturnPolicyTranslation(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().createReturnPolicyTranslation(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -95,8 +93,8 @@ public class TranslationAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindName);
             request.setAttribute(AttributeConstants.RETURN_POLICY_NAME, returnPolicyName);

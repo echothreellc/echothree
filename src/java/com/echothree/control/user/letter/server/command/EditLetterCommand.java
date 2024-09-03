@@ -19,7 +19,6 @@ package com.echothree.control.user.letter.server.command;
 import com.echothree.control.user.letter.common.edit.LetterEdit;
 import com.echothree.control.user.letter.common.edit.LetterEditFactory;
 import com.echothree.control.user.letter.common.form.EditLetterForm;
-import com.echothree.control.user.letter.common.result.EditLetterResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.control.user.letter.common.spec.LetterSpec;
 import com.echothree.model.control.chain.server.control.ChainControl;
@@ -28,15 +27,6 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.letter.server.entity.Letter;
-import com.echothree.model.data.letter.server.entity.LetterDescription;
-import com.echothree.model.data.letter.server.entity.LetterDetail;
-import com.echothree.model.data.letter.server.entity.LetterSource;
-import com.echothree.model.data.letter.server.value.LetterDescriptionValue;
-import com.echothree.model.data.letter.server.value.LetterDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,29 +81,29 @@ public class EditLetterCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        EditLetterResult result = LetterResultFactory.getEditLetterResult();
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = LetterResultFactory.getEditLetterResult();
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = spec.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
-                    String letterName = spec.getLetterName();
-                    Letter letter = letterControl.getLetterByName(chainType, letterName);
+                    var letterName = spec.getLetterName();
+                    var letter = letterControl.getLetterByName(chainType, letterName);
                     
                     if(letter != null) {
                         result.setLetter(letterControl.getLetterTransfer(getUserVisit(), letter));
                         
                         if(lockEntity(letter)) {
-                            LetterDescription letterDescription = letterControl.getLetterDescription(letter, getPreferredLanguage());
-                            LetterEdit edit = LetterEditFactory.getLetterEdit();
-                            LetterDetail letterDetail = letter.getLastDetail();
-                            ContactList contactList = letterDetail.getContactList();
+                            var letterDescription = letterControl.getLetterDescription(letter, getPreferredLanguage());
+                            var edit = LetterEditFactory.getLetterEdit();
+                            var letterDetail = letter.getLastDetail();
+                            var contactList = letterDetail.getContactList();
                             
                             result.setEdit(edit);
                             edit.setLetterName(letterDetail.getLetterName());
@@ -133,29 +123,29 @@ public class EditLetterCommand
                         addExecutionError(ExecutionErrors.UnknownLetterName.name(), letterName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    String letterName = spec.getLetterName();
-                    Letter letter = letterControl.getLetterByNameForUpdate(chainType, letterName);
+                    var letterName = spec.getLetterName();
+                    var letter = letterControl.getLetterByNameForUpdate(chainType, letterName);
                     
                     if(letter != null) {
                         letterName = edit.getLetterName();
-                        Letter duplicateLetter = letterControl.getLetterByName(chainType, letterName);
+                        var duplicateLetter = letterControl.getLetterByName(chainType, letterName);
                         
                         if(duplicateLetter == null || letter.equals(duplicateLetter)) {
-                            String letterSourceName = edit.getLetterSourceName();
-                            LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+                            var letterSourceName = edit.getLetterSourceName();
+                            var letterSource = letterControl.getLetterSourceByName(letterSourceName);
                             
                             if(letterSource != null) {
                                 var contactListControl = Session.getModelController(ContactListControl.class);
-                                String contactListName = edit.getContactListName();
-                                ContactList contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
+                                var contactListName = edit.getContactListName();
+                                var contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
                                 
                                 if(contactListName == null || contactList != null) {
                                     if(lockEntityForUpdate(letter)) {
                                         try {
                                             var partyPK = getPartyPK();
-                                            LetterDetailValue letterDetailValue = letterControl.getLetterDetailValueForUpdate(letter);
-                                            LetterDescription letterDescription = letterControl.getLetterDescriptionForUpdate(letter, getPreferredLanguage());
-                                            String description = edit.getDescription();
+                                            var letterDetailValue = letterControl.getLetterDetailValueForUpdate(letter);
+                                            var letterDescription = letterControl.getLetterDescriptionForUpdate(letter, getPreferredLanguage());
+                                            var description = edit.getDescription();
                                             
                                             letterDetailValue.setLetterName(edit.getLetterName());
                                             letterDetailValue.setLetterSourcePK(letterSource.getPrimaryKey());
@@ -170,7 +160,7 @@ public class EditLetterCommand
                                             } else if(letterDescription != null && description == null) {
                                                 letterControl.deleteLetterDescription(letterDescription, partyPK);
                                             } else if(letterDescription != null && description != null) {
-                                                LetterDescriptionValue letterDescriptionValue = letterControl.getLetterDescriptionValue(letterDescription);
+                                                var letterDescriptionValue = letterControl.getLetterDescriptionValue(letterDescription);
                                                 
                                                 letterDescriptionValue.setDescription(description);
                                                 letterControl.updateLetterDescriptionFromValue(letterDescriptionValue, partyPK);

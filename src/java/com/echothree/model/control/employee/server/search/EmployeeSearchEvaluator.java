@@ -124,7 +124,7 @@ public class EmployeeSearchEvaluator
 
             if(resultSet == null || resultSet.size() > 0) {
                 if(employeeStatusWorkflowStep != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByEmployeeStatusWorkflowStep(employeeStatusWorkflowStep);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByEmployeeStatusWorkflowStep(employeeStatusWorkflowStep);
 
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -136,7 +136,7 @@ public class EmployeeSearchEvaluator
 
             if(resultSet == null || resultSet.size() > 0) {
                 if(employeeAvailabilityWorkflowStep != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByEmployeeAvailabilityWorkflowStep(employeeAvailabilityWorkflowStep);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByEmployeeAvailabilityWorkflowStep(employeeAvailabilityWorkflowStep);
 
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;

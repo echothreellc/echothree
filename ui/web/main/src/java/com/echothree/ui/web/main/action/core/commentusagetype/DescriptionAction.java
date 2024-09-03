@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.commentusagetype;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.GetCommentUsageTypeDescriptionsForm;
 import com.echothree.control.user.comment.common.result.GetCommentUsageTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,20 +52,20 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
-            String commentUsageTypeName = request.getParameter(ParameterConstants.COMMENT_USAGE_TYPE_NAME);
-            GetCommentUsageTypeDescriptionsForm commandForm = CommentUtil.getHome().getGetCommentUsageTypeDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
+            var commentUsageTypeName = request.getParameter(ParameterConstants.COMMENT_USAGE_TYPE_NAME);
+            var commandForm = CommentUtil.getHome().getGetCommentUsageTypeDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setCommentTypeName(commentTypeName);
             commandForm.setCommentUsageTypeName(commentUsageTypeName);
-            
-            CommandResult commandResult = CommentUtil.getHome().getCommentUsageTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommentUsageTypeDescriptionsResult result = (GetCommentUsageTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = CommentUtil.getHome().getCommentUsageTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommentUsageTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMENT_USAGE_TYPE, result.getCommentUsageType());
             request.setAttribute(AttributeConstants.COMMENT_USAGE_TYPE_DESCRIPTIONS, result.getCommentUsageTypeDescriptions());

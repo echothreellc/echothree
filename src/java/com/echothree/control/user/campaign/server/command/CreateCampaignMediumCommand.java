@@ -18,12 +18,10 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.CreateCampaignMediumForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.CreateCampaignMediumResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignMedium;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,10 +65,10 @@ public class CreateCampaignMediumCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCampaignMediumResult result = CampaignResultFactory.getCreateCampaignMediumResult();
+        var result = CampaignResultFactory.getCreateCampaignMediumResult();
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = form.getValue();
-        CampaignMedium campaignMedium = campaignControl.getCampaignMediumByValue(value);
+        var value = form.getValue();
+        var campaignMedium = campaignControl.getCampaignMediumByValue(value);
         
         if(campaignMedium == null) {
             var partyPK = getPartyPK();

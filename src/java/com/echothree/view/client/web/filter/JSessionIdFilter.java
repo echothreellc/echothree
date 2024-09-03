@@ -64,14 +64,14 @@ public class JSessionIdFilter
             return;
         }
 
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
+        var request = (HttpServletRequest) req;
+        var response = (HttpServletResponse) res;
 
         // Redirect requests with JSESSIONID in URL to clean version (old links 
         // bookmarked/stored by bots). This is ONLY triggered if the request did 
         // not also contain a JSESSIONID cookie! Which should be fine for bots...
         if(request.isRequestedSessionIdFromURL()) {
-            String url = request.getRequestURL()
+            var url = request.getRequestURL()
                          .append(request.getQueryString() != null ? "?"+request.getQueryString() : "")
                          .toString();
             
@@ -84,7 +84,7 @@ public class JSessionIdFilter
         }
 
         // Prevent rendering of JSESSIONID in URLs for all outgoing links
-        HttpServletResponseWrapper wrappedResponse = new HttpServletResponseWrapper(response) {
+        var wrappedResponse = new HttpServletResponseWrapper(response) {
             
             @Override
             public String encodeRedirectUrl(String url) {

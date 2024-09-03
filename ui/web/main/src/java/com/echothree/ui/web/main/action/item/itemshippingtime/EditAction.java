@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemShippingTimeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemShippingTimeSpec spec = ItemUtil.getHome().getItemShippingTimeSpec();
+        var spec = ItemUtil.getHome().getItemShippingTimeSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setCustomerTypeName(findParameter(request, ParameterConstants.CUSTOMER_TYPE_NAME, actionForm.getCustomerTypeName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected ItemShippingTimeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemShippingTimeEdit edit = ItemUtil.getHome().getItemShippingTimeEdit();
+        var edit = ItemUtil.getHome().getItemShippingTimeEdit();
 
         edit.setShippingStartTime(actionForm.getShippingStartTime());
         edit.setShippingEndTime(actionForm.getShippingEndTime());

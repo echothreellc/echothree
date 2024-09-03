@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.accounting.companyprintergroupuse;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupChoicesForm;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypeChoicesForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupChoicesResult;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypeChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterGroupChoicesBean;
 import com.echothree.model.control.printer.common.choice.PrinterGroupUseTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +41,14 @@ public class AddActionForm
     private void setupPrinterGroupUseTypeChoices() {
         if(printerGroupUseTypeChoices == null) {
             try {
-                GetPrinterGroupUseTypeChoicesForm commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeChoicesForm();
+                var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeChoicesForm();
 
                 commandForm.setDefaultPrinterGroupUseTypeChoice(printerGroupUseTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupUseTypeChoicesResult result = (GetPrinterGroupUseTypeChoicesResult)executionResult.getResult();
+                var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPrinterGroupUseTypeChoicesResult)executionResult.getResult();
                 printerGroupUseTypeChoices = result.getPrinterGroupUseTypeChoices();
 
                 if(printerGroupUseTypeChoice == null) {
@@ -67,14 +63,14 @@ public class AddActionForm
     private void setupPrinterGroupChoices() {
         if(printerGroupChoices == null) {
             try {
-                GetPrinterGroupChoicesForm commandForm = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
+                var commandForm = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
 
                 commandForm.setDefaultPrinterGroupChoice(printerGroupChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupChoicesResult result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+                var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
                 printerGroupChoices = result.getPrinterGroupChoices();
 
                 if(printerGroupChoice == null) {

@@ -17,16 +17,13 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreProperties;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityIntegerRangeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerRange;
-import com.echothree.model.data.core.server.entity.EntityIntegerRangeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class EntityIntegerRangeTransferCache
         extends BaseCoreTransferCache<EntityIntegerRange, EntityIntegerRangeTransfer> {
@@ -67,17 +64,17 @@ public class EntityIntegerRangeTransferCache
     }
     
     public EntityIntegerRangeTransfer getEntityIntegerRangeTransfer(EntityIntegerRange entityIntegerRange, EntityInstance entityInstance) {
-        EntityIntegerRangeTransfer entityIntegerRangeTransfer = get(entityIntegerRange);
+        var entityIntegerRangeTransfer = get(entityIntegerRange);
         
         if(entityIntegerRangeTransfer == null) {
-            EntityIntegerRangeDetail entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
-            EntityAttributeTransfer entityAttributeTransfer = filterEntityAttribute ? null : entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityIntegerRangeDetail.getEntityAttribute(), entityInstance) : null;
-            String entityIntegerRangeName = filterEntityIntegerRangeName ? null : entityIntegerRangeDetail.getEntityIntegerRangeName();
-            Integer minimumIntegerValue = filterMinimumIntegerValue ? null : entityIntegerRangeDetail.getMinimumIntegerValue();
-            Integer maximumIntegerValue = filterMaximumIntegerValue ? null : entityIntegerRangeDetail.getMaximumIntegerValue();
-            Boolean isDefault = filterIsDefault ? null : entityIntegerRangeDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : entityIntegerRangeDetail.getSortOrder();
-            String description = coreControl.getBestEntityIntegerRangeDescription(entityIntegerRange, getLanguage());
+            var entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
+            var entityAttributeTransfer = filterEntityAttribute ? null : entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityIntegerRangeDetail.getEntityAttribute(), entityInstance) : null;
+            var entityIntegerRangeName = filterEntityIntegerRangeName ? null : entityIntegerRangeDetail.getEntityIntegerRangeName();
+            var minimumIntegerValue = filterMinimumIntegerValue ? null : entityIntegerRangeDetail.getMinimumIntegerValue();
+            var maximumIntegerValue = filterMaximumIntegerValue ? null : entityIntegerRangeDetail.getMaximumIntegerValue();
+            var isDefault = filterIsDefault ? null : entityIntegerRangeDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : entityIntegerRangeDetail.getSortOrder();
+            var description = coreControl.getBestEntityIntegerRangeDescription(entityIntegerRange, getLanguage());
             
             entityIntegerRangeTransfer = new EntityIntegerRangeTransfer(entityAttributeTransfer, entityIntegerRangeName, minimumIntegerValue, maximumIntegerValue, isDefault,
                     sortOrder, description);

@@ -18,9 +18,6 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.CreatePrinterGroupUseTypeForm;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,19 +51,19 @@ public class CreatePrinterGroupUseTypeCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+       var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+       var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
 
             printerGroupUseType = printerControl.createPrinterGroupUseType(printerGroupUseTypeName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                Language language = getPreferredLanguage();
+                var language = getPreferredLanguage();
 
                 printerControl.createPrinterGroupUseTypeDescription(printerGroupUseType, language, description, createdBy);
             }

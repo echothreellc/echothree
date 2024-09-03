@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class GlAccountCategoryDescriptionTransferCache
     
     @Override
     public GlAccountCategoryDescriptionTransfer getTransfer(GlAccountCategoryDescription glAccountCategoryDescription) {
-        GlAccountCategoryDescriptionTransfer glAccountCategoryDescriptionTransfer = get(glAccountCategoryDescription);
+        var glAccountCategoryDescriptionTransfer = get(glAccountCategoryDescription);
         
         if(glAccountCategoryDescriptionTransfer == null) {
-            GlAccountCategoryTransferCache glAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
-            GlAccountCategoryTransfer glAccountCategoryTransfer = glAccountCategoryTransferCache.getTransfer(glAccountCategoryDescription.getGlAccountCategory());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountCategoryDescription.getLanguage());
+            var glAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
+            var glAccountCategoryTransfer = glAccountCategoryTransferCache.getTransfer(glAccountCategoryDescription.getGlAccountCategory());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountCategoryDescription.getLanguage());
             
             glAccountCategoryDescriptionTransfer = new GlAccountCategoryDescriptionTransfer(languageTransfer, glAccountCategoryTransfer, glAccountCategoryDescription.getDescription());
             put(glAccountCategoryDescription, glAccountCategoryDescriptionTransfer);

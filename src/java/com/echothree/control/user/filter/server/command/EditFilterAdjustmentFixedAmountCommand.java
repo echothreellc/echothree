@@ -19,7 +19,6 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.edit.FilterAdjustmentFixedAmountEdit;
 import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.form.EditFilterAdjustmentFixedAmountForm;
-import com.echothree.control.user.filter.common.result.EditFilterAdjustmentFixedAmountResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentFixedAmountSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
@@ -30,13 +29,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.value.FilterAdjustmentFixedAmountValue;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -96,8 +88,8 @@ public class EditFilterAdjustmentFixedAmountCommand
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String filterKindName = spec.getFilterKindName();
-        String currencyIsoName = spec.getCurrencyIsoName();
+        var filterKindName = spec.getFilterKindName();
+        var currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
         
@@ -113,20 +105,20 @@ public class EditFilterAdjustmentFixedAmountCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterAdjustmentFixedAmountResult result = FilterResultFactory.getEditFilterAdjustmentFixedAmountResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterAdjustmentFixedAmountResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterAdjustmentName = spec.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustmentName = spec.getFilterAdjustmentName();
+            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
+                var filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
                 if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    String unitOfMeasureName = spec.getUnitOfMeasureName();
+                    var unitOfMeasureName = spec.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
                     String unitOfMeasureTypeName = null;
                     
@@ -143,20 +135,20 @@ public class EditFilterAdjustmentFixedAmountCommand
                     }
                     
                     if(unitOfMeasureKindName != null && unitOfMeasureTypeName != null) {
-                        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                         
                         if(unitOfMeasureKind != null) {
-                            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
+                            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
                                     unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String currencyIsoName = spec.getCurrencyIsoName();
-                                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                                var currencyIsoName = spec.getCurrencyIsoName();
+                                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
                                     if(editMode.equals(EditMode.LOCK)) {
-                                        FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment,
+                                        var filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment,
                                                 unitOfMeasureType, currency);
                                         
                                         if(filterAdjustmentFixedAmount != null) {
@@ -180,14 +172,14 @@ public class EditFilterAdjustmentFixedAmountCommand
                                             addExecutionError(ExecutionErrors.UnknownFilterAdjustmentFixedAmount.name());
                                         }
                                     } else if(editMode.equals(EditMode.UPDATE)) {
-                                        FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmountForUpdate(filterAdjustment,
+                                        var filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmountForUpdate(filterAdjustment,
                                                 unitOfMeasureType, currency);
                                         
                                         if(filterAdjustmentFixedAmount != null) {
                                             if(lockEntityForUpdate(filterAdjustmentFixedAmount)) {
                                                 try {
                                                     var partyPK = getPartyPK();
-                                                    FilterAdjustmentFixedAmountValue filterAdjustmentFixedAmountValue = filterControl.getFilterAdjustmentFixedAmountValue(filterAdjustmentFixedAmount);
+                                                    var filterAdjustmentFixedAmountValue = filterControl.getFilterAdjustmentFixedAmountValue(filterAdjustmentFixedAmount);
                                                     
                                                     filterAdjustmentFixedAmountValue.setUnitAmount(Long.valueOf(edit.getUnitAmount()));
                                                     

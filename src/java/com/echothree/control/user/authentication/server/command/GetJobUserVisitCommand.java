@@ -18,11 +18,7 @@ package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.control.user.authentication.common.form.GetJobUserVisitForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.common.result.GetJobUserVisitResult;
 import com.echothree.model.control.job.server.control.JobControl;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.job.server.entity.Job;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -59,15 +55,15 @@ public class GetJobUserVisitCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        GetJobUserVisitResult result = AuthenticationResultFactory.getGetJobUserVisitResult();
+        var result = AuthenticationResultFactory.getGetJobUserVisitResult();
         
         try {
-            String jobName = form.getJobName();
-            Job job = jobControl.getJobByName(jobName);
+            var jobName = form.getJobName();
+            var job = jobControl.getJobByName(jobName);
 
             if(job != null) {
-                UserControl userControl = getUserControl();
-                UserVisit userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
+                var userControl = getUserControl();
+                var userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
 
                 userControl.associatePartyToUserVisit(userVisit, job.getLastDetail().getRunAsParty(), null, null);
 
@@ -77,10 +73,10 @@ public class GetJobUserVisitCommand
                 addExecutionError(ExecutionErrors.UnknownJobName.name(), jobName);
             }
         } catch(PersistenceDatabaseException pde) {
-            Throwable cause = pde.getCause();
+            var cause = pde.getCause();
 
             if(cause instanceof SQLException) {
-                SQLException se = (SQLException)cause;
+                var se = (SQLException)cause;
 
                 if(se.getSQLState().equals(SQL_STATE_BASE_TABLE_OR_VIEW_NOT_FOUND)) {
                     getLog().info("Ignoring \"" + se.getMessage() + "\"");

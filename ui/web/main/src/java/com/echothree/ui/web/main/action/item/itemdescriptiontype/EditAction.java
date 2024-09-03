@@ -22,7 +22,6 @@ import com.echothree.control.user.item.common.form.EditItemDescriptionTypeForm;
 import com.echothree.control.user.item.common.result.EditItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.spec.ItemDescriptionTypeSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -62,8 +61,8 @@ public class EditAction
     @Override
     protected ItemDescriptionTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionTypeEdit edit = ItemUtil.getHome().getItemDescriptionTypeEdit();
-        String mimeTypeUsageTypeName = actionForm.getMimeTypeUsageTypeName();
+        var edit = ItemUtil.getHome().getItemDescriptionTypeEdit();
+        var mimeTypeUsageTypeName = actionForm.getMimeTypeUsageTypeName();
 
         edit.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
         edit.setParentItemDescriptionTypeName(actionForm.getParentItemDescriptionTypeChoice());
@@ -100,8 +99,8 @@ public class EditAction
     
     @Override
     protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditItemDescriptionTypeResult result, ItemDescriptionTypeSpec spec, ItemDescriptionTypeEdit edit) {
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = result.getItemDescriptionType().getMimeTypeUsageType();
-        String mimeTypeUsageTypeName = mimeTypeUsageType == null ? null : mimeTypeUsageType.getMimeTypeUsageTypeName();
+        var mimeTypeUsageType = result.getItemDescriptionType().getMimeTypeUsageType();
+        var mimeTypeUsageTypeName = mimeTypeUsageType == null ? null : mimeTypeUsageType.getMimeTypeUsageTypeName();
 
         actionForm.setOriginalItemDescriptionTypeName(spec.getItemDescriptionTypeName());
         actionForm.setItemDescriptionTypeName(edit.getItemDescriptionTypeName());

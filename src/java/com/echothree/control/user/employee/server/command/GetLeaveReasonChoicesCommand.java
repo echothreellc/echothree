@@ -18,7 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetLeaveReasonChoicesForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetLeaveReasonChoicesResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -64,9 +63,9 @@ public class GetLeaveReasonChoicesCommand
    @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetLeaveReasonChoicesResult result = EmployeeResultFactory.getGetLeaveReasonChoicesResult();
-        String defaultLeaveReasonChoice = form.getDefaultLeaveReasonChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+       var result = EmployeeResultFactory.getGetLeaveReasonChoicesResult();
+       var defaultLeaveReasonChoice = form.getDefaultLeaveReasonChoice();
+       var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setLeaveReasonChoices(employeeControl.getLeaveReasonChoices(defaultLeaveReasonChoice, getPreferredLanguage(),
                 allowNullChoice));

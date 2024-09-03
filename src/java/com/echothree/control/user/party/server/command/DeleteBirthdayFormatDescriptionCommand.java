@@ -21,9 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.BirthdayFormat;
-import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,15 +63,15 @@ public class DeleteBirthdayFormatDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String birthdayFormatName = form.getBirthdayFormatName();
-        BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
+        var birthdayFormatName = form.getBirthdayFormatName();
+        var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
         
         if(birthdayFormat != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                BirthdayFormatDescription birthdayFormatDescription = partyControl.getBirthdayFormatDescriptionForUpdate(birthdayFormat, language);
+                var birthdayFormatDescription = partyControl.getBirthdayFormatDescriptionForUpdate(birthdayFormat, language);
                 
                 if(birthdayFormatDescription != null) {
                     partyControl.deleteBirthdayFormatDescription(birthdayFormatDescription, getPartyPK());

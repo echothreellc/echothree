@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.advertising.offercustomertype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.CreateOfferCustomerTypeForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,12 +52,12 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        String forwardKey;
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var actionForm = (AddActionForm)form;
 
         if(wasPost(request)) {
-            CreateOfferCustomerTypeForm commandForm = OfferUtil.getHome().getCreateOfferCustomerTypeForm();
+            var commandForm = OfferUtil.getHome().getCreateOfferCustomerTypeForm();
 
             if(offerName == null)
                 offerName = actionForm.getOfferName();
@@ -69,7 +67,7 @@ public class AddAction
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
 
-            CommandResult commandResult = OfferUtil.getHome().createOfferCustomerType(getUserVisitPK(request), commandForm);
+            var commandResult = OfferUtil.getHome().createOfferCustomerType(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -83,7 +81,7 @@ public class AddAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.OFFER_NAME, offerName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

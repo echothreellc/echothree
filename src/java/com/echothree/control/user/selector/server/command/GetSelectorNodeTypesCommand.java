@@ -17,12 +17,9 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorNodeTypesForm;
-import com.echothree.control.user.selector.common.result.GetSelectorNodeTypesResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,14 +49,14 @@ public class GetSelectorNodeTypesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorNodeTypesResult result = SelectorResultFactory.getGetSelectorNodeTypesResult();
-        String selectorKindName = form.getSelectorKindName();
-        UserVisit userVisit = getUserVisit();
+        var result = SelectorResultFactory.getGetSelectorNodeTypesResult();
+        var selectorKindName = form.getSelectorKindName();
+        var userVisit = getUserVisit();
         
         if(selectorKindName == null) {
             result.setSelectorNodeTypes(selectorControl.getSelectorNodeTypeTransfers(userVisit));
         } else {
-            SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+            var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
             
             if(selectorKind != null) {
                 result.setSelectorNodeTypes(selectorControl.getSelectorNodeTypeTransfersBySelectorKind(userVisit, selectorKind));

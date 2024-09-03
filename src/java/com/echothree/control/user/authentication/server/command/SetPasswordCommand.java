@@ -24,18 +24,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.user.common.UserConstants;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.customer.server.entity.Customer;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLoginPassword;
-import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
-import com.echothree.model.data.user.server.entity.UserLoginStatus;
-import com.echothree.model.data.user.server.value.UserLoginPasswordStringValue;
-import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -69,15 +60,15 @@ public class SetPasswordCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
-        String employeeName = form.getEmployeeName();
-        String customerName = form.getCustomerName();
-        String vendorName = form.getVendorName();
+        var partyName = form.getPartyName();
+        var employeeName = form.getEmployeeName();
+        var customerName = form.getCustomerName();
+        var vendorName = form.getVendorName();
         var parameterCount = (partyName == null ? 0 : 1) + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
         
         if(parameterCount < 2) {
-            UserControl userControl = getUserControl();
-            Party self = getParty();
+            var userControl = getUserControl();
+            var self = getParty();
             Party party = null;
             
             if(partyName != null) {
@@ -89,7 +80,7 @@ public class SetPasswordCommand
                 }
             } else if(employeeName != null) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                 
                 if(partyEmployee != null) {
                     party = partyEmployee.getParty();
@@ -98,7 +89,7 @@ public class SetPasswordCommand
                 }
             } else if(customerName != null) {
                 var customerControl = Session.getModelController(CustomerControl.class);
-                Customer customer = customerControl.getCustomerByName(customerName);
+                var customer = customerControl.getCustomerByName(customerName);
                 
                 if(customer != null) {
                     party = customer.getParty();
@@ -107,7 +98,7 @@ public class SetPasswordCommand
                 }
             } else if(vendorName != null) {
                 var vendorControl = Session.getModelController(VendorControl.class);
-                Vendor vendor = vendorControl.getVendorByName(vendorName);
+                var vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {
                     party = vendor.getParty();
@@ -124,16 +115,16 @@ public class SetPasswordCommand
                             PartyTypes.VENDOR.name());
 
                     if(!hasExecutionErrors()) {
-                        UserLoginPasswordType userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
-                        UserLoginPassword userLoginPassword = userControl.getUserLoginPassword(party, userLoginPasswordType);
+                        var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
+                        var userLoginPassword = userControl.getUserLoginPassword(party, userLoginPasswordType);
 
                         if(userLoginPassword != null) {
-                            String newPassword1 = form.getNewPassword1();
-                            String newPassword2 = form.getNewPassword2();
+                            var newPassword1 = form.getNewPassword1();
+                            var newPassword2 = form.getNewPassword2();
 
                             if(newPassword1.equals(newPassword2)) {
-                                UserLoginStatus userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
-                                String oldPassword = form.getOldPassword();
+                                var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
+                                var oldPassword = form.getOldPassword();
 
                                 if(oldPassword != null) {
                                     if(!checkPasswords(userLoginStatus, oldPassword, party, false)) {
@@ -144,12 +135,12 @@ public class SetPasswordCommand
                                 }
 
                                 if(!hasExecutionErrors()) {
-                                    UserLoginPasswordStringValue userLoginPasswordStringValue = userControl.getUserLoginPasswordStringValueForUpdate(userLoginPassword);
-                                    PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
+                                    var userLoginPasswordStringValue = userControl.getUserLoginPasswordStringValueForUpdate(userLoginPassword);
+                                    var partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
                                             getUserVisit(), this, party, userLoginPassword, userLoginPasswordStringValue, newPassword1);
 
                                     if(!hasExecutionErrors()) {
-                                        boolean changingForSelf = self.equals(party);
+                                        var changingForSelf = self.equals(party);
 
                                         userLoginPasswordStringValue.setPassword(newPassword1);
                                         userLoginPasswordStringValue.setChangedTime(session.START_TIME_LONG);

@@ -27,11 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.selector.server.entity.SelectorTypeDescription;
-import com.echothree.model.data.selector.server.value.SelectorTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,17 +87,17 @@ public class EditSelectorTypeDescriptionCommand
     public SelectorTypeDescription getEntity(EditSelectorTypeDescriptionResult result) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorTypeDescription selectorTypeDescription = null;
-        String selectorKindName = spec.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = spec.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(selectorKind != null) {
-            String selectorTypeName = spec.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorTypeName = spec.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
             if(selectorType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -145,7 +142,7 @@ public class EditSelectorTypeDescriptionCommand
     @Override
     public void doUpdate(SelectorTypeDescription selectorTypeDescription) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorTypeDescriptionValue selectorTypeDescriptionValue = selectorControl.getSelectorTypeDescriptionValue(selectorTypeDescription);
+        var selectorTypeDescriptionValue = selectorControl.getSelectorTypeDescriptionValue(selectorTypeDescription);
 
         selectorTypeDescriptionValue.setDescription(edit.getDescription());
 

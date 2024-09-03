@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplatetrainingclass;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.DeletePartySecurityRoleTemplateTrainingClassForm;
-import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateTrainingClassForm;
 import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateTrainingClassResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartySecurityRoleTemplateTrainingClassForm commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateTrainingClassForm();
+        var commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateTrainingClassForm();
         
         commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateName());
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
-        
-        CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateTrainingClass(getUserVisitPK(request), commandForm);
+
+        var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateTrainingClass(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartySecurityRoleTemplateTrainingClassResult result = (GetPartySecurityRoleTemplateTrainingClassResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartySecurityRoleTemplateTrainingClassResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE_TRAINING_CLASS, result.getPartySecurityRoleTemplateTrainingClass());
         }
@@ -80,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartySecurityRoleTemplateTrainingClassForm commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateTrainingClassForm();
+        var commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateTrainingClassForm();
 
         commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateName());
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());

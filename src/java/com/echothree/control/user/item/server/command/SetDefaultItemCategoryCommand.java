@@ -21,7 +21,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.value.ItemCategoryDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultItemCategoryCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemCategoryName = form.getItemCategoryName();
-        ItemCategoryDetailValue itemCategoryDetailValue = itemControl.getItemCategoryDetailValueByNameForUpdate(itemCategoryName);
+        var itemCategoryName = form.getItemCategoryName();
+        var itemCategoryDetailValue = itemControl.getItemCategoryDetailValueByNameForUpdate(itemCategoryName);
         
         if(itemCategoryDetailValue != null) {
             itemCategoryDetailValue.setIsDefault(Boolean.TRUE);

@@ -19,7 +19,6 @@ package com.echothree.model.control.search.server.transfer;
 import com.echothree.model.control.search.common.transfer.SearchKindTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchKindDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SearchKindTransferCache
@@ -33,14 +32,14 @@ public class SearchKindTransferCache
     }
     
     public SearchKindTransfer getSearchKindTransfer(SearchKind searchKind) {
-        SearchKindTransfer searchKindTransfer = get(searchKind);
+        var searchKindTransfer = get(searchKind);
         
         if(searchKindTransfer == null) {
-            SearchKindDetail searchKindDetail = searchKind.getLastDetail();
-            String searchKindName = searchKindDetail.getSearchKindName();
-            Boolean isDefault = searchKindDetail.getIsDefault();
-            Integer sortOrder = searchKindDetail.getSortOrder();
-            String description = searchControl.getBestSearchKindDescription(searchKind, getLanguage());
+            var searchKindDetail = searchKind.getLastDetail();
+            var searchKindName = searchKindDetail.getSearchKindName();
+            var isDefault = searchKindDetail.getIsDefault();
+            var sortOrder = searchKindDetail.getSortOrder();
+            var description = searchControl.getBestSearchKindDescription(searchKind, getLanguage());
             
             searchKindTransfer = new SearchKindTransfer(searchKindName, isDefault, sortOrder, description);
             put(searchKind, searchKindTransfer);

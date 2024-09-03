@@ -19,7 +19,6 @@ package com.echothree.model.control.order.server.transfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
-import com.echothree.model.data.order.server.entity.OrderTimeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,14 +35,14 @@ public class OrderTimeTypeTransferCache
     }
     
     public OrderTimeTypeTransfer getOrderTimeTypeTransfer(OrderTimeType orderTimeType) {
-        OrderTimeTypeTransfer orderTimeTypeTransfer = get(orderTimeType);
+        var orderTimeTypeTransfer = get(orderTimeType);
         
         if(orderTimeTypeTransfer == null) {
-            OrderTimeTypeDetail orderTimeTypeDetail = orderTimeType.getLastDetail();
-            String orderTimeTypeName = orderTimeTypeDetail.getOrderTimeTypeName();
-            Boolean isDefault = orderTimeTypeDetail.getIsDefault();
-            Integer sortOrder = orderTimeTypeDetail.getSortOrder();
-            String description = orderTimeControl.getBestOrderTimeTypeDescription(orderTimeType, getLanguage());
+            var orderTimeTypeDetail = orderTimeType.getLastDetail();
+            var orderTimeTypeName = orderTimeTypeDetail.getOrderTimeTypeName();
+            var isDefault = orderTimeTypeDetail.getIsDefault();
+            var sortOrder = orderTimeTypeDetail.getSortOrder();
+            var description = orderTimeControl.getBestOrderTimeTypeDescription(orderTimeType, getLanguage());
             
             orderTimeTypeTransfer = new OrderTimeTypeTransfer(orderTimeTypeName, isDefault, sortOrder, description);
             put(orderTimeType, orderTimeTypeTransfer);

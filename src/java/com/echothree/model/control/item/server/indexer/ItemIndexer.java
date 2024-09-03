@@ -27,21 +27,10 @@ import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.index.server.indexer.sortabledescriptionproducer.SortableDescriptionProducer;
 import com.echothree.model.control.index.server.indexer.sortabledescriptionproducer.SortableDescriptionProducerFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemAlias;
-import com.echothree.model.data.item.server.entity.ItemClobDescription;
-import com.echothree.model.data.item.server.entity.ItemDeliveryType;
-import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDetail;
-import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.model.data.item.server.entity.ItemInventoryType;
-import com.echothree.model.data.item.server.entity.ItemStringDescription;
-import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
@@ -80,17 +69,17 @@ public class ItemIndexer
 
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final Item item) {
-        ItemDetail itemDetail = item.getLastDetail();
-        List<ItemAlias> itemAliases = itemControl.getItemAliasesByItem(item);
-        ItemDeliveryType itemDeliveryType = itemDetail.getItemDeliveryType();
-        ItemInventoryType itemInventoryType = itemDetail.getItemInventoryType();
-        ItemAccountingCategory itemAccountingCategory = itemDetail.getItemAccountingCategory();
-        ItemPurchasingCategory itemPurchasingCategory = itemDetail.getItemPurchasingCategory();
-        Boolean inventorySerialized = itemDetail.getInventorySerialized();
-        Long shippingEndTime = itemDetail.getShippingEndTime();
-        Long salesOrderEndTime = itemDetail.getSalesOrderEndTime();
-        Long purchaseOrderStartTime = itemDetail.getPurchaseOrderStartTime();
-        Long purchaseOrderEndTime = itemDetail.getPurchaseOrderEndTime();
+        var itemDetail = item.getLastDetail();
+        var itemAliases = itemControl.getItemAliasesByItem(item);
+        var itemDeliveryType = itemDetail.getItemDeliveryType();
+        var itemInventoryType = itemDetail.getItemInventoryType();
+        var itemAccountingCategory = itemDetail.getItemAccountingCategory();
+        var itemPurchasingCategory = itemDetail.getItemPurchasingCategory();
+        var inventorySerialized = itemDetail.getInventorySerialized();
+        var shippingEndTime = itemDetail.getShippingEndTime();
+        var salesOrderEndTime = itemDetail.getSalesOrderEndTime();
+        var purchaseOrderStartTime = itemDetail.getPurchaseOrderStartTime();
+        var purchaseOrderEndTime = itemDetail.getPurchaseOrderEndTime();
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, item.getPrimaryKey());
 
@@ -154,15 +143,15 @@ public class ItemIndexer
         document.add(new Field(IndexFields.allowAssociatePayments.name(), itemDetail.getAllowAssociatePayments().toString(), FieldTypes.NOT_STORED_TOKENIZED));
 
         itemDescriptionTypes.forEach((itemDescriptionType) -> {
-            ItemDescription itemDescription = itemControl.getBestItemDescription(itemDescriptionType, item, language);
+            var itemDescription = itemControl.getBestItemDescription(itemDescriptionType, item, language);
             if (itemDescription != null) {
-                ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
-                MimeTypeUsageType mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
-                String itemDescriptionTypeName = itemDescriptionTypeDetail.getItemDescriptionTypeName();
+                var itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
+                var mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
+                var itemDescriptionTypeName = itemDescriptionTypeDetail.getItemDescriptionTypeName();
 
                 if(mimeTypeUsageType == null) {
-                    ItemStringDescription itemStringDescription = itemControl.getItemStringDescription(itemDescription);
-                    String stringDescription = itemStringDescription.getStringDescription();
+                    var itemStringDescription = itemControl.getItemStringDescription(itemDescription);
+                    var stringDescription = itemStringDescription.getStringDescription();
                     
                     document.add(new Field(itemDescriptionTypeName, stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
                     document.add(new Field(itemDescriptionTypeName + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name(),
@@ -174,11 +163,11 @@ public class ItemIndexer
                         log.info("--- " + itemDescriptionTypeName + ", stringDescription = " + stringDescription);
                     }
                 } else {
-                    String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+                    var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
                     if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.TEXT.name())) {
-                        ItemClobDescription itemClobDescription = itemControl.getItemClobDescription(itemDescription);
-                        String clobDescription = itemClobDescription.getClobDescription();
+                        var itemClobDescription = itemControl.getItemClobDescription(itemDescription);
+                        var clobDescription = itemClobDescription.getClobDescription();
 
                         // TODO: mime type conversion to text/plain happens here
                         document.add(new Field(itemDescriptionTypeName, clobDescription, FieldTypes.NOT_STORED_TOKENIZED));

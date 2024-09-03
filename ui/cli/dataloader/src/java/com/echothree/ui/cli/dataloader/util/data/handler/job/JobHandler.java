@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.job;
 
 import com.echothree.control.user.job.common.JobUtil;
 import com.echothree.control.user.job.common.JobService;
-import com.echothree.control.user.job.common.form.CreateJobDescriptionForm;
 import com.echothree.control.user.job.common.form.JobFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,7 +48,7 @@ public class JobHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("jobDescription")) {
-            CreateJobDescriptionForm commandForm = JobFormFactory.getCreateJobDescriptionForm();
+            var commandForm = JobFormFactory.getCreateJobDescriptionForm();
             
             commandForm.setJobName(jobName);
             commandForm.set(getAttrsMap(attrs));

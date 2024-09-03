@@ -37,7 +37,7 @@ public class SearchServicePingTest
     }
     
     public static Test suite() {
-        TestSuite suite = new TestSuite();
+        var suite = new TestSuite();
         
         suite.addTest(new SearchServicePingTest("testPingSearchService"));
         

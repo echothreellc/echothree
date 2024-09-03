@@ -17,20 +17,13 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.GetWishlistTypeChoicesForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypeChoicesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
-import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.control.CommandSecurityDefinition;
-import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,9 +50,9 @@ public class GetWishlistTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistTypeChoicesResult result = WishlistResultFactory.getGetWishlistTypeChoicesResult();
-        String defaultWishlistTypeChoice = form.getDefaultWishlistTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = WishlistResultFactory.getGetWishlistTypeChoicesResult();
+        var defaultWishlistTypeChoice = form.getDefaultWishlistTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setWishlistTypeChoices(wishlistControl.getWishlistTypeChoices(defaultWishlistTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

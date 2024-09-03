@@ -17,7 +17,6 @@
 package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.GetLocationUseTypeChoicesForm;
-import com.echothree.control.user.warehouse.common.result.GetLocationUseTypeChoicesResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -62,9 +61,9 @@ public class GetLocationUseTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-        GetLocationUseTypeChoicesResult result = WarehouseResultFactory.getGetLocationUseTypeChoicesResult();
-        String defaultLocationUseTypeChoice = form.getDefaultLocationUseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = WarehouseResultFactory.getGetLocationUseTypeChoicesResult();
+        var defaultLocationUseTypeChoice = form.getDefaultLocationUseTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setLocationUseTypeChoices(locationUseTypeControl.getLocationUseTypeChoices(defaultLocationUseTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

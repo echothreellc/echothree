@@ -17,17 +17,12 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.GetIndexFieldDescriptionForm;
-import com.echothree.control.user.index.common.result.GetIndexFieldDescriptionResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.index.server.entity.IndexField;
-import com.echothree.model.data.index.server.entity.IndexFieldDescription;
-import com.echothree.model.data.index.server.entity.IndexType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -71,21 +66,21 @@ public class GetIndexFieldDescriptionCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexFieldDescriptionResult result = IndexResultFactory.getGetIndexFieldDescriptionResult();
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var result = IndexResultFactory.getGetIndexFieldDescriptionResult();
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
-            String indexFieldName = form.getIndexFieldName();
-            IndexField indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
+            var indexFieldName = form.getIndexFieldName();
+            var indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
 
             if(indexField != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    IndexFieldDescription indexFieldDescription = indexControl.getIndexFieldDescription(indexField, language);
+                    var indexFieldDescription = indexControl.getIndexFieldDescription(indexField, language);
 
                     if(indexFieldDescription != null) {
                         result.setIndexFieldDescription(indexControl.getIndexFieldDescriptionTransfer(getUserVisit(), indexFieldDescription));

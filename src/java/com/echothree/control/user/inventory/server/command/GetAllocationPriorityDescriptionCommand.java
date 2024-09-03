@@ -17,16 +17,12 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetAllocationPriorityDescriptionForm;
-import com.echothree.control.user.inventory.common.result.GetAllocationPriorityDescriptionResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.AllocationPriority;
-import com.echothree.model.data.inventory.server.entity.AllocationPriorityDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetAllocationPriorityDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetAllocationPriorityDescriptionResult result = InventoryResultFactory.getGetAllocationPriorityDescriptionResult();
-        String allocationPriorityName = form.getAllocationPriorityName();
-        AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var result = InventoryResultFactory.getGetAllocationPriorityDescriptionResult();
+        var allocationPriorityName = form.getAllocationPriorityName();
+        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                AllocationPriorityDescription allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, language);
+                var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, language);
 
                 if(allocationPriorityDescription != null) {
                     result.setAllocationPriorityDescription(inventoryControl.getAllocationPriorityDescriptionTransfer(getUserVisit(), allocationPriorityDescription));

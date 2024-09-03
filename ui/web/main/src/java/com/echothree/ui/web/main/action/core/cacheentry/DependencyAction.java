@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.cacheentry;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetCacheEntryDependenciesForm;
 import com.echothree.control.user.core.common.result.GetCacheEntryDependenciesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,19 +52,19 @@ public class DependencyAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCacheEntryDependenciesForm commandForm = CoreUtil.getHome().getGetCacheEntryDependenciesForm();
+        var commandForm = CoreUtil.getHome().getGetCacheEntryDependenciesForm();
 
         commandForm.setCacheEntryKey(request.getParameter(ParameterConstants.CACHE_ENTRY_KEY));
 
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = CoreUtil.getHome().getCacheEntryDependencies(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getCacheEntryDependencies(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCacheEntryDependenciesResult result = (GetCacheEntryDependenciesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCacheEntryDependenciesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CACHE_ENTRY, result.getCacheEntry());
             request.setAttribute(AttributeConstants.CACHE_ENTRY_DEPENDENCIES, result.getCacheEntryDependencies());

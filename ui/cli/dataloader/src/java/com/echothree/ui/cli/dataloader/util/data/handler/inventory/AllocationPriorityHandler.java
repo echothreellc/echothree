@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
-import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityDescriptionForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,7 +48,7 @@ public class AllocationPriorityHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("allocationPriorityDescription")) {
-            CreateAllocationPriorityDescriptionForm form = InventoryFormFactory.getCreateAllocationPriorityDescriptionForm();
+            var form = InventoryFormFactory.getCreateAllocationPriorityDescriptionForm();
 
             form.setAllocationPriorityName(allocationPriorityName);
             form.set(getAttrsMap(attrs));

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.glresourcetype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.edit.GlResourceTypeEdit;
-import com.echothree.control.user.accounting.common.form.EditGlResourceTypeForm;
 import com.echothree.control.user.accounting.common.result.EditGlResourceTypeResult;
-import com.echothree.control.user.accounting.common.spec.GlResourceTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalGlResourceTypeName = request.getParameter(ParameterConstants.ORIGINAL_GL_RESOURCE_TYPE_NAME);
+        var originalGlResourceTypeName = request.getParameter(ParameterConstants.ORIGINAL_GL_RESOURCE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditGlResourceTypeForm commandForm = AccountingUtil.getHome().getEditGlResourceTypeForm();
-                GlResourceTypeSpec spec = AccountingUtil.getHome().getGlResourceTypeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = AccountingUtil.getHome().getEditGlResourceTypeForm();
+                var spec = AccountingUtil.getHome().getGlResourceTypeSpec();
                 
                 if(originalGlResourceTypeName == null)
                     originalGlResourceTypeName = actionForm.getOriginalGlResourceTypeName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setGlResourceTypeName(originalGlResourceTypeName);
                 
                 if(wasPost(request)) {
-                    GlResourceTypeEdit edit = AccountingUtil.getHome().getGlResourceTypeEdit();
+                    var edit = AccountingUtil.getHome().getGlResourceTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +77,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlResourceType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().editGlResourceType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditGlResourceTypeResult result = (EditGlResourceTypeResult)executionResult.getResult();
+                            var result = (EditGlResourceTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +97,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlResourceType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGlResourceTypeResult result = (EditGlResourceTypeResult)executionResult.getResult();
+
+                    var commandResult = AccountingUtil.getHome().editGlResourceType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGlResourceTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        GlResourceTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalGlResourceTypeName(edit.getGlResourceTypeName());

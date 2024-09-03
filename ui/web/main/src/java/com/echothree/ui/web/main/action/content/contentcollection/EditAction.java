@@ -49,8 +49,8 @@ public class EditAction
     @Override
     protected ContentCollectionSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentCollectionSpec spec = ContentUtil.getHome().getContentCollectionSpec();
-        String originalContentCollectionName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_COLLECTION_NAME);
+        var spec = ContentUtil.getHome().getContentCollectionSpec();
+        var originalContentCollectionName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_COLLECTION_NAME);
 
         if(originalContentCollectionName == null) {
             originalContentCollectionName = actionForm.getOriginalContentCollectionName();
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected ContentCollectionEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentCollectionEdit edit = ContentUtil.getHome().getContentCollectionEdit();
+        var edit = ContentUtil.getHome().getContentCollectionEdit();
 
         edit.setContentCollectionName(actionForm.getContentCollectionName());
         edit.setDefaultSourceName(actionForm.getDefaultSourceChoice());

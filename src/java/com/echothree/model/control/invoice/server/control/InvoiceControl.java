@@ -39,48 +39,19 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTimeTypeTransf
 import com.echothree.model.control.invoice.common.transfer.InvoiceTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTypeDescriptionTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
-import com.echothree.model.control.invoice.server.transfer.InvoiceAliasTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceAliasTypeDescriptionTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceAliasTypeTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceLineTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceLineTypeDescriptionTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceLineTypeTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceLineUseTypeTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceRoleTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceRoleTypeTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceTimeTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceTimeTypeDescriptionTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceTimeTypeTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceTransferCache;
 import com.echothree.model.control.invoice.server.transfer.InvoiceTransferCaches;
-import com.echothree.model.control.invoice.server.transfer.InvoiceTypeDescriptionTransferCache;
-import com.echothree.model.control.invoice.server.transfer.InvoiceTypeTransferCache;
-import com.echothree.model.data.accounting.common.pk.GlAccountPK;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.inventory.common.pk.InventoryConditionPK;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.invoice.common.pk.InvoiceAliasTypePK;
-import com.echothree.model.data.invoice.common.pk.InvoiceLinePK;
-import com.echothree.model.data.invoice.common.pk.InvoiceLineTypePK;
-import com.echothree.model.data.invoice.common.pk.InvoicePK;
-import com.echothree.model.data.invoice.common.pk.InvoiceRoleTypePK;
-import com.echothree.model.data.invoice.common.pk.InvoiceTimeTypePK;
-import com.echothree.model.data.invoice.common.pk.InvoiceTypePK;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceAlias;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasType;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasTypeDescription;
-import com.echothree.model.data.invoice.server.entity.InvoiceAliasTypeDetail;
-import com.echothree.model.data.invoice.server.entity.InvoiceDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceLine;
-import com.echothree.model.data.invoice.server.entity.InvoiceLineDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineGlAccount;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineItem;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDescription;
-import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineUseType;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineUseTypeDescription;
 import com.echothree.model.data.invoice.server.entity.InvoiceRole;
@@ -90,10 +61,8 @@ import com.echothree.model.data.invoice.server.entity.InvoiceStatus;
 import com.echothree.model.data.invoice.server.entity.InvoiceTime;
 import com.echothree.model.data.invoice.server.entity.InvoiceTimeType;
 import com.echothree.model.data.invoice.server.entity.InvoiceTimeTypeDescription;
-import com.echothree.model.data.invoice.server.entity.InvoiceTimeTypeDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.invoice.server.entity.InvoiceTypeDescription;
-import com.echothree.model.data.invoice.server.entity.InvoiceTypeDetail;
 import com.echothree.model.data.invoice.server.factory.InvoiceAliasFactory;
 import com.echothree.model.data.invoice.server.factory.InvoiceAliasTypeDescriptionFactory;
 import com.echothree.model.data.invoice.server.factory.InvoiceAliasTypeDetailFactory;
@@ -133,17 +102,13 @@ import com.echothree.model.data.invoice.server.value.InvoiceTimeTypeDetailValue;
 import com.echothree.model.data.invoice.server.value.InvoiceTimeValue;
 import com.echothree.model.data.invoice.server.value.InvoiceTypeDescriptionValue;
 import com.echothree.model.data.invoice.server.value.InvoiceTypeDetailValue;
-import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.BillingAccount;
-import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
-import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
@@ -151,14 +116,12 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -195,7 +158,7 @@ public class InvoiceControl
     }
     
     public List<InvoiceLineUseType> getInvoiceLineUseTypes() {
-        PreparedStatement ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
+        var ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM invoicelineusetypes " +
                 "ORDER BY invclut_invoicelineusetypename");
@@ -207,7 +170,7 @@ public class InvoiceControl
         InvoiceLineUseType invoiceLineUseType;
         
         try {
-            PreparedStatement ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
+            var ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM invoicelineusetypes " +
                     "WHERE invclut_invoicelineusetypename = ?");
@@ -230,7 +193,7 @@ public class InvoiceControl
     
     private List<InvoiceLineUseTypeTransfer> getInvoiceLineUseTypeTransfers(final UserVisit userVisit, final List<InvoiceLineUseType> invoiceLineUseTypes) {
         List<InvoiceLineUseTypeTransfer> invoiceLineUseTypeTransfers = new ArrayList<>(invoiceLineUseTypes.size());
-        InvoiceLineUseTypeTransferCache invoiceLineUseTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineUseTypeTransferCache();
+        var invoiceLineUseTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineUseTypeTransferCache();
         
         invoiceLineUseTypes.forEach((invoiceLineUseType) ->
                 invoiceLineUseTypeTransfers.add(invoiceLineUseTypeTransferCache.getInvoiceLineUseTypeTransfer(invoiceLineUseType))
@@ -255,7 +218,7 @@ public class InvoiceControl
         InvoiceLineUseTypeDescription invoiceLineUseTypeDescription;
         
         try {
-            PreparedStatement ps = InvoiceLineUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = InvoiceLineUseTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM invoicelineusetypedescriptions " +
                     "WHERE invclutd_invclut_invoicelineusetypeid = ? AND invclutd_lang_languageid = ?");
@@ -273,7 +236,7 @@ public class InvoiceControl
     
     public String getBestInvoiceLineUseTypeDescription(InvoiceLineUseType invoiceLineUseType, Language language) {
         String description;
-        InvoiceLineUseTypeDescription invoiceLineUseTypeDescription = getInvoiceLineUseTypeDescription(invoiceLineUseType, language);
+        var invoiceLineUseTypeDescription = getInvoiceLineUseTypeDescription(invoiceLineUseType, language);
         
         if(invoiceLineUseTypeDescription == null && !language.getIsDefault()) {
             invoiceLineUseTypeDescription = getInvoiceLineUseTypeDescription(invoiceLineUseType, getPartyControl().getDefaultLanguage());
@@ -297,7 +260,7 @@ public class InvoiceControl
     }
     
     public List<InvoiceRoleType> getInvoiceRoleTypes() {
-        PreparedStatement ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
+        var ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM invoiceroletypes " +
                 "ORDER BY invcrtyp_sortorder, invcrtyp_invoiceroletypename");
@@ -309,7 +272,7 @@ public class InvoiceControl
         InvoiceRoleType invoiceRoleType;
         
         try {
-            PreparedStatement ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
+            var ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM invoiceroletypes " +
                     "WHERE invcrtyp_invoiceroletypename = ?");
@@ -332,7 +295,7 @@ public class InvoiceControl
     
     private List<InvoiceRoleTypeTransfer> getInvoiceRoleTypeTransfers(final UserVisit userVisit, final List<InvoiceRoleType> invoiceRoleTypes) {
         List<InvoiceRoleTypeTransfer> invoiceRoleTypeTransfers = new ArrayList<>(invoiceRoleTypes.size());
-        InvoiceRoleTypeTransferCache invoiceRoleTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceRoleTypeTransferCache();
+        var invoiceRoleTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceRoleTypeTransferCache();
         
         invoiceRoleTypes.forEach((invoiceRoleType) ->
                 invoiceRoleTypeTransfers.add(invoiceRoleTypeTransferCache.getInvoiceRoleTypeTransfer(invoiceRoleType))
@@ -357,7 +320,7 @@ public class InvoiceControl
         InvoiceRoleTypeDescription invoiceRoleTypeDescription;
         
         try {
-            PreparedStatement ps = InvoiceRoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = InvoiceRoleTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM invoiceroletypedescriptions " +
                     "WHERE invcrtypd_invcrtyp_invoiceroletypeid = ? AND invcrtypd_lang_languageid = ?");
@@ -375,7 +338,7 @@ public class InvoiceControl
     
     public String getBestInvoiceRoleTypeDescription(InvoiceRoleType invoiceRoleType, Language language) {
         String description;
-        InvoiceRoleTypeDescription invoiceRoleTypeDescription = getInvoiceRoleTypeDescription(invoiceRoleType, language);
+        var invoiceRoleTypeDescription = getInvoiceRoleTypeDescription(invoiceRoleType, language);
         
         if(invoiceRoleTypeDescription == null && !language.getIsDefault()) {
             invoiceRoleTypeDescription = getInvoiceRoleTypeDescription(invoiceRoleType, getPartyControl().getDefaultLanguage());
@@ -396,20 +359,20 @@ public class InvoiceControl
     
     public InvoiceType createInvoiceType(String invoiceTypeName, InvoiceType parentInvoiceType, SequenceType invoiceSequenceType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        InvoiceType defaultInvoiceType = getDefaultInvoiceType();
-        boolean defaultFound = defaultInvoiceType != null;
+        var defaultInvoiceType = getDefaultInvoiceType();
+        var defaultFound = defaultInvoiceType != null;
         
         if(defaultFound && isDefault) {
-            InvoiceTypeDetailValue defaultInvoiceTypeDetailValue = getDefaultInvoiceTypeDetailValueForUpdate();
+            var defaultInvoiceTypeDetailValue = getDefaultInvoiceTypeDetailValueForUpdate();
             
             defaultInvoiceTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateInvoiceTypeFromValue(defaultInvoiceTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        InvoiceType invoiceType = InvoiceTypeFactory.getInstance().create();
-        InvoiceTypeDetail invoiceTypeDetail = InvoiceTypeDetailFactory.getInstance().create(invoiceType, invoiceTypeName,
+
+        var invoiceType = InvoiceTypeFactory.getInstance().create();
+        var invoiceTypeDetail = InvoiceTypeDetailFactory.getInstance().create(invoiceType, invoiceTypeName,
                 parentInvoiceType, invoiceSequenceType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -567,9 +530,9 @@ public class InvoiceControl
     }
     
     public List<InvoiceTypeTransfer> getInvoiceTypeTransfers(UserVisit userVisit) {
-        List<InvoiceType> invoiceTypes = getInvoiceTypes();
+        var invoiceTypes = getInvoiceTypes();
         List<InvoiceTypeTransfer> invoiceTypeTransfers = new ArrayList<>(invoiceTypes.size());
-        InvoiceTypeTransferCache invoiceTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTypeTransferCache();
+        var invoiceTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTypeTransferCache();
         
         invoiceTypes.forEach((invoiceType) ->
                 invoiceTypeTransfers.add(invoiceTypeTransferCache.getInvoiceTypeTransfer(invoiceType))
@@ -580,7 +543,7 @@ public class InvoiceControl
     
     public InvoiceTypeChoicesBean getInvoiceTypeChoices(String defaultInvoiceTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<InvoiceType> invoiceTypes = getInvoiceTypes();
+        var invoiceTypes = getInvoiceTypes();
         var size = invoiceTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -596,7 +559,7 @@ public class InvoiceControl
         }
         
         for(var invoiceType : invoiceTypes) {
-            InvoiceTypeDetail invoiceTypeDetail = invoiceType.getLastDetail();
+            var invoiceTypeDetail = invoiceType.getLastDetail();
             
             var label = getBestInvoiceTypeDescription(invoiceType, language);
             var value = invoiceTypeDetail.getInvoiceTypeName();
@@ -614,7 +577,7 @@ public class InvoiceControl
     }
     
     public boolean isParentInvoiceTypeSafe(InvoiceType invoiceType, InvoiceType parentInvoiceType) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentInvoiceType != null) {
             Set<InvoiceType> parentItemPurchasingCategorys = new HashSet<>();
@@ -637,27 +600,27 @@ public class InvoiceControl
     private void updateInvoiceTypeFromValue(InvoiceTypeDetailValue invoiceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(invoiceTypeDetailValue.hasBeenModified()) {
-            InvoiceType invoiceType = InvoiceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceType = InvoiceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceTypeDetailValue.getInvoiceTypePK());
-            InvoiceTypeDetail invoiceTypeDetail = invoiceType.getActiveDetailForUpdate();
+            var invoiceTypeDetail = invoiceType.getActiveDetailForUpdate();
             
             invoiceTypeDetail.setThruTime(session.START_TIME_LONG);
             invoiceTypeDetail.store();
-            
-            InvoiceTypePK invoiceTypePK = invoiceTypeDetail.getInvoiceTypePK();
-            String invoiceTypeName = invoiceTypeDetailValue.getInvoiceTypeName();
-            InvoiceTypePK parentInvoiceTypePK = invoiceTypeDetailValue.getParentInvoiceTypePK();
-            SequenceTypePK invoiceSequenceTypePK = invoiceTypeDetailValue.getInvoiceSequenceTypePK();
-            Boolean isDefault = invoiceTypeDetailValue.getIsDefault();
-            Integer sortOrder = invoiceTypeDetailValue.getSortOrder();
+
+            var invoiceTypePK = invoiceTypeDetail.getInvoiceTypePK();
+            var invoiceTypeName = invoiceTypeDetailValue.getInvoiceTypeName();
+            var parentInvoiceTypePK = invoiceTypeDetailValue.getParentInvoiceTypePK();
+            var invoiceSequenceTypePK = invoiceTypeDetailValue.getInvoiceSequenceTypePK();
+            var isDefault = invoiceTypeDetailValue.getIsDefault();
+            var sortOrder = invoiceTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                InvoiceType defaultInvoiceType = getDefaultInvoiceType();
-                boolean defaultFound = defaultInvoiceType != null && !defaultInvoiceType.equals(invoiceType);
+                var defaultInvoiceType = getDefaultInvoiceType();
+                var defaultFound = defaultInvoiceType != null && !defaultInvoiceType.equals(invoiceType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    InvoiceTypeDetailValue defaultInvoiceTypeDetailValue = getDefaultInvoiceTypeDetailValueForUpdate();
+                    var defaultInvoiceTypeDetailValue = getDefaultInvoiceTypeDetailValueForUpdate();
                     
                     defaultInvoiceTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateInvoiceTypeFromValue(defaultInvoiceTypeDetailValue, false, updatedBy);
@@ -683,7 +646,7 @@ public class InvoiceControl
     }
     
     private void deleteInvoiceType(InvoiceType invoiceType, boolean checkDefault, BasePK deletedBy) {
-        InvoiceTypeDetail invoiceTypeDetail = invoiceType.getLastDetailForUpdate();
+        var invoiceTypeDetail = invoiceType.getLastDetailForUpdate();
 
         deleteInvoiceTypesByParentInvoiceType(invoiceType, deletedBy);
         deleteInvoiceLineTypesByInvoiceType(invoiceType, deletedBy);
@@ -695,17 +658,17 @@ public class InvoiceControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            InvoiceType defaultInvoiceType = getDefaultInvoiceType();
+            var defaultInvoiceType = getDefaultInvoiceType();
 
             if(defaultInvoiceType == null) {
-                List<InvoiceType> invoiceTypes = getInvoiceTypesForUpdate();
+                var invoiceTypes = getInvoiceTypesForUpdate();
 
                 if(!invoiceTypes.isEmpty()) {
-                    Iterator<InvoiceType> iter = invoiceTypes.iterator();
+                    var iter = invoiceTypes.iterator();
                     if(iter.hasNext()) {
                         defaultInvoiceType = iter.next();
                     }
-                    InvoiceTypeDetailValue invoiceTypeDetailValue = Objects.requireNonNull(defaultInvoiceType).getLastDetailForUpdate().getInvoiceTypeDetailValue().clone();
+                    var invoiceTypeDetailValue = Objects.requireNonNull(defaultInvoiceType).getLastDetailForUpdate().getInvoiceTypeDetailValue().clone();
 
                     invoiceTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateInvoiceTypeFromValue(invoiceTypeDetailValue, false, deletedBy);
@@ -737,7 +700,7 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     
     public InvoiceTypeDescription createInvoiceTypeDescription(InvoiceType invoiceType, Language language, String description, BasePK createdBy) {
-        InvoiceTypeDescription invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().create(invoiceType, language, description, session.START_TIME_LONG,
+        var invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().create(invoiceType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(invoiceType.getPrimaryKey(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -761,8 +724,8 @@ public class InvoiceControl
                         "WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_lang_languageid = ? AND invctypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -809,8 +772,8 @@ public class InvoiceControl
                         "WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -833,7 +796,7 @@ public class InvoiceControl
     
     public String getBestInvoiceTypeDescription(InvoiceType invoiceType, Language language) {
         String description;
-        InvoiceTypeDescription invoiceTypeDescription = getInvoiceTypeDescription(invoiceType, language);
+        var invoiceTypeDescription = getInvoiceTypeDescription(invoiceType, language);
         
         if(invoiceTypeDescription == null && !language.getIsDefault()) {
             invoiceTypeDescription = getInvoiceTypeDescription(invoiceType, getPartyControl().getDefaultLanguage());
@@ -853,9 +816,9 @@ public class InvoiceControl
     }
     
     public List<InvoiceTypeDescriptionTransfer> getInvoiceTypeDescriptionTransfersByInvoiceType(UserVisit userVisit, InvoiceType invoiceType) {
-        List<InvoiceTypeDescription> invoiceTypeDescriptions = getInvoiceTypeDescriptionsByInvoiceType(invoiceType);
+        var invoiceTypeDescriptions = getInvoiceTypeDescriptionsByInvoiceType(invoiceType);
         List<InvoiceTypeDescriptionTransfer> invoiceTypeDescriptionTransfers = new ArrayList<>(invoiceTypeDescriptions.size());
-        InvoiceTypeDescriptionTransferCache invoiceTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTypeDescriptionTransferCache();
+        var invoiceTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTypeDescriptionTransferCache();
         
         invoiceTypeDescriptions.forEach((invoiceTypeDescription) ->
                 invoiceTypeDescriptionTransfers.add(invoiceTypeDescriptionTransferCache.getInvoiceTypeDescriptionTransfer(invoiceTypeDescription))
@@ -866,14 +829,14 @@ public class InvoiceControl
     
     public void updateInvoiceTypeDescriptionFromValue(InvoiceTypeDescriptionValue invoiceTypeDescriptionValue, BasePK updatedBy) {
         if(invoiceTypeDescriptionValue.hasBeenModified()) {
-            InvoiceTypeDescription invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceTypeDescriptionValue.getPrimaryKey());
+            var invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceTypeDescriptionValue.getPrimaryKey());
             
             invoiceTypeDescription.setThruTime(session.START_TIME_LONG);
             invoiceTypeDescription.store();
-            
-            InvoiceType invoiceType = invoiceTypeDescription.getInvoiceType();
-            Language language = invoiceTypeDescription.getLanguage();
-            String description = invoiceTypeDescriptionValue.getDescription();
+
+            var invoiceType = invoiceTypeDescription.getInvoiceType();
+            var language = invoiceTypeDescription.getLanguage();
+            var description = invoiceTypeDescriptionValue.getDescription();
             
             invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().create(invoiceType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -890,7 +853,7 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceTypeDescriptionsByInvoiceType(InvoiceType invoiceType, BasePK deletedBy) {
-        List<InvoiceTypeDescription> invoiceTypeDescriptions = getInvoiceTypeDescriptionsByInvoiceTypeForUpdate(invoiceType);
+        var invoiceTypeDescriptions = getInvoiceTypeDescriptionsByInvoiceTypeForUpdate(invoiceType);
         
         invoiceTypeDescriptions.forEach((invoiceTypeDescription) -> 
                 deleteInvoiceTypeDescription(invoiceTypeDescription, deletedBy)
@@ -903,20 +866,20 @@ public class InvoiceControl
     
     public InvoiceAliasType createInvoiceAliasType(InvoiceType invoiceType, String invoiceAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        InvoiceAliasType defaultInvoiceAliasType = getDefaultInvoiceAliasType(invoiceType);
-        boolean defaultFound = defaultInvoiceAliasType != null;
+        var defaultInvoiceAliasType = getDefaultInvoiceAliasType(invoiceType);
+        var defaultFound = defaultInvoiceAliasType != null;
         
         if(defaultFound && isDefault) {
-            InvoiceAliasTypeDetailValue defaultInvoiceAliasTypeDetailValue = getDefaultInvoiceAliasTypeDetailValueForUpdate(invoiceType);
+            var defaultInvoiceAliasTypeDetailValue = getDefaultInvoiceAliasTypeDetailValueForUpdate(invoiceType);
             
             defaultInvoiceAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateInvoiceAliasTypeFromValue(defaultInvoiceAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        InvoiceAliasType invoiceAliasType = InvoiceAliasTypeFactory.getInstance().create();
-        InvoiceAliasTypeDetail invoiceAliasTypeDetail = InvoiceAliasTypeDetailFactory.getInstance().create(invoiceAliasType, invoiceType, invoiceAliasTypeName,
+
+        var invoiceAliasType = InvoiceAliasTypeFactory.getInstance().create();
+        var invoiceAliasTypeDetail = InvoiceAliasTypeDetailFactory.getInstance().create(invoiceAliasType, invoiceType, invoiceAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1041,9 +1004,9 @@ public class InvoiceControl
     }
     
     public List<InvoiceAliasTypeTransfer> getInvoiceAliasTypeTransfers(UserVisit userVisit, InvoiceType invoiceType) {
-        List<InvoiceAliasType> invoiceAliasTypes = getInvoiceAliasTypes(invoiceType);
+        var invoiceAliasTypes = getInvoiceAliasTypes(invoiceType);
         List<InvoiceAliasTypeTransfer> invoiceAliasTypeTransfers = new ArrayList<>(invoiceAliasTypes.size());
-        InvoiceAliasTypeTransferCache invoiceAliasTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTypeTransferCache();
+        var invoiceAliasTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTypeTransferCache();
         
         invoiceAliasTypes.forEach((invoiceAliasType) ->
                 invoiceAliasTypeTransfers.add(invoiceAliasTypeTransferCache.getInvoiceAliasTypeTransfer(invoiceAliasType))
@@ -1054,7 +1017,7 @@ public class InvoiceControl
     
     public InvoiceAliasTypeChoicesBean getInvoiceAliasTypeChoices(String defaultInvoiceAliasTypeChoice, Language language,
             boolean allowNullChoice, InvoiceType invoiceType) {
-        List<InvoiceAliasType> invoiceAliasTypes = getInvoiceAliasTypes(invoiceType);
+        var invoiceAliasTypes = getInvoiceAliasTypes(invoiceType);
         var size = invoiceAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1070,7 +1033,7 @@ public class InvoiceControl
         }
         
         for(var invoiceAliasType : invoiceAliasTypes) {
-            InvoiceAliasTypeDetail invoiceAliasTypeDetail = invoiceAliasType.getLastDetail();
+            var invoiceAliasTypeDetail = invoiceAliasType.getLastDetail();
             
             var label = getBestInvoiceAliasTypeDescription(invoiceAliasType, language);
             var value = invoiceAliasTypeDetail.getInvoiceAliasTypeName();
@@ -1090,28 +1053,28 @@ public class InvoiceControl
     private void updateInvoiceAliasTypeFromValue(InvoiceAliasTypeDetailValue invoiceAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(invoiceAliasTypeDetailValue.hasBeenModified()) {
-            InvoiceAliasType invoiceAliasType = InvoiceAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceAliasType = InvoiceAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     invoiceAliasTypeDetailValue.getInvoiceAliasTypePK());
-            InvoiceAliasTypeDetail invoiceAliasTypeDetail = invoiceAliasType.getActiveDetailForUpdate();
+            var invoiceAliasTypeDetail = invoiceAliasType.getActiveDetailForUpdate();
             
             invoiceAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             invoiceAliasTypeDetail.store();
-            
-            InvoiceAliasTypePK invoiceAliasTypePK = invoiceAliasTypeDetail.getInvoiceAliasTypePK();
-            InvoiceType invoiceType = invoiceAliasTypeDetail.getInvoiceType();
-            InvoiceTypePK invoiceTypePK = invoiceType.getPrimaryKey();
-            String invoiceAliasTypeName = invoiceAliasTypeDetailValue.getInvoiceAliasTypeName();
-            String validationPattern = invoiceAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = invoiceAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = invoiceAliasTypeDetailValue.getSortOrder();
+
+            var invoiceAliasTypePK = invoiceAliasTypeDetail.getInvoiceAliasTypePK();
+            var invoiceType = invoiceAliasTypeDetail.getInvoiceType();
+            var invoiceTypePK = invoiceType.getPrimaryKey();
+            var invoiceAliasTypeName = invoiceAliasTypeDetailValue.getInvoiceAliasTypeName();
+            var validationPattern = invoiceAliasTypeDetailValue.getValidationPattern();
+            var isDefault = invoiceAliasTypeDetailValue.getIsDefault();
+            var sortOrder = invoiceAliasTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                InvoiceAliasType defaultInvoiceAliasType = getDefaultInvoiceAliasType(invoiceType);
-                boolean defaultFound = defaultInvoiceAliasType != null && !defaultInvoiceAliasType.equals(invoiceAliasType);
+                var defaultInvoiceAliasType = getDefaultInvoiceAliasType(invoiceType);
+                var defaultFound = defaultInvoiceAliasType != null && !defaultInvoiceAliasType.equals(invoiceAliasType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    InvoiceAliasTypeDetailValue defaultInvoiceAliasTypeDetailValue = getDefaultInvoiceAliasTypeDetailValueForUpdate(invoiceType);
+                    var defaultInvoiceAliasTypeDetailValue = getDefaultInvoiceAliasTypeDetailValueForUpdate(invoiceType);
                     
                     defaultInvoiceAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateInvoiceAliasTypeFromValue(defaultInvoiceAliasTypeDetailValue, false, updatedBy);
@@ -1138,24 +1101,24 @@ public class InvoiceControl
     public void deleteInvoiceAliasType(InvoiceAliasType invoiceAliasType, BasePK deletedBy) {
         deleteInvoiceAliasesByInvoiceAliasType(invoiceAliasType, deletedBy);
         deleteInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType, deletedBy);
-        
-        InvoiceAliasTypeDetail invoiceAliasTypeDetail = invoiceAliasType.getLastDetailForUpdate();
+
+        var invoiceAliasTypeDetail = invoiceAliasType.getLastDetailForUpdate();
         invoiceAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         invoiceAliasType.setActiveDetail(null);
         invoiceAliasType.store();
         
         // Check for default, and pick one if necessary
-        InvoiceType invoiceType = invoiceAliasTypeDetail.getInvoiceType();
-        InvoiceAliasType defaultInvoiceAliasType = getDefaultInvoiceAliasType(invoiceType);
+        var invoiceType = invoiceAliasTypeDetail.getInvoiceType();
+        var defaultInvoiceAliasType = getDefaultInvoiceAliasType(invoiceType);
         if(defaultInvoiceAliasType == null) {
-            List<InvoiceAliasType> invoiceAliasTypes = getInvoiceAliasTypesForUpdate(invoiceType);
+            var invoiceAliasTypes = getInvoiceAliasTypesForUpdate(invoiceType);
             
             if(!invoiceAliasTypes.isEmpty()) {
-                Iterator<InvoiceAliasType> iter = invoiceAliasTypes.iterator();
+                var iter = invoiceAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultInvoiceAliasType = iter.next();
                 }
-                InvoiceAliasTypeDetailValue invoiceAliasTypeDetailValue = Objects.requireNonNull(defaultInvoiceAliasType).getLastDetailForUpdate().getInvoiceAliasTypeDetailValue().clone();
+                var invoiceAliasTypeDetailValue = Objects.requireNonNull(defaultInvoiceAliasType).getLastDetailForUpdate().getInvoiceAliasTypeDetailValue().clone();
                 
                 invoiceAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateInvoiceAliasTypeFromValue(invoiceAliasTypeDetailValue, false, deletedBy);
@@ -1180,11 +1143,11 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
 
     public InvoiceTimeType createInvoiceTimeType(InvoiceType invoiceType, String invoiceTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        InvoiceTimeType defaultInvoiceTimeType = getDefaultInvoiceTimeType(invoiceType);
-        boolean defaultFound = defaultInvoiceTimeType != null;
+        var defaultInvoiceTimeType = getDefaultInvoiceTimeType(invoiceType);
+        var defaultFound = defaultInvoiceTimeType != null;
 
         if(defaultFound && isDefault) {
-            InvoiceTimeTypeDetailValue defaultInvoiceTimeTypeDetailValue = getDefaultInvoiceTimeTypeDetailValueForUpdate(invoiceType);
+            var defaultInvoiceTimeTypeDetailValue = getDefaultInvoiceTimeTypeDetailValueForUpdate(invoiceType);
 
             defaultInvoiceTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateInvoiceTimeTypeFromValue(defaultInvoiceTimeTypeDetailValue, false, createdBy);
@@ -1192,8 +1155,8 @@ public class InvoiceControl
             isDefault = Boolean.TRUE;
         }
 
-        InvoiceTimeType invoiceTimeType = InvoiceTimeTypeFactory.getInstance().create();
-        InvoiceTimeTypeDetail invoiceTimeTypeDetail = InvoiceTimeTypeDetailFactory.getInstance().create(invoiceTimeType, invoiceType, invoiceTimeTypeName, isDefault,
+        var invoiceTimeType = InvoiceTimeTypeFactory.getInstance().create();
+        var invoiceTimeTypeDetail = InvoiceTimeTypeDetailFactory.getInstance().create(invoiceTimeType, invoiceType, invoiceTimeTypeName, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1322,9 +1285,9 @@ public class InvoiceControl
     }
 
     public List<InvoiceTimeTypeTransfer> getInvoiceTimeTypeTransfers(UserVisit userVisit, InvoiceType invoiceType) {
-        List<InvoiceTimeType> invoiceTimeTypes = getInvoiceTimeTypes(invoiceType);
+        var invoiceTimeTypes = getInvoiceTimeTypes(invoiceType);
         List<InvoiceTimeTypeTransfer> invoiceTimeTypeTransfers = new ArrayList<>(invoiceTimeTypes.size());
-        InvoiceTimeTypeTransferCache invoiceTimeTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTypeTransferCache();
+        var invoiceTimeTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTypeTransferCache();
 
         invoiceTimeTypes.forEach((invoiceTimeType) ->
                 invoiceTimeTypeTransfers.add(invoiceTimeTypeTransferCache.getInvoiceTimeTypeTransfer(invoiceTimeType))
@@ -1335,7 +1298,7 @@ public class InvoiceControl
 
     public InvoiceTimeTypeChoicesBean getInvoiceTimeTypeChoices(String defaultInvoiceTimeTypeChoice, Language language, boolean allowNullChoice,
             InvoiceType invoiceType) {
-        List<InvoiceTimeType> invoiceTimeTypes = getInvoiceTimeTypes(invoiceType);
+        var invoiceTimeTypes = getInvoiceTimeTypes(invoiceType);
         var size = invoiceTimeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1351,7 +1314,7 @@ public class InvoiceControl
         }
 
         for(var invoiceTimeType : invoiceTimeTypes) {
-            InvoiceTimeTypeDetail invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
+            var invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
 
             var label = getBestInvoiceTimeTypeDescription(invoiceTimeType, language);
             var value = invoiceTimeTypeDetail.getInvoiceTimeTypeName();
@@ -1371,27 +1334,27 @@ public class InvoiceControl
     private void updateInvoiceTimeTypeFromValue(InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(invoiceTimeTypeDetailValue.hasBeenModified()) {
-            InvoiceTimeType invoiceTimeType = InvoiceTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceTimeType = InvoiceTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceTimeTypeDetailValue.getInvoiceTimeTypePK());
-            InvoiceTimeTypeDetail invoiceTimeTypeDetail = invoiceTimeType.getActiveDetailForUpdate();
+            var invoiceTimeTypeDetail = invoiceTimeType.getActiveDetailForUpdate();
 
             invoiceTimeTypeDetail.setThruTime(session.START_TIME_LONG);
             invoiceTimeTypeDetail.store();
 
-            InvoiceType invoiceType = invoiceTimeTypeDetail.getInvoiceType(); // Not updated
-            InvoiceTypePK invoiceTypePK = invoiceType.getPrimaryKey(); // Not updated
-            InvoiceTimeTypePK invoiceTimeTypePK = invoiceTimeTypeDetail.getInvoiceTimeTypePK(); // Not updated
-            String invoiceTimeTypeName = invoiceTimeTypeDetailValue.getInvoiceTimeTypeName();
-            Boolean isDefault = invoiceTimeTypeDetailValue.getIsDefault();
-            Integer sortOrder = invoiceTimeTypeDetailValue.getSortOrder();
+            var invoiceType = invoiceTimeTypeDetail.getInvoiceType(); // Not updated
+            var invoiceTypePK = invoiceType.getPrimaryKey(); // Not updated
+            var invoiceTimeTypePK = invoiceTimeTypeDetail.getInvoiceTimeTypePK(); // Not updated
+            var invoiceTimeTypeName = invoiceTimeTypeDetailValue.getInvoiceTimeTypeName();
+            var isDefault = invoiceTimeTypeDetailValue.getIsDefault();
+            var sortOrder = invoiceTimeTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                InvoiceTimeType defaultInvoiceTimeType = getDefaultInvoiceTimeType(invoiceType);
-                boolean defaultFound = defaultInvoiceTimeType != null && !defaultInvoiceTimeType.equals(invoiceTimeType);
+                var defaultInvoiceTimeType = getDefaultInvoiceTimeType(invoiceType);
+                var defaultFound = defaultInvoiceTimeType != null && !defaultInvoiceTimeType.equals(invoiceTimeType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    InvoiceTimeTypeDetailValue defaultInvoiceTimeTypeDetailValue = getDefaultInvoiceTimeTypeDetailValueForUpdate(invoiceType);
+                    var defaultInvoiceTimeTypeDetailValue = getDefaultInvoiceTimeTypeDetailValueForUpdate(invoiceType);
 
                     defaultInvoiceTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateInvoiceTimeTypeFromValue(defaultInvoiceTimeTypeDetailValue, false, updatedBy);
@@ -1419,23 +1382,23 @@ public class InvoiceControl
         deleteInvoiceTimesByInvoiceTimeType(invoiceTimeType, deletedBy);
         deleteInvoiceTimeTypeDescriptionsByInvoiceTimeType(invoiceTimeType, deletedBy);
 
-        InvoiceTimeTypeDetail invoiceTimeTypeDetail = invoiceTimeType.getLastDetailForUpdate();
+        var invoiceTimeTypeDetail = invoiceTimeType.getLastDetailForUpdate();
         invoiceTimeTypeDetail.setThruTime(session.START_TIME_LONG);
         invoiceTimeType.setActiveDetail(null);
         invoiceTimeType.store();
 
         // Check for default, and pick one if necessary
-        InvoiceType invoiceType = invoiceTimeTypeDetail.getInvoiceType();
-        InvoiceTimeType defaultInvoiceTimeType = getDefaultInvoiceTimeType(invoiceType);
+        var invoiceType = invoiceTimeTypeDetail.getInvoiceType();
+        var defaultInvoiceTimeType = getDefaultInvoiceTimeType(invoiceType);
         if(defaultInvoiceTimeType == null) {
-            List<InvoiceTimeType> invoiceTimeTypes = getInvoiceTimeTypesForUpdate(invoiceType);
+            var invoiceTimeTypes = getInvoiceTimeTypesForUpdate(invoiceType);
 
             if(!invoiceTimeTypes.isEmpty()) {
-                Iterator<InvoiceTimeType> iter = invoiceTimeTypes.iterator();
+                var iter = invoiceTimeTypes.iterator();
                 if(iter.hasNext()) {
                     defaultInvoiceTimeType = iter.next();
                 }
-                InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue = Objects.requireNonNull(defaultInvoiceTimeType).getLastDetailForUpdate().getInvoiceTimeTypeDetailValue().clone();
+                var invoiceTimeTypeDetailValue = Objects.requireNonNull(defaultInvoiceTimeType).getLastDetailForUpdate().getInvoiceTimeTypeDetailValue().clone();
 
                 invoiceTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateInvoiceTimeTypeFromValue(invoiceTimeTypeDetailValue, false, deletedBy);
@@ -1450,7 +1413,7 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
 
     public InvoiceTimeTypeDescription createInvoiceTimeTypeDescription(InvoiceTimeType invoiceTimeType, Language language, String description, BasePK createdBy) {
-        InvoiceTimeTypeDescription invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().create(invoiceTimeType, language, description,
+        var invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().create(invoiceTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1529,7 +1492,7 @@ public class InvoiceControl
 
     public String getBestInvoiceTimeTypeDescription(InvoiceTimeType invoiceTimeType, Language language) {
         String description;
-        InvoiceTimeTypeDescription invoiceTimeTypeDescription = getInvoiceTimeTypeDescription(invoiceTimeType, language);
+        var invoiceTimeTypeDescription = getInvoiceTimeTypeDescription(invoiceTimeType, language);
 
         if(invoiceTimeTypeDescription == null && !language.getIsDefault()) {
             invoiceTimeTypeDescription = getInvoiceTimeTypeDescription(invoiceTimeType, getPartyControl().getDefaultLanguage());
@@ -1549,9 +1512,9 @@ public class InvoiceControl
     }
 
     public List<InvoiceTimeTypeDescriptionTransfer> getInvoiceTimeTypeDescriptionTransfersByInvoiceTimeType(UserVisit userVisit, InvoiceTimeType invoiceTimeType) {
-        List<InvoiceTimeTypeDescription> invoiceTimeTypeDescriptions = getInvoiceTimeTypeDescriptionsByInvoiceTimeType(invoiceTimeType);
+        var invoiceTimeTypeDescriptions = getInvoiceTimeTypeDescriptionsByInvoiceTimeType(invoiceTimeType);
         List<InvoiceTimeTypeDescriptionTransfer> invoiceTimeTypeDescriptionTransfers = new ArrayList<>(invoiceTimeTypeDescriptions.size());
-        InvoiceTimeTypeDescriptionTransferCache invoiceTimeTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTypeDescriptionTransferCache();
+        var invoiceTimeTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTypeDescriptionTransferCache();
 
         invoiceTimeTypeDescriptions.forEach((invoiceTimeTypeDescription) ->
                 invoiceTimeTypeDescriptionTransfers.add(invoiceTimeTypeDescriptionTransferCache.getInvoiceTimeTypeDescriptionTransfer(invoiceTimeTypeDescription))
@@ -1562,15 +1525,15 @@ public class InvoiceControl
 
     public void updateInvoiceTimeTypeDescriptionFromValue(InvoiceTimeTypeDescriptionValue invoiceTimeTypeDescriptionValue, BasePK updatedBy) {
         if(invoiceTimeTypeDescriptionValue.hasBeenModified()) {
-            InvoiceTimeTypeDescription invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     invoiceTimeTypeDescriptionValue.getPrimaryKey());
 
             invoiceTimeTypeDescription.setThruTime(session.START_TIME_LONG);
             invoiceTimeTypeDescription.store();
 
-            InvoiceTimeType invoiceTimeType = invoiceTimeTypeDescription.getInvoiceTimeType();
-            Language language = invoiceTimeTypeDescription.getLanguage();
-            String description = invoiceTimeTypeDescriptionValue.getDescription();
+            var invoiceTimeType = invoiceTimeTypeDescription.getInvoiceTimeType();
+            var language = invoiceTimeTypeDescription.getLanguage();
+            var description = invoiceTimeTypeDescriptionValue.getDescription();
 
             invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().create(invoiceTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1587,7 +1550,7 @@ public class InvoiceControl
     }
 
     public void deleteInvoiceTimeTypeDescriptionsByInvoiceTimeType(InvoiceTimeType invoiceTimeType, BasePK deletedBy) {
-        List<InvoiceTimeTypeDescription> invoiceTimeTypeDescriptions = getInvoiceTimeTypeDescriptionsByInvoiceTimeTypeForUpdate(invoiceTimeType);
+        var invoiceTimeTypeDescriptions = getInvoiceTimeTypeDescriptionsByInvoiceTimeTypeForUpdate(invoiceTimeType);
 
         invoiceTimeTypeDescriptions.forEach((invoiceTimeTypeDescription) -> 
                 deleteInvoiceTimeTypeDescription(invoiceTimeTypeDescription, deletedBy)
@@ -1599,7 +1562,7 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     
     public InvoiceAliasTypeDescription createInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language, String description, BasePK createdBy) {
-        InvoiceAliasTypeDescription invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language,
+        var invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1678,7 +1641,7 @@ public class InvoiceControl
     
     public String getBestInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language) {
         String description;
-        InvoiceAliasTypeDescription invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, language);
+        var invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, language);
         
         if(invoiceAliasTypeDescription == null && !language.getIsDefault()) {
             invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, getPartyControl().getDefaultLanguage());
@@ -1698,9 +1661,9 @@ public class InvoiceControl
     }
     
     public List<InvoiceAliasTypeDescriptionTransfer> getInvoiceAliasTypeDescriptionTransfersByInvoiceAliasType(UserVisit userVisit, InvoiceAliasType invoiceAliasType) {
-        List<InvoiceAliasTypeDescription> invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType);
+        var invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType);
         List<InvoiceAliasTypeDescriptionTransfer> invoiceAliasTypeDescriptionTransfers = new ArrayList<>(invoiceAliasTypeDescriptions.size());
-        InvoiceAliasTypeDescriptionTransferCache invoiceAliasTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTypeDescriptionTransferCache();
+        var invoiceAliasTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTypeDescriptionTransferCache();
         
         invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) ->
                 invoiceAliasTypeDescriptionTransfers.add(invoiceAliasTypeDescriptionTransferCache.getInvoiceAliasTypeDescriptionTransfer(invoiceAliasTypeDescription))
@@ -1711,15 +1674,15 @@ public class InvoiceControl
     
     public void updateInvoiceAliasTypeDescriptionFromValue(InvoiceAliasTypeDescriptionValue invoiceAliasTypeDescriptionValue, BasePK updatedBy) {
         if(invoiceAliasTypeDescriptionValue.hasBeenModified()) {
-            InvoiceAliasTypeDescription invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceAliasTypeDescriptionValue.getPrimaryKey());
             
             invoiceAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             invoiceAliasTypeDescription.store();
-            
-            InvoiceAliasType invoiceAliasType = invoiceAliasTypeDescription.getInvoiceAliasType();
-            Language language = invoiceAliasTypeDescription.getLanguage();
-            String description = invoiceAliasTypeDescriptionValue.getDescription();
+
+            var invoiceAliasType = invoiceAliasTypeDescription.getInvoiceAliasType();
+            var language = invoiceAliasTypeDescription.getLanguage();
+            var description = invoiceAliasTypeDescriptionValue.getDescription();
             
             invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1736,7 +1699,7 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType, BasePK deletedBy) {
-        List<InvoiceAliasTypeDescription> invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeForUpdate(invoiceAliasType);
+        var invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeForUpdate(invoiceAliasType);
         
         invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) -> 
                 deleteInvoiceAliasTypeDescription(invoiceAliasTypeDescription, deletedBy)
@@ -1749,20 +1712,20 @@ public class InvoiceControl
     
     public InvoiceLineType createInvoiceLineType(InvoiceType invoiceType, String invoiceLineTypeName,
             InvoiceLineType parentInvoiceLineType, GlAccount defaultGlAccount, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        InvoiceLineType defaultInvoiceLineType = getDefaultInvoiceLineType(invoiceType);
-        boolean defaultFound = defaultInvoiceLineType != null;
+        var defaultInvoiceLineType = getDefaultInvoiceLineType(invoiceType);
+        var defaultFound = defaultInvoiceLineType != null;
         
         if(defaultFound && isDefault) {
-            InvoiceLineTypeDetailValue defaultInvoiceLineTypeDetailValue = getDefaultInvoiceLineTypeDetailValueForUpdate(invoiceType);
+            var defaultInvoiceLineTypeDetailValue = getDefaultInvoiceLineTypeDetailValueForUpdate(invoiceType);
             
             defaultInvoiceLineTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateInvoiceLineTypeFromValue(defaultInvoiceLineTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        InvoiceLineType invoiceLineType = InvoiceLineTypeFactory.getInstance().create();
-        InvoiceLineTypeDetail invoiceLineTypeDetail = InvoiceLineTypeDetailFactory.getInstance().create(invoiceLineType,
+
+        var invoiceLineType = InvoiceLineTypeFactory.getInstance().create();
+        var invoiceLineTypeDetail = InvoiceLineTypeDetailFactory.getInstance().create(invoiceLineType,
                 invoiceType, invoiceLineTypeName, parentInvoiceLineType, defaultGlAccount, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1797,8 +1760,8 @@ public class InvoiceControl
                         "AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_invoicelinetypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             ps.setString(2, invoiceLineTypeName);
@@ -1846,8 +1809,8 @@ public class InvoiceControl
                         "AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             
@@ -1890,8 +1853,8 @@ public class InvoiceControl
                     "AND invcltypdt_invctyp_invoicetypeid = ? " +
                     "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             
@@ -1950,7 +1913,7 @@ public class InvoiceControl
     
     public List<InvoiceLineTypeTransfer> getInvoiceLineTypeTransfers(UserVisit userVisit, Collection<InvoiceLineType> invoiceLineTypes) {
         List<InvoiceLineTypeTransfer> invoiceLineTypeTransfers = new ArrayList<>(invoiceLineTypes.size());
-        InvoiceLineTypeTransferCache invoiceLineTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTypeTransferCache();
+        var invoiceLineTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTypeTransferCache();
         
         invoiceLineTypes.forEach((invoiceLineType) ->
                 invoiceLineTypeTransfers.add(invoiceLineTypeTransferCache.getInvoiceLineTypeTransfer(invoiceLineType))
@@ -1965,7 +1928,7 @@ public class InvoiceControl
     
     public InvoiceLineTypeChoicesBean getInvoiceLineTypeChoices(InvoiceType invoiceType, String defaultInvoiceLineTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<InvoiceLineType> invoiceLineTypes = getInvoiceLineTypes(invoiceType);
+        var invoiceLineTypes = getInvoiceLineTypes(invoiceType);
         var size = invoiceLineTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1981,7 +1944,7 @@ public class InvoiceControl
         }
         
         for(var invoiceLineType : invoiceLineTypes) {
-            InvoiceLineTypeDetail invoiceLineTypeDetail = invoiceLineType.getLastDetail();
+            var invoiceLineTypeDetail = invoiceLineType.getLastDetail();
             
             var label = getBestInvoiceLineTypeDescription(invoiceLineType, language);
             var value = invoiceLineTypeDetail.getInvoiceLineTypeName();
@@ -1999,7 +1962,7 @@ public class InvoiceControl
     }
     
     public boolean isParentInvoiceLineTypeSafe(InvoiceLineType invoiceLineType, InvoiceLineType parentInvoiceLineType) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentInvoiceLineType != null) {
             Set<InvoiceLineType> parentItemPurchasingCategorys = new HashSet<>();
@@ -2022,29 +1985,29 @@ public class InvoiceControl
     private void updateInvoiceLineTypeFromValue(InvoiceLineTypeDetailValue invoiceLineTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(invoiceLineTypeDetailValue.hasBeenModified()) {
-            InvoiceLineType invoiceLineType = InvoiceLineTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceLineType = InvoiceLineTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceLineTypeDetailValue.getInvoiceLineTypePK());
-            InvoiceLineTypeDetail invoiceLineTypeDetail = invoiceLineType.getActiveDetailForUpdate();
+            var invoiceLineTypeDetail = invoiceLineType.getActiveDetailForUpdate();
             
             invoiceLineTypeDetail.setThruTime(session.START_TIME_LONG);
             invoiceLineTypeDetail.store();
-            
-            InvoiceLineTypePK invoiceLineTypePK = invoiceLineTypeDetail.getInvoiceLineTypePK(); // Not updated
-            InvoiceType invoiceType = invoiceLineTypeDetail.getInvoiceType(); // Not updated
-            InvoiceTypePK invoiceTypePK = invoiceType.getPrimaryKey(); // Not updated
-            String invoiceLineTypeName = invoiceLineTypeDetailValue.getInvoiceLineTypeName();
-            InvoiceLineTypePK parentInvoiceLineTypePK = invoiceLineTypeDetailValue.getParentInvoiceLineTypePK();
-            GlAccountPK defaultGlAccountPK = invoiceLineTypeDetailValue.getDefaultGlAccountPK();
-            Boolean isDefault = invoiceLineTypeDetailValue.getIsDefault();
-            Integer sortOrder = invoiceLineTypeDetailValue.getSortOrder();
+
+            var invoiceLineTypePK = invoiceLineTypeDetail.getInvoiceLineTypePK(); // Not updated
+            var invoiceType = invoiceLineTypeDetail.getInvoiceType(); // Not updated
+            var invoiceTypePK = invoiceType.getPrimaryKey(); // Not updated
+            var invoiceLineTypeName = invoiceLineTypeDetailValue.getInvoiceLineTypeName();
+            var parentInvoiceLineTypePK = invoiceLineTypeDetailValue.getParentInvoiceLineTypePK();
+            var defaultGlAccountPK = invoiceLineTypeDetailValue.getDefaultGlAccountPK();
+            var isDefault = invoiceLineTypeDetailValue.getIsDefault();
+            var sortOrder = invoiceLineTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                InvoiceLineType defaultInvoiceLineType = getDefaultInvoiceLineType(invoiceType);
-                boolean defaultFound = defaultInvoiceLineType != null && !defaultInvoiceLineType.equals(invoiceLineType);
+                var defaultInvoiceLineType = getDefaultInvoiceLineType(invoiceType);
+                var defaultFound = defaultInvoiceLineType != null && !defaultInvoiceLineType.equals(invoiceLineType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    InvoiceLineTypeDetailValue defaultInvoiceLineTypeDetailValue = getDefaultInvoiceLineTypeDetailValueForUpdate(invoiceType);
+                    var defaultInvoiceLineTypeDetailValue = getDefaultInvoiceLineTypeDetailValueForUpdate(invoiceType);
                     
                     defaultInvoiceLineTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateInvoiceLineTypeFromValue(defaultInvoiceLineTypeDetailValue, false, updatedBy);
@@ -2070,7 +2033,7 @@ public class InvoiceControl
     }
     
     private void deleteInvoiceLineType(InvoiceLineType invoiceLineType, boolean checkDefault, BasePK deletedBy) {
-        InvoiceLineTypeDetail invoiceLineTypeDetail = invoiceLineType.getLastDetailForUpdate();
+        var invoiceLineTypeDetail = invoiceLineType.getLastDetailForUpdate();
 
         deleteInvoiceLineTypesByParentInvoiceLineType(invoiceLineType, deletedBy);
         deleteInvoiceLineTypeDescriptionsByInvoiceLineType(invoiceLineType, deletedBy);
@@ -2081,18 +2044,18 @@ public class InvoiceControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            InvoiceType invoiceType = invoiceLineTypeDetail.getInvoiceType();
-            InvoiceLineType defaultInvoiceLineType = getDefaultInvoiceLineType(invoiceType);
+            var invoiceType = invoiceLineTypeDetail.getInvoiceType();
+            var defaultInvoiceLineType = getDefaultInvoiceLineType(invoiceType);
 
             if(defaultInvoiceLineType == null) {
-                List<InvoiceLineType> invoiceLineTypes = getInvoiceLineTypesForUpdate(invoiceType);
+                var invoiceLineTypes = getInvoiceLineTypesForUpdate(invoiceType);
 
                 if(!invoiceLineTypes.isEmpty()) {
-                    Iterator<InvoiceLineType> iter = invoiceLineTypes.iterator();
+                    var iter = invoiceLineTypes.iterator();
                     if(iter.hasNext()) {
                         defaultInvoiceLineType = iter.next();
                     }
-                    InvoiceLineTypeDetailValue invoiceLineTypeDetailValue = Objects.requireNonNull(defaultInvoiceLineType).getLastDetailForUpdate().getInvoiceLineTypeDetailValue().clone();
+                    var invoiceLineTypeDetailValue = Objects.requireNonNull(defaultInvoiceLineType).getLastDetailForUpdate().getInvoiceLineTypeDetailValue().clone();
 
                     invoiceLineTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateInvoiceLineTypeFromValue(invoiceLineTypeDetailValue, false, deletedBy);
@@ -2129,7 +2092,7 @@ public class InvoiceControl
     
     public InvoiceLineTypeDescription createInvoiceLineTypeDescription(InvoiceLineType invoiceLineType, Language language,
             String description, BasePK createdBy) {
-        InvoiceLineTypeDescription invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(session,
+        var invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(session,
                 invoiceLineType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2154,8 +2117,8 @@ public class InvoiceControl
                         "WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_lang_languageid = ? AND invcltypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceLineTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceLineTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoiceLineType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2203,8 +2166,8 @@ public class InvoiceControl
                         "WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceLineTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceLineTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoiceLineType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2227,7 +2190,7 @@ public class InvoiceControl
     
     public String getBestInvoiceLineTypeDescription(InvoiceLineType invoiceLineType, Language language) {
         String description;
-        InvoiceLineTypeDescription invoiceLineTypeDescription = getInvoiceLineTypeDescription(invoiceLineType, language);
+        var invoiceLineTypeDescription = getInvoiceLineTypeDescription(invoiceLineType, language);
         
         if(invoiceLineTypeDescription == null && !language.getIsDefault()) {
             invoiceLineTypeDescription = getInvoiceLineTypeDescription(invoiceLineType, getPartyControl().getDefaultLanguage());
@@ -2247,9 +2210,9 @@ public class InvoiceControl
     }
     
     public List<InvoiceLineTypeDescriptionTransfer> getInvoiceLineTypeDescriptionTransfersByInvoiceLineType(UserVisit userVisit, InvoiceLineType invoiceLineType) {
-        List<InvoiceLineTypeDescription> invoiceLineTypeDescriptions = getInvoiceLineTypeDescriptionsByInvoiceLineType(invoiceLineType);
+        var invoiceLineTypeDescriptions = getInvoiceLineTypeDescriptionsByInvoiceLineType(invoiceLineType);
         List<InvoiceLineTypeDescriptionTransfer> invoiceLineTypeDescriptionTransfers = new ArrayList<>(invoiceLineTypeDescriptions.size());
-        InvoiceLineTypeDescriptionTransferCache invoiceLineTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTypeDescriptionTransferCache();
+        var invoiceLineTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTypeDescriptionTransferCache();
         
         invoiceLineTypeDescriptions.forEach((invoiceLineTypeDescription) ->
                 invoiceLineTypeDescriptionTransfers.add(invoiceLineTypeDescriptionTransferCache.getInvoiceLineTypeDescriptionTransfer(invoiceLineTypeDescription))
@@ -2260,15 +2223,15 @@ public class InvoiceControl
     
     public void updateInvoiceLineTypeDescriptionFromValue(InvoiceLineTypeDescriptionValue invoiceLineTypeDescriptionValue, BasePK updatedBy) {
         if(invoiceLineTypeDescriptionValue.hasBeenModified()) {
-            InvoiceLineTypeDescription invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceLineTypeDescriptionValue.getPrimaryKey());
             
             invoiceLineTypeDescription.setThruTime(session.START_TIME_LONG);
             invoiceLineTypeDescription.store();
-            
-            InvoiceLineType invoiceLineType = invoiceLineTypeDescription.getInvoiceLineType();
-            Language language = invoiceLineTypeDescription.getLanguage();
-            String description = invoiceLineTypeDescriptionValue.getDescription();
+
+            var invoiceLineType = invoiceLineTypeDescription.getInvoiceLineType();
+            var language = invoiceLineTypeDescription.getLanguage();
+            var description = invoiceLineTypeDescriptionValue.getDescription();
             
             invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(invoiceLineType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2285,7 +2248,7 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceLineTypeDescriptionsByInvoiceLineType(InvoiceLineType invoiceLineType, BasePK deletedBy) {
-        List<InvoiceLineTypeDescription> invoiceLineTypeDescriptions = getInvoiceLineTypeDescriptionsByInvoiceLineTypeForUpdate(invoiceLineType);
+        var invoiceLineTypeDescriptions = getInvoiceLineTypeDescriptionsByInvoiceLineTypeForUpdate(invoiceLineType);
         
         invoiceLineTypeDescriptions.forEach((invoiceLineTypeDescription) -> 
                 deleteInvoiceLineTypeDescription(invoiceLineTypeDescription, deletedBy)
@@ -2297,13 +2260,13 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     
     public InvoiceRole createInvoiceRoleUsingNames(Invoice invoice, Party party, PartyContactMechanism partyContactMechanism, String invoiceRoleTypeName, BasePK createdBy) {
-        InvoiceRoleType invoiceRoleType = getInvoiceRoleTypeByName(invoiceRoleTypeName);
+        var invoiceRoleType = getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
         return createInvoiceRole(invoice, party, partyContactMechanism, invoiceRoleType, createdBy);
     }
     
     public InvoiceRole createInvoiceRole(Invoice invoice, Party party, PartyContactMechanism partyContactMechanism, InvoiceRoleType invoiceRoleType, BasePK createdBy) {
-        InvoiceRole invoiceRole = InvoiceRoleFactory.getInstance().create(invoice, party, partyContactMechanism, invoiceRoleType, session.START_TIME_LONG,
+        var invoiceRole = InvoiceRoleFactory.getInstance().create(invoice, party, partyContactMechanism, invoiceRoleType, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2327,8 +2290,8 @@ public class InvoiceControl
                         "WHERE invcr_invc_invoiceid = ? AND invcr_invcrtyp_invoiceroletypeid = ? AND invcr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoice.getPrimaryKey().getEntityId());
             ps.setLong(2, invoiceRoleType.getPrimaryKey().getEntityId());
@@ -2347,7 +2310,7 @@ public class InvoiceControl
     }
     
     public InvoiceRole getInvoiceRoleUsingNames(Invoice invoice, String invoiceRoleTypeName) {
-        InvoiceRoleType invoiceRoleType = getInvoiceRoleTypeByName(invoiceRoleTypeName);
+        var invoiceRoleType = getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
         return getInvoiceRole(invoice, invoiceRoleType);
     }
@@ -2383,8 +2346,8 @@ public class InvoiceControl
                         "WHERE invcr_invc_invoiceid = ? AND invcr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoice.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2425,8 +2388,8 @@ public class InvoiceControl
                         "WHERE invcr_pcm_partycontactmechanismid = ? AND invcr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2449,7 +2412,7 @@ public class InvoiceControl
     
     public List<InvoiceTransfer> getInvoiceTransfers(UserVisit userVisit, Collection<Invoice> invoices) {
         List<InvoiceTransfer> invoiceTransfers = new ArrayList<>(invoices.size());
-        InvoiceTransferCache invoiceTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTransferCache();
+        var invoiceTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTransferCache();
         
         invoices.forEach((invoice) ->
                 invoiceTransfers.add(invoiceTransferCache.getInvoiceTransfer(invoice))
@@ -2464,16 +2427,16 @@ public class InvoiceControl
     
     public void updateInvoiceRoleFromValue(InvoiceRoleValue invoiceRoleValue, BasePK updatedBy) {
         if(invoiceRoleValue.hasBeenModified()) {
-            InvoiceRole invoiceRole = InvoiceRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceRole = InvoiceRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceRoleValue.getPrimaryKey());
             
             invoiceRole.setThruTime(session.START_TIME_LONG);
             invoiceRole.store();
-            
-            InvoicePK invoicePK = invoiceRole.getInvoicePK(); // Not updated
-            PartyPK partyPK = invoiceRole.getPartyPK(); // Not updated
-            PartyContactMechanismPK partyContactMechanismPK = invoiceRoleValue.getPartyContactMechanismPK();
-            InvoiceRoleTypePK invoiceRoleTypePK = invoiceRole.getInvoiceRoleTypePK(); // Not updated
+
+            var invoicePK = invoiceRole.getInvoicePK(); // Not updated
+            var partyPK = invoiceRole.getPartyPK(); // Not updated
+            var partyContactMechanismPK = invoiceRoleValue.getPartyContactMechanismPK();
+            var invoiceRoleTypePK = invoiceRole.getInvoiceRoleTypePK(); // Not updated
             
             invoiceRole = InvoiceRoleFactory.getInstance().create(invoicePK, partyPK, partyContactMechanismPK, invoiceRoleTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2506,8 +2469,8 @@ public class InvoiceControl
     
     public Invoice createInvoice(InvoiceType invoiceType, String invoiceName, BillingAccount billingAccount, GlAccount glAccount,
             Term term, FreeOnBoard freeOnBoard, String reference, String description, BasePK createdBy) {
-        Invoice invoice = InvoiceFactory.getInstance().create();
-        InvoiceDetail invoiceDetail = InvoiceDetailFactory.getInstance().create(invoice, invoiceType, invoiceName, billingAccount,
+        var invoice = InvoiceFactory.getInstance().create();
+        var invoiceDetail = InvoiceDetailFactory.getInstance().create(invoice, invoiceType, invoiceName, billingAccount,
                 glAccount, term, freeOnBoard, reference, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2638,7 +2601,7 @@ public class InvoiceControl
     }
     
     private Invoice getInvoiceByNameUsingNames(String invoiceTypeName, String invoiceName, EntityPermission entityPermission) {
-        InvoiceType invoiceType = getInvoiceTypeByName(invoiceTypeName);
+        var invoiceType = getInvoiceTypeByName(invoiceTypeName);
         
         return getInvoiceByName(invoiceType, invoiceName, entityPermission);
     }
@@ -2675,7 +2638,7 @@ public class InvoiceControl
     
     public List<InvoiceRoleTransfer> getInvoiceRoleTransfers(UserVisit userVisit, Collection<InvoiceRole> invoiceRoles) {
         List<InvoiceRoleTransfer> invoiceRoleTransfers = new ArrayList<>(invoiceRoles.size());
-        InvoiceRoleTransferCache invoiceRoleTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceRoleTransferCache();
+        var invoiceRoleTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceRoleTransferCache();
         
         invoiceRoles.forEach((invoiceRole) ->
                 invoiceRoleTransfers.add(invoiceRoleTransferCache.getInvoiceRoleTransfer(invoiceRole))
@@ -2716,8 +2679,8 @@ public class InvoiceControl
                         "WHERE invcst_invc_invoiceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InvoiceStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = InvoiceStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, invoice.getPrimaryKey().getEntityId());
             
@@ -2738,7 +2701,7 @@ public class InvoiceControl
     }
     
     public void removeInvoiceStatusByInvoice(Invoice invoice) {
-        InvoiceStatus invoiceStatus = getInvoiceStatusForUpdate(invoice);
+        var invoiceStatus = getInvoiceStatusForUpdate(invoice);
         
         if(invoiceStatus != null) {
             invoiceStatus.remove();
@@ -2750,7 +2713,7 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
 
     public InvoiceTime createInvoiceTime(Invoice invoice, InvoiceTimeType invoiceTimeType, Long time, BasePK createdBy) {
-        InvoiceTime invoiceTime = InvoiceTimeFactory.getInstance().create(invoice, invoiceTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var invoiceTime = InvoiceTimeFactory.getInstance().create(invoice, invoiceTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2878,7 +2841,7 @@ public class InvoiceControl
 
     public List<InvoiceTimeTransfer> getInvoiceTimeTransfers(UserVisit userVisit, Collection<InvoiceTime> invoiceTimes) {
         List<InvoiceTimeTransfer> invoiceTimeTransfers = new ArrayList<>(invoiceTimes.size());
-        InvoiceTimeTransferCache invoiceTimeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTransferCache();
+        var invoiceTimeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTransferCache();
 
         invoiceTimes.forEach((invoiceTime) ->
                 invoiceTimeTransfers.add(invoiceTimeTransferCache.getInvoiceTimeTransfer(invoiceTime))
@@ -2897,15 +2860,15 @@ public class InvoiceControl
 
     public void updateInvoiceTimeFromValue(InvoiceTimeValue invoiceTimeValue, BasePK updatedBy) {
         if(invoiceTimeValue.hasBeenModified()) {
-            InvoiceTime invoiceTime = InvoiceTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceTime = InvoiceTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     invoiceTimeValue.getPrimaryKey());
 
             invoiceTime.setThruTime(session.START_TIME_LONG);
             invoiceTime.store();
 
-            InvoicePK invoicePK = invoiceTime.getInvoicePK(); // Not updated
-            InvoiceTimeTypePK invoiceTimeTypePK = invoiceTime.getInvoiceTimeTypePK(); // Not updated
-            Long time = invoiceTimeValue.getTime();
+            var invoicePK = invoiceTime.getInvoicePK(); // Not updated
+            var invoiceTimeTypePK = invoiceTime.getInvoiceTimeTypePK(); // Not updated
+            var time = invoiceTimeValue.getTime();
 
             invoiceTime = InvoiceTimeFactory.getInstance().create(invoicePK, invoiceTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -2939,7 +2902,7 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     
     public InvoiceAlias createInvoiceAlias(Invoice invoice, InvoiceAliasType invoiceAliasType, String alias, BasePK createdBy) {
-        InvoiceAlias invoiceAlias = InvoiceAliasFactory.getInstance().create(invoice, invoiceAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var invoiceAlias = InvoiceAliasFactory.getInstance().create(invoice, invoiceAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3053,9 +3016,9 @@ public class InvoiceControl
     }
     
     public List<InvoiceAliasTransfer> getInvoiceAliasTransfersByInvoice(UserVisit userVisit, Invoice invoice) {
-        List<InvoiceAlias> invoicealiases = getInvoiceAliasesByInvoice(invoice);
+        var invoicealiases = getInvoiceAliasesByInvoice(invoice);
         List<InvoiceAliasTransfer> invoiceAliasTransfers = new ArrayList<>(invoicealiases.size());
-        InvoiceAliasTransferCache invoiceAliasTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTransferCache();
+        var invoiceAliasTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTransferCache();
         
         invoicealiases.forEach((invoiceAlias) ->
                 invoiceAliasTransfers.add(invoiceAliasTransferCache.getInvoiceAliasTransfer(invoiceAlias))
@@ -3066,14 +3029,14 @@ public class InvoiceControl
     
     public void updateInvoiceAliasFromValue(InvoiceAliasValue invoiceAliasValue, BasePK updatedBy) {
         if(invoiceAliasValue.hasBeenModified()) {
-            InvoiceAlias invoiceAlias = InvoiceAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceAliasValue.getPrimaryKey());
+            var invoiceAlias = InvoiceAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceAliasValue.getPrimaryKey());
             
             invoiceAlias.setThruTime(session.START_TIME_LONG);
             invoiceAlias.store();
-            
-            InvoicePK invoicePK = invoiceAlias.getInvoicePK();
-            InvoiceAliasTypePK invoiceAliasTypePK = invoiceAlias.getInvoiceAliasTypePK();
-            String alias  = invoiceAliasValue.getAlias();
+
+            var invoicePK = invoiceAlias.getInvoicePK();
+            var invoiceAliasTypePK = invoiceAlias.getInvoiceAliasTypePK();
+            var alias  = invoiceAliasValue.getAlias();
             
             invoiceAlias = InvoiceAliasFactory.getInstance().create(invoicePK, invoiceAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -3089,7 +3052,7 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceAliasesByInvoiceAliasType(InvoiceAliasType invoiceAliasType, BasePK deletedBy) {
-        List<InvoiceAlias> invoicealiases = getInvoiceAliasesByInvoiceAliasTypeForUpdate(invoiceAliasType);
+        var invoicealiases = getInvoiceAliasesByInvoiceAliasTypeForUpdate(invoiceAliasType);
         
         invoicealiases.forEach((invoiceAlias) -> 
                 deleteInvoiceAlias(invoiceAlias, deletedBy)
@@ -3097,7 +3060,7 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceAliasesByInvoice(Invoice invoice, BasePK deletedBy) {
-        List<InvoiceAlias> invoicealiases = getInvoiceAliasesByInvoiceForUpdate(invoice);
+        var invoicealiases = getInvoiceAliasesByInvoiceForUpdate(invoice);
         
         invoicealiases.forEach((invoiceAlias) -> 
                 deleteInvoiceAlias(invoiceAlias, deletedBy)
@@ -3111,16 +3074,16 @@ public class InvoiceControl
     public InvoiceLine createInvoiceLine(Invoice invoice, Integer invoiceLineSequence, InvoiceLine parentInvoiceLine, InvoiceLineType invoiceLineType,
             InvoiceLineUseType invoiceLineUseType, Long amount, String description, BasePK createdBy) {
         if(invoiceLineSequence == null) {
-            InvoiceStatus invoiceStatus = getInvoiceStatusForUpdate(invoice);
+            var invoiceStatus = getInvoiceStatusForUpdate(invoice);
             
             do {
                 invoiceLineSequence = invoiceStatus.getInvoiceLineSequence() + 1;
                 invoiceStatus.setInvoiceLineSequence(invoiceLineSequence);
             } while(invoiceLineExists(invoice, invoiceLineSequence));
         }
-        
-        InvoiceLine invoiceLine = InvoiceLineFactory.getInstance().create();
-        InvoiceLineDetail invoiceLineDetail = InvoiceLineDetailFactory.getInstance().create(invoiceLine, invoice, invoiceLineSequence, parentInvoiceLine,
+
+        var invoiceLine = InvoiceLineFactory.getInstance().create();
+        var invoiceLineDetail = InvoiceLineDetailFactory.getInstance().create(invoiceLine, invoice, invoiceLineSequence, parentInvoiceLine,
                 invoiceLineType, invoiceLineUseType, amount, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3209,7 +3172,7 @@ public class InvoiceControl
     
     public List<InvoiceLineTransfer> getInvoiceLineTransfers(final UserVisit userVisit, final List<InvoiceLine> invoiceLines) {
         List<InvoiceLineTransfer> invoiceLineTransfers = new ArrayList<>(invoiceLines.size());
-        InvoiceLineTransferCache invoiceLineTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTransferCache();
+        var invoiceLineTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTransferCache();
         
         invoiceLines.forEach((invoiceLine) ->
                 invoiceLineTransfers.add(invoiceLineTransferCache.getInvoiceLineTransfer(invoiceLine))
@@ -3227,7 +3190,7 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     
     public InvoiceLineItem createInvoiceLineItem(InvoiceLine invoiceLine, Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, Integer quantity, BasePK createdBy) {
-        InvoiceLineItem invoiceLineItem = InvoiceLineItemFactory.getInstance().create(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity, session.START_TIME_LONG,
+        var invoiceLineItem = InvoiceLineItemFactory.getInstance().create(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(invoiceLine.getPrimaryKey(), EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3279,16 +3242,16 @@ public class InvoiceControl
     
     public void updateInvoiceLineItemFromValue(InvoiceLineItemValue invoiceLineItemValue, BasePK updatedBy) {
         if(invoiceLineItemValue.hasBeenModified()) {
-            InvoiceLineItem invoiceLineItem = InvoiceLineItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceLineItemValue.getPrimaryKey());
+            var invoiceLineItem = InvoiceLineItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceLineItemValue.getPrimaryKey());
             
             invoiceLineItem.setThruTime(session.START_TIME_LONG);
             invoiceLineItem.store();
-            
-            InvoiceLinePK invoiceLinePK = invoiceLineItem.getInvoiceLinePK(); // Not updated
-            ItemPK itemPK = invoiceLineItem.getItemPK();
-            InventoryConditionPK inventoryConditionPK = invoiceLineItem.getInventoryConditionPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = invoiceLineItem.getUnitOfMeasureTypePK();
-            Integer quantity = invoiceLineItem.getQuantity();
+
+            var invoiceLinePK = invoiceLineItem.getInvoiceLinePK(); // Not updated
+            var itemPK = invoiceLineItem.getItemPK();
+            var inventoryConditionPK = invoiceLineItem.getInventoryConditionPK();
+            var unitOfMeasureTypePK = invoiceLineItem.getUnitOfMeasureTypePK();
+            var quantity = invoiceLineItem.getQuantity();
             
             invoiceLineItem = InvoiceLineItemFactory.getInstance().create(invoiceLinePK, itemPK, inventoryConditionPK, unitOfMeasureTypePK, quantity, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -3304,7 +3267,7 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceLineItemsByInvoiceLine(InvoiceLine invoiceLine, BasePK deletedBy) {
-        InvoiceLineItem invoiceLineItem = getInvoiceLineItemForUpdate(invoiceLine);
+        var invoiceLineItem = getInvoiceLineItemForUpdate(invoiceLine);
         
         if(invoiceLineItem != null) {
             deleteInvoiceLineItem(invoiceLineItem, deletedBy);
@@ -3316,7 +3279,7 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     
     public InvoiceLineGlAccount createInvoiceLineGlAccount(InvoiceLine invoiceLine, GlAccount glAccount, BasePK createdBy) {
-        InvoiceLineGlAccount invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().create(invoiceLine, glAccount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().create(invoiceLine, glAccount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(invoiceLine.getPrimaryKey(), EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3367,13 +3330,13 @@ public class InvoiceControl
     
     public void updateInvoiceLineGlAccountFromValue(InvoiceLineGlAccountValue invoiceLineGlAccountValue, BasePK updatedBy) {
         if(invoiceLineGlAccountValue.hasBeenModified()) {
-            InvoiceLineGlAccount invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceLineGlAccountValue.getPrimaryKey());
+            var invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceLineGlAccountValue.getPrimaryKey());
             
             invoiceLineGlAccount.setThruTime(session.START_TIME_LONG);
             invoiceLineGlAccount.store();
-            
-            InvoiceLinePK invoiceLinePK = invoiceLineGlAccount.getInvoiceLinePK(); // Not updated
-            GlAccountPK glAccountPK = invoiceLineGlAccountValue.getGlAccountPK();
+
+            var invoiceLinePK = invoiceLineGlAccount.getInvoiceLinePK(); // Not updated
+            var glAccountPK = invoiceLineGlAccountValue.getGlAccountPK();
             
             invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().create(invoiceLinePK, glAccountPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -3388,7 +3351,7 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceLineGlAccountsByInvoiceLine(InvoiceLine invoiceLine, BasePK deletedBy) {
-        InvoiceLineGlAccount invoiceLineGlAccount = getInvoiceLineGlAccountForUpdate(invoiceLine);
+        var invoiceLineGlAccount = getInvoiceLineGlAccountForUpdate(invoiceLine);
         
         if(invoiceLineGlAccount != null) {
             deleteInvoiceLineGlAccount(invoiceLineGlAccount, deletedBy);

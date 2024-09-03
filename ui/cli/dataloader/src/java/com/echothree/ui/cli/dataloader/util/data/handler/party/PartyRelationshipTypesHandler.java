@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreatePartyRelationshipTypeForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,15 +45,15 @@ public class PartyRelationshipTypesHandler
     throws SAXException {
         if(localName.equals("partyRelationshipType")) {
             String partyRelationshipTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("partyRelationshipTypeName"))
                     partyRelationshipTypeName = attrs.getValue(i);
             }
             
             try {
-                CreatePartyRelationshipTypeForm createPartyRelationshipTypeForm = PartyFormFactory.getCreatePartyRelationshipTypeForm();
+                var createPartyRelationshipTypeForm = PartyFormFactory.getCreatePartyRelationshipTypeForm();
                 
                 createPartyRelationshipTypeForm.setPartyRelationshipTypeName(partyRelationshipTypeName);
                 

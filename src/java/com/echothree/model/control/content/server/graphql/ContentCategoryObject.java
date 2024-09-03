@@ -24,7 +24,6 @@ import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
-import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -125,7 +124,7 @@ public class ContentCategoryObject
     @GraphQLDescription("content category items")
     public List<ContentCategoryItemObject> getContentCategoryItems(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCategoryItem> entities = ContentSecurityUtils.getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
+        var entities = ContentSecurityUtils.getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
         List<ContentCategoryItemObject> contentCategoryItems = entities == null ? null : new ArrayList<>(entities.size());
                 
         if(entities != null) {

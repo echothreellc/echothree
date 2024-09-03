@@ -18,17 +18,13 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentCategoryItemsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentCategoryItemsResult;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.content.server.factory.ContentCategoryItemFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -67,8 +63,8 @@ public class GetContentCategoryItemsCommand
     
     @Override
     protected Collection<ContentCategoryItem> getEntities() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         Collection<ContentCategoryItem> contentCategoryItems = null;
 
@@ -77,7 +73,7 @@ public class GetContentCategoryItemsCommand
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -93,15 +89,15 @@ public class GetContentCategoryItemsCommand
             }
 
             if(!hasExecutionErrors()) {
-                String contentCatalogName = form.getContentCatalogName();
+                var contentCatalogName = form.getContentCatalogName();
                 var partyPK = getPartyPK();
-                UserVisit userVisit = getUserVisitForUpdate();
+                var userVisit = getUserVisitForUpdate();
 
-                ContentCatalog contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
+                var contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
                         : contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
                 if(contentCatalog != null) {
-                    String contentCategoryName = form.getContentCategoryName();
+                    var contentCategoryName = form.getContentCategoryName();
                     
                     contentCategory = contentCategoryName == null ? contentControl.getDefaultContentCategory(contentCatalog)
                             : contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
@@ -140,11 +136,11 @@ public class GetContentCategoryItemsCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentCategoryItem> entities) {
-        GetContentCategoryItemsResult result = ContentResultFactory.getGetContentCategoryItemsResult();
+        var result = ContentResultFactory.getGetContentCategoryItemsResult();
 
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);
-                UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             if(session.hasLimit(ContentCategoryItemFactory.class)) {
                 result.setContentCategoryItemCount(contentControl.countContentCategoryItemsByContentCategory(contentCategory));

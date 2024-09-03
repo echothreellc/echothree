@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.index;
 
 import com.echothree.control.user.index.common.IndexUtil;
 import com.echothree.control.user.index.common.IndexService;
-import com.echothree.control.user.index.common.form.CreateIndexDescriptionForm;
 import com.echothree.control.user.index.common.form.IndexFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,7 +49,7 @@ public class IndexHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("indexDescription")) {
-            CreateIndexDescriptionForm commandForm = IndexFormFactory.getCreateIndexDescriptionForm();
+            var commandForm = IndexFormFactory.getCreateIndexDescriptionForm();
 
             commandForm.setIndexName(indexName);
             commandForm.set(getAttrsMap(attrs));

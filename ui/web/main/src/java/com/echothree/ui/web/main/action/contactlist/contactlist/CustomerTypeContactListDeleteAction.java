@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.DeleteCustomerTypeContactListForm;
-import com.echothree.control.user.contactlist.common.form.GetCustomerTypeContactListForm;
 import com.echothree.control.user.contactlist.common.result.GetCustomerTypeContactListResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class CustomerTypeContactListDeleteAction
     @Override
     public void setupTransfer(CustomerTypeContactListDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerTypeContactListForm commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListForm();
+        var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListForm();
         
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getCustomerTypeContactList(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getCustomerTypeContactList(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeContactListResult result = (GetCustomerTypeContactListResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeContactListResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_CONTACT_LIST, result.getCustomerTypeContactList());
         }
@@ -80,7 +77,7 @@ public class CustomerTypeContactListDeleteAction
     @Override
     public CommandResult doDelete(CustomerTypeContactListDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCustomerTypeContactListForm commandForm = ContactListUtil.getHome().getDeleteCustomerTypeContactListForm();
+        var commandForm = ContactListUtil.getHome().getDeleteCustomerTypeContactListForm();
 
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());

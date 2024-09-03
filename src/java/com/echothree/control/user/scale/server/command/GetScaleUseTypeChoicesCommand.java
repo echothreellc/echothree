@@ -17,7 +17,6 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.GetScaleUseTypeChoicesForm;
-import com.echothree.control.user.scale.common.result.GetScaleUseTypeChoicesResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -50,9 +49,9 @@ public class GetScaleUseTypeChoicesCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        GetScaleUseTypeChoicesResult result = ScaleResultFactory.getGetScaleUseTypeChoicesResult();
-        String defaultScaleUseTypeChoice = form.getDefaultScaleUseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+       var result = ScaleResultFactory.getGetScaleUseTypeChoicesResult();
+       var defaultScaleUseTypeChoice = form.getDefaultScaleUseTypeChoice();
+       var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setScaleUseTypeChoices(scaleControl.getScaleUseTypeChoices(defaultScaleUseTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

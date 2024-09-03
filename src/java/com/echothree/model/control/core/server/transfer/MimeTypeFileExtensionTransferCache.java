@@ -17,7 +17,6 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.MimeTypeFileExtensionTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -34,12 +33,12 @@ public class MimeTypeFileExtensionTransferCache
     }
     
     public MimeTypeFileExtensionTransfer getMimeTypeFileExtensionTransfer(MimeTypeFileExtension mimeTypeFileExtension) {
-        MimeTypeFileExtensionTransfer mimeTypeFileExtensionTransfer = get(mimeTypeFileExtension);
+        var mimeTypeFileExtensionTransfer = get(mimeTypeFileExtension);
         
         if(mimeTypeFileExtensionTransfer == null) {
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, mimeTypeFileExtension.getMimeType());
-            String fileExtension = mimeTypeFileExtension.getFileExtension();
-            Boolean isDefault = mimeTypeFileExtension.getIsDefault();
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, mimeTypeFileExtension.getMimeType());
+            var fileExtension = mimeTypeFileExtension.getFileExtension();
+            var isDefault = mimeTypeFileExtension.getIsDefault();
             
             mimeTypeFileExtensionTransfer = new MimeTypeFileExtensionTransfer(mimeType, fileExtension, isDefault);
             put(mimeTypeFileExtension, mimeTypeFileExtensionTransfer);

@@ -18,7 +18,6 @@ package com.echothree.cucumber.user;
 
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredCurrencyForm;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
@@ -29,7 +28,7 @@ public class PreferredCurrencySteps implements En {
         When("^the user sets their preferred currency to \"([^\"]*)\"$",
                 (String currencyIsoName) -> {
                     UserService userService = UserUtil.getHome();
-                    SetUserVisitPreferredCurrencyForm userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();
+                    var userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();
                     var persona = CurrentPersona.persona;
 
                     userVisitPreferredCurrencyForm.setCurrencyIsoName(currencyIsoName);

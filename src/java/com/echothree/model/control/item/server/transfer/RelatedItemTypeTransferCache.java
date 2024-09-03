@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.transfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.item.server.entity.RelatedItemTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class RelatedItemTypeTransferCache
@@ -34,14 +33,14 @@ public class RelatedItemTypeTransferCache
     
     @Override
     public RelatedItemTypeTransfer getTransfer(RelatedItemType relatedItemType) {
-        RelatedItemTypeTransfer relatedItemTypeTransfer = get(relatedItemType);
+        var relatedItemTypeTransfer = get(relatedItemType);
         
         if(relatedItemTypeTransfer == null) {
-            RelatedItemTypeDetail relatedItemTypeDetail = relatedItemType.getLastDetail();
-            String relatedItemTypeName = relatedItemTypeDetail.getRelatedItemTypeName();
-            Boolean isDefault = relatedItemTypeDetail.getIsDefault();
-            Integer sortOrder = relatedItemTypeDetail.getSortOrder();
-            String description = itemControl.getBestRelatedItemTypeDescription(relatedItemType, getLanguage());
+            var relatedItemTypeDetail = relatedItemType.getLastDetail();
+            var relatedItemTypeName = relatedItemTypeDetail.getRelatedItemTypeName();
+            var isDefault = relatedItemTypeDetail.getIsDefault();
+            var sortOrder = relatedItemTypeDetail.getSortOrder();
+            var description = itemControl.getBestRelatedItemTypeDescription(relatedItemType, getLanguage());
 
             relatedItemTypeTransfer = new RelatedItemTypeTransfer(relatedItemTypeName, isDefault, sortOrder, description);
             put(relatedItemType, relatedItemTypeTransfer);

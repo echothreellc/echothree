@@ -17,7 +17,6 @@
 package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.GetPicklistTypesForm;
-import com.echothree.control.user.picklist.common.result.GetPicklistTypesResult;
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
@@ -61,7 +60,7 @@ public class GetPicklistTypesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistTypesResult result = PicklistResultFactory.getGetPicklistTypesResult();
+        var result = PicklistResultFactory.getGetPicklistTypesResult();
         
         result.setPicklistTypes(picklistControl.getPicklistTypeTransfers(getUserVisit()));
         

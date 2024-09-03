@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.edit.TaxEdit;
-import com.echothree.control.user.tax.common.form.EditTaxForm;
 import com.echothree.control.user.tax.common.result.EditTaxResult;
-import com.echothree.control.user.tax.common.spec.TaxSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,10 +50,10 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String originalTaxName = request.getParameter(ParameterConstants.ORIGINAL_TAX_NAME);
-        EditTaxForm commandForm = TaxUtil.getHome().getEditTaxForm();
-        TaxSpec spec = TaxUtil.getHome().getTaxSpec();
+        String forwardKey;
+        var originalTaxName = request.getParameter(ParameterConstants.ORIGINAL_TAX_NAME);
+        var commandForm = TaxUtil.getHome().getEditTaxForm();
+        var spec = TaxUtil.getHome().getTaxSpec();
         
         if(originalTaxName == null) {
             originalTaxName = actionForm.getOriginalTaxName();
@@ -68,7 +63,7 @@ public class EditAction
         spec.setTaxName(originalTaxName);
         
         if(wasPost(request)) {
-            TaxEdit edit = TaxUtil.getHome().getTaxEdit();
+            var edit = TaxUtil.getHome().getTaxEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -83,14 +78,14 @@ public class EditAction
             edit.setIsDefault(actionForm.getIsDefault().toString());
             edit.setSortOrder(actionForm.getSortOrder());
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = TaxUtil.getHome().editTax(getUserVisitPK(request), commandForm);
+
+            var commandResult = TaxUtil.getHome().editTax(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditTaxResult result = (EditTaxResult)executionResult.getResult();
+                    var result = (EditTaxResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -103,13 +98,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = TaxUtil.getHome().editTax(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditTaxResult result = (EditTaxResult)executionResult.getResult();
+
+            var commandResult = TaxUtil.getHome().editTax(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditTaxResult)executionResult.getResult();
             
             if(result != null) {
-                TaxEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setOriginalTaxName(edit.getTaxName());

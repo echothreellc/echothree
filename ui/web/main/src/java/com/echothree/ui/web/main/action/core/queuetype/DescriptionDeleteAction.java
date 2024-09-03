@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.form.DeleteQueueTypeDescriptionForm;
-import com.echothree.control.user.queue.common.form.GetQueueTypeDescriptionForm;
 import com.echothree.control.user.queue.common.result.GetQueueTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetQueueTypeDescriptionForm commandForm = QueueUtil.getHome().getGetQueueTypeDescriptionForm();
+        var commandForm = QueueUtil.getHome().getGetQueueTypeDescriptionForm();
         
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = QueueUtil.getHome().getQueueTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = QueueUtil.getHome().getQueueTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetQueueTypeDescriptionResult result = (GetQueueTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetQueueTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.QUEUE_TYPE_DESCRIPTION, result.getQueueTypeDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteQueueTypeDescriptionForm commandForm = QueueUtil.getHome().getDeleteQueueTypeDescriptionForm();
+        var commandForm = QueueUtil.getHome().getDeleteQueueTypeDescriptionForm();
 
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.vendor;
 
 import com.echothree.control.user.vendor.common.VendorService;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.CreateItemPurchasingCategoryDescriptionForm;
 import com.echothree.control.user.vendor.common.form.VendorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -47,7 +46,7 @@ public class ItemPurchasingCategoryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemPurchasingCategoryDescription")) {
-            CreateItemPurchasingCategoryDescriptionForm form = VendorFormFactory.getCreateItemPurchasingCategoryDescriptionForm();
+            var form = VendorFormFactory.getCreateItemPurchasingCategoryDescriptionForm();
             
             form.setItemPurchasingCategoryName(itemPurchasingCategoryName);
             form.set(getAttrsMap(attrs));

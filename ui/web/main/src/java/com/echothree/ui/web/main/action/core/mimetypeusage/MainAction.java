@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.core.mimetypeusage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeUsagesForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeUsagesResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,17 +48,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
-            GetMimeTypeUsagesForm commandForm = CoreUtil.getHome().getGetMimeTypeUsagesForm();
+            var mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
+            var commandForm = CoreUtil.getHome().getGetMimeTypeUsagesForm();
             
             commandForm.setMimeTypeName(mimeTypeName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsages(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeUsagesResult result = (GetMimeTypeUsagesResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getMimeTypeUsages(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeUsagesResult)executionResult.getResult();
             
             request.setAttribute("mimeType", result.getMimeType());
             request.setAttribute("mimeTypeUsages", result.getMimeTypeUsages());

@@ -29,23 +29,13 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistTypeDescript
 import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityDescriptionTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
-import com.echothree.model.control.wishlist.server.transfer.WishlistLineTransferCache;
-import com.echothree.model.control.wishlist.server.transfer.WishlistTransferCache;
 import com.echothree.model.control.wishlist.server.transfer.WishlistTransferCaches;
-import com.echothree.model.control.wishlist.server.transfer.WishlistTypeDescriptionTransferCache;
-import com.echothree.model.control.wishlist.server.transfer.WishlistPriorityDescriptionTransferCache;
-import com.echothree.model.control.wishlist.server.transfer.WishlistPriorityTransferCache;
-import com.echothree.model.control.wishlist.server.transfer.WishlistTypeTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.associate.common.pk.AssociateReferralPK;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.common.pk.OfferUsePK;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.order.common.pk.OrderLinePK;
-import com.echothree.model.data.order.common.pk.OrderPK;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.factory.OrderFactory;
@@ -60,10 +50,8 @@ import com.echothree.model.data.wishlist.server.entity.Wishlist;
 import com.echothree.model.data.wishlist.server.entity.WishlistLine;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypeDetail;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
-import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDetail;
 import com.echothree.model.data.wishlist.server.factory.WishlistFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistLineFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistTypeDescriptionFactory;
@@ -83,11 +71,9 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -118,20 +104,20 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     
     public WishlistType createWishlistType(String wishlistTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        WishlistType defaultWishlistType = getDefaultWishlistType();
-        boolean defaultFound = defaultWishlistType != null;
+        var defaultWishlistType = getDefaultWishlistType();
+        var defaultFound = defaultWishlistType != null;
         
         if(defaultFound && isDefault) {
-            WishlistTypeDetailValue defaultWishlistTypeDetailValue = getDefaultWishlistTypeDetailValueForUpdate();
+            var defaultWishlistTypeDetailValue = getDefaultWishlistTypeDetailValueForUpdate();
             
             defaultWishlistTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateWishlistTypeFromValue(defaultWishlistTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        WishlistType wishlistType = WishlistTypeFactory.getInstance().create();
-        WishlistTypeDetail wishlistTypeDetail = WishlistTypeDetailFactory.getInstance().create(wishlistType,
+
+        var wishlistType = WishlistTypeFactory.getInstance().create();
+        var wishlistTypeDetail = WishlistTypeDetailFactory.getInstance().create(wishlistType,
                 wishlistTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -187,8 +173,8 @@ public class WishlistControl
                     "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = WishlistTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
         
         return WishlistTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -214,8 +200,8 @@ public class WishlistControl
                     "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = WishlistTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
         
         return WishlistTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -248,8 +234,8 @@ public class WishlistControl
                         "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_wishlisttypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, wishlistTypeName);
             
@@ -279,7 +265,7 @@ public class WishlistControl
     
     public WishlistTypeChoicesBean getWishlistTypeChoices(String defaultWishlistTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<WishlistType> wishlistTypes = getWishlistTypes();
+        var wishlistTypes = getWishlistTypes();
         var size = wishlistTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -295,7 +281,7 @@ public class WishlistControl
         }
         
         for(var wishlistType : wishlistTypes) {
-            WishlistTypeDetail wishlistTypeDetail = wishlistType.getLastDetail();
+            var wishlistTypeDetail = wishlistType.getLastDetail();
             var label = getBestWishlistTypeDescription(wishlistType, language);
             var value = wishlistTypeDetail.getWishlistTypeName();
             
@@ -317,7 +303,7 @@ public class WishlistControl
 
     public List<WishlistTypeTransfer> getWishlistTypeTransfers(UserVisit userVisit, Collection<WishlistType> wishlistTypes) {
         List<WishlistTypeTransfer> wishlistTypeTransfers = new ArrayList<>(wishlistTypes.size());
-        WishlistTypeTransferCache wishlistTypeTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeTransferCache();
+        var wishlistTypeTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeTransferCache();
 
         wishlistTypes.forEach((wishlistType) ->
                 wishlistTypeTransfers.add(wishlistTypeTransferCache.getWishlistTypeTransfer(wishlistType))
@@ -333,25 +319,25 @@ public class WishlistControl
     private void updateWishlistTypeFromValue(WishlistTypeDetailValue wishlistTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(wishlistTypeDetailValue.hasBeenModified()) {
-            WishlistType wishlistType = WishlistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistType = WishlistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      wishlistTypeDetailValue.getWishlistTypePK());
-            WishlistTypeDetail wishlistTypeDetail = wishlistType.getActiveDetailForUpdate();
+            var wishlistTypeDetail = wishlistType.getActiveDetailForUpdate();
             
             wishlistTypeDetail.setThruTime(session.START_TIME_LONG);
             wishlistTypeDetail.store();
-            
-            WishlistTypePK wishlistTypePK = wishlistTypeDetail.getWishlistTypePK();
-            String wishlistTypeName = wishlistTypeDetailValue.getWishlistTypeName();
-            Boolean isDefault = wishlistTypeDetailValue.getIsDefault();
-            Integer sortOrder = wishlistTypeDetailValue.getSortOrder();
+
+            var wishlistTypePK = wishlistTypeDetail.getWishlistTypePK();
+            var wishlistTypeName = wishlistTypeDetailValue.getWishlistTypeName();
+            var isDefault = wishlistTypeDetailValue.getIsDefault();
+            var sortOrder = wishlistTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                WishlistType defaultWishlistType = getDefaultWishlistType();
-                boolean defaultFound = defaultWishlistType != null && !defaultWishlistType.equals(wishlistType);
+                var defaultWishlistType = getDefaultWishlistType();
+                var defaultFound = defaultWishlistType != null && !defaultWishlistType.equals(wishlistType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    WishlistTypeDetailValue defaultWishlistTypeDetailValue = getDefaultWishlistTypeDetailValueForUpdate();
+                    var defaultWishlistTypeDetailValue = getDefaultWishlistTypeDetailValueForUpdate();
                     
                     defaultWishlistTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateWishlistTypeFromValue(defaultWishlistTypeDetailValue, false, updatedBy);
@@ -382,23 +368,23 @@ public class WishlistControl
         deleteOrdersByWishlistType(wishlistType, deletedBy);
         deleteWishlistPrioritiesByWishlistType(wishlistType, deletedBy);
         orderControl.deleteOrdersByWishlistType(wishlistType, deletedBy);
-        
-        WishlistTypeDetail wishlistTypeDetail = wishlistType.getLastDetailForUpdate();
+
+        var wishlistTypeDetail = wishlistType.getLastDetailForUpdate();
         wishlistTypeDetail.setThruTime(session.START_TIME_LONG);
         wishlistType.setActiveDetail(null);
         wishlistType.store();
         
         // Check for default, and pick one if necessary
-        WishlistType defaultWishlistType = getDefaultWishlistType();
+        var defaultWishlistType = getDefaultWishlistType();
         if(defaultWishlistType == null) {
-            List<WishlistType> wishlistTypes = getWishlistTypesForUpdate();
+            var wishlistTypes = getWishlistTypesForUpdate();
             
             if(!wishlistTypes.isEmpty()) {
-                Iterator<WishlistType> iter = wishlistTypes.iterator();
+                var iter = wishlistTypes.iterator();
                 if(iter.hasNext()) {
                     defaultWishlistType = iter.next();
                 }
-                WishlistTypeDetailValue wishlistTypeDetailValue = Objects.requireNonNull(defaultWishlistType).getLastDetailForUpdate().getWishlistTypeDetailValue().clone();
+                var wishlistTypeDetailValue = Objects.requireNonNull(defaultWishlistType).getLastDetailForUpdate().getWishlistTypeDetailValue().clone();
                 
                 wishlistTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateWishlistTypeFromValue(wishlistTypeDetailValue, false, deletedBy);
@@ -414,7 +400,7 @@ public class WishlistControl
     
     public WishlistTypeDescription createWishlistTypeDescription(WishlistType wishlistType, Language language, String description,
             BasePK createdBy) {
-        WishlistTypeDescription wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().create(wishlistType,
+        var wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().create(wishlistType,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -439,8 +425,8 @@ public class WishlistControl
                         "WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_lang_languageid = ? AND wshltyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -488,8 +474,8 @@ public class WishlistControl
                         "WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -512,7 +498,7 @@ public class WishlistControl
     
     public String getBestWishlistTypeDescription(WishlistType wishlistType, Language language) {
         String description;
-        WishlistTypeDescription wishlistTypeDescription = getWishlistTypeDescription(wishlistType, language);
+        var wishlistTypeDescription = getWishlistTypeDescription(wishlistType, language);
         
         if(wishlistTypeDescription == null && !language.getIsDefault()) {
             wishlistTypeDescription = getWishlistTypeDescription(wishlistType, getPartyControl().getDefaultLanguage());
@@ -532,9 +518,9 @@ public class WishlistControl
     }
     
     public List<WishlistTypeDescriptionTransfer> getWishlistTypeDescriptionTransfers(UserVisit userVisit, WishlistType wishlistType) {
-        List<WishlistTypeDescription> wishlistTypeDescriptions = getWishlistTypeDescriptionsByWishlistType(wishlistType);
+        var wishlistTypeDescriptions = getWishlistTypeDescriptionsByWishlistType(wishlistType);
         List<WishlistTypeDescriptionTransfer> wishlistTypeDescriptionTransfers = new ArrayList<>(wishlistTypeDescriptions.size());
-        WishlistTypeDescriptionTransferCache wishlistTypeDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeDescriptionTransferCache();
+        var wishlistTypeDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeDescriptionTransferCache();
         
         wishlistTypeDescriptions.forEach((wishlistTypeDescription) ->
                 wishlistTypeDescriptionTransfers.add(wishlistTypeDescriptionTransferCache.getWishlistTypeDescriptionTransfer(wishlistTypeDescription))
@@ -545,15 +531,15 @@ public class WishlistControl
     
     public void updateWishlistTypeDescriptionFromValue(WishlistTypeDescriptionValue wishlistTypeDescriptionValue, BasePK updatedBy) {
         if(wishlistTypeDescriptionValue.hasBeenModified()) {
-            WishlistTypeDescription wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      wishlistTypeDescriptionValue.getPrimaryKey());
             
             wishlistTypeDescription.setThruTime(session.START_TIME_LONG);
             wishlistTypeDescription.store();
-            
-            WishlistType wishlistType = wishlistTypeDescription.getWishlistType();
-            Language language = wishlistTypeDescription.getLanguage();
-            String description = wishlistTypeDescriptionValue.getDescription();
+
+            var wishlistType = wishlistTypeDescription.getWishlistType();
+            var language = wishlistTypeDescription.getLanguage();
+            var description = wishlistTypeDescriptionValue.getDescription();
             
             wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().create(wishlistType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -569,7 +555,7 @@ public class WishlistControl
     }
     
     public void deleteWishlistTypeDescriptionsByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        List<WishlistTypeDescription> wishlistTypeDescriptions = getWishlistTypeDescriptionsByWishlistTypeForUpdate(wishlistType);
+        var wishlistTypeDescriptions = getWishlistTypeDescriptionsByWishlistTypeForUpdate(wishlistType);
         
         wishlistTypeDescriptions.forEach((wishlistTypeDescription) -> 
                 deleteWishlistTypeDescription(wishlistTypeDescription, deletedBy)
@@ -582,20 +568,20 @@ public class WishlistControl
     
     public WishlistPriority createWishlistPriority(WishlistType wishlistType, String wishlistPriorityName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        WishlistPriority defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
-        boolean defaultFound = defaultWishlistPriority != null;
+        var defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
+        var defaultFound = defaultWishlistPriority != null;
         
         if(defaultFound && isDefault) {
-            WishlistPriorityDetailValue defaultWishlistPriorityDetailValue = getDefaultWishlistPriorityDetailValueForUpdate(wishlistType);
+            var defaultWishlistPriorityDetailValue = getDefaultWishlistPriorityDetailValueForUpdate(wishlistType);
             
             defaultWishlistPriorityDetailValue.setIsDefault(Boolean.FALSE);
             updateWishlistPriorityFromValue(defaultWishlistPriorityDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        WishlistPriority wishlistPriority = WishlistPriorityFactory.getInstance().create();
-        WishlistPriorityDetail wishlistPriorityDetail = WishlistPriorityDetailFactory.getInstance().create(session,
+
+        var wishlistPriority = WishlistPriorityFactory.getInstance().create();
+        var wishlistPriorityDetail = WishlistPriorityDetailFactory.getInstance().create(session,
                 wishlistPriority, wishlistType, wishlistPriorityName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -657,8 +643,8 @@ public class WishlistControl
                         "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             
@@ -696,8 +682,8 @@ public class WishlistControl
                         "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             
@@ -739,8 +725,8 @@ public class WishlistControl
                         "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setString(2, wishlistPriorityName);
@@ -771,7 +757,7 @@ public class WishlistControl
     
     public WishlistPriorityChoicesBean getWishlistPriorityChoices(String defaultWishlistPriorityChoice, Language language,
             boolean allowNullChoice, WishlistType wishlistType) {
-        List<WishlistPriority> wishlistPriorities = getWishlistPriorities(wishlistType);
+        var wishlistPriorities = getWishlistPriorities(wishlistType);
         var size = wishlistPriorities.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -787,7 +773,7 @@ public class WishlistControl
         }
         
         for(var wishlistPriority : wishlistPriorities) {
-            WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getLastDetail();
+            var wishlistPriorityDetail = wishlistPriority.getLastDetail();
             var label = getBestWishlistPriorityDescription(wishlistPriority, language);
             var value = wishlistPriorityDetail.getWishlistPriorityName();
             
@@ -809,7 +795,7 @@ public class WishlistControl
 
     public List<WishlistPriorityTransfer> getWishlistPriorityTransfers(UserVisit userVisit, Collection<WishlistPriority> wishlistPriorities) {
         List<WishlistPriorityTransfer> wishlistPriorityTransfers = new ArrayList<>(wishlistPriorities.size());
-        WishlistPriorityTransferCache wishlistPriorityTransferCache = getWishlistTransferCaches(userVisit).getWishlistPriorityTransferCache();
+        var wishlistPriorityTransferCache = getWishlistTransferCaches(userVisit).getWishlistPriorityTransferCache();
 
         wishlistPriorities.forEach((wishlistPriority) ->
                 wishlistPriorityTransfers.add(wishlistPriorityTransferCache.getWishlistPriorityTransfer(wishlistPriority))
@@ -825,27 +811,27 @@ public class WishlistControl
     private void updateWishlistPriorityFromValue(WishlistPriorityDetailValue wishlistPriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(wishlistPriorityDetailValue.hasBeenModified()) {
-            WishlistPriority wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      wishlistPriorityDetailValue.getWishlistPriorityPK());
-            WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getActiveDetailForUpdate();
+            var wishlistPriorityDetail = wishlistPriority.getActiveDetailForUpdate();
             
             wishlistPriorityDetail.setThruTime(session.START_TIME_LONG);
             wishlistPriorityDetail.store();
-            
-            WishlistPriorityPK wishlistPriorityPK = wishlistPriorityDetail.getWishlistPriorityPK();
-            WishlistType wishlistType = wishlistPriorityDetail.getWishlistType();
-            WishlistTypePK wishlistTypePK = wishlistType.getPrimaryKey();
-            String wishlistPriorityName = wishlistPriorityDetailValue.getWishlistPriorityName();
-            Boolean isDefault = wishlistPriorityDetailValue.getIsDefault();
-            Integer sortOrder = wishlistPriorityDetailValue.getSortOrder();
+
+            var wishlistPriorityPK = wishlistPriorityDetail.getWishlistPriorityPK();
+            var wishlistType = wishlistPriorityDetail.getWishlistType();
+            var wishlistTypePK = wishlistType.getPrimaryKey();
+            var wishlistPriorityName = wishlistPriorityDetailValue.getWishlistPriorityName();
+            var isDefault = wishlistPriorityDetailValue.getIsDefault();
+            var sortOrder = wishlistPriorityDetailValue.getSortOrder();
             
             if(checkDefault) {
-                WishlistPriority defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
-                boolean defaultFound = defaultWishlistPriority != null && !defaultWishlistPriority.equals(wishlistPriority);
+                var defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
+                var defaultFound = defaultWishlistPriority != null && !defaultWishlistPriority.equals(wishlistPriority);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    WishlistPriorityDetailValue defaultWishlistPriorityDetailValue = getDefaultWishlistPriorityDetailValueForUpdate(wishlistType);
+                    var defaultWishlistPriorityDetailValue = getDefaultWishlistPriorityDetailValueForUpdate(wishlistType);
                     
                     defaultWishlistPriorityDetailValue.setIsDefault(Boolean.FALSE);
                     updateWishlistPriorityFromValue(defaultWishlistPriorityDetailValue, false, updatedBy);
@@ -872,24 +858,24 @@ public class WishlistControl
     public void deleteWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
         deleteWishlistPriorityDescriptionsByWishlistPriority(wishlistPriority, deletedBy);
         deleteOrderLinesByWishlistPriority(wishlistPriority, deletedBy);
-        
-        WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getLastDetailForUpdate();
+
+        var wishlistPriorityDetail = wishlistPriority.getLastDetailForUpdate();
         wishlistPriorityDetail.setThruTime(session.START_TIME_LONG);
         wishlistPriority.setActiveDetail(null);
         wishlistPriority.store();
         
         // Check for default, and pick one if necessary
-        WishlistType wishlistType = wishlistPriorityDetail.getWishlistType();
-        WishlistPriority defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
+        var wishlistType = wishlistPriorityDetail.getWishlistType();
+        var defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
         if(defaultWishlistPriority == null) {
-            List<WishlistPriority> wishlistPriorities = getWishlistPrioritiesForUpdate(wishlistType);
+            var wishlistPriorities = getWishlistPrioritiesForUpdate(wishlistType);
             
             if(!wishlistPriorities.isEmpty()) {
-                Iterator<WishlistPriority> iter = wishlistPriorities.iterator();
+                var iter = wishlistPriorities.iterator();
                 if(iter.hasNext()) {
                     defaultWishlistPriority = iter.next();
                 }
-                WishlistPriorityDetailValue wishlistPriorityDetailValue = Objects.requireNonNull(defaultWishlistPriority).getLastDetailForUpdate().getWishlistPriorityDetailValue().clone();
+                var wishlistPriorityDetailValue = Objects.requireNonNull(defaultWishlistPriority).getLastDetailForUpdate().getWishlistPriorityDetailValue().clone();
                 
                 wishlistPriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateWishlistPriorityFromValue(wishlistPriorityDetailValue, false, deletedBy);
@@ -900,7 +886,7 @@ public class WishlistControl
     }
     
     public void deleteWishlistPrioritiesByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        List<WishlistPriority> wishlistPriorities = getWishlistPrioritiesForUpdate(wishlistType);
+        var wishlistPriorities = getWishlistPrioritiesForUpdate(wishlistType);
         
         wishlistPriorities.forEach((wishlistPriority) -> 
                 deleteWishlistPriority(wishlistPriority, deletedBy)
@@ -913,7 +899,7 @@ public class WishlistControl
     
     public WishlistPriorityDescription createWishlistPriorityDescription(WishlistPriority wishlistPriority,
             Language language, String description, BasePK createdBy) {
-        WishlistPriorityDescription wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(session,
+        var wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(session,
                 wishlistPriority, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.MODIFY, wishlistPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -937,8 +923,8 @@ public class WishlistControl
                         "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -986,8 +972,8 @@ public class WishlistControl
                         "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1010,7 +996,7 @@ public class WishlistControl
     
     public String getBestWishlistPriorityDescription(WishlistPriority wishlistPriority, Language language) {
         String description;
-        WishlistPriorityDescription wishlistPriorityDescription = getWishlistPriorityDescription(wishlistPriority, language);
+        var wishlistPriorityDescription = getWishlistPriorityDescription(wishlistPriority, language);
         
         if(wishlistPriorityDescription == null && !language.getIsDefault()) {
             wishlistPriorityDescription = getWishlistPriorityDescription(wishlistPriority, getPartyControl().getDefaultLanguage());
@@ -1030,9 +1016,9 @@ public class WishlistControl
     }
     
     public List<WishlistPriorityDescriptionTransfer> getWishlistPriorityDescriptionTransfers(UserVisit userVisit, WishlistPriority wishlistPriority) {
-        List<WishlistPriorityDescription> wishlistPriorityDescriptions = getWishlistPriorityDescriptionsByWishlistPriority(wishlistPriority);
+        var wishlistPriorityDescriptions = getWishlistPriorityDescriptionsByWishlistPriority(wishlistPriority);
         List<WishlistPriorityDescriptionTransfer> wishlistPriorityDescriptionTransfers = new ArrayList<>(wishlistPriorityDescriptions.size());
-        WishlistPriorityDescriptionTransferCache wishlistPriorityDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistPriorityDescriptionTransferCache();
+        var wishlistPriorityDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistPriorityDescriptionTransferCache();
         
         wishlistPriorityDescriptions.forEach((wishlistPriorityDescription) ->
                 wishlistPriorityDescriptionTransfers.add(wishlistPriorityDescriptionTransferCache.getWishlistPriorityDescriptionTransfer(wishlistPriorityDescription))
@@ -1043,15 +1029,15 @@ public class WishlistControl
     
     public void updateWishlistPriorityDescriptionFromValue(WishlistPriorityDescriptionValue wishlistPriorityDescriptionValue, BasePK updatedBy) {
         if(wishlistPriorityDescriptionValue.hasBeenModified()) {
-            WishlistPriorityDescription wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      wishlistPriorityDescriptionValue.getPrimaryKey());
             
             wishlistPriorityDescription.setThruTime(session.START_TIME_LONG);
             wishlistPriorityDescription.store();
-            
-            WishlistPriority wishlistPriority = wishlistPriorityDescription.getWishlistPriority();
-            Language language = wishlistPriorityDescription.getLanguage();
-            String description = wishlistPriorityDescriptionValue.getDescription();
+
+            var wishlistPriority = wishlistPriorityDescription.getWishlistPriority();
+            var language = wishlistPriorityDescription.getLanguage();
+            var description = wishlistPriorityDescriptionValue.getDescription();
             
             wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(wishlistPriority, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1067,7 +1053,7 @@ public class WishlistControl
     }
     
     public void deleteWishlistPriorityDescriptionsByWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
-        List<WishlistPriorityDescription> wishlistPriorityDescriptions = getWishlistPriorityDescriptionsByWishlistPriorityForUpdate(wishlistPriority);
+        var wishlistPriorityDescriptions = getWishlistPriorityDescriptionsByWishlistPriorityForUpdate(wishlistPriority);
         
         wishlistPriorityDescriptions.forEach((wishlistPriorityDescription) -> 
                 deleteWishlistPriorityDescription(wishlistPriorityDescription, deletedBy)
@@ -1079,7 +1065,7 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     
     public Wishlist createWishlist(Order order, OfferUse offerUse, WishlistType wishlistType, BasePK createdBy) {
-        Wishlist wishlist = WishlistFactory.getInstance().create(order, offerUse, wishlistType,
+        var wishlist = WishlistFactory.getInstance().create(order, offerUse, wishlistType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1119,8 +1105,8 @@ public class WishlistControl
                         "WHERE wshl_ord_orderid = ? AND wshl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1167,8 +1153,8 @@ public class WishlistControl
                         "WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1191,15 +1177,15 @@ public class WishlistControl
     
     public void updateWishlistFromValue(WishlistValue wishlistValue, BasePK updatedBy) {
         if(wishlistValue.hasBeenModified()) {
-            Wishlist wishlist = WishlistFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlist = WishlistFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     wishlistValue.getPrimaryKey());
             
             wishlist.setThruTime(session.START_TIME_LONG);
             wishlist.store();
-            
-            OrderPK orderPK = wishlist.getOrderPK(); // Not updated
-            OfferUsePK offerUsePK = wishlistValue.getOfferUsePK();
-            WishlistTypePK wishlistTypePK = wishlistValue.getWishlistTypePK();
+
+            var orderPK = wishlist.getOrderPK(); // Not updated
+            var offerUsePK = wishlistValue.getOfferUsePK();
+            var wishlistTypePK = wishlistValue.getWishlistTypePK();
             
             wishlist = WishlistFactory.getInstance().create(orderPK, offerUsePK, wishlistTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1224,7 +1210,7 @@ public class WishlistControl
     
     public WishlistLine createWishlistLine(OrderLine orderLine, OfferUse offerUse, WishlistPriority wishlistPriority,
             AssociateReferral associateReferral, String comment, BasePK createdBy) {
-        WishlistLine wishlistLine = WishlistLineFactory.getInstance().create(orderLine, offerUse,
+        var wishlistLine = WishlistLineFactory.getInstance().create(orderLine, offerUse,
                 wishlistPriority, associateReferral, comment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1276,8 +1262,8 @@ public class WishlistControl
                         "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistLineFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1314,8 +1300,8 @@ public class WishlistControl
                         "WHERE wshll_ordl_orderlineid = ? AND wshll_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WishlistLineFactory.getInstance().prepareStatement(query);
+
+            var ps = WishlistLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1346,17 +1332,17 @@ public class WishlistControl
     
     public void updateWishlistLineFromValue(WishlistLineValue wishlistLineValue, BasePK updatedBy) {
         if(wishlistLineValue.hasBeenModified()) {
-            WishlistLine wishlistLine = WishlistLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistLine = WishlistLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     wishlistLineValue.getPrimaryKey());
             
             wishlistLine.setThruTime(session.START_TIME_LONG);
             wishlistLine.store();
-            
-            OrderLinePK orderLinePK = wishlistLine.getOrderLinePK(); // Not updated
-            OfferUsePK offerUsePK = wishlistLineValue.getOfferUsePK();
-            WishlistPriorityPK wishlistPriorityPK = wishlistLineValue.getWishlistPriorityPK();
-            AssociateReferralPK associateReferralPK = wishlistLineValue.getAssociateReferralPK();
-            String comment = wishlistLineValue.getComment();
+
+            var orderLinePK = wishlistLine.getOrderLinePK(); // Not updated
+            var offerUsePK = wishlistLineValue.getOfferUsePK();
+            var wishlistPriorityPK = wishlistLineValue.getWishlistPriorityPK();
+            var associateReferralPK = wishlistLineValue.getAssociateReferralPK();
+            var comment = wishlistLineValue.getComment();
             
             wishlistLine = WishlistLineFactory.getInstance().create(orderLinePK, offerUsePK,
                     wishlistPriorityPK, associateReferralPK, comment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1412,8 +1398,8 @@ public class WishlistControl
                         "AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, OrderTypes.WISHLIST.name());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
@@ -1475,8 +1461,8 @@ public class WishlistControl
                         "AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, OrderTypes.WISHLIST.name());
             ps.setLong(2, Session.MAX_TIME);
@@ -1525,8 +1511,8 @@ public class WishlistControl
                         "AND wshl_ord_orderid = ord_orderid " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1548,9 +1534,9 @@ public class WishlistControl
     }
     
     public List<WishlistTransfer> getWishlistTransfers(UserVisit userVisit, Party companyParty, Party party) {
-        List<Order> orders = getWishlists(companyParty, party);
+        var orders = getWishlists(companyParty, party);
         List<WishlistTransfer> wishlistTransfers = new ArrayList<>(orders.size());
-        WishlistTransferCache wishlistTransferCache = getWishlistTransferCaches(userVisit).getWishlistTransferCache();
+        var wishlistTransferCache = getWishlistTransferCaches(userVisit).getWishlistTransferCache();
         
         orders.forEach((order) ->
                 wishlistTransfers.add(wishlistTransferCache.getWishlistTransfer(order))
@@ -1561,7 +1547,7 @@ public class WishlistControl
     
     public void deleteOrdersByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
         var orderControl = Session.getModelController(OrderControl.class);
-        List<Order> orders = getOrdersByWishlistTypeForUpdate(wishlistType);
+        var orders = getOrdersByWishlistTypeForUpdate(wishlistType);
         
         orders.forEach((order) -> {
             orderControl.deleteOrder(order, deletedBy);
@@ -1590,8 +1576,8 @@ public class WishlistControl
                         "AND ordldt_orderlinesequence = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setInt(2, orderLineSequence);
@@ -1633,8 +1619,8 @@ public class WishlistControl
                         "AND ordldt_uomt_unitofmeasuretypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
@@ -1675,8 +1661,8 @@ public class WishlistControl
                         "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             
@@ -1712,8 +1698,8 @@ public class WishlistControl
                         "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             
@@ -1752,8 +1738,8 @@ public class WishlistControl
                         "AND wshll_ordl_orderlineid = ordl_orderlineid " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1780,7 +1766,7 @@ public class WishlistControl
     
     public List<WishlistLineTransfer> getWishlistLineTransfers(UserVisit userVisit, Collection<OrderLine> orderLines) {
         List<WishlistLineTransfer> wishlistLineTransfers = new ArrayList<>(orderLines.size());
-        WishlistLineTransferCache wishlistLineTransferCache = getWishlistTransferCaches(userVisit).getWishlistLineTransferCache();
+        var wishlistLineTransferCache = getWishlistTransferCaches(userVisit).getWishlistLineTransferCache();
         
         orderLines.forEach((orderLine) ->
                 wishlistLineTransfers.add(wishlistLineTransferCache.getWishlistLineTransfer(orderLine))
@@ -1799,7 +1785,7 @@ public class WishlistControl
     
     public void deleteOrderLinesByWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
         var orderLineControl = Session.getModelController(OrderLineControl.class);
-        List<OrderLine> orderLines = getOrderLinesByWishlistPriorityForUpdate(wishlistPriority);
+        var orderLines = getOrderLinesByWishlistPriorityForUpdate(wishlistPriority);
         
         orderLines.forEach((orderLine) -> {
             orderLineControl.deleteOrderLine(orderLine, deletedBy);

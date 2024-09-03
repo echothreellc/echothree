@@ -34,7 +34,7 @@ public class GraphQlInvocationInput {
 
     public ExecuteGraphQlForm getExecuteGraphQlForm()
             throws NamingException {
-        ExecuteGraphQlForm commandForm = GraphQlUtil.getHome().getExecuteGraphQlForm();
+        var commandForm = GraphQlUtil.getHome().getExecuteGraphQlForm();
 
         commandForm.setReadOnly(Boolean.toString(readOnly));
         commandForm.setQuery(graphQLRequest.getQuery());

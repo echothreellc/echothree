@@ -17,10 +17,7 @@
 package com.echothree.model.control.club.server.transfer;
 
 import com.echothree.model.control.club.common.transfer.ClubItemTransfer;
-import com.echothree.model.control.club.common.transfer.ClubItemTypeTransfer;
-import com.echothree.model.control.club.common.transfer.ClubTransfer;
 import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -42,14 +39,14 @@ public class ClubItemTransferCache
     }
     
     public ClubItemTransfer getClubItemTransfer(ClubItem clubItem) {
-        ClubItemTransfer clubItemTransfer = get(clubItem);
+        var clubItemTransfer = get(clubItem);
         
         if(clubItemTransfer == null) {
-            ClubTransfer club = clubControl.getClubTransfer(userVisit, clubItem.getClub());
-            ClubItemTypeTransfer clubItemType = clubControl.getClubItemTypeTransfer(userVisit, clubItem.getClubItemType());
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, clubItem.getItem());
-            Long unformattedSubscriptionTime = clubItem.getSubscriptionTime();
-            String subscriptionTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedSubscriptionTime);
+            var club = clubControl.getClubTransfer(userVisit, clubItem.getClub());
+            var clubItemType = clubControl.getClubItemTypeTransfer(userVisit, clubItem.getClubItemType());
+            var item = itemControl.getItemTransfer(userVisit, clubItem.getItem());
+            var unformattedSubscriptionTime = clubItem.getSubscriptionTime();
+            var subscriptionTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedSubscriptionTime);
             
             clubItemTransfer = new ClubItemTransfer(club, clubItemType, item, unformattedSubscriptionTime, subscriptionTime);
             put(clubItem, clubItemTransfer);

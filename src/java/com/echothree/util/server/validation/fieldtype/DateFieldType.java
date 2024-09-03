@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.model.data.party.server.entity.DateTimeFormatDetail;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
@@ -41,16 +40,16 @@ public class DateFieldType
         
     @Override
     public String validate() {
-        DateTimeFormatDetail dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
-        ZoneId zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());
+        var dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
+        var zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());
         LocalDate localDate = null;
         
         if(fieldValue.equalsIgnoreCase("TODAY")) {
-            ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(getSession().START_TIME), zoneId);
+            var zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(getSession().START_TIME), zoneId);
             
             localDate = LocalDate.of(zonedDateTime.getYear(), zonedDateTime.getMonth(), zonedDateTime.getDayOfMonth());
         } else {
-            DateTimeFormatter javaShortDateFormat = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat()).withZone(zoneId);
+            var javaShortDateFormat = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat()).withZone(zoneId);
 
             try {
                 localDate = LocalDate.parse(fieldValue, javaShortDateFormat);

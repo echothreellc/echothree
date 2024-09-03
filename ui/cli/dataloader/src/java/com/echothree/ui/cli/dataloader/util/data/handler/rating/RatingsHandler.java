@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.rating;
 
 import com.echothree.control.user.rating.common.RatingUtil;
 import com.echothree.control.user.rating.common.RatingService;
-import com.echothree.control.user.rating.common.form.CreateRatingForm;
 import com.echothree.control.user.rating.common.form.RatingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,7 +47,7 @@ public class RatingsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("rating")) {
-            CreateRatingForm form = RatingFormFactory.getCreateRatingForm();
+            var form = RatingFormFactory.getCreateRatingForm();
             
             form.setEntityRef(entityRef);
             form.set(getAttrsMap(attrs));

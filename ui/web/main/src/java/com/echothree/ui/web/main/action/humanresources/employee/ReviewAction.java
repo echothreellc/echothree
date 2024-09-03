@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.result.GetPartyTypeResult;
@@ -25,7 +24,6 @@ import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.employee.common.EmployeeOptions;
-import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -33,8 +31,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -82,7 +78,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
         
         commandForm.setEmployeeName(request.getParameter(ParameterConstants.EMPLOYEE_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -108,11 +104,11 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         options.add(CommentOptions.CommentIncludeClob);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
-        EmployeeTransfer employee = result.getEmployee();
+
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
+        var employee = result.getEmployee();
 
         if(employee == null) {
             forwardKey = ForwardConstants.ERROR_404;

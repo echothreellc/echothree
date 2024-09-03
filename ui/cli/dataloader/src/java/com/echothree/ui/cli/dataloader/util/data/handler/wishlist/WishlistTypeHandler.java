@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.wishlist;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.WishlistService;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypeDescriptionForm;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityForm;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,9 +49,9 @@ public class WishlistTypeHandler
         if(localName.equals("wishlistTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +59,7 @@ public class WishlistTypeHandler
             }
             
             try {
-                CreateWishlistTypeDescriptionForm form = WishlistFormFactory.getCreateWishlistTypeDescriptionForm();
+                var form = WishlistFormFactory.getCreateWishlistTypeDescriptionForm();
                 
                 form.setWishlistTypeName(wishlistTypeName);
                 form.setLanguageIsoName(languageIsoName);
@@ -75,9 +73,9 @@ public class WishlistTypeHandler
             String wishlistPriorityName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("wishlistPriorityName"))
                     wishlistPriorityName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -87,7 +85,7 @@ public class WishlistTypeHandler
             }
             
             try {
-                CreateWishlistPriorityForm form = WishlistFormFactory.getCreateWishlistPriorityForm();
+                var form = WishlistFormFactory.getCreateWishlistPriorityForm();
                 
                 form.setWishlistTypeName(wishlistTypeName);
                 form.setWishlistPriorityName(wishlistPriorityName);

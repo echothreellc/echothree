@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.usetype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseTypeDescriptionsForm;
 import com.echothree.control.user.offer.common.result.GetUseTypeDescriptionsResult;
-import com.echothree.model.control.offer.common.transfer.UseTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
-            GetUseTypeDescriptionsForm commandForm = OfferUtil.getHome().getGetUseTypeDescriptionsForm();
+            var useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
+            var commandForm = OfferUtil.getHome().getGetUseTypeDescriptionsForm();
             
             commandForm.setUseTypeName(useTypeName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUseTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUseTypeDescriptionsResult result = (GetUseTypeDescriptionsResult)executionResult.getResult();
-            UseTypeTransfer useTypeTransfer = result.getUseType();
+
+            var commandResult = OfferUtil.getHome().getUseTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseTypeDescriptionsResult)executionResult.getResult();
+            var useTypeTransfer = result.getUseType();
             
             request.setAttribute(AttributeConstants.USE_TYPE, useTypeTransfer);
             request.setAttribute(AttributeConstants.USE_TYPE_NAME, useTypeTransfer.getUseTypeName());

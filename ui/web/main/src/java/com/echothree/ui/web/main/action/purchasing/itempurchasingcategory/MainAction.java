@@ -21,8 +21,6 @@ import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategori
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,12 +48,12 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategories(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemPurchasingCategoriesResult result = (GetItemPurchasingCategoriesResult)executionResult.getResult();
+            var commandResult = VendorUtil.getHome().getItemPurchasingCategories(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemPurchasingCategoriesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORIES, result.getItemPurchasingCategories());
             forwardKey = ForwardConstants.DISPLAY;

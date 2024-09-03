@@ -17,9 +17,7 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTypeDescriptionTransfer;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTypeTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ContactMechanismAliasTypeDescriptionTransferCache
     }
     
     public ContactMechanismAliasTypeDescriptionTransfer getContactMechanismAliasTypeDescriptionTransfer(ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
-        ContactMechanismAliasTypeDescriptionTransfer contactMechanismAliasTypeDescriptionTransfer = get(contactMechanismAliasTypeDescription);
+        var contactMechanismAliasTypeDescriptionTransfer = get(contactMechanismAliasTypeDescription);
         
         if(contactMechanismAliasTypeDescriptionTransfer == null) {
-            ContactMechanismAliasTypeTransfer contactMechanismAliasTypeTransfer = contactControl.getContactMechanismAliasTypeTransfer(userVisit, contactMechanismAliasTypeDescription.getContactMechanismAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contactMechanismAliasTypeDescription.getLanguage());
+            var contactMechanismAliasTypeTransfer = contactControl.getContactMechanismAliasTypeTransfer(userVisit, contactMechanismAliasTypeDescription.getContactMechanismAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactMechanismAliasTypeDescription.getLanguage());
             
             contactMechanismAliasTypeDescriptionTransfer = new ContactMechanismAliasTypeDescriptionTransfer(languageTransfer, contactMechanismAliasTypeTransfer, contactMechanismAliasTypeDescription.getDescription());
             put(contactMechanismAliasTypeDescription, contactMechanismAliasTypeDescriptionTransfer);

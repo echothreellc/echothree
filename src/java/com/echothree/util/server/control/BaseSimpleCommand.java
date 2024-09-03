@@ -18,8 +18,6 @@ package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -85,17 +83,17 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
     }
     
     protected void setupPreferredClobMimeType() {
-        String preferredClobMimeTypeName = form.getPreferredClobMimeTypeName();
+        var preferredClobMimeTypeName = form.getPreferredClobMimeTypeName();
         
         if(preferredClobMimeTypeName != null) {
             var coreControl = getCoreControl();
-            MimeType preferredClobMimeType = coreControl.getMimeTypeByName(preferredClobMimeTypeName);
+            var preferredClobMimeType = coreControl.getMimeTypeByName(preferredClobMimeTypeName);
 
             if(preferredClobMimeType == null) {
                 addExecutionError(ExecutionErrors.UnknownPreferredClobMimeTypeName.name(), preferredClobMimeTypeName);
             } else {
-                MimeTypeDetail preferredClobMimeTypeDetail = preferredClobMimeType.getLastDetail();
-                String entityAttributeTypeName = preferredClobMimeTypeDetail.getEntityAttributeType().getEntityAttributeTypeName();
+                var preferredClobMimeTypeDetail = preferredClobMimeType.getLastDetail();
+                var entityAttributeTypeName = preferredClobMimeTypeDetail.getEntityAttributeType().getEntityAttributeTypeName();
                 
                 // Must be a CLOB and for now the preferred MIME type must be HTML.
                 if(!entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())
@@ -113,7 +111,7 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         ValidationResult validationResult = null;
         
         if(getFormFieldDefinitions() != null) {
-            Validator validator = new Validator(this);
+            var validator = new Validator(this);
             
             setupValidator(validator);
             validationResult = validate(validator);
@@ -128,7 +126,7 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         initSession();
 
         var securityResult = security();
-        boolean canQuery = false;
+        var canQuery = false;
 
         if(securityResult == null || !securityResult.getHasMessages()) {
             var validationResult = validate();

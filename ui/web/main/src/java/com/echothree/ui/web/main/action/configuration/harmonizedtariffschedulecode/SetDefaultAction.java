@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.harmonizedtariffschedulecode;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.SetDefaultHarmonizedTariffScheduleCodeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,15 +49,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
-        SetDefaultHarmonizedTariffScheduleCodeForm commandForm = ItemUtil.getHome().getSetDefaultHarmonizedTariffScheduleCodeForm();
+        var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+        var commandForm = ItemUtil.getHome().getSetDefaultHarmonizedTariffScheduleCodeForm();
 
         commandForm.setCountryName(countryName);
         commandForm.setHarmonizedTariffScheduleCodeName(request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME));
 
         ItemUtil.getHome().setDefaultHarmonizedTariffScheduleCode(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.COUNTRY_NAME, countryName);

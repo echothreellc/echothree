@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.transactionglaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetTransactionGlAccountCategoriesForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionGlAccountCategoriesResult;
-import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,15 +48,15 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String transactionTypeName = request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME);
-        GetTransactionGlAccountCategoriesForm commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoriesForm();
+        var transactionTypeName = request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME);
+        var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoriesForm();
 
         commandForm.setTransactionTypeName(transactionTypeName);
 
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionGlAccountCategories(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTransactionGlAccountCategoriesResult result = (GetTransactionGlAccountCategoriesResult)executionResult.getResult();
-        TransactionTypeTransfer transactionTypeTransfer = result.getTransactionType();
+        var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategories(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTransactionGlAccountCategoriesResult)executionResult.getResult();
+        var transactionTypeTransfer = result.getTransactionType();
 
         request.setAttribute(AttributeConstants.TRANSACTION_TYPE, transactionTypeTransfer);
         request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORIES, result.getTransactionGlAccountCategories());

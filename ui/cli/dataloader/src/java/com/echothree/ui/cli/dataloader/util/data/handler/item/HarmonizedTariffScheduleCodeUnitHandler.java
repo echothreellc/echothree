@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
-import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeUnitDescriptionForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,7 +50,7 @@ public class HarmonizedTariffScheduleCodeUnitHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("harmonizedTariffScheduleCodeUnitDescription")) {
-            CreateHarmonizedTariffScheduleCodeUnitDescriptionForm commandForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeUnitDescriptionForm();
+            var commandForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeUnitDescriptionForm();
 
             commandForm.setHarmonizedTariffScheduleCodeUnitName(harmonizedTariffScheduleCodeUnitName);
             commandForm.set(getAttrsMap(attrs));

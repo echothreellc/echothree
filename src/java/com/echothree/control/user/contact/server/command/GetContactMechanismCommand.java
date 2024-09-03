@@ -18,12 +18,8 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetContactMechanismForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,20 +51,20 @@ public class GetContactMechanismCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetContactMechanismResult result = ContactResultFactory.getGetContactMechanismResult();
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? null : partyControl.getPartyByName(partyName);
+        var result = ContactResultFactory.getGetContactMechanismResult();
+        var partyName = form.getPartyName();
+        var party = partyName == null ? null : partyControl.getPartyByName(partyName);
 
         if(partyName == null || party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String contactMechanismName = form.getContactMechanismName();
-            ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+            var contactMechanismName = form.getContactMechanismName();
+            var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
             if(contactMechanism != null) {
                 if(partyName == null) {
                     result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
                 } else {
-                    PartyContactMechanism partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
+                    var partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
 
                     if(partyContactMechanism != null) {
                         result.setPartyContactMechanism(contactControl.getPartyContactMechanismTransfer(getUserVisit(), partyContactMechanism));

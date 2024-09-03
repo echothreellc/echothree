@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offeruse;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseChoicesForm;
 import com.echothree.control.user.offer.common.result.GetUseChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.offer.common.choice.UseChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -47,14 +43,14 @@ public class AddActionForm
     public void setupUseChoices() {
         if(useChoices == null) {
             try {
-                GetUseChoicesForm form = OfferUtil.getHome().getGetUseChoicesForm();
+                var form = OfferUtil.getHome().getGetUseChoicesForm();
                 
                 form.setDefaultUseChoice(useChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseChoicesResult result = (GetUseChoicesResult)executionResult.getResult();
+
+                var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseChoicesResult)executionResult.getResult();
                 useChoices = result.getUseChoices();
                 
                 if(useChoice == null)
@@ -69,15 +65,15 @@ public class AddActionForm
     public void setupSalesOrderSequenceChoices() {
         if(salesOrderSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
                 form.setDefaultSequenceChoice(salesOrderSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 salesOrderSequenceChoices = result.getSequenceChoices();
                 
                 if(salesOrderSequenceChoice == null)

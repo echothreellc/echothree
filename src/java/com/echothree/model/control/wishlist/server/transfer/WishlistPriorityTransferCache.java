@@ -17,11 +17,9 @@
 package com.echothree.model.control.wishlist.server.transfer;
 
 import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
-import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDetail;
 
 public class WishlistPriorityTransferCache
         extends BaseWishlistTransferCache<WishlistPriority, WishlistPriorityTransfer> {
@@ -34,15 +32,15 @@ public class WishlistPriorityTransferCache
     }
     
     public WishlistPriorityTransfer getWishlistPriorityTransfer(WishlistPriority wishlistPriority) {
-        WishlistPriorityTransfer wishlistPriorityTransfer = get(wishlistPriority);
+        var wishlistPriorityTransfer = get(wishlistPriority);
         
         if(wishlistPriorityTransfer == null) {
-            WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getLastDetail();
-            WishlistTypeTransfer wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlistPriorityDetail.getWishlistType());
-            String wishlistPriorityName = wishlistPriorityDetail.getWishlistPriorityName();
-            Boolean isDefault = wishlistPriorityDetail.getIsDefault();
-            Integer sortOrder = wishlistPriorityDetail.getSortOrder();
-            String description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage());
+            var wishlistPriorityDetail = wishlistPriority.getLastDetail();
+            var wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlistPriorityDetail.getWishlistType());
+            var wishlistPriorityName = wishlistPriorityDetail.getWishlistPriorityName();
+            var isDefault = wishlistPriorityDetail.getIsDefault();
+            var sortOrder = wishlistPriorityDetail.getSortOrder();
+            var description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage());
             
             wishlistPriorityTransfer = new WishlistPriorityTransfer(wishlistType, wishlistPriorityName, isDefault,
                     sortOrder, description);

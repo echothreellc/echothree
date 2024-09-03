@@ -17,9 +17,7 @@
 package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.transfer.ContentCollectionDescriptionTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.content.server.entity.ContentCollectionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ContentCollectionDescriptionTransferCache
     }
     
     public ContentCollectionDescriptionTransfer getContentCollectionDescriptionTransfer(ContentCollectionDescription contentCollectionDescription) {
-        ContentCollectionDescriptionTransfer contentCollectionDescriptionTransfer = get(contentCollectionDescription);
+        var contentCollectionDescriptionTransfer = get(contentCollectionDescription);
         
         if(contentCollectionDescriptionTransfer == null) {
-            ContentCollectionTransfer contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentCollectionDescription.getContentCollection());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contentCollectionDescription.getLanguage());
+            var contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentCollectionDescription.getContentCollection());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentCollectionDescription.getLanguage());
             
             contentCollectionDescriptionTransfer = new ContentCollectionDescriptionTransfer(languageTransfer, contentCollectionTransfer, contentCollectionDescription.getDescription());
             put(contentCollectionDescription, contentCollectionDescriptionTransfer);

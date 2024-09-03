@@ -19,7 +19,6 @@ package com.echothree.model.control.order.server.transfer;
 import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
-import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,14 +35,14 @@ public class OrderLineAdjustmentTypeTransferCache
     }
     
     public OrderLineAdjustmentTypeTransfer getOrderLineAdjustmentTypeTransfer(OrderLineAdjustmentType orderLineAdjustmentType) {
-        OrderLineAdjustmentTypeTransfer orderLineAdjustmentTypeTransfer = get(orderLineAdjustmentType);
+        var orderLineAdjustmentTypeTransfer = get(orderLineAdjustmentType);
         
         if(orderLineAdjustmentTypeTransfer == null) {
-            OrderLineAdjustmentTypeDetail orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
-            String orderLineAdjustmentTypeName = orderLineAdjustmentTypeDetail.getOrderLineAdjustmentTypeName();
-            Boolean isDefault = orderLineAdjustmentTypeDetail.getIsDefault();
-            Integer sortOrder = orderLineAdjustmentTypeDetail.getSortOrder();
-            String description = orderLineAdjustmentControl.getBestOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getLanguage());
+            var orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
+            var orderLineAdjustmentTypeName = orderLineAdjustmentTypeDetail.getOrderLineAdjustmentTypeName();
+            var isDefault = orderLineAdjustmentTypeDetail.getIsDefault();
+            var sortOrder = orderLineAdjustmentTypeDetail.getSortOrder();
+            var description = orderLineAdjustmentControl.getBestOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getLanguage());
             
             orderLineAdjustmentTypeTransfer = new OrderLineAdjustmentTypeTransfer(orderLineAdjustmentTypeName, isDefault, sortOrder, description);
             put(orderLineAdjustmentType, orderLineAdjustmentTypeTransfer);

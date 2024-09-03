@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationReasonTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class CancellationReasonTransferCache
@@ -34,15 +32,15 @@ public class CancellationReasonTransferCache
     }
     
     public CancellationReasonTransfer getCancellationReasonTransfer(CancellationReason cancellationReason) {
-        CancellationReasonTransfer cancellationReasonTransfer = get(cancellationReason);
+        var cancellationReasonTransfer = get(cancellationReason);
         
         if(cancellationReasonTransfer == null) {
-            CancellationReasonDetail cancellationReasonDetail = cancellationReason.getLastDetail();
-            CancellationKindTransfer cancellationKind = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationReasonDetail.getCancellationKind());
-            String cancellationReasonName = cancellationReasonDetail.getCancellationReasonName();
-            Boolean isDefault = cancellationReasonDetail.getIsDefault();
-            Integer sortOrder = cancellationReasonDetail.getSortOrder();
-            String description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage());
+            var cancellationReasonDetail = cancellationReason.getLastDetail();
+            var cancellationKind = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationReasonDetail.getCancellationKind());
+            var cancellationReasonName = cancellationReasonDetail.getCancellationReasonName();
+            var isDefault = cancellationReasonDetail.getIsDefault();
+            var sortOrder = cancellationReasonDetail.getSortOrder();
+            var description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage());
             
             cancellationReasonTransfer = new CancellationReasonTransfer(cancellationKind, cancellationReasonName, isDefault, sortOrder, description);
             put(cancellationReason, cancellationReasonTransfer);

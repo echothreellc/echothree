@@ -18,11 +18,7 @@ package com.echothree.model.control.shipment.server.logic;
 
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.Shipment;
-import com.echothree.model.data.shipment.server.entity.ShipmentDetail;
-import com.echothree.model.data.shipment.server.entity.ShipmentTime;
-import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.value.ShipmentTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -58,16 +54,16 @@ public class ShipmentTimeLogic
     public void createOrUpdateShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName, final Long time,
             final BasePK partyPK) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentDetail shipmentDetail = shipment.getLastDetail();
-        ShipmentType shipmentType = shipmentDetail.getShipmentType();
-        ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
+        var shipmentDetail = shipment.getLastDetail();
+        var shipmentType = shipmentDetail.getShipmentType();
+        var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
         if(shipmentTimeType == null) {
             if(ema != null) {
                 ema.addExecutionError(ExecutionErrors.UnknownShipmentTimeTypeName.name(), getShipmentTypeName(shipmentType), shipmentTimeTypeName);
             }
         } else {
-            ShipmentTimeValue shipmentTimeValue = shipmentControl.getShipmentTimeValueForUpdate(shipment, shipmentTimeType);
+            var shipmentTimeValue = shipmentControl.getShipmentTimeValueForUpdate(shipment, shipmentTimeType);
 
             if(shipmentTimeValue == null) {
                 shipmentControl.createShipmentTime(shipment, shipmentTimeType, time, partyPK);
@@ -80,9 +76,9 @@ public class ShipmentTimeLogic
 
     public Long getShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentDetail shipmentDetail = shipment.getLastDetail();
-        ShipmentType shipmentType = shipmentDetail.getShipmentType();
-        ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
+        var shipmentDetail = shipment.getLastDetail();
+        var shipmentType = shipmentDetail.getShipmentType();
+        var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
         Long result = null;
 
         if(shipmentTimeType == null) {
@@ -90,7 +86,7 @@ public class ShipmentTimeLogic
                 ema.addExecutionError(ExecutionErrors.UnknownShipmentTimeTypeName.name(), getShipmentTypeName(shipmentType), shipmentTimeTypeName);
             }
         } else {
-            ShipmentTime shipmentTime = shipmentControl.getShipmentTime(shipment, shipmentTimeType);
+            var shipmentTime = shipmentControl.getShipmentTime(shipment, shipmentTimeType);
 
             if(shipmentTime == null) {
                 if(ema != null) {
@@ -106,16 +102,16 @@ public class ShipmentTimeLogic
 
     public void deleteShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName, final BasePK deletedBy) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentDetail shipmentDetail = shipment.getLastDetail();
-        ShipmentType shipmentType = shipmentDetail.getShipmentType();
-        ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
+        var shipmentDetail = shipment.getLastDetail();
+        var shipmentType = shipmentDetail.getShipmentType();
+        var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
         if(shipmentTimeType == null) {
             if(ema != null) {
                 ema.addExecutionError(ExecutionErrors.UnknownShipmentTimeTypeName.name(), getShipmentTypeName(shipmentType), shipmentTimeTypeName);
             }
         } else {
-            ShipmentTime shipmentTime = shipmentControl.getShipmentTimeForUpdate(shipment, shipmentTimeType);
+            var shipmentTime = shipmentControl.getShipmentTimeForUpdate(shipment, shipmentTimeType);
 
             if(shipmentTime == null) {
                 if(ema != null) {

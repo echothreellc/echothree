@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.filter.filterstep;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.GetSelectorChoicesForm;
 import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.filter.common.choice.FilterAdjustmentChoicesBean;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -48,16 +45,16 @@ public class AddActionForm
     private void setupFilterItemSelectorChoices()
             throws NamingException {
         if(filterItemSelectorChoices == null) {
-            GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+            var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
             form.setSelectorKindName(SelectorKinds.ITEM.name());
             form.setSelectorTypeName(SelectorTypes.FILTER.name());
             form.setDefaultSelectorChoice(filterItemSelectorChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+            var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorChoicesResult)executionResult.getResult();
             filterItemSelectorChoices = result.getSelectorChoices();
 
             if(filterItemSelectorChoice == null)

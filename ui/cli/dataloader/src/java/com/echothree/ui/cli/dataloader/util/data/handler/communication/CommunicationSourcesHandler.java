@@ -19,10 +19,8 @@ package com.echothree.ui.cli.dataloader.util.data.handler.communication;
 import com.echothree.control.user.communication.common.CommunicationUtil;
 import com.echothree.control.user.communication.common.CommunicationService;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
-import com.echothree.control.user.communication.common.form.CreateCommunicationSourceForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import java.util.Map;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -47,8 +45,8 @@ public class CommunicationSourcesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("communicationSource")) {
-            CreateCommunicationSourceForm commandForm = CommunicationFormFactory.getCreateCommunicationSourceForm();
-            Map<String, Object> attrsMap = getAttrsMap(attrs);
+            var commandForm = CommunicationFormFactory.getCreateCommunicationSourceForm();
+            var attrsMap = getAttrsMap(attrs);
             
             commandForm.set(attrsMap);
             

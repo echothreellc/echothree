@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeDescription;
-import com.echothree.model.data.chain.server.value.ChainActionTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditChainActionTypeDescriptionCommand
     public ChainActionTypeDescription getEntity(EditChainActionTypeDescriptionResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainActionTypeDescription chainActionTypeDescription = null;
-        String chainActionTypeName = spec.getChainActionTypeName();
-        ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
+        var chainActionTypeName = spec.getChainActionTypeName();
+        var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
 
         if(chainActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditChainActionTypeDescriptionCommand
     @Override
     public void doUpdate(ChainActionTypeDescription chainActionTypeDescription) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainActionTypeDescriptionValue chainActionTypeDescriptionValue = chainControl.getChainActionTypeDescriptionValue(chainActionTypeDescription);
+        var chainActionTypeDescriptionValue = chainControl.getChainActionTypeDescriptionValue(chainActionTypeDescription);
 
         chainActionTypeDescriptionValue.setDescription(edit.getDescription());
 

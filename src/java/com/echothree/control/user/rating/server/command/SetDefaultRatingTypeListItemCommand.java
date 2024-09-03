@@ -18,10 +18,6 @@ package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.SetDefaultRatingTypeListItemForm;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.rating.server.entity.RatingType;
-import com.echothree.model.data.rating.server.value.RatingTypeListItemDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,21 +51,21 @@ public class SetDefaultRatingTypeListItemCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
-                String ratingTypeName = form.getRatingTypeName();
-                RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                var ratingTypeName = form.getRatingTypeName();
+                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
                 if(ratingType != null) {
-                    String ratingTypeListItemName = form.getRatingTypeListItemName();
-                    RatingTypeListItemDetailValue ratingTypeListItemDetailValue = ratingControl.getRatingTypeListItemDetailValueByNameForUpdate(ratingType, ratingTypeListItemName);
+                    var ratingTypeListItemName = form.getRatingTypeListItemName();
+                    var ratingTypeListItemDetailValue = ratingControl.getRatingTypeListItemDetailValueByNameForUpdate(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItemDetailValue != null) {
                         ratingTypeListItemDetailValue.setIsDefault(Boolean.TRUE);

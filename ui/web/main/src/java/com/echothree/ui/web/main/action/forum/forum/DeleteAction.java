@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.forum.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.DeleteForumForm;
-import com.echothree.control.user.forum.common.form.GetForumForm;
 import com.echothree.control.user.forum.common.result.GetForumResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetForumForm commandForm = ForumUtil.getHome().getGetForumForm();
+        var commandForm = ForumUtil.getHome().getGetForumForm();
         
         commandForm.setForumName(actionForm.getForumName());
-        
-        CommandResult commandResult = ForumUtil.getHome().getForum(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumResult result = (GetForumResult)executionResult.getResult();
+
+        var commandResult = ForumUtil.getHome().getForum(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM, result.getForum());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteForumForm commandForm = ForumUtil.getHome().getDeleteForumForm();
+        var commandForm = ForumUtil.getHome().getDeleteForumForm();
 
         commandForm.setForumName(actionForm.getForumName());
 

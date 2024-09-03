@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroup;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupStatusChoicesForm;
 import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupStatusChoicesResult;
 import com.echothree.model.control.inventory.common.choice.InventoryLocationGroupStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -43,15 +40,15 @@ public class StatusActionForm
     public void setupInventoryLocationGroupStatusChoices() {
         if(inventoryLocationGroupStatusChoices == null) {
             try {
-                GetInventoryLocationGroupStatusChoicesForm form = InventoryUtil.getHome().getGetInventoryLocationGroupStatusChoicesForm();
+                var form = InventoryUtil.getHome().getGetInventoryLocationGroupStatusChoicesForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setInventoryLocationGroupName(inventoryLocationGroupName);
                 form.setDefaultInventoryLocationGroupStatusChoice(inventoryLocationGroupStatusChoice);
-                
-                CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroupStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetInventoryLocationGroupStatusChoicesResult getInventoryLocationGroupStatusChoicesResult = (GetInventoryLocationGroupStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = InventoryUtil.getHome().getInventoryLocationGroupStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getInventoryLocationGroupStatusChoicesResult = (GetInventoryLocationGroupStatusChoicesResult)executionResult.getResult();
                 inventoryLocationGroupStatusChoices = getInventoryLocationGroupStatusChoicesResult.getInventoryLocationGroupStatusChoices();
                 
                 if(inventoryLocationGroupStatusChoice == null)

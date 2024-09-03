@@ -50,7 +50,7 @@ public class ClassTag
     @Override
     public int doStartTag()
             throws JspException {
-        TransferPropertiesHolder currentTransferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
+        var currentTransferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
 
         if(currentTransferPropertiesHolder == null) {
             throw new JspException("class may only be used inside the body of a transferProperties tag.");
@@ -72,7 +72,7 @@ public class ClassTag
     @Override
     public int doEndTag()
             throws JspException {
-        TransferPropertiesHolder currentTransferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
+        var currentTransferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
 
         currentTransferPropertiesHolder.setClazz(null);
         

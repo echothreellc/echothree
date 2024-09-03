@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
-import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeEntityAttributeGroupResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -65,17 +62,17 @@ public class EntityAttributeGroupDeleteAction
     @Override
     public void setupTransfer(EntityAttributeGroupDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityAttributeEntityAttributeGroupForm commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeEntityAttributeGroupResult result = (GetEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUP, result.getEntityAttributeEntityAttributeGroup());
         }
@@ -84,7 +81,7 @@ public class EntityAttributeGroupDeleteAction
     @Override
     public CommandResult doDelete(EntityAttributeGroupDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityAttributeEntityAttributeGroupForm commandForm = CoreUtil.getHome().getDeleteEntityAttributeEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityAttributeEntityAttributeGroupForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

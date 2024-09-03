@@ -17,16 +17,10 @@
 package com.echothree.ui.web.main.action.content.contentcategory;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCategoryDescriptionsForm;
 import com.echothree.control.user.content.common.result.GetContentCategoryDescriptionsResult;
-import com.echothree.model.control.content.common.transfer.ContentCatalogTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,22 +51,22 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            String contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
-            String contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
-            GetContentCategoryDescriptionsForm commandForm = ContentUtil.getHome().getGetContentCategoryDescriptionsForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
+            var contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentCategoryDescriptionsForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
             commandForm.setContentCategoryName(contentCategoryName);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCategoryDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCategoryDescriptionsResult result = (GetContentCategoryDescriptionsResult)executionResult.getResult();
-            ContentCollectionTransfer contentCollectionTransfer = result.getContentCollection();
-            ContentCatalogTransfer contentCatalogTransfer = result.getContentCatalog();
-            ContentCategoryTransfer contentCategoryTransfer = result.getContentCategory();
-            ContentCategoryTransfer parentContentCategoryTransfer = contentCategoryTransfer.getParentContentCategory();
+            var commandResult = ContentUtil.getHome().getContentCategoryDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCategoryDescriptionsResult)executionResult.getResult();
+            var contentCollectionTransfer = result.getContentCollection();
+            var contentCatalogTransfer = result.getContentCatalog();
+            var contentCategoryTransfer = result.getContentCategory();
+            var parentContentCategoryTransfer = contentCategoryTransfer.getParentContentCategory();
             
             request.setAttribute("contentCollection", contentCollectionTransfer);
             request.setAttribute("contentCollectionName", contentCollectionTransfer.getContentCollectionName());

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeDescriptionTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class PaymentProcessorTypeCodeDescriptionTransferCache
     
     @Override
     public PaymentProcessorTypeCodeDescriptionTransfer getTransfer(PaymentProcessorTypeCodeDescription paymentProcessorTypeCodeDescription) {
-        PaymentProcessorTypeCodeDescriptionTransfer paymentProcessorTypeCodeDescriptionTransfer = get(paymentProcessorTypeCodeDescription);
+        var paymentProcessorTypeCodeDescriptionTransfer = get(paymentProcessorTypeCodeDescription);
         
         if(paymentProcessorTypeCodeDescriptionTransfer == null) {
-            PaymentProcessorTypeCodeTransfer paymentProcessorTypeCodeTransfer = paymentProcessorTypeCodeControl.getPaymentProcessorTypeCodeTransfer(userVisit, paymentProcessorTypeCodeDescription.getPaymentProcessorTypeCode());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeCodeDescription.getLanguage());
+            var paymentProcessorTypeCodeTransfer = paymentProcessorTypeCodeControl.getPaymentProcessorTypeCodeTransfer(userVisit, paymentProcessorTypeCodeDescription.getPaymentProcessorTypeCode());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeCodeDescription.getLanguage());
             
             paymentProcessorTypeCodeDescriptionTransfer = new PaymentProcessorTypeCodeDescriptionTransfer(languageTransfer, paymentProcessorTypeCodeTransfer, paymentProcessorTypeCodeDescription.getDescription());
             put(paymentProcessorTypeCodeDescription, paymentProcessorTypeCodeDescriptionTransfer);

@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.GetPartyTrainingClassForm;
 import com.echothree.control.user.training.common.result.GetPartyTrainingClassResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -92,15 +89,15 @@ public class PartyTrainingClassTag
     public int doStartTag()
             throws JspException {
         try {
-            GetPartyTrainingClassForm commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
+            var commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
             
             commandForm.setPartyTrainingClassName(partyTrainingClassName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(), commandForm);
+
+            var commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +105,8 @@ public class PartyTrainingClassTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyTrainingClassResult result = (GetPartyTrainingClassResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPartyTrainingClassResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPartyTrainingClass(), scope);
             }

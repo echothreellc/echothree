@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritemcost;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.CreateVendorItemCostForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,12 +54,12 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
-        String vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        var vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                     if(vendorName == null)
                         vendorName = actionForm.getVendorName();
@@ -69,15 +67,15 @@ public class AddAction
                         vendorItemName = actionForm.getVendorItemName();
                 
                 if(wasPost(request)) {
-                    CreateVendorItemCostForm commandForm = VendorUtil.getHome().getCreateVendorItemCostForm();
+                    var commandForm = VendorUtil.getHome().getCreateVendorItemCostForm();
                     
                     commandForm.setVendorName(vendorName);
                     commandForm.setVendorItemName(vendorItemName);
                     commandForm.setInventoryConditionName(actionForm.getInventoryConditionChoice());
                     commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeChoice());
                     commandForm.setUnitCost(actionForm.getUnitCost());
-                    
-                    CommandResult commandResult = VendorUtil.getHome().createVendorItemCost(getUserVisitPK(request), commandForm);
+
+                    var commandResult = VendorUtil.getHome().createVendorItemCost(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -94,8 +92,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.VENDOR_NAME, vendorName);
             request.setAttribute(AttributeConstants.VENDOR_ITEM_NAME, vendorItemName);

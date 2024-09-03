@@ -20,8 +20,6 @@ import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.result.GetSequenceTypesResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -49,12 +47,12 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceTypes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceTypesResult getSequenceTypesResult = (GetSequenceTypesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceTypes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequenceTypesResult = (GetSequenceTypesResult)executionResult.getResult();
             
             request.setAttribute("sequenceTypes", getSequenceTypesResult.getSequenceTypes());
             forwardKey = ForwardConstants.DISPLAY;

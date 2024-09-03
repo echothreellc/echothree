@@ -58,12 +58,12 @@ public class TagTag
     @Override
     public int doStartTag()
             throws JspException {
-        HtmlFilterHolder currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
+        var currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
 
         if(currentHtmlFilterHolder == null) {
             throw new JspException("tag may only be used inside the body of a htmlFilter tag.");
         } else {
-            HtmlTagHolder htmlTagHolder = new HtmlTagHolder(tag.toLowerCase(Locale.getDefault()), action);
+            var htmlTagHolder = new HtmlTagHolder(tag.toLowerCase(Locale.getDefault()), action);
             
             currentHtmlFilterHolder.addHtmlTagHolder(htmlTagHolder);
         }
@@ -74,7 +74,7 @@ public class TagTag
     @Override
     public int doEndTag()
             throws JspException {
-        HtmlFilterHolder currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
+        var currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
 
         currentHtmlFilterHolder.clearCurrentHtmlTagHolder();
 

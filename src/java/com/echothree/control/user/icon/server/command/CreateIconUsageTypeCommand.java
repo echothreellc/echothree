@@ -18,8 +18,6 @@ package com.echothree.control.user.icon.server.command;
 
 import com.echothree.control.user.icon.common.form.CreateIconUsageTypeForm;
 import com.echothree.model.control.icon.server.control.IconControl;
-import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,11 +51,11 @@ public class CreateIconUsageTypeCommand
     @Override
     protected BaseResult execute() {
         var iconControl = Session.getModelController(IconControl.class);
-        String iconUsageTypeName = form.getIconUsageTypeName();
-        IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
+        var iconUsageTypeName = form.getIconUsageTypeName();
+        var iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
         
         if(iconUsageType == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

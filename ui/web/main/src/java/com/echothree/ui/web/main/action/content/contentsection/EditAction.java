@@ -25,7 +25,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,9 +51,9 @@ public class EditAction
     @Override
     protected ContentSectionSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentSectionSpec spec = ContentUtil.getHome().getContentSectionSpec();
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String originalContentSectionName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_SECTION_NAME);
+        var spec = ContentUtil.getHome().getContentSectionSpec();
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var originalContentSectionName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_SECTION_NAME);
 
         if(contentCollectionName == null) {
             contentCollectionName = actionForm.getContentCollectionName();
@@ -72,7 +71,7 @@ public class EditAction
     @Override
     protected ContentSectionEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentSectionEdit edit = ContentUtil.getHome().getContentSectionEdit();
+        var edit = ContentUtil.getHome().getContentSectionEdit();
 
         edit.setContentSectionName(actionForm.getContentSectionName());
         edit.setParentContentSectionName(actionForm.getParentContentSectionChoice());
@@ -104,9 +103,9 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditContentSectionForm commandForm)
             throws Exception {
-        CommandResult commandResult = ContentUtil.getHome().editContentSection(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditContentSectionResult result = (EditContentSectionResult)executionResult.getResult();
+        var commandResult = ContentUtil.getHome().editContentSection(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditContentSectionResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTENT_SECTION, result.getContentSection());
         

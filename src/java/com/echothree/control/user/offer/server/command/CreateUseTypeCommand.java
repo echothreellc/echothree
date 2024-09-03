@@ -17,13 +17,11 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseTypeForm;
-import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,13 +63,13 @@ public class CreateUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CreateUseTypeResult result = OfferResultFactory.getCreateUseTypeResult();
-        String useTypeName = form.getUseTypeName();
+        var result = OfferResultFactory.getCreateUseTypeResult();
+        var useTypeName = form.getUseTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        UseType useType = UseTypeLogic.getInstance().createUseType(this,
+        var useType = UseTypeLogic.getInstance().createUseType(this,
                 useTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(useType != null && !hasExecutionErrors()) {

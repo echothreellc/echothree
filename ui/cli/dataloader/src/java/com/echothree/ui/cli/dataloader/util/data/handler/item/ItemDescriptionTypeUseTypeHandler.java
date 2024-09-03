@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
-import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeUseTypeDescriptionForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,7 +49,7 @@ public class ItemDescriptionTypeUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemDescriptionTypeUseTypeDescription")) {
-            CreateItemDescriptionTypeUseTypeDescriptionForm commandForm = ItemFormFactory.getCreateItemDescriptionTypeUseTypeDescriptionForm();
+            var commandForm = ItemFormFactory.getCreateItemDescriptionTypeUseTypeDescriptionForm();
 
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.set(getAttrsMap(attrs));

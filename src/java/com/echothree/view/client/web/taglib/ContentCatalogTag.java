@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCatalogForm;
 import com.echothree.control.user.content.common.result.GetContentCatalogResult;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import java.util.HashMap;
@@ -146,7 +143,7 @@ public class ContentCatalogTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentCatalogForm commandForm = ContentUtil.getHome().getGetContentCatalogForm();
+            var commandForm = ContentUtil.getHome().getGetContentCatalogForm();
             Map<String, Limit> limits = new HashMap<>();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -165,7 +162,7 @@ public class ContentCatalogTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCatalog(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentCatalog(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -173,8 +170,8 @@ public class ContentCatalogTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCatalogResult result = (GetContentCatalogResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCatalogResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContentCatalog(), scope);
             }

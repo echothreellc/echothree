@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.GetRecoveryQuestionChoicesForm;
 import com.echothree.control.user.user.common.result.GetRecoveryQuestionChoicesResult;
 import com.echothree.model.control.user.common.choice.RecoveryQuestionChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,14 +41,14 @@ public class CustomerUserLoginAddActionForm
     private void setupRecoveryQuestionChoices() {
         if(recoveryQuestionChoices == null) {
             try {
-                GetRecoveryQuestionChoicesForm form = UserUtil.getHome().getGetRecoveryQuestionChoicesForm();
+                var form = UserUtil.getHome().getGetRecoveryQuestionChoicesForm();
                 
                 form.setDefaultRecoveryQuestionChoice(recoveryQuestionChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = UserUtil.getHome().getRecoveryQuestionChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetRecoveryQuestionChoicesResult getRecoveryQuestionChoicesResult = (GetRecoveryQuestionChoicesResult)executionResult.getResult();
+
+                var commandResult = UserUtil.getHome().getRecoveryQuestionChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getRecoveryQuestionChoicesResult = (GetRecoveryQuestionChoicesResult)executionResult.getResult();
                 recoveryQuestionChoices = getRecoveryQuestionChoicesResult.getRecoveryQuestionChoices();
                 
                 if(recoveryQuestionChoice == null) {

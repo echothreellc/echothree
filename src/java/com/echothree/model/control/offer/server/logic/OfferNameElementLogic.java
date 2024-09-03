@@ -24,7 +24,6 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.DuplicateOfferNameElementNameException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferNameElementNameException;
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;

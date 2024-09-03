@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.glaccount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountsForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountsResult;
-import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,16 +48,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetGlAccountsForm commandForm = AccountingUtil.getHome().getGetGlAccountsForm();
-        String glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
+        String forwardKey;
+        var commandForm = AccountingUtil.getHome().getGetGlAccountsForm();
+        var glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
         
         commandForm.setGlAccountCategoryName(glAccountCategoryName);
-        
-        CommandResult commandResult = AccountingUtil.getHome().getGlAccounts(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetGlAccountsResult result = (GetGlAccountsResult)executionResult.getResult();
-        GlAccountCategoryTransfer glAccountCategory = result.getGlAccountCategory();
+
+        var commandResult = AccountingUtil.getHome().getGlAccounts(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetGlAccountsResult)executionResult.getResult();
+        var glAccountCategory = result.getGlAccountCategory();
         
         if(glAccountCategoryName != null && glAccountCategory == null) {
             forwardKey = ForwardConstants.ERROR_404;

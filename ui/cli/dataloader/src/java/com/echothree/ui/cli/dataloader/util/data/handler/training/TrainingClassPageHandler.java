@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.training;
 
 import com.echothree.control.user.training.common.TrainingUtil;
 import com.echothree.control.user.training.common.TrainingService;
-import com.echothree.control.user.training.common.form.CreateTrainingClassPageTranslationForm;
 import com.echothree.control.user.training.common.form.TrainingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -55,7 +54,7 @@ public class TrainingClassPageHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("trainingClassPageTranslation")) {
-            CreateTrainingClassPageTranslationForm commandForm = TrainingFormFactory.getCreateTrainingClassPageTranslationForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassPageTranslationForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.setTrainingClassSectionName(trainingClassSectionName);

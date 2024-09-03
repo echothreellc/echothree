@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreateCustomerForm;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -55,12 +52,12 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        AddActionForm actionForm = (AddActionForm)form;
-        String forwardKey = null;
+        var actionForm = (AddActionForm)form;
+        String forwardKey;
         String customerName = null;
         
         if(wasPost(request)) {
-            CreateCustomerForm commandForm = PartyUtil.getHome().getCreateCustomerForm();
+            var commandForm = PartyUtil.getHome().getCreateCustomerForm();
             
             commandForm.setCustomerTypeName(actionForm.getCustomerTypeChoice());
             commandForm.setCancellationPolicyName(actionForm.getCancellationPolicyChoice());
@@ -81,15 +78,15 @@ public class AddAction
             commandForm.setAllowSolicitation(actionForm.getAllowSolicitation().toString());
             commandForm.setCustomerStatusChoice(actionForm.getCustomerStatusChoice());
             commandForm.setCustomerCreditStatusChoice(actionForm.getCustomerCreditStatusChoice());
-            
-            CommandResult commandResult = PartyUtil.getHome().createCustomer(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createCustomer(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCustomerResult result = (CreateCustomerResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateCustomerResult)executionResult.getResult();
                 
                 forwardKey = ForwardConstants.REVIEW;
                 customerName = result.getCustomerName();
@@ -101,9 +98,8 @@ public class AddAction
             actionForm.setName(request.getParameter(ParameterConstants.NAME));
             forwardKey = ForwardConstants.FORM;
         }
-        
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.DeletePartyTypeContactListForm;
-import com.echothree.control.user.contactlist.common.form.GetPartyTypeContactListForm;
 import com.echothree.control.user.contactlist.common.result.GetPartyTypeContactListResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class PartyTypeContactListDeleteAction
     @Override
     public void setupTransfer(PartyTypeContactListDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyTypeContactListForm commandForm = ContactListUtil.getHome().getGetPartyTypeContactListForm();
+        var commandForm = ContactListUtil.getHome().getGetPartyTypeContactListForm();
         
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getPartyTypeContactList(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getPartyTypeContactList(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypeContactListResult result = (GetPartyTypeContactListResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTypeContactListResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_TYPE_CONTACT_LIST, result.getPartyTypeContactList());
         }
@@ -80,7 +77,7 @@ public class PartyTypeContactListDeleteAction
     @Override
     public CommandResult doDelete(PartyTypeContactListDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyTypeContactListForm commandForm = ContactListUtil.getHome().getDeletePartyTypeContactListForm();
+        var commandForm = ContactListUtil.getHome().getDeletePartyTypeContactListForm();
 
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());

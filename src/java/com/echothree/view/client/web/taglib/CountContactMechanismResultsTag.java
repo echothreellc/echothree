@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.CountContactMechanismResultsForm;
 import com.echothree.control.user.search.common.result.CountContactMechanismResultsResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -79,11 +76,11 @@ public class CountContactMechanismResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountContactMechanismResultsForm commandForm = SearchUtil.getHome().getCountContactMechanismResultsForm();
+            var commandForm = SearchUtil.getHome().getCountContactMechanismResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countContactMechanismResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countContactMechanismResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +88,8 @@ public class CountContactMechanismResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountContactMechanismResultsResult result = (CountContactMechanismResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountContactMechanismResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.edit.WishlistPriorityDescriptionEdit;
-import com.echothree.control.user.wishlist.common.form.EditWishlistPriorityDescriptionForm;
 import com.echothree.control.user.wishlist.common.result.EditWishlistPriorityDescriptionResult;
-import com.echothree.control.user.wishlist.common.spec.WishlistPriorityDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
-        String wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+        var wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditWishlistPriorityDescriptionForm commandForm = WishlistUtil.getHome().getEditWishlistPriorityDescriptionForm();
-                WishlistPriorityDescriptionSpec spec = WishlistUtil.getHome().getWishlistPriorityDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = WishlistUtil.getHome().getEditWishlistPriorityDescriptionForm();
+                var spec = WishlistUtil.getHome().getWishlistPriorityDescriptionSpec();
                 
                 if(wishlistTypeName == null)
                     wishlistTypeName = actionForm.getWishlistTypeName();
@@ -84,19 +79,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    WishlistPriorityDescriptionEdit edit = WishlistUtil.getHome().getWishlistPriorityDescriptionEdit();
+                    var edit = WishlistUtil.getHome().getWishlistPriorityDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WishlistUtil.getHome().editWishlistPriorityDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WishlistUtil.getHome().editWishlistPriorityDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditWishlistPriorityDescriptionResult result = (EditWishlistPriorityDescriptionResult)executionResult.getResult();
+                            var result = (EditWishlistPriorityDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +104,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WishlistUtil.getHome().editWishlistPriorityDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditWishlistPriorityDescriptionResult result = (EditWishlistPriorityDescriptionResult)executionResult.getResult();
+
+                    var commandResult = WishlistUtil.getHome().editWishlistPriorityDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditWishlistPriorityDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        WishlistPriorityDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWishlistTypeName(wishlistTypeName);
@@ -135,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_NAME, wishlistTypeName);
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistPriorityName);

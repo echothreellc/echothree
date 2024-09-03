@@ -20,14 +20,9 @@ import com.echothree.control.user.communication.common.edit.CommunicationEditFac
 import com.echothree.control.user.communication.common.edit.CommunicationEventPurposeDescriptionEdit;
 import com.echothree.control.user.communication.common.form.EditCommunicationEventPurposeDescriptionForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
-import com.echothree.control.user.communication.common.result.EditCommunicationEventPurposeDescriptionResult;
 import com.echothree.control.user.communication.common.spec.CommunicationEventPurposeDescriptionSpec;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
-import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDescription;
-import com.echothree.model.data.communication.server.value.CommunicationEventPurposeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,24 +60,24 @@ public class EditCommunicationEventPurposeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        EditCommunicationEventPurposeDescriptionResult result = CommunicationResultFactory.getEditCommunicationEventPurposeDescriptionResult();
-        String communicationEventPurposeName = spec.getCommunicationEventPurposeName();
-        CommunicationEventPurpose communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
+        var result = CommunicationResultFactory.getEditCommunicationEventPurposeDescriptionResult();
+        var communicationEventPurposeName = spec.getCommunicationEventPurposeName();
+        var communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
         
         if(communicationEventPurpose != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    CommunicationEventPurposeDescription communicationEventPurposeDescription = communicationControl.getCommunicationEventPurposeDescription(communicationEventPurpose, language);
+                    var communicationEventPurposeDescription = communicationControl.getCommunicationEventPurposeDescription(communicationEventPurpose, language);
                     
                     if(communicationEventPurposeDescription != null) {
                         result.setCommunicationEventPurposeDescription(communicationControl.getCommunicationEventPurposeDescriptionTransfer(getUserVisit(), communicationEventPurposeDescription));
                         
                         if(lockEntity(communicationEventPurpose)) {
-                            CommunicationEventPurposeDescriptionEdit edit = CommunicationEditFactory.getCommunicationEventPurposeDescriptionEdit();
+                            var edit = CommunicationEditFactory.getCommunicationEventPurposeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(communicationEventPurposeDescription.getDescription());
@@ -95,12 +90,12 @@ public class EditCommunicationEventPurposeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownCommunicationEventPurposeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    CommunicationEventPurposeDescriptionValue communicationEventPurposeDescriptionValue = communicationControl.getCommunicationEventPurposeDescriptionValueForUpdate(communicationEventPurpose, language);
+                    var communicationEventPurposeDescriptionValue = communicationControl.getCommunicationEventPurposeDescriptionValueForUpdate(communicationEventPurpose, language);
                     
                     if(communicationEventPurposeDescriptionValue != null) {
                         if(lockEntityForUpdate(communicationEventPurpose)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 communicationEventPurposeDescriptionValue.setDescription(description);
                                 

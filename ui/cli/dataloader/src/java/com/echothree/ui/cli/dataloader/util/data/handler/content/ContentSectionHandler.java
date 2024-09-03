@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentPageForm;
-import com.echothree.control.user.content.common.form.CreateContentSectionDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -54,9 +52,9 @@ public class ContentSectionHandler
             String languageIsoName = null;
             String description = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -66,7 +64,7 @@ public class ContentSectionHandler
             }
             
             try {
-                CreateContentSectionDescriptionForm createContentSectionDescriptionForm = ContentFormFactory.getCreateContentSectionDescriptionForm();
+                var createContentSectionDescriptionForm = ContentFormFactory.getCreateContentSectionDescriptionForm();
                 
                 createContentSectionDescriptionForm.setContentCollectionName(contentCollectionName);
                 createContentSectionDescriptionForm.setContentSectionName(contentSectionName);
@@ -82,9 +80,9 @@ public class ContentSectionHandler
             String contentPageLayoutName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentPageName"))
                     contentPageName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("contentPageLayoutName"))
@@ -96,7 +94,7 @@ public class ContentSectionHandler
             }
             
             try {
-                CreateContentPageForm createContentPageForm = ContentFormFactory.getCreateContentPageForm();
+                var createContentPageForm = ContentFormFactory.getCreateContentPageForm();
                 
                 createContentPageForm.setContentCollectionName(contentCollectionName);
                 createContentPageForm.setContentSectionName(contentSectionName);

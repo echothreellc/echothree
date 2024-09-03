@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.forum.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.edit.ForumDescriptionEdit;
-import com.echothree.control.user.forum.common.form.EditForumDescriptionForm;
 import com.echothree.control.user.forum.common.result.EditForumDescriptionResult;
-import com.echothree.control.user.forum.common.spec.ForumDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditForumDescriptionForm commandForm = ForumUtil.getHome().getEditForumDescriptionForm();
-                ForumDescriptionSpec spec = ForumUtil.getHome().getForumDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = ForumUtil.getHome().getEditForumDescriptionForm();
+                var spec = ForumUtil.getHome().getForumDescriptionSpec();
                 
                 if(forumName == null)
                     forumName = actionForm.getForumName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    ForumDescriptionEdit edit = ForumUtil.getHome().getForumDescriptionEdit();
+                    var edit = ForumUtil.getHome().getForumDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ForumUtil.getHome().editForumDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ForumUtil.getHome().editForumDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditForumDescriptionResult result = (EditForumDescriptionResult)executionResult.getResult();
+                            var result = (EditForumDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ForumUtil.getHome().editForumDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditForumDescriptionResult result = (EditForumDescriptionResult)executionResult.getResult();
+
+                    var commandResult = ForumUtil.getHome().editForumDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditForumDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ForumDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setForumName(forumName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_NAME, forumName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

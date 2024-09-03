@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.securityrolegroup;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetSecurityRoleGroupChoicesForm;
 import com.echothree.control.user.security.common.result.GetSecurityRoleGroupChoicesResult;
 import com.echothree.model.control.security.common.choice.SecurityRoleGroupChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
 import javax.naming.NamingException;
@@ -39,14 +36,14 @@ public class EditActionForm
     private void setupParentSecurityRoleGroupChoices() {
         if(parentSecurityRoleGroupChoices == null) {
             try {
-                GetSecurityRoleGroupChoicesForm form = SecurityUtil.getHome().getGetSecurityRoleGroupChoicesForm();
+                var form = SecurityUtil.getHome().getGetSecurityRoleGroupChoicesForm();
                 
                 form.setDefaultSecurityRoleGroupChoice(parentSecurityRoleGroupChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSecurityRoleGroupChoicesResult getSecurityRoleGroupChoicesResult = (GetSecurityRoleGroupChoicesResult)executionResult.getResult();
+
+                var commandResult = SecurityUtil.getHome().getSecurityRoleGroupChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getSecurityRoleGroupChoicesResult = (GetSecurityRoleGroupChoicesResult)executionResult.getResult();
                 parentSecurityRoleGroupChoices = getSecurityRoleGroupChoicesResult.getSecurityRoleGroupChoices();
                 
                 if(parentSecurityRoleGroupChoice == null) {

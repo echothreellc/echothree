@@ -16,12 +16,10 @@
 
 package com.echothree.cucumber.purchase;
 
-import com.echothree.control.user.party.common.result.CreateVendorResult;
 import com.echothree.control.user.purchase.common.PurchaseUtil;
 import com.echothree.control.user.purchase.common.result.CreatePurchaseOrderResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
-import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;

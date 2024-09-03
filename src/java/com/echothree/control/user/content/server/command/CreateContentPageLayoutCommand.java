@@ -18,12 +18,10 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentPageLayoutForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.model.control.content.server.logic.ContentPageLayoutLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,13 +63,13 @@ public class CreateContentPageLayoutCommand
     
     @Override
     protected BaseResult execute() {
-        CreateContentPageLayoutResult result = ContentResultFactory.getCreateContentPageLayoutResult();
-        String contentPageLayoutName = form.getContentPageLayoutName();
+        var result = ContentResultFactory.getCreateContentPageLayoutResult();
+        var contentPageLayoutName = form.getContentPageLayoutName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
+        var contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
                 contentPageLayoutName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(contentPageLayout != null && !hasExecutionErrors()) {

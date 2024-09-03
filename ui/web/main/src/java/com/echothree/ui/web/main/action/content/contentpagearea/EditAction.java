@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentpagearea;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.edit.ContentPageAreaEdit;
-import com.echothree.control.user.content.common.form.EditContentPageAreaForm;
 import com.echothree.control.user.content.common.result.EditContentPageAreaResult;
-import com.echothree.control.user.content.common.spec.ContentPageAreaSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,18 +56,18 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-        String contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
-        String sortOrder = request.getParameter(ParameterConstants.SORT_ORDER);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-        String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+        var contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
+        var sortOrder = request.getParameter(ParameterConstants.SORT_ORDER);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
 
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditContentPageAreaForm commandForm = ContentUtil.getHome().getEditContentPageAreaForm();
-                ContentPageAreaSpec spec = ContentUtil.getHome().getContentPageAreaSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = ContentUtil.getHome().getEditContentPageAreaForm();
+                var spec = ContentUtil.getHome().getContentPageAreaSpec();
                 EditContentPageAreaResult result = null;
 
                 if(contentCollectionName == null) {
@@ -102,12 +97,12 @@ public class EditAction
                 spec.setLanguageIsoName(languageIsoName);
 
                 if(wasPost(request)) {
-                    boolean wasCanceled = wasCanceled(request);
+                    var wasCanceled = wasCanceled(request);
 
                     if(wasCanceled) {
                         commandForm.setEditMode(EditMode.ABANDON);
                     } else {
-                        ContentPageAreaEdit edit = ContentUtil.getHome().getContentPageAreaEdit();
+                        var edit = ContentUtil.getHome().getContentPageAreaEdit();
 
                         commandForm.setEditMode(EditMode.UPDATE);
                         commandForm.setEdit(edit);
@@ -117,10 +112,10 @@ public class EditAction
                         edit.setContentPageAreaUrl(actionForm.getContentPageAreaUrl());
                     }
 
-                    CommandResult commandResult = ContentUtil.getHome().editContentPageArea(getUserVisitPK(request), commandForm);
+                    var commandResult = ContentUtil.getHome().editContentPageArea(getUserVisitPK(request), commandForm);
 
                     if(commandResult.hasErrors() && !wasCanceled) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
 
                         if(executionResult != null) {
                             result = (EditContentPageAreaResult)executionResult.getResult();
@@ -137,12 +132,12 @@ public class EditAction
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
 
-                    CommandResult commandResult = ContentUtil.getHome().editContentPageArea(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
+                    var commandResult = ContentUtil.getHome().editContentPageArea(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
                     result = (EditContentPageAreaResult)executionResult.getResult();
 
                     if(result != null) {
-                        ContentPageAreaEdit edit = result.getEdit();
+                        var edit = result.getEdit();
 
                         if(edit != null) {
                             actionForm.setContentCollectionName(contentCollectionName);
@@ -173,7 +168,7 @@ public class EditAction
             forwardKey = ForwardConstants.ERROR_500;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_SECTION_NAME, contentSectionName);

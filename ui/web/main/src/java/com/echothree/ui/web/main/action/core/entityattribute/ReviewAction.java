@@ -17,19 +17,15 @@
 package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityAttributeForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.data.core.common.EntityAttributeEntityTypeConstants;
-import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityListItemConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,8 +57,8 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetEntityAttributeForm commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
@@ -81,12 +77,12 @@ public class ReviewAction
         limits.put(EntityAttributeEntityTypeConstants.ENTITY_TYPE_NAME, new Limit("10"));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
         EntityAttributeTransfer entityAttribute = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeResult result = (GetEntityAttributeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeResult)executionResult.getResult();
             
             entityAttribute = result.getEntityAttribute();
         }

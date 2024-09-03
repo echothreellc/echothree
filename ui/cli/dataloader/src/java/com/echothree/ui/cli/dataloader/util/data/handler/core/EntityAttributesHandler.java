@@ -19,15 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateEntityBooleanAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityDateAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityGeoPointAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityIntegerAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityListItemAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityLongAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityNameAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityStringAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityTimeAttributeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -58,42 +49,42 @@ public class EntityAttributesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("entityNameAttribute")) {
-            CreateEntityNameAttributeForm commandForm = CoreFormFactory.getCreateEntityNameAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityNameAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createEntityNameAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityIntegerAttribute")) {
-            CreateEntityIntegerAttributeForm commandForm = CoreFormFactory.getCreateEntityIntegerAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityIntegerAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createEntityIntegerAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityLongAttribute")) {
-            CreateEntityLongAttributeForm commandForm = CoreFormFactory.getCreateEntityLongAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityLongAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createEntityLongAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityBooleanAttribute")) {
-            CreateEntityBooleanAttributeForm commandForm = CoreFormFactory.getCreateEntityBooleanAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityBooleanAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createEntityBooleanAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityStringAttribute")) {
-            CreateEntityStringAttributeForm commandForm = CoreFormFactory.getCreateEntityStringAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityStringAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createEntityStringAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityGeoPointAttribute")) {
-            CreateEntityGeoPointAttributeForm commandForm = CoreFormFactory.getCreateEntityGeoPointAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityGeoPointAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
@@ -104,21 +95,21 @@ public class EntityAttributesHandler
         } else if(localName.equals("entityEntityAttribute")) {
         } else if(localName.equals("entityCollectionAttribute")) {
         }*/ else if(localName.equals("entityDateAttribute")) {
-            CreateEntityDateAttributeForm commandForm = CoreFormFactory.getCreateEntityDateAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityDateAttributeForm();
 
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
 
             coreService.createEntityDateAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityTimeAttribute")) {
-            CreateEntityTimeAttributeForm commandForm = CoreFormFactory.getCreateEntityTimeAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityTimeAttributeForm();
 
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
 
             coreService.createEntityTimeAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityListItemAttribute")) {
-            CreateEntityListItemAttributeForm commandForm = CoreFormFactory.getCreateEntityListItemAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityListItemAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
@@ -126,9 +117,9 @@ public class EntityAttributesHandler
             coreService.createEntityListItemAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityMultipleListItemAttributes")) {
             String entityAttributeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("entityAttributeName"))
                     entityAttributeName = attrs.getValue(i);
             }

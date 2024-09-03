@@ -18,15 +18,8 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityBlobAttributeResult;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
-import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -60,25 +53,25 @@ public class GetEntityBlobAttributeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityBlobAttributeResult result = CoreResultFactory.getGetEntityBlobAttributeResult();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var result = CoreResultFactory.getGetEntityBlobAttributeResult();
+        var entityRef = form.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
-            String entityAttributeName = form.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
+            var entityAttributeName = form.getEntityAttributeName();
+            var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             
             if(entityAttribute != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = languageIsoName == null ? null : partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = languageIsoName == null ? null : partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(languageIsoName == null || language != null) {
-                    EntityBlobAttribute entityBlobAttribute = language == null ? coreControl.getBestEntityBlobAttribute(entityAttribute, entityInstance, getPreferredLanguage())
+                    var entityBlobAttribute = language == null ? coreControl.getBestEntityBlobAttribute(entityAttribute, entityInstance, getPreferredLanguage())
                             : coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
                     
                     if(entityBlobAttribute != null) {
-                        EntityAttributeBlob entityAttributeBlob = coreControl.getEntityAttributeBlob(entityAttribute);
+                        var entityAttributeBlob = coreControl.getEntityAttributeBlob(entityAttribute);
                         
                         if(entityAttributeBlob != null && entityAttributeBlob.getCheckContentWebAddress()) {
                             ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
@@ -88,7 +81,7 @@ public class GetEntityBlobAttributeCommand
                             result.setEntityBlobAttribute(coreControl.getEntityBlobAttributeTransfer(getUserVisit(), entityBlobAttribute, entityInstance));
                         }
                     } else {
-                        EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                         addExecutionError(ExecutionErrors.UnknownEntityBlobAttribute.name(), entityRef,
                                 entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -98,7 +91,7 @@ public class GetEntityBlobAttributeCommand
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
                 
                 addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                         entityTypeDetail.getEntityTypeName(), entityAttributeName);

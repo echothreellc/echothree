@@ -19,7 +19,6 @@ package com.echothree.model.control.icon.server.transfer;
 import com.echothree.model.control.icon.common.transfer.IconUsageTypeTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.icon.server.entity.IconUsageTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class IconUsageTypeTransferCache
@@ -33,14 +32,14 @@ public class IconUsageTypeTransferCache
     }
     
     public IconUsageTypeTransfer getIconUsageTypeTransfer(IconUsageType iconUsageType) {
-        IconUsageTypeTransfer iconUsageTypeTransfer = get(iconUsageType);
+        var iconUsageTypeTransfer = get(iconUsageType);
         
         if(iconUsageTypeTransfer == null) {
-            IconUsageTypeDetail iconUsageTypeDetail = iconUsageType.getLastDetail();
-            String iconUsageTypeName = iconUsageTypeDetail.getIconUsageTypeName();
-            Boolean isDefault = iconUsageTypeDetail.getIsDefault();
-            Integer sortOrder = iconUsageTypeDetail.getSortOrder();
-            String description = iconControl.getBestIconUsageTypeDescription(iconUsageType, getLanguage());
+            var iconUsageTypeDetail = iconUsageType.getLastDetail();
+            var iconUsageTypeName = iconUsageTypeDetail.getIconUsageTypeName();
+            var isDefault = iconUsageTypeDetail.getIsDefault();
+            var sortOrder = iconUsageTypeDetail.getSortOrder();
+            var description = iconControl.getBestIconUsageTypeDescription(iconUsageType, getLanguage());
             
             iconUsageTypeTransfer = new IconUsageTypeTransfer(iconUsageTypeName, isDefault, sortOrder, description);
             put(iconUsageType, iconUsageTypeTransfer);

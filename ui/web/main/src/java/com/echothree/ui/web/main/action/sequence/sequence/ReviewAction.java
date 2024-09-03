@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.sequence.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetSequenceForm commandForm = SequenceUtil.getHome().getGetSequenceForm();
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-            String sequenceName = request.getParameter(ParameterConstants.SEQUENCE_NAME);
+            var commandForm = SequenceUtil.getHome().getGetSequenceForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var sequenceName = request.getParameter(ParameterConstants.SEQUENCE_NAME);
             
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);
-            
-            CommandResult commandResult = SequenceUtil.getHome().getSequence(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceResult result = (GetSequenceResult)executionResult.getResult();
+
+            var commandResult = SequenceUtil.getHome().getSequence(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SEQUENCE, result.getSequence());
             forwardKey = ForwardConstants.DISPLAY;

@@ -23,8 +23,6 @@ import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,8 +64,8 @@ public class DeletePartyPrinterGroupUseCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
-        Party party = null;
+        var partyName = form.getPartyName();
+        Party party;
 
         if(partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -83,11 +81,11 @@ public class DeletePartyPrinterGroupUseCommand
 
         if(!hasExecutionErrors()) {
             var printerControl = Session.getModelController(PrinterControl.class);
-            String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-            PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+            var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+            var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
             if(printerGroupUseType != null) {
-                PartyPrinterGroupUse partyPrinterGroupUse = printerControl.getPartyPrinterGroupUseForUpdate(party, printerGroupUseType);
+                var partyPrinterGroupUse = printerControl.getPartyPrinterGroupUseForUpdate(party, printerGroupUseType);
 
                 if(partyPrinterGroupUse != null) {
                     printerControl.deletePartyPrinterGroupUse(partyPrinterGroupUse, getPartyPK());

@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorKindDescription;
-import com.echothree.model.data.selector.server.value.SelectorKindDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditSelectorKindDescriptionCommand
     public SelectorKindDescription getEntity(EditSelectorKindDescriptionResult result) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorKindDescription selectorKindDescription = null;
-        String selectorKindName = spec.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = spec.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(selectorKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditSelectorKindDescriptionCommand
     @Override
     public void doUpdate(SelectorKindDescription selectorKindDescription) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKindDescriptionValue selectorKindDescriptionValue = selectorControl.getSelectorKindDescriptionValue(selectorKindDescription);
+        var selectorKindDescriptionValue = selectorControl.getSelectorKindDescriptionValue(selectorKindDescription);
 
         selectorKindDescriptionValue.setDescription(edit.getDescription());
 

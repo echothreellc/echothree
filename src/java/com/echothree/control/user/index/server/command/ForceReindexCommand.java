@@ -19,7 +19,6 @@ package com.echothree.control.user.index.server.command;
 import com.echothree.control.user.index.common.form.ForceReindexForm;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.index.server.logic.IndexLogic;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -48,12 +47,12 @@ public class ForceReindexCommand
     
     @Override
     protected BaseResult execute() {
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
         var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
         
         if(parameterCount == 0 || parameterCount == 2) {
-            EntityType entityType = componentVendorName == null ? null : EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+            var entityType = componentVendorName == null ? null : EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
             
             if(!hasExecutionErrors()) {
                 IndexLogic.getInstance().reindex(session, this, entityType);

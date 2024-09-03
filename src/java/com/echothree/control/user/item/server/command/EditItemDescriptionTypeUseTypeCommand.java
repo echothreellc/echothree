@@ -28,10 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDetail;
-import com.echothree.model.data.item.server.value.ItemDescriptionTypeUseTypeDescriptionValue;
-import com.echothree.model.data.item.server.value.ItemDescriptionTypeUseTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -112,8 +108,8 @@ public class EditItemDescriptionTypeUseTypeCommand
     @Override
     public void doLock(ItemDescriptionTypeUseTypeEdit edit, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getPreferredLanguage());
-        ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
+        var itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getPreferredLanguage());
+        var itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
 
         edit.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypeName());
         edit.setIsDefault(itemDescriptionTypeUseTypeDetail.getIsDefault().toString());
@@ -127,8 +123,8 @@ public class EditItemDescriptionTypeUseTypeCommand
     @Override
     public void canUpdate(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeUseTypeName = edit.getItemDescriptionTypeUseTypeName();
-        ItemDescriptionTypeUseType duplicateItemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
+        var itemDescriptionTypeUseTypeName = edit.getItemDescriptionTypeUseTypeName();
+        var duplicateItemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
         if(duplicateItemDescriptionTypeUseType != null && !itemDescriptionTypeUseType.equals(duplicateItemDescriptionTypeUseType)) {
             addExecutionError(ExecutionErrors.DuplicateItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);
@@ -139,9 +135,9 @@ public class EditItemDescriptionTypeUseTypeCommand
     public void doUpdate(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
-        ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueForUpdate(itemDescriptionTypeUseType);
-        ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescriptionForUpdate(itemDescriptionTypeUseType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueForUpdate(itemDescriptionTypeUseType);
+        var itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescriptionForUpdate(itemDescriptionTypeUseType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         itemDescriptionTypeUseTypeDetailValue.setItemDescriptionTypeUseTypeName(edit.getItemDescriptionTypeUseTypeName());
         itemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -154,7 +150,7 @@ public class EditItemDescriptionTypeUseTypeCommand
         } else if(itemDescriptionTypeUseTypeDescription != null && description == null) {
             itemControl.deleteItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseTypeDescription, partyPK);
         } else if(itemDescriptionTypeUseTypeDescription != null && description != null) {
-            ItemDescriptionTypeUseTypeDescriptionValue itemDescriptionTypeUseTypeDescriptionValue = itemControl.getItemDescriptionTypeUseTypeDescriptionValue(itemDescriptionTypeUseTypeDescription);
+            var itemDescriptionTypeUseTypeDescriptionValue = itemControl.getItemDescriptionTypeUseTypeDescriptionValue(itemDescriptionTypeUseTypeDescription);
 
             itemDescriptionTypeUseTypeDescriptionValue.setDescription(description);
             itemControl.updateItemDescriptionTypeUseTypeDescriptionFromValue(itemDescriptionTypeUseTypeDescriptionValue, partyPK);

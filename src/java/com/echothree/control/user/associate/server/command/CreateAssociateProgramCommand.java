@@ -20,10 +20,7 @@ import com.echothree.control.user.associate.common.form.CreateAssociateProgramFo
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.associate.server.entity.AssociateProgram;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,16 +59,16 @@ public class CreateAssociateProgramCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            String associateSequenceName = form.getAssociateSequenceName();
+            var associateSequenceName = form.getAssociateSequenceName();
             Sequence associateSequence = null;
             
             if(associateSequenceName != null) {
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE.name());
+                var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE.name());
                 
                 if(sequenceType != null) {
                     associateSequence = sequenceControl.getSequenceByName(sequenceType, associateSequenceName);
@@ -81,11 +78,11 @@ public class CreateAssociateProgramCommand
             }
             
             if(associateSequenceName == null || associateSequence != null) {
-                String associatePartyContactMechanismSequenceName = form.getAssociatePartyContactMechanismSequenceName();
+                var associatePartyContactMechanismSequenceName = form.getAssociatePartyContactMechanismSequenceName();
                 Sequence associatePartyContactMechanismSequence = null;
                 
                 if(associatePartyContactMechanismSequenceName != null) {
-                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
+                    var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
                     
                     if(sequenceType != null) {
                         associatePartyContactMechanismSequence = sequenceControl.getSequenceByName(sequenceType, associatePartyContactMechanismSequenceName);
@@ -95,11 +92,11 @@ public class CreateAssociateProgramCommand
                 }
                 
                 if(associatePartyContactMechanismSequenceName == null || associatePartyContactMechanismSequence != null) {
-                    String associateReferralSequenceName = form.getAssociateReferralSequenceName();
+                    var associateReferralSequenceName = form.getAssociateReferralSequenceName();
                     Sequence associateReferralSequence = null;
                     
                     if(associateReferralSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_REFERRAL.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_REFERRAL.name());
                         
                         if(sequenceType != null) {
                             associateReferralSequence = sequenceControl.getSequenceByName(sequenceType, associateReferralSequenceName);
@@ -109,11 +106,11 @@ public class CreateAssociateProgramCommand
                     }
                     
                     if(associateReferralSequenceName == null || associateReferralSequence != null) {
-                        PartyPK createdBy = getPartyPK();
-                        String strItemIndirectSalePercent = form.getItemIndirectSalePercent();
-                        Integer itemIndirectSalePercent = strItemIndirectSalePercent == null? null: Integer.valueOf(strItemIndirectSalePercent);
-                        String strItemDirectSalePercent = form.getItemDirectSalePercent();
-                        Integer itemDirectSalePercent = strItemDirectSalePercent == null? null: Integer.valueOf(strItemDirectSalePercent);
+                        var createdBy = getPartyPK();
+                        var strItemIndirectSalePercent = form.getItemIndirectSalePercent();
+                        var itemIndirectSalePercent = strItemIndirectSalePercent == null? null: Integer.valueOf(strItemIndirectSalePercent);
+                        var strItemDirectSalePercent = form.getItemDirectSalePercent();
+                        var itemDirectSalePercent = strItemDirectSalePercent == null? null: Integer.valueOf(strItemDirectSalePercent);
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
                         var description = form.getDescription();

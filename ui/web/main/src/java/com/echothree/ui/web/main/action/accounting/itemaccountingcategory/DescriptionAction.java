@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.itemaccountingcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetItemAccountingCategoryDescriptionsForm;
 import com.echothree.control.user.accounting.common.result.GetItemAccountingCategoryDescriptionsResult;
-import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
-            GetItemAccountingCategoryDescriptionsForm commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryDescriptionsForm();
+            var itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryDescriptionsForm();
             
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getItemAccountingCategoryDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemAccountingCategoryDescriptionsResult result = (GetItemAccountingCategoryDescriptionsResult)executionResult.getResult();
-            ItemAccountingCategoryTransfer itemAccountingCategoryTransfer = result.getItemAccountingCategory();
+
+            var commandResult = AccountingUtil.getHome().getItemAccountingCategoryDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAccountingCategoryDescriptionsResult)executionResult.getResult();
+            var itemAccountingCategoryTransfer = result.getItemAccountingCategory();
             
             request.setAttribute(AttributeConstants.ITEM_ACCOUNTING_CATEGORY, itemAccountingCategoryTransfer);
             request.setAttribute(AttributeConstants.ITEM_ACCOUNTING_CATEGORY_NAME, itemAccountingCategoryTransfer.getItemAccountingCategoryName());

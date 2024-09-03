@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorForm;
 import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
@@ -25,7 +24,6 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.invoice.common.InvoiceOptions;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.vendor.common.VendorOptions;
-import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.data.communication.common.CommunicationEventConstants;
 import com.echothree.model.data.invoice.common.InvoiceConstants;
 import com.echothree.model.data.vendor.common.VendorItemConstants;
@@ -34,8 +32,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -68,7 +64,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
         
         commandForm.setVendorName(request.getParameter(ParameterConstants.VENDOR_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -105,11 +101,11 @@ public class ReviewAction
         limits.put(InvoiceConstants.ENTITY_TYPE_NAME, new Limit("5"));
         limits.put(CommunicationEventConstants.ENTITY_TYPE_NAME, new Limit("5"));
         commandForm.setLimits(limits);
-        
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorResult result = (GetVendorResult)executionResult.getResult();
-        VendorTransfer vendor = result.getVendor();
+
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorResult)executionResult.getResult();
+        var vendor = result.getVendor();
         
         if(vendor == null) {
             forwardKey = ForwardConstants.ERROR_404;

@@ -18,9 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumTypeMessageTypeForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.ForumMessageType;
-import com.echothree.model.data.forum.server.entity.ForumType;
-import com.echothree.model.data.forum.server.entity.ForumTypeMessageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,15 +51,15 @@ public class CreateForumTypeMessageTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumTypeName = form.getForumTypeName();
-        ForumType forumType = forumControl.getForumTypeByName(forumTypeName);
+        var forumTypeName = form.getForumTypeName();
+        var forumType = forumControl.getForumTypeByName(forumTypeName);
         
         if(forumType != null) {
-            String forumMessageTypeName = form.getForumMessageTypeName();
-            ForumMessageType forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
+            var forumMessageTypeName = form.getForumMessageTypeName();
+            var forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
             
             if(forumMessageType != null) {
-                ForumTypeMessageType forumTypeMessageType = forumControl.getForumTypeMessageType(forumType, forumMessageType);
+                var forumTypeMessageType = forumControl.getForumTypeMessageType(forumType, forumMessageType);
                 
                 if(forumTypeMessageType == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

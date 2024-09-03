@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected PartyCarrierAccountSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyCarrierAccountSpec spec = CarrierUtil.getHome().getPartyCarrierAccountSpec();
+        var spec = CarrierUtil.getHome().getPartyCarrierAccountSpec();
 
         spec.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setCarrierName(findParameter(request, ParameterConstants.CARRIER_NAME, actionForm.getCarrierName()));
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected PartyCarrierAccountEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyCarrierAccountEdit edit = CarrierUtil.getHome().getPartyCarrierAccountEdit();
+        var edit = CarrierUtil.getHome().getPartyCarrierAccountEdit();
 
         edit.setAccount(actionForm.getAccount());
         edit.setAlwaysUseThirdPartyBilling(actionForm.getAlwaysUseThirdPartyBilling().toString());

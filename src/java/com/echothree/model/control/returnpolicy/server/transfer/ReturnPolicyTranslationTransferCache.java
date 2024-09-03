@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTranslationTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicyTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -38,15 +34,15 @@ public class ReturnPolicyTranslationTransferCache
     }
     
     public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(ReturnPolicyTranslation returnPolicyTranslation) {
-        ReturnPolicyTranslationTransfer returnPolicyTranslationTransfer = get(returnPolicyTranslation);
+        var returnPolicyTranslationTransfer = get(returnPolicyTranslation);
         
         if(returnPolicyTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, returnPolicyTranslation.getLanguage());
-            ReturnPolicyTransfer returnPolicyTransfer = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyTranslation.getReturnPolicy());
-            String description = returnPolicyTranslation.getDescription();
-            MimeType policyMimeType = returnPolicyTranslation.getPolicyMimeType();
-            MimeTypeTransfer policyMimeTypeTransfer = policyMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, policyMimeType);
-            String policy = returnPolicyTranslation.getPolicy();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnPolicyTranslation.getLanguage());
+            var returnPolicyTransfer = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyTranslation.getReturnPolicy());
+            var description = returnPolicyTranslation.getDescription();
+            var policyMimeType = returnPolicyTranslation.getPolicyMimeType();
+            var policyMimeTypeTransfer = policyMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, policyMimeType);
+            var policy = returnPolicyTranslation.getPolicy();
             
             returnPolicyTranslationTransfer = new ReturnPolicyTranslationTransfer(returnPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.country;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.CreateCountryForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCountryForm commandForm = GeoUtil.getHome().getCreateCountryForm();
+        var commandForm = GeoUtil.getHome().getCreateCountryForm();
 
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setIso3Number(actionForm.getIso3Number());

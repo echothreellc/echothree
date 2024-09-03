@@ -17,7 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultMimeTypeForm;
-import com.echothree.model.data.core.server.value.MimeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -47,8 +46,8 @@ public class SetDefaultMimeTypeCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeTypeDetailValue mimeTypeDetailValue = coreControl.getMimeTypeDetailValueByNameForUpdate(mimeTypeName);
+       var mimeTypeName = form.getMimeTypeName();
+       var mimeTypeDetailValue = coreControl.getMimeTypeDetailValueByNameForUpdate(mimeTypeName);
         
         if(mimeTypeDetailValue != null) {
             mimeTypeDetailValue.setIsDefault(Boolean.TRUE);

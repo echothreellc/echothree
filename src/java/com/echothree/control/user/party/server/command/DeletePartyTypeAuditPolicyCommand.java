@@ -18,8 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.DeletePartyTypeAuditPolicyForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,11 +48,11 @@ public class DeletePartyTypeAuditPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            PartyTypeAuditPolicy partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicyForUpdate(partyType);
+            var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicyForUpdate(partyType);
             
             if(partyTypeAuditPolicy != null) {
                 partyControl.deletePartyTypeAuditPolicy(partyTypeAuditPolicy, getPartyPK());

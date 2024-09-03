@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentpagearea;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetLanguageChoicesForm;
 import com.echothree.control.user.party.common.result.GetLanguageChoicesResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.party.common.choice.LanguageChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -54,14 +50,14 @@ public class AddActionForm
     private void setupLanguageChoices()
             throws NamingException {
         if(languageChoices == null) {
-            GetLanguageChoicesForm commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
 
             commandForm.setDefaultLanguageChoice(languageChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLanguageChoicesResult getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
             languageChoices = getLanguageChoicesResult.getLanguageChoices();
 
             if(languageChoice == null) {
@@ -85,15 +81,15 @@ public class AddActionForm
     private void setupMimeTypeChoices()
             throws NamingException {
         if(mimeTypeChoices == null) {
-            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
             commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeChoicesResult getMimeTypeChoicesResult = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getMimeTypeChoicesResult = (GetMimeTypeChoicesResult)executionResult.getResult();
             mimeTypeChoices = getMimeTypeChoicesResult.getMimeTypeChoices();
 
             if(mimeTypeChoice == null) {

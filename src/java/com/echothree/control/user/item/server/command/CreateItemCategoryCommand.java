@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemCategoryForm;
-import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -68,13 +67,13 @@ public class CreateItemCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        CreateItemCategoryResult result = ItemResultFactory.getCreateItemCategoryResult();
+        var result = ItemResultFactory.getCreateItemCategoryResult();
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemCategoryName = form.getItemCategoryName();
-        ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
+        var itemCategoryName = form.getItemCategoryName();
+        var itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
         
         if(itemCategory == null) {
-            String parentItemCategoryName = form.getParentItemCategoryName();
+            var parentItemCategoryName = form.getParentItemCategoryName();
             ItemCategory parentItemCategory = null;
             
             if(parentItemCategoryName != null) {

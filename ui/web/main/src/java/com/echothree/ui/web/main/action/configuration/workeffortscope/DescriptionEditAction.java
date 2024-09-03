@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected WorkEffortScopeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        WorkEffortScopeDescriptionSpec spec = WorkEffortUtil.getHome().getWorkEffortScopeDescriptionSpec();
+        var spec = WorkEffortUtil.getHome().getWorkEffortScopeDescriptionSpec();
         
         spec.setWorkEffortTypeName(findParameter(request, ParameterConstants.WORK_EFFORT_TYPE_NAME, actionForm.getWorkEffortTypeName()));
         spec.setWorkEffortScopeName(findParameter(request, ParameterConstants.WORK_EFFORT_SCOPE_NAME, actionForm.getWorkEffortScopeName()));
@@ -63,7 +63,7 @@ public class DescriptionEditAction
     @Override
     protected WorkEffortScopeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        WorkEffortScopeDescriptionEdit edit = WorkEffortUtil.getHome().getWorkEffortScopeDescriptionEdit();
+        var edit = WorkEffortUtil.getHome().getWorkEffortScopeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

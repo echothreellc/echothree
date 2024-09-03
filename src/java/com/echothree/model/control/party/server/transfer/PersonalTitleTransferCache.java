@@ -18,9 +18,7 @@ package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.common.pk.PersonalTitlePK;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
-import com.echothree.model.data.party.server.entity.PersonalTitleDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PersonalTitleTransferCache
@@ -34,15 +32,15 @@ public class PersonalTitleTransferCache
     }
     
     public PersonalTitleTransfer getPersonalTitleTransfer(PersonalTitle personalTitle) {
-        PersonalTitleTransfer personalTitleTransfer = get(personalTitle);
+        var personalTitleTransfer = get(personalTitle);
         
         if(personalTitleTransfer == null) {
-            PersonalTitleDetail personalTitleDetail = personalTitle.getLastDetail();
-            PersonalTitlePK personalTitlePK = personalTitle.getPrimaryKey();
-            String personalTitleId = personalTitlePK.getEntityId().toString();
-            String description = personalTitleDetail.getDescription();
-            Boolean isDefault = personalTitleDetail.getIsDefault();
-            Integer sortOrder = personalTitleDetail.getSortOrder();
+            var personalTitleDetail = personalTitle.getLastDetail();
+            var personalTitlePK = personalTitle.getPrimaryKey();
+            var personalTitleId = personalTitlePK.getEntityId().toString();
+            var description = personalTitleDetail.getDescription();
+            var isDefault = personalTitleDetail.getIsDefault();
+            var sortOrder = personalTitleDetail.getSortOrder();
             
             personalTitleTransfer = new PersonalTitleTransfer(personalTitleId, description, isDefault, sortOrder);
             put(personalTitle, personalTitleTransfer);

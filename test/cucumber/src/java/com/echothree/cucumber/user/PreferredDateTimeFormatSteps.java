@@ -18,7 +18,6 @@ package com.echothree.cucumber.user;
 
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTimeFormatForm;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
@@ -29,7 +28,7 @@ public class PreferredDateTimeFormatSteps implements En {
         When("^the user sets their preferred date time format to \"([^\"]*)\"$",
                 (String dateTimeFormatName) -> {
                     UserService userService = UserUtil.getHome();
-                    SetUserVisitPreferredDateTimeFormatForm userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();
+                    var userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();
                     var persona = CurrentPersona.persona;
 
                     userVisitPreferredDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);

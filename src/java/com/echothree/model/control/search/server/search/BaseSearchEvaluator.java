@@ -18,17 +18,11 @@ package com.echothree.model.control.search.server.search;
 
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
-import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.search.common.pk.CachedExecutedSearchPK;
-import com.echothree.model.data.search.common.pk.SearchPK;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
-import com.echothree.model.data.search.server.entity.CachedExecutedSearchResult;
 import com.echothree.model.data.search.server.entity.CachedSearch;
-import com.echothree.model.data.search.server.entity.CachedSearchStatus;
-import com.echothree.model.data.search.server.entity.Search;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
@@ -37,7 +31,6 @@ import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.value.CachedExecutedSearchResultValue;
 import com.echothree.model.data.search.server.value.SearchResultValue;
-import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.string.StringUtils;
@@ -51,7 +44,6 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
@@ -72,7 +64,7 @@ public abstract class BaseSearchEvaluator
     private Boolean partyVerified;
     
     private void init(SearchType searchType, SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        UserSession userSession = getUserControl().getUserSessionByUserVisit(userVisit);
+        var userSession = getUserControl().getUserSessionByUserVisit(userVisit);
         
         this.session = ThreadSession.currentSession();
         this.searchType = searchType;
@@ -100,7 +92,7 @@ public abstract class BaseSearchEvaluator
     }
     
     protected void removeUserVisitSearch() {
-        UserVisitSearch userVisitSearch = searchControl.getUserVisitSearchForUpdate(userVisit, searchType);
+        var userVisitSearch = searchControl.getUserVisitSearchForUpdate(userVisit, searchType);
         
         if(userVisitSearch != null) {
             searchControl.removeUserVisitSearch(userVisitSearch);
@@ -117,8 +109,8 @@ public abstract class BaseSearchEvaluator
     }
 
     private EntityInstancePKHolder convertPKListToEntityInstancePKHolder(List<EntityInstancePK> entityInstancePKs) {
-        EntityInstancePKHolder entityInstancePKHolder = new EntityInstancePKHolder(entityInstancePKs.size());
-        int i = 0;
+        var entityInstancePKHolder = new EntityInstancePKHolder(entityInstancePKs.size());
+        var i = 0;
 
         for(var entityInstancePK : entityInstancePKs) {
             entityInstancePKHolder.add(entityInstancePK, i++);
@@ -141,7 +133,7 @@ public abstract class BaseSearchEvaluator
         EntityInstancePKHolder resultSet = null;
         
         if(createdSince != null && (resultSet == null || resultSet.size() > 0)) {
-            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByCreatedTime(createdSince);
+            var entityInstancePKHolder = getEntityInstancePKHolderByCreatedTime(createdSince);
 
             if(resultSet == null) {
                 resultSet = entityInstancePKHolder;
@@ -151,7 +143,7 @@ public abstract class BaseSearchEvaluator
         }
 
         if(modifiedSince != null && (resultSet == null || resultSet.size() > 0)) {
-            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByModifiedTime(modifiedSince);
+            var entityInstancePKHolder = getEntityInstancePKHolderByModifiedTime(modifiedSince);
 
             if(resultSet == null) {
                 resultSet = entityInstancePKHolder;
@@ -167,13 +159,13 @@ public abstract class BaseSearchEvaluator
         Long size = null;
         
         if(userVisitSearch != null) {
-            Search search = userVisitSearch.getSearch();
-            CachedSearch cachedSearch = search.getCachedSearch();
+            var search = userVisitSearch.getSearch();
+            var cachedSearch = search.getCachedSearch();
             
             if(cachedSearch == null) {
                 size = searchControl.countSearchResults(search);
             } else {
-                CachedExecutedSearch cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
+                var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
                 
                 if(cachedExecutedSearch != null) {
                     size = searchControl.countCachedExecutedSearchResults(cachedExecutedSearch);
@@ -186,19 +178,19 @@ public abstract class BaseSearchEvaluator
     
     protected Long createUserVisitSearchResults(EntityInstancePKHolder entityInstancePKHolder) {
         Long size;
-        Search search = searchControl.createSearch(party, partyVerified, searchType, session.START_TIME_LONG, searchUseType, null, partyPK);
+        var search = searchControl.createSearch(party, partyVerified, searchType, session.START_TIME_LONG, searchUseType, null, partyPK);
 
         if(entityInstancePKHolder == null) {
             size = 0L;
         } else {
-            SearchPK searchPK = search.getPrimaryKey();
-            Map<EntityInstancePK, Integer> entityInstancePKs = entityInstancePKHolder.entityInstancePKs;
+            var searchPK = search.getPrimaryKey();
+            var entityInstancePKs = entityInstancePKHolder.entityInstancePKs;
 
             size = (long)entityInstancePKs.size();
 
             Collection<SearchResultValue> searchResults = new ArrayList<>(toIntExact(size));
-            for(Map.Entry<EntityInstancePK, Integer> entry : entityInstancePKs.entrySet()) {
-                Integer sortOrder = entry.getValue();
+            for(var entry : entityInstancePKs.entrySet()) {
+                var sortOrder = entry.getValue();
 
                 searchResults.add(new SearchResultValue(searchPK, entry.getKey(), sortOrder == null ? 0 : sortOrder));
             }
@@ -210,7 +202,7 @@ public abstract class BaseSearchEvaluator
             searchControl.createUserVisitSearch(userVisit, searchType, search);
         } catch(PersistenceDatabaseException pde) {
             if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {
-                UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
+                var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
 
                 searchControl.removeSearch(search);
 
@@ -230,7 +222,7 @@ public abstract class BaseSearchEvaluator
     
     protected Long executeCachableSearch(final ExecutionErrorAccumulator eea) {
         Long size;
-        final String parsedQuery = StringUtils.getInstance().trimToNull(query.toString());
+        final var parsedQuery = StringUtils.getInstance().trimToNull(query.toString());
         UserVisitSearch userVisitSearch = null;
         
         // If the query contained nothing but stopwords, it may be reduced down to an empty
@@ -239,17 +231,17 @@ public abstract class BaseSearchEvaluator
         if(parsedQuery == null) {
             size = createUserVisitSearchResults(null);
         } else {
-            final Sha1Utils sha1Utils = Sha1Utils.getInstance();
-            final String querySha1Hash = sha1Utils.hash(q);
-            final String parsedQuerySha1Hash = sha1Utils.hash(parsedQuery);
+            final var sha1Utils = Sha1Utils.getInstance();
+            final var querySha1Hash = sha1Utils.hash(q);
+            final var parsedQuerySha1Hash = sha1Utils.hash(parsedQuery);
 
-            CachedSearch cachedSearch = searchControl.getCachedSearch(index, querySha1Hash, parsedQuerySha1Hash, searchDefaultOperator, searchSortOrder,
+            var cachedSearch = searchControl.getCachedSearch(index, querySha1Hash, parsedQuerySha1Hash, searchDefaultOperator, searchSortOrder,
                     searchSortDirection);
 
             // There are three possible paths here:
             if(cachedSearch == null) {
                 // 1) No existing cached search.
-                final EntityInstancePKHolder entityInstancePKHolder = executeSearch(eea);
+                final var entityInstancePKHolder = executeSearch(eea);
 
                 if(!eea.hasExecutionErrors()) {
                     try {
@@ -257,7 +249,7 @@ public abstract class BaseSearchEvaluator
                                 searchSortOrder, searchSortDirection, partyPK);
                         addCachedSearchIndexFields(cachedSearch);
 
-                        CachedSearchStatus cachedSearchStatus = searchControl.getCachedSearchStatusForUpdate(cachedSearch);
+                        var cachedSearchStatus = searchControl.getCachedSearchStatusForUpdate(cachedSearch);
 
                         createCachedExecutedSearchResults(cachedSearch, entityInstancePKHolder);
                         cachedSearchStatus.setIsConsistent(Boolean.TRUE);
@@ -283,34 +275,34 @@ public abstract class BaseSearchEvaluator
                 // Pass 0: get CachedSearchStatus, check to see if it's consistent. If it is, we're done.
                 // Pass 1: get CachedSearchStatus as an updatable entity. Check to see if it's consistent (someone else executed the search),
                 //         if it is, use it. If it isn't re-execute the search.
-                for(int i = 0 ; i < 2 ; i++) {
-                    CachedSearchStatus cachedSearchStatus = i == 0 ? searchControl.getCachedSearchStatus(cachedSearch) : searchControl.getCachedSearchStatusForUpdate(cachedSearch);
+                for(var i = 0; i < 2 ; i++) {
+                    var cachedSearchStatus = i == 0 ? searchControl.getCachedSearchStatus(cachedSearch) : searchControl.getCachedSearchStatusForUpdate(cachedSearch);
 
                     if(cachedSearchStatus.getIsConsistent()) {
                         // 2) An existing cached search that's consistent with the indexes.
                         break;
                     } else if(i == 1) {
                         // 3) An existing cached search that is not consistent with the indexes, and needs to be executed again.
-                        final EntityInstancePKHolder entityInstancePKHolder = executeSearch(eea);
-                        final boolean hasExecutionErrors = eea.hasExecutionErrors();
+                        final var entityInstancePKHolder = executeSearch(eea);
+                        final var hasExecutionErrors = eea.hasExecutionErrors();
 
                         // If re-executing the search fails, we'll reuse the existing inconsistent results.
-                        CachedExecutedSearch cachedExecutedSearch = hasExecutionErrors
+                        var cachedExecutedSearch = hasExecutionErrors
                                 ? searchControl.getCachedExecutedSearch(cachedSearch)
                                 : searchControl.getCachedExecutedSearchForUpdate(cachedSearch);
 
                         if(!hasExecutionErrors) {
                             // Get what the current CachedExecutedSearch's results are.
-                            List<CachedExecutedSearchResult> cachedExecutedSearchResults = searchControl.getCachedExecutedSearchResultsByCachedExecutedSearch(cachedExecutedSearch);
-                            Map<EntityInstancePK, Integer> entityInstancePKs = entityInstancePKHolder.entityInstancePKs;
-                            boolean resultsAreDifferent = false;
+                            var cachedExecutedSearchResults = searchControl.getCachedExecutedSearchResultsByCachedExecutedSearch(cachedExecutedSearch);
+                            var entityInstancePKs = entityInstancePKHolder.entityInstancePKs;
+                            var resultsAreDifferent = false;
 
                             // If the sizes are different, then the results have definately changed.
                             if(entityInstancePKs.size() == cachedExecutedSearchResults.size()) {
                                 // Otherwise, get the existing results and compare them to the new ones. If there's any that aren't in there,
                                 // or any whose sort order is different, then the results have again, definately changed.
                                 for(var cachedExecutedSearchResult : cachedExecutedSearchResults) {
-                                    Integer sortOrder = entityInstancePKs.get(cachedExecutedSearchResult.getEntityInstancePK());
+                                    var sortOrder = entityInstancePKs.get(cachedExecutedSearchResult.getEntityInstancePK());
 
                                     if(sortOrder == null) {
                                         resultsAreDifferent = true;
@@ -341,7 +333,7 @@ public abstract class BaseSearchEvaluator
             }
 
             if(cachedSearch != null) {
-                Search search = searchControl.createSearch(party, partyVerified, searchType, session.START_TIME_LONG, searchUseType, cachedSearch, partyPK);
+                var search = searchControl.createSearch(party, partyVerified, searchType, session.START_TIME_LONG, searchUseType, cachedSearch, partyPK);
 
                 try {
                     userVisitSearch = searchControl.createUserVisitSearch(userVisit, searchType, search);
@@ -369,13 +361,13 @@ public abstract class BaseSearchEvaluator
     }
     
     protected CachedExecutedSearch createCachedExecutedSearchResults(CachedSearch cachedSearch, EntityInstancePKHolder entityInstancePKHolder) {
-        CachedExecutedSearch cachedExecutedSearch = searchControl.createCachedExecutedSearch(cachedSearch, partyPK);
-        CachedExecutedSearchPK cachedExecutedSearchPK = cachedExecutedSearch.getPrimaryKey();
-        Map<EntityInstancePK, Integer> entityInstancePKs = entityInstancePKHolder.entityInstancePKs;
+        var cachedExecutedSearch = searchControl.createCachedExecutedSearch(cachedSearch, partyPK);
+        var cachedExecutedSearchPK = cachedExecutedSearch.getPrimaryKey();
+        var entityInstancePKs = entityInstancePKHolder.entityInstancePKs;
         
         Collection<CachedExecutedSearchResultValue> cachedExecutedSearchResults = new ArrayList<>(entityInstancePKs.size());
-        for(Map.Entry<EntityInstancePK, Integer> entry : entityInstancePKs.entrySet()) {
-            Integer sortOrder = entry.getValue();
+        for(var entry : entityInstancePKs.entrySet()) {
+            var sortOrder = entry.getValue();
 
             cachedExecutedSearchResults.add(new CachedExecutedSearchResultValue(cachedExecutedSearchPK, entry.getKey(), sortOrder == null ? 0 : sortOrder));
         }
@@ -398,7 +390,7 @@ public abstract class BaseSearchEvaluator
             if(isResultCachable() && allFieldsKnown()) {
                 size = executeCachableSearch(eea);
             } else {
-                final EntityInstancePKHolder entityInstancePKHolder = executeSearch(eea);
+                final var entityInstancePKHolder = executeSearch(eea);
 
                 if(!eea.hasExecutionErrors()) {
                     size = createUserVisitSearchResults(entityInstancePKHolder);
@@ -474,15 +466,15 @@ public abstract class BaseSearchEvaluator
     }
     
     private Sort getSort() {
-        String searchSortOrderName = getSearchSortOrderName();
-        SortField[] sortFields = getSortFields(searchSortOrderName);
+        var searchSortOrderName = getSearchSortOrderName();
+        var sortFields = getSortFields(searchSortOrderName);
         
         return sortFields == null || sortFields.length == 0 ? null : new Sort(sortFields);
     }
     
     private void addCachedSearchIndexFields(final CachedSearch cachedSearch) {
-        IndexType indexType = index.getLastDetail().getIndexType();
-        String[] fieldsToCheck = fields == null ? new String[] { field } : fields;
+        var indexType = index.getLastDetail().getIndexType();
+        var fieldsToCheck = fields == null ? new String[] { field } : fields;
         
         for(var fieldToCheck : fieldsToCheck) {
             searchControl.createCachedSearchIndexField(cachedSearch, getIndexControl().getIndexFieldByName(indexType, fieldToCheck), partyPK);
@@ -490,9 +482,9 @@ public abstract class BaseSearchEvaluator
     }
     
     private boolean allFieldsKnown() {
-        IndexType indexType = index.getLastDetail().getIndexType();
-        boolean result = true;
-        String[] fieldsToCheck = fields == null ? new String[] { field } : fields;
+        var indexType = index.getLastDetail().getIndexType();
+        var result = true;
+        var fieldsToCheck = fields == null ? new String[] { field } : fields;
         
         for(var fieldToCheck : fieldsToCheck) {
             if(getIndexControl().getIndexFieldByName(indexType, fieldToCheck) == null) {

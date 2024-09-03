@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetApplicationChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetApplicationChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +60,9 @@ public class GetApplicationChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetApplicationChoicesResult result = CoreResultFactory.getGetApplicationChoicesResult();
-        String defaultApplicationChoice = form.getDefaultApplicationChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetApplicationChoicesResult();
+        var defaultApplicationChoice = form.getDefaultApplicationChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setApplicationChoices(coreControl.getApplicationChoices(defaultApplicationChoice, getPreferredLanguage(), allowNullChoice));
         

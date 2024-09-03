@@ -35,11 +35,10 @@ public class GeoPointUtils {
 
     public String formatDegrees(Integer degrees) {
         int rawDegrees = degrees;
-        int i = IntMath.pow(10, 6);
-        StringBuilder builtResult = new StringBuilder().append(rawDegrees / i).append(".");
-        StringBuilder formatString = new StringBuilder().append("%0").append(6).append("d");
+        var i = IntMath.pow(10, 6);
+        var builtResult = new StringBuilder().append(rawDegrees / i).append(".");
 
-        return new Formatter(builtResult).format(formatString.toString(), Math.abs(rawDegrees) % i).toString();
+        return new Formatter(builtResult).format("%0" + 6 + "d", Math.abs(rawDegrees) % i).toString();
     }
     
 }

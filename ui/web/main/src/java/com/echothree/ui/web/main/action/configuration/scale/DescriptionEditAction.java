@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.edit.ScaleDescriptionEdit;
-import com.echothree.control.user.scale.common.form.EditScaleDescriptionForm;
 import com.echothree.control.user.scale.common.result.EditScaleDescriptionResult;
-import com.echothree.control.user.scale.common.spec.ScaleDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditScaleDescriptionForm commandForm = ScaleUtil.getHome().getEditScaleDescriptionForm();
-                ScaleDescriptionSpec spec = ScaleUtil.getHome().getScaleDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = ScaleUtil.getHome().getEditScaleDescriptionForm();
+                var spec = ScaleUtil.getHome().getScaleDescriptionSpec();
                 
                 if(scaleName == null)
                     scaleName = actionForm.getScaleName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    ScaleDescriptionEdit edit = ScaleUtil.getHome().getScaleDescriptionEdit();
+                    var edit = ScaleUtil.getHome().getScaleDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ScaleUtil.getHome().editScaleDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ScaleUtil.getHome().editScaleDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditScaleDescriptionResult result = (EditScaleDescriptionResult)executionResult.getResult();
+                            var result = (EditScaleDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ScaleUtil.getHome().editScaleDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditScaleDescriptionResult result = (EditScaleDescriptionResult)executionResult.getResult();
+
+                    var commandResult = ScaleUtil.getHome().editScaleDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditScaleDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ScaleDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setScaleName(scaleName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SCALE_NAME, scaleName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

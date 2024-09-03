@@ -37,40 +37,24 @@ import com.echothree.model.control.printer.common.transfer.PrinterTransfer;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
-import com.echothree.model.control.printer.server.transfer.PartyPrinterGroupUseTransferCache;
-import com.echothree.model.control.printer.server.transfer.PrinterDescriptionTransferCache;
-import com.echothree.model.control.printer.server.transfer.PrinterGroupDescriptionTransferCache;
-import com.echothree.model.control.printer.server.transfer.PrinterGroupJobTransferCache;
-import com.echothree.model.control.printer.server.transfer.PrinterGroupTransferCache;
-import com.echothree.model.control.printer.server.transfer.PrinterGroupUseTypeDescriptionTransferCache;
-import com.echothree.model.control.printer.server.transfer.PrinterGroupUseTypeTransferCache;
-import com.echothree.model.control.printer.server.transfer.PrinterTransferCache;
 import com.echothree.model.control.printer.server.transfer.PrinterTransferCaches;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.document.common.pk.DocumentPK;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.printer.common.pk.PrinterGroupJobPK;
-import com.echothree.model.data.printer.common.pk.PrinterGroupPK;
-import com.echothree.model.data.printer.common.pk.PrinterGroupUseTypePK;
-import com.echothree.model.data.printer.common.pk.PrinterPK;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.printer.server.entity.PrinterDescription;
-import com.echothree.model.data.printer.server.entity.PrinterDetail;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.printer.server.entity.PrinterGroupDescription;
-import com.echothree.model.data.printer.server.entity.PrinterGroupDetail;
 import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
-import com.echothree.model.data.printer.server.entity.PrinterGroupJobDetail;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDescription;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDetail;
 import com.echothree.model.data.printer.server.factory.PartyPrinterGroupUseFactory;
 import com.echothree.model.data.printer.server.factory.PrinterDescriptionFactory;
 import com.echothree.model.data.printer.server.factory.PrinterDetailFactory;
@@ -91,10 +75,7 @@ import com.echothree.model.data.printer.server.value.PrinterGroupDetailValue;
 import com.echothree.model.data.printer.server.value.PrinterGroupJobDetailValue;
 import com.echothree.model.data.printer.server.value.PrinterGroupUseTypeDescriptionValue;
 import com.echothree.model.data.printer.server.value.PrinterGroupUseTypeDetailValue;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -106,7 +87,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -138,11 +118,11 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     public PrinterGroup createPrinterGroup(String printerGroupName, Long keepPrintedJobsTime, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PrinterGroup defaultPrinterGroup = getDefaultPrinterGroup();
-        boolean defaultFound = defaultPrinterGroup != null;
+        var defaultPrinterGroup = getDefaultPrinterGroup();
+        var defaultFound = defaultPrinterGroup != null;
 
         if(defaultFound && isDefault) {
-            PrinterGroupDetailValue defaultPrinterGroupDetailValue = getDefaultPrinterGroupDetailValueForUpdate();
+            var defaultPrinterGroupDetailValue = getDefaultPrinterGroupDetailValueForUpdate();
 
             defaultPrinterGroupDetailValue.setIsDefault(Boolean.FALSE);
             updatePrinterGroupFromValue(defaultPrinterGroupDetailValue, false, createdBy);
@@ -150,8 +130,8 @@ public class PrinterControl
             isDefault = Boolean.TRUE;
         }
 
-        PrinterGroup printerGroup = PrinterGroupFactory.getInstance().create();
-        PrinterGroupDetail printerGroupDetail = PrinterGroupDetailFactory.getInstance().create(printerGroup, printerGroupName, keepPrintedJobsTime, isDefault,
+        var printerGroup = PrinterGroupFactory.getInstance().create();
+        var printerGroupDetail = PrinterGroupDetailFactory.getInstance().create(printerGroup, printerGroupName, keepPrintedJobsTime, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -277,7 +257,7 @@ public class PrinterControl
 
     public List<PrinterGroupTransfer> getPrinterGroupTransfers(UserVisit userVisit, Collection<PrinterGroup> printerGroups) {
         List<PrinterGroupTransfer> printerGroupTransfers = new ArrayList<>(printerGroups.size());
-        PrinterGroupTransferCache printerGroupTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupTransferCache();
+        var printerGroupTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupTransferCache();
 
         printerGroups.forEach((printerGroup) ->
                 printerGroupTransfers.add(printerGroupTransferCache.getPrinterGroupTransfer(printerGroup))
@@ -291,7 +271,7 @@ public class PrinterControl
     }
 
     public PrinterGroupChoicesBean getPrinterGroupChoices(String defaultPrinterGroupChoice, Language language, boolean allowNullChoice) {
-        List<PrinterGroup> printerGroups = getPrinterGroups();
+        var printerGroups = getPrinterGroups();
         var size = printerGroups.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -307,7 +287,7 @@ public class PrinterControl
         }
 
         for(var printerGroup : printerGroups) {
-            PrinterGroupDetail printerGroupDetail = printerGroup.getLastDetail();
+            var printerGroupDetail = printerGroup.getLastDetail();
 
             var label = getBestPrinterGroupDescription(printerGroup, language);
             var value = printerGroupDetail.getPrinterGroupName();
@@ -327,26 +307,26 @@ public class PrinterControl
     private void updatePrinterGroupFromValue(PrinterGroupDetailValue printerGroupDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(printerGroupDetailValue.hasBeenModified()) {
-            PrinterGroup printerGroup = PrinterGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroup = PrinterGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      printerGroupDetailValue.getPrinterGroupPK());
-            PrinterGroupDetail printerGroupDetail = printerGroup.getActiveDetailForUpdate();
+            var printerGroupDetail = printerGroup.getActiveDetailForUpdate();
 
             printerGroupDetail.setThruTime(session.START_TIME_LONG);
             printerGroupDetail.store();
 
-            PrinterGroupPK printerGroupPK = printerGroupDetail.getPrinterGroupPK(); // Not updated
-            String printerGroupName = printerGroupDetailValue.getPrinterGroupName();
-            Long keepPrintedJobsTime = printerGroupDetailValue.getKeepPrintedJobsTime();
-            Boolean isDefault = printerGroupDetailValue.getIsDefault();
-            Integer sortOrder = printerGroupDetailValue.getSortOrder();
+            var printerGroupPK = printerGroupDetail.getPrinterGroupPK(); // Not updated
+            var printerGroupName = printerGroupDetailValue.getPrinterGroupName();
+            var keepPrintedJobsTime = printerGroupDetailValue.getKeepPrintedJobsTime();
+            var isDefault = printerGroupDetailValue.getIsDefault();
+            var sortOrder = printerGroupDetailValue.getSortOrder();
 
             if(checkDefault) {
-                PrinterGroup defaultPrinterGroup = getDefaultPrinterGroup();
-                boolean defaultFound = defaultPrinterGroup != null && !defaultPrinterGroup.equals(printerGroup);
+                var defaultPrinterGroup = getDefaultPrinterGroup();
+                var defaultFound = defaultPrinterGroup != null && !defaultPrinterGroup.equals(printerGroup);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PrinterGroupDetailValue defaultPrinterGroupDetailValue = getDefaultPrinterGroupDetailValueForUpdate();
+                    var defaultPrinterGroupDetailValue = getDefaultPrinterGroupDetailValueForUpdate();
 
                     defaultPrinterGroupDetailValue.setIsDefault(Boolean.FALSE);
                     updatePrinterGroupFromValue(defaultPrinterGroupDetailValue, false, updatedBy);
@@ -373,9 +353,9 @@ public class PrinterControl
     public PrinterGroupStatusChoicesBean getPrinterGroupStatusChoices(String defaultPrinterGroupStatusChoice, Language language, PrinterGroup printerGroup,
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PrinterGroupStatusChoicesBean printerGroupStatusChoicesBean = new PrinterGroupStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroup);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
+        var printerGroupStatusChoicesBean = new PrinterGroupStatusChoicesBean();
+        var entityInstance = getEntityInstanceByBaseEntity(printerGroup);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
                 entityInstance);
 
         workflowControl.getWorkflowDestinationChoices(printerGroupStatusChoicesBean, defaultPrinterGroupStatusChoice, language,
@@ -386,10 +366,10 @@ public class PrinterControl
 
     public void setPrinterGroupStatus(ExecutionErrorAccumulator eea, PrinterGroup printerGroup, String printerGroupStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroup);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(printerGroup);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = printerGroupStatusChoice == null? null:
+        var workflowDestination = printerGroupStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), printerGroupStatusChoice);
 
         if(workflowDestination != null || printerGroupStatusChoice == null) {
@@ -405,22 +385,22 @@ public class PrinterControl
         deletePartyPrinterGroupUsesByPrinterGroup(printerGroup, deletedBy);
         removePrinterGroupJobsByPrinterGroup(printerGroup);
 
-        PrinterGroupDetail printerGroupDetail = printerGroup.getLastDetailForUpdate();
+        var printerGroupDetail = printerGroup.getLastDetailForUpdate();
         printerGroupDetail.setThruTime(session.START_TIME_LONG);
         printerGroup.setActiveDetail(null);
         printerGroup.store();
 
         // Check for default, and pick one if necessary
-        PrinterGroup defaultPrinterGroup = getDefaultPrinterGroup();
+        var defaultPrinterGroup = getDefaultPrinterGroup();
         if(defaultPrinterGroup == null) {
-            List<PrinterGroup> printerGroups = getPrinterGroupsForUpdate();
+            var printerGroups = getPrinterGroupsForUpdate();
 
             if(!printerGroups.isEmpty()) {
-                Iterator<PrinterGroup> iter = printerGroups.iterator();
+                var iter = printerGroups.iterator();
                 if(iter.hasNext()) {
                     defaultPrinterGroup = iter.next();
                 }
-                PrinterGroupDetailValue printerGroupDetailValue = Objects.requireNonNull(defaultPrinterGroup).getLastDetailForUpdate().getPrinterGroupDetailValue().clone();
+                var printerGroupDetailValue = Objects.requireNonNull(defaultPrinterGroup).getLastDetailForUpdate().getPrinterGroupDetailValue().clone();
 
                 printerGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updatePrinterGroupFromValue(printerGroupDetailValue, false, deletedBy);
@@ -436,7 +416,7 @@ public class PrinterControl
 
     public PrinterGroupDescription createPrinterGroupDescription(PrinterGroup printerGroup,
             Language language, String description, BasePK createdBy) {
-        PrinterGroupDescription printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup,
+        var printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -518,7 +498,7 @@ public class PrinterControl
 
     public String getBestPrinterGroupDescription(PrinterGroup printerGroup, Language language) {
         String description;
-        PrinterGroupDescription printerGroupDescription = getPrinterGroupDescription(printerGroup, language);
+        var printerGroupDescription = getPrinterGroupDescription(printerGroup, language);
 
         if(printerGroupDescription == null && !language.getIsDefault()) {
             printerGroupDescription = getPrinterGroupDescription(printerGroup, getPartyControl().getDefaultLanguage());
@@ -538,9 +518,9 @@ public class PrinterControl
     }
 
     public List<PrinterGroupDescriptionTransfer> getPrinterGroupDescriptionTransfersByPrinterGroup(UserVisit userVisit, PrinterGroup printerGroup) {
-        List<PrinterGroupDescription> printerGroupDescriptions = getPrinterGroupDescriptionsByPrinterGroup(printerGroup);
+        var printerGroupDescriptions = getPrinterGroupDescriptionsByPrinterGroup(printerGroup);
         List<PrinterGroupDescriptionTransfer> printerGroupDescriptionTransfers = new ArrayList<>(printerGroupDescriptions.size());
-        PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupDescriptionTransferCache();
+        var printerGroupDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupDescriptionTransferCache();
 
         printerGroupDescriptions.forEach((printerGroupDescription) ->
                 printerGroupDescriptionTransfers.add(printerGroupDescriptionTransferCache.getPrinterGroupDescriptionTransfer(printerGroupDescription))
@@ -551,15 +531,15 @@ public class PrinterControl
 
     public void updatePrinterGroupDescriptionFromValue(PrinterGroupDescriptionValue printerGroupDescriptionValue, BasePK updatedBy) {
         if(printerGroupDescriptionValue.hasBeenModified()) {
-            PrinterGroupDescription printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     printerGroupDescriptionValue.getPrimaryKey());
 
             printerGroupDescription.setThruTime(session.START_TIME_LONG);
             printerGroupDescription.store();
 
-            PrinterGroup printerGroup = printerGroupDescription.getPrinterGroup();
-            Language language = printerGroupDescription.getLanguage();
-            String description = printerGroupDescriptionValue.getDescription();
+            var printerGroup = printerGroupDescription.getPrinterGroup();
+            var language = printerGroupDescription.getLanguage();
+            var description = printerGroupDescriptionValue.getDescription();
 
             printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -576,7 +556,7 @@ public class PrinterControl
     }
 
     public void deletePrinterGroupDescriptionsByPrinterGroup(PrinterGroup printerGroup, BasePK deletedBy) {
-        List<PrinterGroupDescription> printerGroupDescriptions = getPrinterGroupDescriptionsByPrinterGroupForUpdate(printerGroup);
+        var printerGroupDescriptions = getPrinterGroupDescriptionsByPrinterGroupForUpdate(printerGroup);
 
         printerGroupDescriptions.forEach((printerGroupDescription) -> 
                 deletePrinterGroupDescription(printerGroupDescription, deletedBy)
@@ -588,8 +568,8 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     public Printer createPrinter(String printerName, PrinterGroup printerGroup, Integer priority, BasePK createdBy) {
-        Printer printer = PrinterFactory.getInstance().create();
-        PrinterDetail printerDetail = PrinterDetailFactory.getInstance().create(printer, printerName, printerGroup, priority, session.START_TIME_LONG,
+        var printer = PrinterFactory.getInstance().create();
+        var printerDetail = PrinterDetailFactory.getInstance().create(printer, printerName, printerGroup, priority, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -757,7 +737,7 @@ public class PrinterControl
 
     public List<PrinterTransfer> getPrinterTransfers(UserVisit userVisit, Collection<Printer> printers) {
         List<PrinterTransfer> printerTransfers = new ArrayList<>(printers.size());
-        PrinterTransferCache printerTransferCache = getPrinterTransferCaches(userVisit).getPrinterTransferCache();
+        var printerTransferCache = getPrinterTransferCaches(userVisit).getPrinterTransferCache();
 
         printers.forEach((printer) ->
                 printerTransfers.add(printerTransferCache.getPrinterTransfer(printer))
@@ -776,16 +756,16 @@ public class PrinterControl
 
     public void updatePrinterFromValue(PrinterDetailValue printerDetailValue, BasePK updatedBy) {
         if(printerDetailValue.hasBeenModified()) {
-            Printer printer = PrinterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, printerDetailValue.getPrinterPK());
-            PrinterDetail printerDetail = printer.getActiveDetailForUpdate();
+            var printer = PrinterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, printerDetailValue.getPrinterPK());
+            var printerDetail = printer.getActiveDetailForUpdate();
 
             printerDetail.setThruTime(session.START_TIME_LONG);
             printerDetail.store();
 
-            PrinterPK printerPK = printerDetail.getPrinterPK(); // Not updated
-            String printerName = printerDetailValue.getPrinterName();
-            PrinterGroupPK printerGroupPK = printerDetailValue.getPrinterGroupPK();
-            Integer priority = printerDetailValue.getPriority();
+            var printerPK = printerDetail.getPrinterPK(); // Not updated
+            var printerName = printerDetailValue.getPrinterName();
+            var printerGroupPK = printerDetailValue.getPrinterGroupPK();
+            var priority = printerDetailValue.getPriority();
 
             printerDetail = PrinterDetailFactory.getInstance().create(printerPK, printerName, printerGroupPK, priority, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -799,9 +779,9 @@ public class PrinterControl
 
     public PrinterStatusChoicesBean getPrinterStatusChoices(String defaultPrinterStatusChoice, Language language, Printer printer, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PrinterStatusChoicesBean printerStatusChoicesBean = new PrinterStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(printer);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
+        var printerStatusChoicesBean = new PrinterStatusChoicesBean();
+        var entityInstance = getEntityInstanceByBaseEntity(printer);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
                 entityInstance);
 
         workflowControl.getWorkflowDestinationChoices(printerStatusChoicesBean, defaultPrinterStatusChoice, language,
@@ -812,10 +792,10 @@ public class PrinterControl
 
     public void setPrinterStatus(ExecutionErrorAccumulator eea, Printer printer, String printerStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(printer);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(printer);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = printerStatusChoice == null? null:
+        var workflowDestination = printerStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), printerStatusChoice);
 
         if(workflowDestination != null || printerStatusChoice == null) {
@@ -828,7 +808,7 @@ public class PrinterControl
     public void deletePrinter(Printer printer, BasePK deletedBy) {
         deletePrinterDescriptionsByPrinter(printer, deletedBy);
 
-        PrinterDetail printerDetail = printer.getLastDetailForUpdate();
+        var printerDetail = printer.getLastDetailForUpdate();
         printerDetail.setThruTime(session.START_TIME_LONG);
         printer.setActiveDetail(null);
         printer.store();
@@ -851,7 +831,7 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     public PrinterDescription createPrinterDescription(Printer printer, Language language, String description, BasePK createdBy) {
-        PrinterDescription printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description, session.START_TIME_LONG,
+        var printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -933,7 +913,7 @@ public class PrinterControl
 
     public String getBestPrinterDescription(Printer printer, Language language) {
         String description;
-        PrinterDescription printerDescription = getPrinterDescription(printer, language);
+        var printerDescription = getPrinterDescription(printer, language);
 
         if(printerDescription == null && !language.getIsDefault()) {
             printerDescription = getPrinterDescription(printer, getPartyControl().getDefaultLanguage());
@@ -953,9 +933,9 @@ public class PrinterControl
     }
 
     public List<PrinterDescriptionTransfer> getPrinterDescriptionTransfersByPrinter(UserVisit userVisit, Printer printer) {
-        List<PrinterDescription> printerDescriptions = getPrinterDescriptionsByPrinter(printer);
+        var printerDescriptions = getPrinterDescriptionsByPrinter(printer);
         List<PrinterDescriptionTransfer> printerDescriptionTransfers = new ArrayList<>(printerDescriptions.size());
-        PrinterDescriptionTransferCache printerDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterDescriptionTransferCache();
+        var printerDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterDescriptionTransferCache();
 
         printerDescriptions.forEach((printerDescription) ->
                 printerDescriptionTransfers.add(printerDescriptionTransferCache.getPrinterDescriptionTransfer(printerDescription))
@@ -966,15 +946,15 @@ public class PrinterControl
 
     public void updatePrinterDescriptionFromValue(PrinterDescriptionValue printerDescriptionValue, BasePK updatedBy) {
         if(printerDescriptionValue.hasBeenModified()) {
-            PrinterDescription printerDescription = PrinterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerDescription = PrinterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     printerDescriptionValue.getPrimaryKey());
 
             printerDescription.setThruTime(session.START_TIME_LONG);
             printerDescription.store();
 
-            Printer printer = printerDescription.getPrinter();
-            Language language = printerDescription.getLanguage();
-            String description = printerDescriptionValue.getDescription();
+            var printer = printerDescription.getPrinter();
+            var language = printerDescription.getLanguage();
+            var description = printerDescriptionValue.getDescription();
 
             printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -990,7 +970,7 @@ public class PrinterControl
     }
 
     public void deletePrinterDescriptionsByPrinter(Printer printer, BasePK deletedBy) {
-        List<PrinterDescription> printerDescriptions = getPrinterDescriptionsByPrinterForUpdate(printer);
+        var printerDescriptions = getPrinterDescriptionsByPrinterForUpdate(printer);
 
         printerDescriptions.forEach((printerDescription) -> 
                 deletePrinterDescription(printerDescription, deletedBy)
@@ -1003,16 +983,16 @@ public class PrinterControl
 
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
-        String printerGroupJobName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
+        var printerGroupJobName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createPrinterGroupJob(printerGroupJobName, printerGroup, document, copies, priority, createdBy);
     }
 
     public PrinterGroupJob createPrinterGroupJob(String printerGroupJobName, PrinterGroup printerGroup, Document document, Integer copies, Integer priority,
             BasePK createdBy) {
-        PrinterGroupJob printerGroupJob = PrinterGroupJobFactory.getInstance().create();
-        PrinterGroupJobDetail printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJob, printerGroupJobName, printerGroup,
+        var printerGroupJob = PrinterGroupJobFactory.getInstance().create();
+        var printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJob, printerGroupJobName, printerGroup,
                 document, copies, priority, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1029,8 +1009,8 @@ public class PrinterControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroupJob */
     public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
-        PrinterGroupJobPK pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
-        PrinterGroupJob printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
+        var printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return printerGroupJob;
     }
@@ -1251,7 +1231,7 @@ public class PrinterControl
 
     public List<PrinterGroupJobTransfer> getPrinterGroupJobTransfers(UserVisit userVisit, Collection<PrinterGroupJob> printerGroupJobs) {
         List<PrinterGroupJobTransfer> printerGroupJobTransfers = new ArrayList<>(printerGroupJobs.size());
-        PrinterGroupJobTransferCache printerGroupJobTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupJobTransferCache();
+        var printerGroupJobTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupJobTransferCache();
 
         printerGroupJobs.forEach((printerGroupJob) ->
                 printerGroupJobTransfers.add(printerGroupJobTransferCache.getPrinterGroupJobTransfer(printerGroupJob))
@@ -1274,19 +1254,19 @@ public class PrinterControl
 
     public void updatePrinterGroupJobFromValue(PrinterGroupJobDetailValue printerGroupJobDetailValue, BasePK updatedBy) {
         if(printerGroupJobDetailValue.hasBeenModified()) {
-            PrinterGroupJob printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      printerGroupJobDetailValue.getPrinterGroupJobPK());
-            PrinterGroupJobDetail printerGroupJobDetail = printerGroupJob.getActiveDetailForUpdate();
+            var printerGroupJobDetail = printerGroupJob.getActiveDetailForUpdate();
 
             printerGroupJobDetail.setThruTime(session.START_TIME_LONG);
             printerGroupJobDetail.store();
 
-            PrinterGroupJobPK printerGroupJobPK = printerGroupJobDetail.getPrinterGroupJobPK(); // Not updated
-            String printerGroupJobName = printerGroupJobDetailValue.getPrinterGroupJobName();
-            PrinterGroupPK printerGroupPK = printerGroupJobDetailValue.getPrinterGroupPK();
-            DocumentPK documentPK = printerGroupJobDetail.getDocumentPK(); // Not updated
-            Integer copies = printerGroupJobDetailValue.getCopies();
-            Integer priority = printerGroupJobDetailValue.getPriority();
+            var printerGroupJobPK = printerGroupJobDetail.getPrinterGroupJobPK(); // Not updated
+            var printerGroupJobName = printerGroupJobDetailValue.getPrinterGroupJobName();
+            var printerGroupPK = printerGroupJobDetailValue.getPrinterGroupPK();
+            var documentPK = printerGroupJobDetail.getDocumentPK(); // Not updated
+            var copies = printerGroupJobDetailValue.getCopies();
+            var priority = printerGroupJobDetailValue.getPriority();
 
             printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJobPK, printerGroupJobName, printerGroupPK, documentPK,
                     copies, priority, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1301,9 +1281,9 @@ public class PrinterControl
     public PrinterGroupJobStatusChoicesBean getPrinterGroupJobStatusChoices(String defaultPrinterGroupJobStatusChoice, Language language,
             PrinterGroupJob printerGroupJob, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PrinterGroupJobStatusChoicesBean printerGroupJobStatusChoicesBean = new PrinterGroupJobStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS,
+        var printerGroupJobStatusChoicesBean = new PrinterGroupJobStatusChoicesBean();
+        var entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS,
                 entityInstance);
 
         workflowControl.getWorkflowDestinationChoices(printerGroupJobStatusChoicesBean, defaultPrinterGroupJobStatusChoice, language,
@@ -1314,21 +1294,21 @@ public class PrinterControl
 
     public void setPrinterGroupJobStatus(ExecutionErrorAccumulator eea, PrinterGroupJob printerGroupJob, String printerGroupJobStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
-        WorkflowDestination workflowDestination = printerGroupJobStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), printerGroupJobStatusChoice);
+        var entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
+        var workflowDestination = printerGroupJobStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), printerGroupJobStatusChoice);
 
         if(workflowDestination != null || printerGroupJobStatusChoice == null) {
             Long triggerTime = null;
 
             if(workflowDestination != null) {
-                String workflowDestinationName = workflowDestination.getLastDetail().getWorkflowDestinationName();
+                var workflowDestinationName = workflowDestination.getLastDetail().getWorkflowDestinationName();
 
                 if(workflowDestinationName.equals(PrinterGroupJobStatusConstants.WorkflowDestination_QUEUED_TO_PRINTED)
                         || workflowDestinationName.equals(PrinterGroupJobStatusConstants.WorkflowDestination_QUEUED_TO_DELETED)
                         || workflowDestinationName.equals(PrinterGroupJobStatusConstants.WorkflowDestination_PRINTED_TO_DELETED)
                         || workflowDestinationName.equals(PrinterGroupJobStatusConstants.WorkflowDestination_ERRORED_TO_DELETED)) {
-                    Long keepPrintedJobsTime = printerGroupJob.getLastDetail().getPrinterGroup().getLastDetail().getKeepPrintedJobsTime();
+                    var keepPrintedJobsTime = printerGroupJob.getLastDetail().getPrinterGroup().getLastDetail().getKeepPrintedJobsTime();
 
                     if(keepPrintedJobsTime != null) {
                         triggerTime = session.START_TIME_LONG + keepPrintedJobsTime;
@@ -1344,7 +1324,7 @@ public class PrinterControl
 
     public void deletePrinterGroupJob(PrinterGroupJob printerGroupJob, BasePK deletedBy) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        PrinterGroupJobDetail printerGroupJobDetail = printerGroupJob.getLastDetailForUpdate();
+        var printerGroupJobDetail = printerGroupJob.getLastDetailForUpdate();
 
         documentControl.deleteDocument(printerGroupJobDetail.getDocumentForUpdate(), deletedBy);
 
@@ -1389,11 +1369,11 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     public PrinterGroupUseType createPrinterGroupUseType(String printerGroupUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PrinterGroupUseType defaultPrinterGroupUseType = getDefaultPrinterGroupUseType();
-        boolean defaultFound = defaultPrinterGroupUseType != null;
+        var defaultPrinterGroupUseType = getDefaultPrinterGroupUseType();
+        var defaultFound = defaultPrinterGroupUseType != null;
 
         if(defaultFound && isDefault) {
-            PrinterGroupUseTypeDetailValue defaultPrinterGroupUseTypeDetailValue = getDefaultPrinterGroupUseTypeDetailValueForUpdate();
+            var defaultPrinterGroupUseTypeDetailValue = getDefaultPrinterGroupUseTypeDetailValueForUpdate();
 
             defaultPrinterGroupUseTypeDetailValue.setIsDefault(Boolean.FALSE);
             updatePrinterGroupUseTypeFromValue(defaultPrinterGroupUseTypeDetailValue, false, createdBy);
@@ -1401,8 +1381,8 @@ public class PrinterControl
             isDefault = Boolean.TRUE;
         }
 
-        PrinterGroupUseType printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().create();
-        PrinterGroupUseTypeDetail printerGroupUseTypeDetail = PrinterGroupUseTypeDetailFactory.getInstance().create(printerGroupUseType,
+        var printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().create();
+        var printerGroupUseTypeDetail = PrinterGroupUseTypeDetailFactory.getInstance().create(printerGroupUseType,
                 printerGroupUseTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1528,7 +1508,7 @@ public class PrinterControl
 
     public List<PrinterGroupUseTypeTransfer> getPrinterGroupUseTypeTransfers(UserVisit userVisit, Collection<PrinterGroupUseType> printerGroupUseTypes) {
         List<PrinterGroupUseTypeTransfer> printerGroupUseTypeTransfers = new ArrayList<>(printerGroupUseTypes.size());
-        PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeTransferCache();
+        var printerGroupUseTypeTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeTransferCache();
 
         printerGroupUseTypes.forEach((printerGroupUseType) ->
                 printerGroupUseTypeTransfers.add(printerGroupUseTypeTransferCache.getPrinterGroupUseTypeTransfer(printerGroupUseType))
@@ -1542,7 +1522,7 @@ public class PrinterControl
     }
 
     public PrinterGroupUseTypeChoicesBean getPrinterGroupUseTypeChoices(String defaultPrinterGroupUseTypeChoice, Language language, boolean allowNullChoice) {
-        List<PrinterGroupUseType> printerGroupUseTypes = getPrinterGroupUseTypes();
+        var printerGroupUseTypes = getPrinterGroupUseTypes();
         var size = printerGroupUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1558,7 +1538,7 @@ public class PrinterControl
         }
 
         for(var printerGroupUseType : printerGroupUseTypes) {
-            PrinterGroupUseTypeDetail printerGroupUseTypeDetail = printerGroupUseType.getLastDetail();
+            var printerGroupUseTypeDetail = printerGroupUseType.getLastDetail();
 
             var label = getBestPrinterGroupUseTypeDescription(printerGroupUseType, language);
             var value = printerGroupUseTypeDetail.getPrinterGroupUseTypeName();
@@ -1578,25 +1558,25 @@ public class PrinterControl
     private void updatePrinterGroupUseTypeFromValue(PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(printerGroupUseTypeDetailValue.hasBeenModified()) {
-            PrinterGroupUseType printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      printerGroupUseTypeDetailValue.getPrinterGroupUseTypePK());
-            PrinterGroupUseTypeDetail printerGroupUseTypeDetail = printerGroupUseType.getActiveDetailForUpdate();
+            var printerGroupUseTypeDetail = printerGroupUseType.getActiveDetailForUpdate();
 
             printerGroupUseTypeDetail.setThruTime(session.START_TIME_LONG);
             printerGroupUseTypeDetail.store();
 
-            PrinterGroupUseTypePK printerGroupUseTypePK = printerGroupUseTypeDetail.getPrinterGroupUseTypePK(); // Not updated
-            String printerGroupUseTypeName = printerGroupUseTypeDetailValue.getPrinterGroupUseTypeName();
-            Boolean isDefault = printerGroupUseTypeDetailValue.getIsDefault();
-            Integer sortOrder = printerGroupUseTypeDetailValue.getSortOrder();
+            var printerGroupUseTypePK = printerGroupUseTypeDetail.getPrinterGroupUseTypePK(); // Not updated
+            var printerGroupUseTypeName = printerGroupUseTypeDetailValue.getPrinterGroupUseTypeName();
+            var isDefault = printerGroupUseTypeDetailValue.getIsDefault();
+            var sortOrder = printerGroupUseTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                PrinterGroupUseType defaultPrinterGroupUseType = getDefaultPrinterGroupUseType();
-                boolean defaultFound = defaultPrinterGroupUseType != null && !defaultPrinterGroupUseType.equals(printerGroupUseType);
+                var defaultPrinterGroupUseType = getDefaultPrinterGroupUseType();
+                var defaultFound = defaultPrinterGroupUseType != null && !defaultPrinterGroupUseType.equals(printerGroupUseType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PrinterGroupUseTypeDetailValue defaultPrinterGroupUseTypeDetailValue = getDefaultPrinterGroupUseTypeDetailValueForUpdate();
+                    var defaultPrinterGroupUseTypeDetailValue = getDefaultPrinterGroupUseTypeDetailValueForUpdate();
 
                     defaultPrinterGroupUseTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updatePrinterGroupUseTypeFromValue(defaultPrinterGroupUseTypeDetailValue, false, updatedBy);
@@ -1624,22 +1604,22 @@ public class PrinterControl
         deletePrinterGroupUseTypeDescriptionsByPrinterGroupUseType(printerGroupUseType, deletedBy);
         deletePartyPrinterGroupUsesByPrinterGroupUseType(printerGroupUseType, deletedBy);
 
-        PrinterGroupUseTypeDetail printerGroupUseTypeDetail = printerGroupUseType.getLastDetailForUpdate();
+        var printerGroupUseTypeDetail = printerGroupUseType.getLastDetailForUpdate();
         printerGroupUseTypeDetail.setThruTime(session.START_TIME_LONG);
         printerGroupUseType.setActiveDetail(null);
         printerGroupUseType.store();
 
         // Check for default, and pick one if necessary
-        PrinterGroupUseType defaultPrinterGroupUseType = getDefaultPrinterGroupUseType();
+        var defaultPrinterGroupUseType = getDefaultPrinterGroupUseType();
         if(defaultPrinterGroupUseType == null) {
-            List<PrinterGroupUseType> printerGroupUseTypes = getPrinterGroupUseTypesForUpdate();
+            var printerGroupUseTypes = getPrinterGroupUseTypesForUpdate();
 
             if(!printerGroupUseTypes.isEmpty()) {
-                Iterator<PrinterGroupUseType> iter = printerGroupUseTypes.iterator();
+                var iter = printerGroupUseTypes.iterator();
                 if(iter.hasNext()) {
                     defaultPrinterGroupUseType = iter.next();
                 }
-                PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = Objects.requireNonNull(defaultPrinterGroupUseType).getLastDetailForUpdate().getPrinterGroupUseTypeDetailValue().clone();
+                var printerGroupUseTypeDetailValue = Objects.requireNonNull(defaultPrinterGroupUseType).getLastDetailForUpdate().getPrinterGroupUseTypeDetailValue().clone();
 
                 printerGroupUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePrinterGroupUseTypeFromValue(printerGroupUseTypeDetailValue, false, deletedBy);
@@ -1655,7 +1635,7 @@ public class PrinterControl
 
     public PrinterGroupUseTypeDescription createPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType,
             Language language, String description, BasePK createdBy) {
-        PrinterGroupUseTypeDescription printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType,
+        var printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1737,7 +1717,7 @@ public class PrinterControl
 
     public String getBestPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType, Language language) {
         String description;
-        PrinterGroupUseTypeDescription printerGroupUseTypeDescription = getPrinterGroupUseTypeDescription(printerGroupUseType, language);
+        var printerGroupUseTypeDescription = getPrinterGroupUseTypeDescription(printerGroupUseType, language);
 
         if(printerGroupUseTypeDescription == null && !language.getIsDefault()) {
             printerGroupUseTypeDescription = getPrinterGroupUseTypeDescription(printerGroupUseType, getPartyControl().getDefaultLanguage());
@@ -1757,9 +1737,9 @@ public class PrinterControl
     }
 
     public List<PrinterGroupUseTypeDescriptionTransfer> getPrinterGroupUseTypeDescriptionTransfersByPrinterGroupUseType(UserVisit userVisit, PrinterGroupUseType printerGroupUseType) {
-        List<PrinterGroupUseTypeDescription> printerGroupUseTypeDescriptions = getPrinterGroupUseTypeDescriptionsByPrinterGroupUseType(printerGroupUseType);
+        var printerGroupUseTypeDescriptions = getPrinterGroupUseTypeDescriptionsByPrinterGroupUseType(printerGroupUseType);
         List<PrinterGroupUseTypeDescriptionTransfer> printerGroupUseTypeDescriptionTransfers = new ArrayList<>(printerGroupUseTypeDescriptions.size());
-        PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeDescriptionTransferCache();
+        var printerGroupUseTypeDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeDescriptionTransferCache();
 
         printerGroupUseTypeDescriptions.forEach((printerGroupUseTypeDescription) ->
                 printerGroupUseTypeDescriptionTransfers.add(printerGroupUseTypeDescriptionTransferCache.getPrinterGroupUseTypeDescriptionTransfer(printerGroupUseTypeDescription))
@@ -1770,15 +1750,15 @@ public class PrinterControl
 
     public void updatePrinterGroupUseTypeDescriptionFromValue(PrinterGroupUseTypeDescriptionValue printerGroupUseTypeDescriptionValue, BasePK updatedBy) {
         if(printerGroupUseTypeDescriptionValue.hasBeenModified()) {
-            PrinterGroupUseTypeDescription printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     printerGroupUseTypeDescriptionValue.getPrimaryKey());
 
             printerGroupUseTypeDescription.setThruTime(session.START_TIME_LONG);
             printerGroupUseTypeDescription.store();
 
-            PrinterGroupUseType printerGroupUseType = printerGroupUseTypeDescription.getPrinterGroupUseType();
-            Language language = printerGroupUseTypeDescription.getLanguage();
-            String description = printerGroupUseTypeDescriptionValue.getDescription();
+            var printerGroupUseType = printerGroupUseTypeDescription.getPrinterGroupUseType();
+            var language = printerGroupUseTypeDescription.getLanguage();
+            var description = printerGroupUseTypeDescriptionValue.getDescription();
 
             printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1795,7 +1775,7 @@ public class PrinterControl
     }
 
     public void deletePrinterGroupUseTypeDescriptionsByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType, BasePK deletedBy) {
-        List<PrinterGroupUseTypeDescription> printerGroupUseTypeDescriptions = getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeForUpdate(printerGroupUseType);
+        var printerGroupUseTypeDescriptions = getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeForUpdate(printerGroupUseType);
 
         printerGroupUseTypeDescriptions.forEach((printerGroupUseTypeDescription) -> 
                 deletePrinterGroupUseTypeDescription(printerGroupUseTypeDescription, deletedBy)
@@ -1807,7 +1787,7 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
     
     public PartyPrinterGroupUse createPartyPrinterGroupUse(Party party, PrinterGroupUseType printerGroupUseType, PrinterGroup printerGroup, BasePK createdBy) {
-        PartyPrinterGroupUse partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(party, printerGroupUseType, printerGroup,
+        var partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(party, printerGroupUseType, printerGroup,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1845,7 +1825,7 @@ public class PrinterControl
     }
 
     public PartyPrinterGroupUse getPartyPrinterGroupUseUsingNames(Party party, String printerGroupUseTypeName) {
-        PrinterGroupUseType printerGroupUseType = getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+        var printerGroupUseType = getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         PartyPrinterGroupUse partyPrinterGroupUse = null;
 
         if(printerGroupUseType != null) {
@@ -1972,7 +1952,7 @@ public class PrinterControl
 
     public List<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUseTransfers(UserVisit userVisit, Collection<PartyPrinterGroupUse> partyPrinterGroupUses) {
         List<PartyPrinterGroupUseTransfer> partyPrinterGroupUseTransfers = new ArrayList<>(partyPrinterGroupUses.size());
-        PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache = getPrinterTransferCaches(userVisit).getPartyPrinterGroupUseTransferCache();
+        var partyPrinterGroupUseTransferCache = getPrinterTransferCaches(userVisit).getPartyPrinterGroupUseTransferCache();
 
         partyPrinterGroupUses.forEach((partyPrinterGroupUse) ->
                 partyPrinterGroupUseTransfers.add(partyPrinterGroupUseTransferCache.getPartyPrinterGroupUseTransfer(partyPrinterGroupUse))
@@ -1987,15 +1967,15 @@ public class PrinterControl
 
     public void updatePartyPrinterGroupUseFromValue(PartyPrinterGroupUseValue partyPrinterGroupUseValue, BasePK updatedBy) {
         if(partyPrinterGroupUseValue.hasBeenModified()) {
-            PartyPrinterGroupUse partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyPrinterGroupUseValue.getPrimaryKey());
             
             partyPrinterGroupUse.setThruTime(session.START_TIME_LONG);
             partyPrinterGroupUse.store();
-            
-            PartyPK partyPK = partyPrinterGroupUse.getPartyPK(); // Not updated
-            PrinterGroupUseTypePK printerGroupUseTypePK = partyPrinterGroupUse.getPrinterGroupUseTypePK(); // Not updated
-            PrinterGroupPK printerGroupPK = partyPrinterGroupUseValue.getPrinterGroupPK();
+
+            var partyPK = partyPrinterGroupUse.getPartyPK(); // Not updated
+            var printerGroupUseTypePK = partyPrinterGroupUse.getPrinterGroupUseTypePK(); // Not updated
+            var printerGroupPK = partyPrinterGroupUseValue.getPrinterGroupPK();
             
             partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(partyPK, printerGroupUseTypePK,
                     printerGroupPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);

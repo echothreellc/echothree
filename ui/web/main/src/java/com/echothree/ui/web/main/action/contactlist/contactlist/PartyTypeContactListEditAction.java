@@ -51,7 +51,7 @@ public class PartyTypeContactListEditAction
     @Override
     protected PartyTypeContactListSpec getSpec(HttpServletRequest request, PartyTypeContactListEditActionForm actionForm)
             throws NamingException {
-        PartyTypeContactListSpec spec = ContactListUtil.getHome().getPartyTypeContactListSpec();
+        var spec = ContactListUtil.getHome().getPartyTypeContactListSpec();
         
         spec.setContactListName(findParameter(request, ParameterConstants.CONTACT_LIST_NAME, actionForm.getContactListName()));
         spec.setPartyTypeName(findParameter(request, ParameterConstants.PARTY_TYPE_NAME, actionForm.getPartyTypeName()));
@@ -62,7 +62,7 @@ public class PartyTypeContactListEditAction
     @Override
     protected PartyTypeContactListEdit getEdit(HttpServletRequest request, PartyTypeContactListEditActionForm actionForm)
             throws NamingException {
-        PartyTypeContactListEdit edit = ContactListUtil.getHome().getPartyTypeContactListEdit();
+        var edit = ContactListUtil.getHome().getPartyTypeContactListEdit();
 
         edit.setAddWhenCreated(actionForm.getAddWhenCreated().toString());
 

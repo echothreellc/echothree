@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.source;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.CreateSourceForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSourceForm commandForm = OfferUtil.getHome().getCreateSourceForm();
+        var commandForm = OfferUtil.getHome().getCreateSourceForm();
 
         commandForm.setSourceName(actionForm.getSourceName());
         commandForm.setOfferName(actionForm.getOfferChoice());

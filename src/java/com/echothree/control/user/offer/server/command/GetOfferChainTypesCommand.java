@@ -17,19 +17,16 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferChainTypesForm;
-import com.echothree.control.user.offer.common.result.GetOfferChainTypesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferChainType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -76,9 +73,9 @@ public class GetOfferChainTypesCommand
     @Override
     protected Collection<OfferChainType> getEntities() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        String chainKindName = form.getChainKindName();
-        String chainTypeName = form.getChainTypeName();
+        var offerName = form.getOfferName();
+        var chainKindName = form.getChainKindName();
+        var chainTypeName = form.getChainTypeName();
         var parameterCount = (offerName != null ? 1 : 0) + (chainKindName != null && chainTypeName != null ? 1 : 0);
         Collection<OfferChainType> offerChainTypes = null;
         
@@ -93,7 +90,7 @@ public class GetOfferChainTypesCommand
                 }
             } else {
                 var chainControl = Session.getModelController(ChainControl.class);
-                ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+                var chainKind = chainControl.getChainKindByName(chainKindName);
                 
                 if(chainKind != null) {
                     chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
@@ -117,11 +114,11 @@ public class GetOfferChainTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<OfferChainType> entities) {
-        GetOfferChainTypesResult result = OfferResultFactory.getGetOfferChainTypesResult();
+        var result = OfferResultFactory.getGetOfferChainTypesResult();
 
         if(entities != null) {
             var offerControl = Session.getModelController(OfferControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
          
             if(offer != null) {
                 result.setOffer(offerControl.getOfferTransfer(userVisit, offer));

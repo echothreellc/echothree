@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyRelationshipsForm;
 import com.echothree.control.user.party.common.result.GetPartyRelationshipsResult;
 import com.echothree.model.control.party.common.PartyRelationshipTypes;
 import com.echothree.model.control.party.common.RoleTypes;
@@ -26,8 +25,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,16 +51,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String toPartyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        GetPartyRelationshipsForm commandForm = PartyUtil.getHome().getGetPartyRelationshipsForm();
+        var toPartyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = PartyUtil.getHome().getGetPartyRelationshipsForm();
 
         commandForm.setPartyRelationshipTypeName(PartyRelationshipTypes.EMPLOYMENT.name());
         commandForm.setToPartyName(toPartyName);
         commandForm.setToRoleTypeName(RoleTypes.EMPLOYEE.name());
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyRelationships(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyRelationshipsResult result = (GetPartyRelationshipsResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getPartyRelationships(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyRelationshipsResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), toPartyName, null));
         request.setAttribute(AttributeConstants.TO_PARTY, result.getToParty());

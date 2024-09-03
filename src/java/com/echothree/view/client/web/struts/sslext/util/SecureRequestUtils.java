@@ -77,10 +77,8 @@ import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import java.net.MalformedURLException;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -137,30 +135,30 @@ public class SecureRequestUtils {
      */
     public static String computeURL(PageContext pageContext, String forward, String href, String page, String action, Map params, String anchor, boolean redirect)
     throws MalformedURLException {
-        StringBuilder url = new StringBuilder(TagUtils.getInstance().computeURL(pageContext, forward, href, page, action, null, params, anchor, redirect));
-        HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+        var url = new StringBuilder(TagUtils.getInstance().computeURL(pageContext, forward, href, page, action, null, params, anchor, redirect));
+        var request = (HttpServletRequest)pageContext.getRequest();
         
         // Get the action servlet's context, we'll need it later
-        ServletContext servletContext = pageContext.getServletContext();
-        String contextPath = request.getContextPath();
-        SecurePlugInInterface securePlugin = (SecurePlugInInterface)servletContext.getAttribute(SecurePlugInInterface.SECURE_PLUGIN);
+        var servletContext = pageContext.getServletContext();
+        var contextPath = request.getContextPath();
+        var securePlugin = (SecurePlugInInterface)servletContext.getAttribute(SecurePlugInInterface.SECURE_PLUGIN);
         if(securePlugin.getSslExtEnable() && url.toString().startsWith(contextPath)) {
             
             // Initialize the scheme and ports we are using
-            String usingScheme = request.getScheme();
-            String usingPort = String.valueOf(request.getServerPort());
+            var usingScheme = request.getScheme();
+            var usingPort = String.valueOf(request.getServerPort());
             
             // Get the servlet context relative link URL
-            String linkString = url.toString().substring(contextPath.length());
+            var linkString = url.toString().substring(contextPath.length());
             
             // See if link references an action somewhere in our app
-            SecureActionMapping secureConfig = getActionConfig(pageContext, linkString);
+            var secureConfig = getActionConfig(pageContext, linkString);
             
             // If link is an action, find the desired port and scheme
             if(secureConfig != null && !SecureActionMapping.ANY.equalsIgnoreCase(secureConfig.getSecure())) {
-                
-                String desiredScheme = Boolean.valueOf(secureConfig.getSecure()) ? HTTPS : HTTP;
-                String desiredPort = Boolean.valueOf(secureConfig.getSecure()) ? securePlugin.getHttpsPort() : securePlugin.getHttpPort();
+
+                var desiredScheme = Boolean.valueOf(secureConfig.getSecure()) ? HTTPS : HTTP;
+                var desiredPort = Boolean.valueOf(secureConfig.getSecure()) ? securePlugin.getHttpsPort() : securePlugin.getHttpPort();
                 
                 // If scheme and port we are using do not match the ones we want
                 if((!desiredScheme.equals(usingScheme) || !desiredPort.equals(usingPort))) {
@@ -190,42 +188,42 @@ public class SecureRequestUtils {
      * @return The SecureActionMapping object entry for this action, or null if not found
      */
     private static SecureActionMapping getActionConfig(PageContext pageContext, String linkString) {
-        ModuleConfig moduleConfig = SecureRequestUtils.selectModule(linkString, pageContext);
+        var moduleConfig = SecureRequestUtils.selectModule(linkString, pageContext);
         
         // Strip off the subapp path, if any
         linkString = linkString.substring(moduleConfig.getPrefix().length());
         
         // Get all the servlet mappings for the ActionServlet, loop thru to find
         // the correct action being specified
-        ServletContext servletContext = pageContext.getServletContext();
-        SecurePlugInInterface spi = (SecurePlugInInterface)servletContext.getAttribute(SecurePlugInInterface.SECURE_PLUGIN);
-        Iterator mappingItr = spi.getServletMappings().iterator();
+        var servletContext = pageContext.getServletContext();
+        var spi = (SecurePlugInInterface)servletContext.getAttribute(SecurePlugInInterface.SECURE_PLUGIN);
+        var mappingItr = spi.getServletMappings().iterator();
         
         while(mappingItr.hasNext()) {
-            String servletMapping = (String) mappingItr.next();
-            
-            int starIndex = servletMapping != null ? servletMapping.indexOf('*') : -1;
+            var servletMapping = (String) mappingItr.next();
+
+            var starIndex = servletMapping != null ? servletMapping.indexOf('*') : -1;
             if(starIndex == -1) {
                 continue;
             }// No servlet mapping or no usable pattern defined, short circuit
-            
-            String prefix = servletMapping.substring(0, starIndex);
-            String suffix = servletMapping.substring(starIndex + 1);
+
+            var prefix = servletMapping.substring(0, starIndex);
+            var suffix = servletMapping.substring(starIndex + 1);
             
             // Strip off the jsessionid, if any
-            int jsession = linkString.indexOf(";jsessionid=");
+            var jsession = linkString.indexOf(";jsessionid=");
             if(jsession >= 0) {
                 linkString = linkString.substring(0, jsession);
             }
             
             // Strip off the anchor, if any
-            int anchor = linkString.indexOf('#');
+            var anchor = linkString.indexOf('#');
             if(anchor >= 0) {
                 linkString = linkString.substring(0, anchor);
             }
             
             // Strip off the query string, if any
-            int question = linkString.indexOf('?');
+            var question = linkString.indexOf('?');
             if(question >= 0) {
                 linkString = linkString.substring(0, question);
             }
@@ -241,8 +239,8 @@ public class SecureRequestUtils {
             if(!linkString.startsWith("/")) {
                 linkString = "/" + linkString;
             }
-            
-            SecureActionMapping secureConfig = (SecureActionMapping) moduleConfig.findActionConfig(linkString);
+
+            var secureConfig = (SecureActionMapping) moduleConfig.findActionConfig(linkString);
             
             return secureConfig;
         }
@@ -258,8 +256,8 @@ public class SecureRequestUtils {
      * @return The new URL as a StringBuilder
      */
     private static StringBuilder startNewUrlString(HttpServletRequest request, String desiredScheme, String desiredPort) {
-        StringBuilder url = new StringBuilder();
-        String serverName = request.getServerName();
+        var url = new StringBuilder();
+        var serverName = request.getServerName();
         
         url.append(desiredScheme).append("://").append(serverName);
         
@@ -277,7 +275,7 @@ public class SecureRequestUtils {
      * @return The created query string (with no leading "?")
      */
     public static String getRequestParameters(HttpServletRequest aRequest) {
-        Map m = getParameterMap(aRequest);
+        var m = getParameterMap(aRequest);
         
         return createQueryStringFromMap(m, "&").toString();
     }
@@ -289,17 +287,17 @@ public class SecureRequestUtils {
      * @return query string (with no leading "?")
      */
     public static StringBuilder createQueryStringFromMap(Map m, String ampersand) {
-        StringBuilder aReturn = new StringBuilder("");
-        Set aEntryS = m.entrySet();
+        var aReturn = new StringBuilder("");
+        var aEntryS = m.entrySet();
 
-        for(final Object entry : aEntryS) {
+        for(final var entry : aEntryS) {
             var aEntry = (Map.Entry)entry;
-            Object value = aEntry.getValue();
-            String[] aValues = new String[1];
+            var value = aEntry.getValue();
+            var aValues = new String[1];
             if(value == null) {
                 aValues[0] = "";
             } else if(value instanceof List) { // Work around for Weblogic 6.1sp1
-                List aList = (List)value;
+                var aList = (List)value;
                 aValues = (String[])aList.toArray(new String[aList.size()]);
             } else if(value instanceof String) {  // Single value from Struts tags
                 aValues[0] = (String)value;
@@ -323,7 +321,7 @@ public class SecureRequestUtils {
      * @return query string (with no leading "?")
      */
     private static StringBuilder append(Object key, Object value, StringBuilder queryString, String ampersand) {
-        TagUtils tagUtils = TagUtils.getInstance();
+        var tagUtils = TagUtils.getInstance();
         
         if(queryString.length() > 0) {
             queryString.append(ampersand);
@@ -349,7 +347,7 @@ public class SecureRequestUtils {
         Enumeration enumeration = aRequest.getAttributeNames();
         Map map = new HashMap();
         while(enumeration.hasMoreElements()) {
-            String name = (String) enumeration.nextElement();
+            var name = (String) enumeration.nextElement();
             map.put(name, aRequest.getAttribute(name));
         }
         aRequest.getSession().setAttribute(STOWED_REQUEST_ATTRIBS, map);
@@ -366,15 +364,15 @@ public class SecureRequestUtils {
      */
     public static void reclaimRequestAttributes(HttpServletRequest aRequest,
     boolean doRemove) {
-        Map map = (Map) aRequest.getSession().getAttribute(STOWED_REQUEST_ATTRIBS);
+        var map = (Map) aRequest.getSession().getAttribute(STOWED_REQUEST_ATTRIBS);
         
         if(map == null) {
             return;
         }
-        
-        Iterator itr = map.keySet().iterator();
+
+        var itr = map.keySet().iterator();
         while(itr.hasNext()) {
-            String name = (String) itr.next();
+            var name = (String) itr.next();
             
             aRequest.setAttribute(name, map.get(name));
         }
@@ -395,9 +393,9 @@ public class SecureRequestUtils {
      */
     static public String getRedirectString(HttpServletRequest request, ServletContext application, String isSecure) {
         String urlString = null;
-        SecurePlugInInterface securePlugin = (SecurePlugInInterface)application.getAttribute(SecurePlugInInterface.SECURE_PLUGIN);
-        String httpPort = securePlugin.getHttpPort();
-        String httpsPort = securePlugin.getHttpsPort();
+        var securePlugin = (SecurePlugInInterface)application.getAttribute(SecurePlugInInterface.SECURE_PLUGIN);
+        var httpPort = securePlugin.getHttpPort();
+        var httpsPort = securePlugin.getHttpsPort();
         
         // If sslext disabled, or we don't have a protocol preference,
         // just return the null value we have so far
@@ -407,13 +405,13 @@ public class SecureRequestUtils {
         
         // get the scheme we want to use for this page and
         // get the scheme used in this request
-        String desiredScheme = Boolean.valueOf(isSecure) ? HTTPS : HTTP;
-        String usingScheme = request.getScheme();
+        var desiredScheme = Boolean.valueOf(isSecure) ? HTTPS : HTTP;
+        var usingScheme = request.getScheme();
         
         // Determine the port number we want to use
         // and the port number we used in this request
-        String desiredPort = Boolean.valueOf(isSecure) ? httpsPort : httpPort;
-        String usingPort = String.valueOf(request.getServerPort());
+        var desiredPort = Boolean.valueOf(isSecure) ? httpsPort : httpPort;
+        var usingPort = String.valueOf(request.getServerPort());
         
         // Must also check ports, because of IE multiple redirect problem
         if(!desiredScheme.equals(usingScheme) || !desiredPort.equals(usingPort)) {
@@ -447,11 +445,11 @@ public class SecureRequestUtils {
      */
     private static String buildNewUrlString(HttpServletRequest request, String desiredScheme, String desiredPort,
     boolean addSessionID) {
-        StringBuilder url = startNewUrlString(request, desiredScheme, desiredPort);
+        var url = startNewUrlString(request, desiredScheme, desiredPort);
         
         url.append(request.getRequestURI());
-        
-        String returnUrl = addQueryString(request, url);
+
+        var returnUrl = addQueryString(request, url);
         
         // If the add session ID feature is enabled, add the session ID when creating a new URL
         // Could still be added by the calling checkSsl() method if needed due to disabled cookies, etc.
@@ -472,7 +470,7 @@ public class SecureRequestUtils {
      */
     private static String addQueryString(HttpServletRequest request, StringBuilder url) {
         // add query string, if any
-        String queryString = request.getQueryString();
+        var queryString = request.getQueryString();
         
         if(queryString != null && queryString.length() != 0) {
             url.append("?").append(queryString);
@@ -497,13 +495,13 @@ public class SecureRequestUtils {
      */
     public static ModuleConfig selectModule(String urlPath, PageContext pageContext) {
         // Get the ServletContext
-        ServletContext servletContext = pageContext.getServletContext();
+        var servletContext = pageContext.getServletContext();
         
         // Match against the list of sub-application prefixes
-        String prefix = ModuleUtils.getInstance().getModuleName(urlPath, servletContext);
+        var prefix = ModuleUtils.getInstance().getModuleName(urlPath, servletContext);
         
         // Expose the resources for this sub-application
-        ModuleConfig config = (ModuleConfig) servletContext.getAttribute(Globals.MODULE_KEY + prefix);
+        var config = (ModuleConfig) servletContext.getAttribute(Globals.MODULE_KEY + prefix);
         
         return config;
     }
@@ -519,8 +517,8 @@ public class SecureRequestUtils {
         Enumeration enumeration = request.getParameterNames();
         
         while(enumeration.hasMoreElements()) {
-            String name = (String) enumeration.nextElement();
-            String[] values = request.getParameterValues(name);
+            var name = (String) enumeration.nextElement();
+            var values = request.getParameterValues(name);
             map.put(name, values);
         }
         
@@ -537,7 +535,7 @@ public class SecureRequestUtils {
      */
     public static boolean checkSsl(SecureActionMapping aMapping, ServletContext aContext, HttpServletRequest aRequest, HttpServletResponse aResponse) {
         // Build a redirect string if needed
-        String redirectString = SecureRequestUtils.getRedirectString(aRequest, aContext, aMapping.getSecure());
+        var redirectString = SecureRequestUtils.getRedirectString(aRequest, aContext, aMapping.getSecure());
         
         // If a redirect string was generated, perform the redirect and return true
         if(redirectString != null) {
@@ -565,24 +563,24 @@ public class SecureRequestUtils {
     private static String toEncoded(String url, String sessionId) {
         if((url == null) || (sessionId == null))
             return (url);
-        
-        String path = url;
-        String query = "";
-        String anchor = "";
-        
-        int question = url.indexOf('?');
+
+        var path = url;
+        var query = "";
+        var anchor = "";
+
+        var question = url.indexOf('?');
         if(question >= 0) {
             path = url.substring(0, question);
             query = url.substring(question);
         }
-        
-        int pound = path.indexOf('#');
+
+        var pound = path.indexOf('#');
         if(pound >= 0) {
             anchor = path.substring(pound);
             path = path.substring(0, pound);
         }
-        
-        StringBuilder sb = new StringBuilder(path);
+
+        var sb = new StringBuilder(path);
         if(sb.length() > 0) { // jsessionid can't be first.
             sb.append(";jsessionid=");
             sb.append(sessionId);

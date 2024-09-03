@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetAppearanceDescriptionsForm;
 import com.echothree.control.user.core.common.result.GetAppearanceDescriptionsResult;
-import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
-        GetAppearanceDescriptionsForm commandForm = CoreUtil.getHome().getGetAppearanceDescriptionsForm();
+        var appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
+        var commandForm = CoreUtil.getHome().getGetAppearanceDescriptionsForm();
 
         commandForm.setAppearanceName(appearanceName);
 
-        CommandResult commandResult = CoreUtil.getHome().getAppearanceDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getAppearanceDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAppearanceDescriptionsResult result = (GetAppearanceDescriptionsResult) executionResult.getResult();
-            AppearanceTransfer appearanceTransfer = result.getAppearance();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAppearanceDescriptionsResult) executionResult.getResult();
+            var appearanceTransfer = result.getAppearance();
 
             request.setAttribute(AttributeConstants.APPEARANCE, appearanceTransfer);
             request.setAttribute(AttributeConstants.APPEARANCE_DESCRIPTIONS, result.getAppearanceDescriptions());

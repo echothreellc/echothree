@@ -17,42 +17,25 @@
 package com.echothree.ui.cli.amazon.batch.order.tasks;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrencyForm;
 import com.echothree.control.user.accounting.common.result.GetCurrencyResult;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.CreateContactPostalAddressForm;
 import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreateCustomerForm;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.common.form.CreateSalesOrderBatchForm;
-import com.echothree.control.user.sales.common.form.CreateSalesOrderForm;
-import com.echothree.control.user.sales.common.form.CreateSalesOrderLineForm;
-import com.echothree.control.user.sales.common.form.CreateSalesOrderPaymentPreferenceForm;
-import com.echothree.control.user.sales.common.form.SetSalesOrderBatchStatusForm;
-import com.echothree.control.user.sales.common.form.SetSalesOrderStatusForm;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderPaymentPreferenceResult;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
-import com.echothree.control.user.search.common.form.SearchCustomersForm;
 import com.echothree.control.user.search.common.result.GetCustomerResultsResult;
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
-import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerResultTransfer;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.geo.common.GeoConstants;
-import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
-import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.search.common.SearchOptions;
@@ -63,8 +46,6 @@ import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrderLine;
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrderShipmentGroup;
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrders;
 import com.echothree.util.client.string.NameCleaner;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
 import com.echothree.util.common.string.NameResult;
 import com.echothree.util.common.string.StringUtils;
@@ -138,15 +119,15 @@ public class EnterOrders {
 
     public CurrencyTransfer getCurrency(String currencyIsoName)
             throws NamingException {
-        GetCurrencyForm commandForm = AccountingUtil.getHome().getGetCurrencyForm();
+        var commandForm = AccountingUtil.getHome().getGetCurrencyForm();
 
         commandForm.setCurrencyIsoName(currencyIsoName);
 
-        CommandResult commandResult = AccountingUtil.getHome().getCurrency(getUserVisit(), commandForm);
+        var commandResult = AccountingUtil.getHome().getCurrency(getUserVisit(), commandForm);
         CurrencyTransfer currency = null;
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCurrencyResult result = (GetCurrencyResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCurrencyResult)executionResult.getResult();
 
             currency = result.getCurrency();
         }
@@ -162,20 +143,20 @@ public class EnterOrders {
      * @param value Value being parsed
      */
     public String parseCurrencyFieldValue(String minusSign, String fractionSeparator, Integer fractionDigits, String value) {
-        char []rawValue = value.toCharArray();
-        int size = rawValue.length;
-        StringBuilder cleanWhole = new StringBuilder(size);
-        boolean checkMinusSign = minusSign != null;
-        char charMinusSign = checkMinusSign? minusSign.charAt(0): 0;
-        boolean minusSignFound = false;
-        char charFractionSeparator = fractionSeparator == null? '\u0000': fractionSeparator.charAt(0);
-        int intFractionDigits = fractionDigits == null? 0: fractionDigits;
-        StringBuilder cleanFraction = new StringBuilder(intFractionDigits);
-        boolean separatorFound = false;
-        StringBuilder result = new StringBuilder(size);
+        var rawValue = value.toCharArray();
+        var size = rawValue.length;
+        var cleanWhole = new StringBuilder(size);
+        var checkMinusSign = minusSign != null;
+        var charMinusSign = checkMinusSign? minusSign.charAt(0): 0;
+        var minusSignFound = false;
+        var charFractionSeparator = fractionSeparator == null? '\u0000': fractionSeparator.charAt(0);
+        var intFractionDigits = fractionDigits == null? 0: fractionDigits;
+        var cleanFraction = new StringBuilder(intFractionDigits);
+        var separatorFound = false;
+        var result = new StringBuilder(size);
 
-        for(int i = 0; i < size; i++) {
-            char testChar = rawValue[i];
+        for(var i = 0; i < size; i++) {
+            var testChar = rawValue[i];
 
             if(testChar >= '\u0030' && testChar <= '\u0039') {
                 if(separatorFound) {
@@ -193,7 +174,7 @@ public class EnterOrders {
             }
         }
 
-        for(int i = cleanFraction.length(); i < intFractionDigits; i++) {
+        for(var i = cleanFraction.length(); i < intFractionDigits; i++) {
             cleanFraction.append('0');
         }
 
@@ -216,8 +197,8 @@ public class EnterOrders {
             throws NamingException {
         long batchAmount = 0;
 
-        for(AmazonOrder order : amazonOrders.getAmazonOrders().values()) {
-            for(AmazonOrderShipmentGroup orderShipmentGroup : order.getAmazonOrderShipmentGroups().values()) {
+        for(var order : amazonOrders.getAmazonOrders().values()) {
+            for(var orderShipmentGroup : order.getAmazonOrderShipmentGroups().values()) {
                 batchAmount = orderShipmentGroup.getAmazonOrderLines().values().stream().map((orderLine) -> orderLine.getTotalPrice()).map((strAmount) -> parseCurrencyFieldValue(currency, strAmount)).map((amount) -> amount).reduce(batchAmount, (accumulator, _item) -> accumulator + _item);
             }
         }
@@ -229,17 +210,17 @@ public class EnterOrders {
     public String createSalesOrderBatch(String currencyIsoName, String paymentMethodName, String count, String amount)
             throws NamingException {
         String batchName = null;
-        CreateSalesOrderBatchForm commandForm = SalesUtil.getHome().getCreateSalesOrderBatchForm();
+        var commandForm = SalesUtil.getHome().getCreateSalesOrderBatchForm();
 
         commandForm.setCurrencyIsoName(currencyIsoName);
         commandForm.setPaymentMethodName(paymentMethodName);
         commandForm.setCount(count);
         commandForm.setAmount(amount);
 
-        CommandResult commandResult = SalesUtil.getHome().createSalesOrderBatch(getUserVisit(), commandForm);
+        var commandResult = SalesUtil.getHome().createSalesOrderBatch(getUserVisit(), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            CreateSalesOrderBatchResult result = (CreateSalesOrderBatchResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (CreateSalesOrderBatchResult)executionResult.getResult();
 
             batchName = result.getBatchName();
         }
@@ -252,9 +233,9 @@ public class EnterOrders {
         long batchCount = getBatchCount(amazonOrders);
 
         if(batchCount > 0) {
-            CurrencyTransfer currency = getCurrency(currencyIsoName);
-            String batchAmount = getBatchAmount(amazonOrders, currency);
-            String batchName = createSalesOrderBatch(currencyIsoName, paymentMethodName, Long.toString(batchCount), batchAmount);
+            var currency = getCurrency(currencyIsoName);
+            var batchAmount = getBatchAmount(amazonOrders, currency);
+            var batchName = createSalesOrderBatch(currencyIsoName, paymentMethodName, Long.toString(batchCount), batchAmount);
 
             amazonOrders.setBatchName(batchName);
 
@@ -266,7 +247,7 @@ public class EnterOrders {
 
     public void createOrderLine(AmazonOrderLine orderLine)
             throws NamingException {
-        CreateSalesOrderLineForm createSalesOrderLineForm = SalesUtil.getHome().getCreateSalesOrderLineForm();
+        var createSalesOrderLineForm = SalesUtil.getHome().getCreateSalesOrderLineForm();
         
         createSalesOrderLineForm.setOrderName(orderLine.getOrderShipmentGroup().getOrder().getOrderName());
         createSalesOrderLineForm.setItemName(orderLine.getSku());
@@ -274,12 +255,12 @@ public class EnterOrders {
         createSalesOrderLineForm.setUnitAmount(orderLine.getPrice());
         createSalesOrderLineForm.setDescription(StringUtils.getInstance().left(orderLine.getItemName(), 80));
 
-        CommandResult commandResult = SalesUtil.getHome().createSalesOrderLine(getUserVisit(), createSalesOrderLineForm);
+        var commandResult = SalesUtil.getHome().createSalesOrderLine(getUserVisit(), createSalesOrderLineForm);
         if(commandResult.hasErrors()) {
             log.error(indent + commandResult);
         } else {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            CreateSalesOrderLineResult createSalesOrderLineResult = (CreateSalesOrderLineResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var createSalesOrderLineResult = (CreateSalesOrderLineResult)executionResult.getResult();
             
             orderLine.setOrderLineSequence(createSalesOrderLineResult.getOrderLineSequence());
         }
@@ -287,14 +268,14 @@ public class EnterOrders {
     
     public void createOrderLines(String currencyIsoName, String paymentMethodName, AmazonOrderShipmentGroup orderShipmentGroup)
             throws NamingException {
-        for(AmazonOrderLine orderLine : orderShipmentGroup.getAmazonOrderLines().values()) {
+        for(var orderLine : orderShipmentGroup.getAmazonOrderLines().values()) {
             createOrderLine(orderLine);
         }
     }
 
     public void createOrderShipmentGroups(String currencyIsoName, String paymentMethodName, AmazonOrder order)
             throws NamingException {
-        for(AmazonOrderShipmentGroup orderShipmentGroup : order.getAmazonOrderShipmentGroups().values()) {
+        for(var orderShipmentGroup : order.getAmazonOrderShipmentGroups().values()) {
             // TODO: create the shipment group.
             
             createOrderLines(currencyIsoName, paymentMethodName, orderShipmentGroup);
@@ -304,7 +285,7 @@ public class EnterOrders {
     public List<CustomerResultTransfer> searchCustomers(String customerTypeName, NameResult nameResult)
             throws NamingException {
         List<CustomerResultTransfer> customerResults = null;
-        SearchCustomersForm searchCustomersForm = SearchUtil.getHome().getSearchCustomersForm();
+        var searchCustomersForm = SearchUtil.getHome().getSearchCustomersForm();
 
         searchCustomersForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
         searchCustomersForm.setCustomerTypeName(customerTypeName);
@@ -315,11 +296,11 @@ public class EnterOrders {
         searchCustomersForm.setLastName(nameResult.getLastName());
         searchCustomersForm.setLastNameSoundex(Boolean.FALSE.toString());
 
-        CommandResult searchCustomersResult = SearchUtil.getHome().searchCustomers(getUserVisit(), searchCustomersForm);
+        var searchCustomersResult = SearchUtil.getHome().searchCustomers(getUserVisit(), searchCustomersForm);
         if(searchCustomersResult.hasErrors()) {
             log.error(indent + searchCustomersResult);
         } else {
-            GetCustomerResultsForm getCustomerResultsForm = SearchUtil.getHome().getGetCustomerResultsForm();
+            var getCustomerResultsForm = SearchUtil.getHome().getGetCustomerResultsForm();
 
             getCustomerResultsForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
 
@@ -328,9 +309,9 @@ public class EnterOrders {
             options.add(PartyOptions.PartyIncludePartyContactMechanisms);
             getCustomerResultsForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-            CommandResult getCustomerResultsResult = SearchUtil.getHome().getCustomerResults(getUserVisit(), getCustomerResultsForm);
-            ExecutionResult executionResult = getCustomerResultsResult.getExecutionResult();
-            GetCustomerResultsResult result = (GetCustomerResultsResult)executionResult.getResult();
+            var getCustomerResultsResult = SearchUtil.getHome().getCustomerResults(getUserVisit(), getCustomerResultsForm);
+            var executionResult = getCustomerResultsResult.getExecutionResult();
+            var result = (GetCustomerResultsResult)executionResult.getResult();
 
             customerResults = result.getCustomerResults();
         }
@@ -339,7 +320,7 @@ public class EnterOrders {
     }
 
     public int getPostalAddressCount(List<PartyContactMechanismTransfer> partyContactMechanisms) {
-        int count = 0;
+        var count = 0;
 
         count = partyContactMechanisms.stream().map((partyContactMechanism) -> partyContactMechanism.getContactMechanism().getContactMechanismType().getContactMechanismTypeName().equals(ContactMechanismTypes.POSTAL_ADDRESS.name()) ? 1 : 0).reduce(count, Integer::sum);
 
@@ -350,44 +331,44 @@ public class EnterOrders {
             throws NamingException {
         String customerName = null;
         String partyName = null;
-        NameResult buyerNameResult = getNameCleaner().getCleansedName(order.getBuyerName());
-        List<CustomerResultTransfer> customerResults = searchCustomers(customerTypeName, buyerNameResult);
+        var buyerNameResult = getNameCleaner().getCleansedName(order.getBuyerName());
+        var customerResults = searchCustomers(customerTypeName, buyerNameResult);
 
         if(!customerResults.isEmpty()) {
-            for(CustomerResultTransfer customerResult : customerResults) {
-                CustomerTransfer customer = customerResult.getCustomer();
-                List<PartyContactMechanismTransfer> partyContactMechanisms = customer.getPartyContactMechanisms().getList();
-                boolean useCustomer = false;
+            for(var customerResult : customerResults) {
+                var customer = customerResult.getCustomer();
+                var partyContactMechanisms = customer.getPartyContactMechanisms().getList();
+                var useCustomer = false;
 
                 if(getPostalAddressCount(partyContactMechanisms) == 0) {
                     // If there are no contact mechanisms, then use this customer. Nothing else to compare.
                     log.info(indent + "No postal addresses found, using this customer.");
                     useCustomer = true;
                 } else {
-                    int matchesRemaining = order.getAmazonOrderShipmentGroups().size();
+                    var matchesRemaining = order.getAmazonOrderShipmentGroups().size();
 
-                    for(AmazonOrderShipmentGroup amazonOrderShipmentGroup : order.getAmazonOrderShipmentGroups().values()) {
-                        NameResult recipientNameResult = getNameCleaner().getCleansedName(amazonOrderShipmentGroup.getRecipientName());
+                    for(var amazonOrderShipmentGroup : order.getAmazonOrderShipmentGroups().values()) {
+                        var recipientNameResult = getNameCleaner().getCleansedName(amazonOrderShipmentGroup.getRecipientName());
 
                         amazonOrderShipmentGroup.setRecipientNameResult(recipientNameResult);
 
-                        for(PartyContactMechanismTransfer partyContactMechanism : partyContactMechanisms) {
+                        for(var partyContactMechanism : partyContactMechanisms) {
                             // Compare, and if all fields match, decrement matchesRemaining and break out of further comparisons.
-                            ContactMechanismTransfer contactMechanism = partyContactMechanism.getContactMechanism();
+                            var contactMechanism = partyContactMechanism.getContactMechanism();
 
                             if(contactMechanism.getContactMechanismType().getContactMechanismTypeName().equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
-                                ContactPostalAddressTransfer contactPostalAddress = contactMechanism.getContactPostalAddress();
-                                PersonalTitleTransfer personalTitle = contactPostalAddress.getPersonalTitle();
-                                String firstName = contactPostalAddress.getFirstName();
-                                String middleName = contactPostalAddress.getMiddleName();
-                                String lastName = contactPostalAddress.getLastName();
-                                NameSuffixTransfer nameSuffix = contactPostalAddress.getNameSuffix();
-                                String address1 = contactPostalAddress.getAddress1();
-                                String address2 = contactPostalAddress.getAddress2();
-                                String city = contactPostalAddress.getCity();
-                                String state = contactPostalAddress.getState();
-                                String postalCode = contactPostalAddress.getPostalCode();
-                                CountryTransfer countryGeoCode = contactPostalAddress.getCountryGeoCode();
+                                var contactPostalAddress = contactMechanism.getContactPostalAddress();
+                                var personalTitle = contactPostalAddress.getPersonalTitle();
+                                var firstName = contactPostalAddress.getFirstName();
+                                var middleName = contactPostalAddress.getMiddleName();
+                                var lastName = contactPostalAddress.getLastName();
+                                var nameSuffix = contactPostalAddress.getNameSuffix();
+                                var address1 = contactPostalAddress.getAddress1();
+                                var address2 = contactPostalAddress.getAddress2();
+                                var city = contactPostalAddress.getCity();
+                                var state = contactPostalAddress.getState();
+                                var postalCode = contactPostalAddress.getPostalCode();
+                                var countryGeoCode = contactPostalAddress.getCountryGeoCode();
 
                                 if(contactPostalAddress.getCompanyName() == null // Always null.
                                         && contactPostalAddress.getAttention() == null // Always null.
@@ -434,7 +415,7 @@ public class EnterOrders {
 
         // New customer needed if partyName is still null.
         if(partyName == null) {
-            CreateCustomerForm commandForm = PartyUtil.getHome().getCreateCustomerForm();
+            var commandForm = PartyUtil.getHome().getCreateCustomerForm();
 
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.setPersonalTitleId(buyerNameResult.getPersonalTitleChoice());
@@ -445,13 +426,13 @@ public class EnterOrders {
             commandForm.setEmailAddress(order.getBuyerEmail());
             commandForm.setAllowSolicitation(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().createCustomer(getUserVisit(), commandForm);
+            var commandResult = PartyUtil.getHome().createCustomer(getUserVisit(), commandForm);
 
             if(commandResult.hasErrors()) {
                 log.error(indent + "createCustomer: " + commandResult);
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCustomerResult result = (CreateCustomerResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateCustomerResult)executionResult.getResult();
                 
                 customerName = result.getCustomerName();
                 partyName = result.getPartyName();
@@ -461,10 +442,10 @@ public class EnterOrders {
         }
 
         if(partyName != null) {
-            for(AmazonOrderShipmentGroup amazonOrderShipmentGroup : order.getAmazonOrderShipmentGroups().values()) {
+            for(var amazonOrderShipmentGroup : order.getAmazonOrderShipmentGroups().values()) {
                 if(amazonOrderShipmentGroup.getContactMechanismName() == null) {
-                    CreateContactPostalAddressForm commandForm = ContactUtil.getHome().getCreateContactPostalAddressForm();
-                    NameResult recipientNameResult = amazonOrderShipmentGroup.getRecipientNameResult();
+                    var commandForm = ContactUtil.getHome().getCreateContactPostalAddressForm();
+                    var recipientNameResult = amazonOrderShipmentGroup.getRecipientNameResult();
 
                     if(recipientNameResult == null) {
                         recipientNameResult = getNameCleaner().getCleansedName(amazonOrderShipmentGroup.getRecipientName());
@@ -485,14 +466,14 @@ public class EnterOrders {
                     commandForm.setCountryName(amazonOrderShipmentGroup.getShipCountry());
                     commandForm.setIsCommercial(Boolean.FALSE.toString());
 
-                    CommandResult commandResult = ContactUtil.getHome().createContactPostalAddress(getUserVisit(), commandForm);
+                    var commandResult = ContactUtil.getHome().createContactPostalAddress(getUserVisit(), commandForm);
 
                     if(commandResult.hasErrors()) {
                         log.error(indent + "createContactPostalAddress: " + commandResult);
                     } else {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
-                        CreateContactPostalAddressResult result = (CreateContactPostalAddressResult)executionResult.getResult();
-                        String contactMechanismName = result.getContactMechanismName();
+                        var executionResult = commandResult.getExecutionResult();
+                        var result = (CreateContactPostalAddressResult)executionResult.getResult();
+                        var contactMechanismName = result.getContactMechanismName();
 
                         amazonOrderShipmentGroup.setContactMechanismName(contactMechanismName);
 
@@ -511,22 +492,22 @@ public class EnterOrders {
         locateCustomer(customerTypeName, order);
 
         if(order.getCustomerName() != null) {
-            CreateSalesOrderForm commandForm = SalesUtil.getHome().getCreateSalesOrderForm();
+            var commandForm = SalesUtil.getHome().getCreateSalesOrderForm();
             
             commandForm.setBatchName(order.getAmazonOrders().getBatchName());
             commandForm.setSourceName(sourceName);
             commandForm.setCurrencyIsoName(currencyIsoName);
             commandForm.setTermName(termName);
             commandForm.setBillToPartyName(order.getPartyName());
-            
-            CommandResult commandResult = SalesUtil.getHome().createSalesOrder(getUserVisit(), commandForm);
+
+            var commandResult = SalesUtil.getHome().createSalesOrder(getUserVisit(), commandForm);
 
             if(commandResult.hasErrors()) {
                 log.error(indent + "createSalesOrder: " + commandResult);
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateSalesOrderResult result = (CreateSalesOrderResult)executionResult.getResult();
-                String orderName = result.getOrderName();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateSalesOrderResult)executionResult.getResult();
+                var orderName = result.getOrderName();
 
                 order.setOrderName(orderName);
 
@@ -541,19 +522,19 @@ public class EnterOrders {
 
     public void createOrderPaymentPreference(AmazonOrder order, String paymentMethodName)
             throws NamingException {
-        CreateSalesOrderPaymentPreferenceForm commandForm = SalesUtil.getHome().getCreateSalesOrderPaymentPreferenceForm();
+        var commandForm = SalesUtil.getHome().getCreateSalesOrderPaymentPreferenceForm();
 
         commandForm.setOrderName(order.getOrderName());
         commandForm.setPaymentMethodName(paymentMethodName);
         commandForm.setSortOrder("1");
-        
-        CommandResult commandResult = SalesUtil.getHome().createSalesOrderPaymentPreference(getUserVisit(), commandForm);
+
+        var commandResult = SalesUtil.getHome().createSalesOrderPaymentPreference(getUserVisit(), commandForm);
 
         if(commandResult.hasErrors()) {
             log.error(indent + "createSalesOrderPaymentPreference: " + commandResult);
         } else {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            CreateSalesOrderPaymentPreferenceResult result = (CreateSalesOrderPaymentPreferenceResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (CreateSalesOrderPaymentPreferenceResult)executionResult.getResult();
 
             log.info(indent + "Created sales order payment preference #" + result.getOrderPaymentPreferenceSequence() + ".");
         }
@@ -561,13 +542,13 @@ public class EnterOrders {
     
     public void setOrderBatchStatus(AmazonOrders orders, String salesOrderBatchStatusChoice)
             throws NamingException {
-        SetSalesOrderBatchStatusForm commandForm = SalesUtil.getHome().getSetSalesOrderBatchStatusForm();
-        String batchName = orders.getBatchName();
+        var commandForm = SalesUtil.getHome().getSetSalesOrderBatchStatusForm();
+        var batchName = orders.getBatchName();
 
         commandForm.setBatchName(batchName);
         commandForm.setSalesOrderBatchStatusChoice(salesOrderBatchStatusChoice);
 
-        CommandResult commandResult = SalesUtil.getHome().setSalesOrderBatchStatus(getUserVisit(), commandForm);
+        var commandResult = SalesUtil.getHome().setSalesOrderBatchStatus(getUserVisit(), commandForm);
 
         if(commandResult.hasErrors()) {
             log.error(indent + "setSalesOrderBatchStatus: " + commandResult);
@@ -584,13 +565,13 @@ public class EnterOrders {
 
     public void setOrderStatus(AmazonOrder order)
             throws NamingException {
-        SetSalesOrderStatusForm commandForm = SalesUtil.getHome().getSetSalesOrderStatusForm();
-        String orderName = order.getOrderName();
+        var commandForm = SalesUtil.getHome().getSetSalesOrderStatusForm();
+        var orderName = order.getOrderName();
 
         commandForm.setOrderName(orderName);
         commandForm.setSalesOrderStatusChoice(SalesOrderStatusConstants.WorkflowDestination_ENTRY_ALLOCATED_TO_BATCH_AUDIT);
 
-        CommandResult commandResult = SalesUtil.getHome().setSalesOrderStatus(getUserVisit(), commandForm);
+        var commandResult = SalesUtil.getHome().setSalesOrderStatus(getUserVisit(), commandForm);
 
         if(commandResult.hasErrors()) {
             log.error(indent + "setSalesOrderStatus: " + commandResult);
@@ -602,7 +583,7 @@ public class EnterOrders {
     public void createOrders(AmazonOrders amazonOrders, String sourceName, String currencyIsoName, String termName, String paymentMethodName, String customerTypeName,
             Map<String, String> shippingMethods)
         throws NamingException {
-        for(AmazonOrder order : amazonOrders.getAmazonOrders().values()) {
+        for(var order : amazonOrders.getAmazonOrders().values()) {
             createOrder(sourceName, currencyIsoName, termName, paymentMethodName, customerTypeName, order);
 
             if(order.getOrderName() != null) {
@@ -613,7 +594,7 @@ public class EnterOrders {
     }
 
     private String getProperty(String property, boolean required) {
-        String value = configuration.getString(property);
+        var value = configuration.getString(property);
         
         if(value == null && required) {
             log.error(property + " is a required property");
@@ -623,7 +604,7 @@ public class EnterOrders {
     }
     
     private void addShippingMethod(Map<String, String> shippingMethods, String shipMethod) {
-        String value = getProperty("com.echothree.ui.cli.amazon.shippingMethodName." + shipMethod, true);
+        var value = getProperty("com.echothree.ui.cli.amazon.shippingMethodName." + shipMethod, true);
 
         if(value != null) {
             shippingMethods.put(shipMethod, value);
@@ -641,12 +622,12 @@ public class EnterOrders {
 
     public void execute()
             throws NamingException {
-        String sourceName = getProperty("com.echothree.ui.cli.amazon.sourceName", false);
-        String currencyIsoName = getProperty("com.echothree.ui.cli.amazon.currencyIsoName", true);
-        String termName = getProperty("com.echothree.ui.cli.amazon.termName", false);
-        String paymentMethodName = getProperty("com.echothree.ui.cli.amazon.paymentMethodName", true);
-        String customerTypeName = getProperty("com.echothree.ui.cli.amazon.customerTypeName", false);
-        Map<String, String> shippingMethods = getShippingMethods();
+        var sourceName = getProperty("com.echothree.ui.cli.amazon.sourceName", false);
+        var currencyIsoName = getProperty("com.echothree.ui.cli.amazon.currencyIsoName", true);
+        var termName = getProperty("com.echothree.ui.cli.amazon.termName", false);
+        var paymentMethodName = getProperty("com.echothree.ui.cli.amazon.paymentMethodName", true);
+        var customerTypeName = getProperty("com.echothree.ui.cli.amazon.customerTypeName", false);
+        var shippingMethods = getShippingMethods();
 
         if(currencyIsoName != null && paymentMethodName != null && shippingMethods.size() == 2) {
             createBatch(amazonOrders, currencyIsoName, paymentMethodName);

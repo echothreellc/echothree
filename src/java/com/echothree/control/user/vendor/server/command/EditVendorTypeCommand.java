@@ -37,7 +37,6 @@ import com.echothree.model.control.vendor.server.logic.VendorTypeLogic;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.value.VendorTypeDescriptionValue;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -222,7 +221,7 @@ public class EditVendorTypeCommand
                                                         vendorControl.deleteVendorTypeDescription(vendorTypeDescription, partyPK);
                                                     } else {
                                                         if(vendorTypeDescription != null && description != null) {
-                                                            VendorTypeDescriptionValue vendorTypeDescriptionValue = vendorControl.getVendorTypeDescriptionValue(vendorTypeDescription);
+                                                            var vendorTypeDescriptionValue = vendorControl.getVendorTypeDescriptionValue(vendorTypeDescription);
 
                                                             vendorTypeDescriptionValue.setDescription(description);
                                                             vendorControl.updateVendorTypeDescriptionFromValue(vendorTypeDescriptionValue, partyPK);

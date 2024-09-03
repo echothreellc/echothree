@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcollection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCollectionForm;
 import com.echothree.control.user.content.common.result.GetContentCollectionResult;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
@@ -26,8 +25,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,8 +53,8 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetContentCollectionForm commandForm = ContentUtil.getHome().getGetContentCollectionForm();
+        String forwardKey;
+        var commandForm = ContentUtil.getHome().getGetContentCollectionForm();
 
         commandForm.setContentCollectionName(request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME));
 
@@ -70,12 +67,12 @@ public class ReviewAction
         options.add(ContentOptions.ContentCollectionIncludeTagScopes);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCollection(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCollection(getUserVisitPK(request), commandForm);
         ContentCollectionTransfer contentCollection = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCollectionResult result = (GetContentCollectionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCollectionResult)executionResult.getResult();
 
             contentCollection = result.getContentCollection();
         }

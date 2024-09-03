@@ -21,11 +21,9 @@ import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
-import com.echothree.model.control.sales.server.transfer.SalesOrderBatchTransferCache;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;
-import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.sales.server.entity.SalesOrderBatch;
 import com.echothree.model.data.sales.server.factory.SalesOrderBatchFactory;
@@ -57,7 +55,7 @@ public class SalesOrderBatchControl
     // --------------------------------------------------------------------------------
 
     public SalesOrderBatch createSalesOrderBatch(Batch batch, PaymentMethod paymentMethod, BasePK createdBy) {
-        SalesOrderBatch salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -108,9 +106,9 @@ public class SalesOrderBatchControl
 
     public List<SalesOrderBatchTransfer> getSalesOrderBatchTransfers(UserVisit userVisit) {
         var batchControl = Session.getModelController(BatchControl.class);
-        List<Batch> batches = batchControl.getBatchesUsingNames(BatchConstants.BatchType_SALES_ORDER);
+        var batches = batchControl.getBatchesUsingNames(BatchConstants.BatchType_SALES_ORDER);
         List<SalesOrderBatchTransfer> salesOrderBatchTransfers = new ArrayList<>(batches.size());
-        SalesOrderBatchTransferCache salesOrderBatchTransferCache = getSaleTransferCaches(userVisit).getSalesOrderBatchTransferCache();
+        var salesOrderBatchTransferCache = getSaleTransferCaches(userVisit).getSalesOrderBatchTransferCache();
 
         batches.forEach((batch) ->
                 salesOrderBatchTransfers.add(salesOrderBatchTransferCache.getTransfer(batch))
@@ -121,14 +119,14 @@ public class SalesOrderBatchControl
 
     public void updateSalesOrderBatchFromValue(SalesOrderBatchValue salesOrderBatchValue, BasePK updatedBy) {
         if(salesOrderBatchValue.hasBeenModified()) {
-            SalesOrderBatch salesOrderBatch = SalesOrderBatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var salesOrderBatch = SalesOrderBatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderBatchValue.getPrimaryKey());
 
             salesOrderBatch.setThruTime(session.START_TIME_LONG);
             salesOrderBatch.store();
 
-            BatchPK batchPK = salesOrderBatch.getBatchPK(); // Not updated
-            PaymentMethodPK paymentMethodPK = salesOrderBatchValue.getPaymentMethodPK();
+            var batchPK = salesOrderBatch.getBatchPK(); // Not updated
+            var paymentMethodPK = salesOrderBatchValue.getPaymentMethodPK();
 
             salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batchPK, paymentMethodPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 

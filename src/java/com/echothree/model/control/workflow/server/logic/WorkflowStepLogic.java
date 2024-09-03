@@ -30,7 +30,6 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.model.data.workflow.server.entity.WorkflowStepDetail;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -42,7 +41,6 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class WorkflowStepLogic
@@ -220,7 +218,7 @@ public class WorkflowStepLogic
     public Set<WorkflowEntityStatus> isEntityInWorkflowSteps(final ExecutionErrorAccumulator eea, final String workflowName, final BasePK pk,
             EntityPermission entityPermission, String... workflowStepNames) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(pk);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(pk);
         
         return isEntityInWorkflowSteps(eea, workflowName, entityInstance, entityPermission, workflowStepNames);
     }
@@ -242,15 +240,15 @@ public class WorkflowStepLogic
         
         if(!hasExecutionErrors(eea)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            List<WorkflowEntityStatus> workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance, entityPermission);
+            var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance, entityPermission);
             Set<String> possibleWorkflowStepNames = new HashSet<>(workflowStepNames.length);
             
             possibleWorkflowStepNames.addAll(Arrays.asList(workflowStepNames));
             
             workflowEntityStatuses.forEach((workflowEntityStatus) -> {
-                WorkflowStepDetail workflowStepDetail = workflowEntityStatus.getWorkflowStep().getLastDetail();
+                var workflowStepDetail = workflowEntityStatus.getWorkflowStep().getLastDetail();
                 if (workflowStepDetail.getWorkflow().equals(workflow)) {
-                    String workflowStepName = workflowStepDetail.getWorkflowStepName();
+                    var workflowStepName = workflowStepDetail.getWorkflowStepName();
                     if (possibleWorkflowStepNames.contains(workflowStepName)) {
                         result.add(workflowEntityStatus);
                     }
@@ -263,7 +261,7 @@ public class WorkflowStepLogic
     }
     
     public boolean isWorkflowStepInSet(Set<WorkflowEntityStatus> workflowEntityStatuses, String workflowStepName) {
-        boolean result = false;
+        var result = false;
         
         for(var workflowEntityStatus : workflowEntityStatuses) {
             if(result |= workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName().equals(workflowStepName)) {

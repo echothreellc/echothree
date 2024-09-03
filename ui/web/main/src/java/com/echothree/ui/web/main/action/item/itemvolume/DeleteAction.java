@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.itemvolume;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteItemVolumeForm;
-import com.echothree.control.user.item.common.form.GetItemVolumeForm;
 import com.echothree.control.user.item.common.result.GetItemVolumeResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,14 +60,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemVolumeForm commandForm = ItemUtil.getHome().getGetItemVolumeForm();
+        var commandForm = ItemUtil.getHome().getGetItemVolumeForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemVolume(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemVolumeResult result = (GetItemVolumeResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemVolume(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemVolumeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_VOLUME, result.getItemVolume());
     }
@@ -78,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemVolumeForm commandForm = ItemUtil.getHome().getDeleteItemVolumeForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemVolumeForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());

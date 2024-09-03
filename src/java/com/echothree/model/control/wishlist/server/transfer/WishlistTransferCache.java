@@ -16,19 +16,13 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.wishlist.server.entity.Wishlist;
 import com.echothree.util.server.persistence.Session;
 
 public class WishlistTransferCache
@@ -46,16 +40,16 @@ public class WishlistTransferCache
     }
     
     public WishlistTransfer getWishlistTransfer(Order order) {
-        WishlistTransfer wishlistTransfer = get(order);
+        var wishlistTransfer = get(order);
         
         if(wishlistTransfer == null) {
-            OrderDetail orderDetail = order.getActiveDetail();
-            Wishlist wishlist = wishlistControl.getWishlist(order);
-            OrderTypeTransfer orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderDetail.getOrderType());
-            String orderName = orderDetail.getOrderName();
-            CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, orderDetail.getCurrency());
-            OfferUseTransfer offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlist.getOfferUse());
-            WishlistTypeTransfer wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlist.getWishlistType());
+            var orderDetail = order.getActiveDetail();
+            var wishlist = wishlistControl.getWishlist(order);
+            var orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderDetail.getOrderType());
+            var orderName = orderDetail.getOrderName();
+            var currency = accountingControl.getCurrencyTransfer(userVisit, orderDetail.getCurrency());
+            var offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlist.getOfferUse());
+            var wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlist.getWishlistType());
             
             wishlistTransfer = new WishlistTransfer(orderType, orderName, currency, offerUse, wishlistType);
             put(order, wishlistTransfer);

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.DeleteContactListTypeDescriptionForm;
-import com.echothree.control.user.contactlist.common.form.GetContactListTypeDescriptionForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListTypeDescriptionForm commandForm = ContactListUtil.getHome().getGetContactListTypeDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListTypeDescriptionForm();
         
         commandForm.setContactListTypeName(actionForm.getContactListTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListTypeDescriptionResult result = (GetContactListTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_TYPE_DESCRIPTION, result.getContactListTypeDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContactListTypeDescriptionForm commandForm = ContactListUtil.getHome().getDeleteContactListTypeDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getDeleteContactListTypeDescriptionForm();
 
         commandForm.setContactListTypeName(actionForm.getContactListTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

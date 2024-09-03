@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetNameSuffixChoicesForm;
-import com.echothree.control.user.party.common.result.GetNameSuffixChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -51,9 +50,9 @@ public class GetNameSuffixChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetNameSuffixChoicesResult result = PartyResultFactory.getGetNameSuffixChoicesResult();
-        String defaultNameSuffixChoice = form.getDefaultNameSuffixChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PartyResultFactory.getGetNameSuffixChoicesResult();
+        var defaultNameSuffixChoice = form.getDefaultNameSuffixChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setNameSuffixChoices(partyControl.getNameSuffixChoices(defaultNameSuffixChoice, allowNullChoice));
         

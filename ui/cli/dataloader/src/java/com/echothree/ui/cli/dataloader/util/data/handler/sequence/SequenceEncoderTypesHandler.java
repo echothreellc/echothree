@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.SequenceService;
-import com.echothree.control.user.sequence.common.form.CreateSequenceEncoderTypeForm;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -47,7 +46,7 @@ public class SequenceEncoderTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceEncoderType")) {
-            CreateSequenceEncoderTypeForm commandForm = SequenceFormFactory.getCreateSequenceEncoderTypeForm();
+            var commandForm = SequenceFormFactory.getCreateSequenceEncoderTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.companydocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.GetDocumentDescriptionsForm;
 import com.echothree.control.user.document.common.result.GetDocumentDescriptionsResult;
-import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
-        GetDocumentDescriptionsForm commandForm = DocumentUtil.getHome().getGetDocumentDescriptionsForm();
+        var documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
+        var commandForm = DocumentUtil.getHome().getGetDocumentDescriptionsForm();
 
         commandForm.setDocumentName(documentName);
 
-        CommandResult commandResult = DocumentUtil.getHome().getDocumentDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = DocumentUtil.getHome().getDocumentDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDocumentDescriptionsResult result = (GetDocumentDescriptionsResult) executionResult.getResult();
-            DocumentTransfer documentTransfer = result.getDocument();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDocumentDescriptionsResult) executionResult.getResult();
+            var documentTransfer = result.getDocument();
 
 
             request.setAttribute(AttributeConstants.DOCUMENT, documentTransfer);

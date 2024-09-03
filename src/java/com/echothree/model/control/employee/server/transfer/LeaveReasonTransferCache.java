@@ -19,7 +19,6 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
-import com.echothree.model.data.employee.server.entity.LeaveReasonDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class LeaveReasonTransferCache
@@ -33,14 +32,14 @@ public class LeaveReasonTransferCache
     }
     
     public LeaveReasonTransfer getLeaveReasonTransfer(LeaveReason leaveReason) {
-        LeaveReasonTransfer leaveReasonTransfer = get(leaveReason);
+        var leaveReasonTransfer = get(leaveReason);
         
         if(leaveReasonTransfer == null) {
-            LeaveReasonDetail leaveReasonDetail = leaveReason.getLastDetail();
-            String leaveReasonName = leaveReasonDetail.getLeaveReasonName();
-            Boolean isDefault = leaveReasonDetail.getIsDefault();
-            Integer sortOrder = leaveReasonDetail.getSortOrder();
-            String description = employeeControl.getBestLeaveReasonDescription(leaveReason, getLanguage());
+            var leaveReasonDetail = leaveReason.getLastDetail();
+            var leaveReasonName = leaveReasonDetail.getLeaveReasonName();
+            var isDefault = leaveReasonDetail.getIsDefault();
+            var sortOrder = leaveReasonDetail.getSortOrder();
+            var description = employeeControl.getBestLeaveReasonDescription(leaveReason, getLanguage());
             
             leaveReasonTransfer = new LeaveReasonTransfer(leaveReasonName, isDefault, sortOrder, description);
             put(leaveReason, leaveReasonTransfer);

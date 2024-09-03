@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected SecurityRoleDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        SecurityRoleDescriptionSpec spec = SecurityUtil.getHome().getSecurityRoleDescriptionSpec();
+        var spec = SecurityUtil.getHome().getSecurityRoleDescriptionSpec();
         
         spec.setSecurityRoleGroupName(findParameter(request, ParameterConstants.SECURITY_ROLE_GROUP_NAME, actionForm.getSecurityRoleGroupName()));
         spec.setSecurityRoleName(findParameter(request, ParameterConstants.SECURITY_ROLE_NAME, actionForm.getSecurityRoleName()));
@@ -63,7 +63,7 @@ public class DescriptionEditAction
     @Override
     protected SecurityRoleDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        SecurityRoleDescriptionEdit edit = SecurityUtil.getHome().getSecurityRoleDescriptionEdit();
+        var edit = SecurityUtil.getHome().getSecurityRoleDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

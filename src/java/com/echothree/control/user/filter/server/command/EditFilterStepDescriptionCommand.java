@@ -19,7 +19,6 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.edit.FilterStepDescriptionEdit;
 import com.echothree.control.user.filter.common.form.EditFilterStepDescriptionForm;
-import com.echothree.control.user.filter.common.result.EditFilterStepDescriptionResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterStepDescriptionSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
@@ -27,13 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterStep;
-import com.echothree.model.data.filter.server.entity.FilterStepDescription;
-import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.filter.server.value.FilterStepDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -45,8 +37,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditFilterStepDescriptionCommand
@@ -85,36 +75,36 @@ public class EditFilterStepDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterStepDescriptionResult result = FilterResultFactory.getEditFilterStepDescriptionResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterStepDescriptionResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = spec.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = spec.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String filterName = spec.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = spec.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
-                    String filterStepName = spec.getFilterStepName();
-                    FilterStep filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStepName = spec.getFilterStepName();
+                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK)) {
-                                FilterStepDescription filterStepDescription = filterControl.getFilterStepDescription(filterStep, language);
+                                var filterStepDescription = filterControl.getFilterStepDescription(filterStep, language);
                                 
                                 if(filterStepDescription != null) {
                                     result.setFilterStepDescription(filterControl.getFilterStepDescriptionTransfer(getUserVisit(), filterStepDescription));
                                     
                                     if(lockEntity(filterStep)) {
-                                        FilterStepDescriptionEdit edit = FilterEditFactory.getFilterStepDescriptionEdit();
+                                        var edit = FilterEditFactory.getFilterStepDescriptionEdit();
                                         
                                         result.setEdit(edit);
                                         edit.setDescription(filterStepDescription.getDescription());
@@ -127,12 +117,12 @@ public class EditFilterStepDescriptionCommand
                                     addExecutionError(ExecutionErrors.UnknownFilterStepDescription.name());
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
-                                FilterStepDescriptionValue filterStepDescriptionValue = filterControl.getFilterStepDescriptionValueForUpdate(filterStep, language);
+                                var filterStepDescriptionValue = filterControl.getFilterStepDescriptionValueForUpdate(filterStep, language);
                                 
                                 if(filterStepDescriptionValue != null) {
                                     if(lockEntityForUpdate(filterStep)) {
                                         try {
-                                            String description = edit.getDescription();
+                                            var description = edit.getDescription();
                                             
                                             filterStepDescriptionValue.setDescription(description);
                                             

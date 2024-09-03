@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.forum.forumgroup;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.CreateForumGroupForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,17 +52,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateForumGroupForm commandForm = ForumUtil.getHome().getCreateForumGroupForm();
+                    var commandForm = ForumUtil.getHome().getCreateForumGroupForm();
                     
                     commandForm.setForumGroupName(actionForm.getForumGroupName());
                     commandForm.setIconName(actionForm.getIconChoice());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ForumUtil.getHome().createForumGroup(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ForumUtil.getHome().createForumGroup(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

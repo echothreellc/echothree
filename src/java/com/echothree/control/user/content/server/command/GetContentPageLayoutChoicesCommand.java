@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentPageLayoutChoicesForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPageLayoutChoicesResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetContentPageLayoutChoicesCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentPageLayoutChoicesResult result = ContentResultFactory.getGetContentPageLayoutChoicesResult();
-        String defaultContentPageLayoutChoice = form.getDefaultContentPageLayoutChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ContentResultFactory.getGetContentPageLayoutChoicesResult();
+        var defaultContentPageLayoutChoice = form.getDefaultContentPageLayoutChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setContentPageLayoutChoices(contentControl.getContentPageLayoutChoices(defaultContentPageLayoutChoice,
                 getPreferredLanguage(), allowNullChoice));

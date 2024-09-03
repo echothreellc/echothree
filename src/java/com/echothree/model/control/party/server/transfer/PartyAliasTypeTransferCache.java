@@ -18,10 +18,8 @@ package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.PartyAliasTypeTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.party.server.entity.PartyAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PartyAliasTypeTransferCache
@@ -43,16 +41,16 @@ public class PartyAliasTypeTransferCache
     }
     
     public PartyAliasTypeTransfer getPartyAliasTypeTransfer(PartyAliasType partyAliasType) {
-        PartyAliasTypeTransfer partyAliasTypeTransfer = get(partyAliasType);
+        var partyAliasTypeTransfer = get(partyAliasType);
         
         if(partyAliasTypeTransfer == null) {
-            PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetail();
-            PartyTypeTransfer partyType = partyControl.getPartyTypeTransfer(userVisit, partyAliasTypeDetail.getPartyType());
-            String partyAliasTypeName = partyAliasTypeDetail.getPartyAliasTypeName();
-            String validationPattern = partyAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = partyAliasTypeDetail.getIsDefault();
-            Integer sortOrder = partyAliasTypeDetail.getSortOrder();
-            String description = partyControl.getBestPartyAliasTypeDescription(partyAliasType, getLanguage());
+            var partyAliasTypeDetail = partyAliasType.getLastDetail();
+            var partyType = partyControl.getPartyTypeTransfer(userVisit, partyAliasTypeDetail.getPartyType());
+            var partyAliasTypeName = partyAliasTypeDetail.getPartyAliasTypeName();
+            var validationPattern = partyAliasTypeDetail.getValidationPattern();
+            var isDefault = partyAliasTypeDetail.getIsDefault();
+            var sortOrder = partyAliasTypeDetail.getSortOrder();
+            var description = partyControl.getBestPartyAliasTypeDescription(partyAliasType, getLanguage());
             
             partyAliasTypeTransfer = new PartyAliasTypeTransfer(partyType, partyAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(partyAliasType, partyAliasTypeTransfer);

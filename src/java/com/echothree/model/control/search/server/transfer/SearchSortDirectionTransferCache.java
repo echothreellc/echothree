@@ -20,9 +20,7 @@ import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.transfer.SearchSortDirectionTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
-import com.echothree.model.data.search.server.entity.SearchSortDirectionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class SearchSortDirectionTransferCache
         extends BaseSearchTransferCache<SearchSortDirection, SearchSortDirectionTransfer> {
@@ -41,14 +39,14 @@ public class SearchSortDirectionTransferCache
     }
 
     public SearchSortDirectionTransfer getSearchSortDirectionTransfer(SearchSortDirection searchSortDirection) {
-        SearchSortDirectionTransfer searchSortDirectionTransfer = get(searchSortDirection);
+        var searchSortDirectionTransfer = get(searchSortDirection);
 
         if(searchSortDirectionTransfer == null) {
-            SearchSortDirectionDetail searchSortDirectionDetail = searchSortDirection.getLastDetail();
-            String searchSortDirectionName = searchSortDirectionDetail.getSearchSortDirectionName();
-            Boolean isDefault = searchSortDirectionDetail.getIsDefault();
-            Integer sortOrder = searchSortDirectionDetail.getSortOrder();
-            String description = searchControl.getBestSearchSortDirectionDescription(searchSortDirection, getLanguage());
+            var searchSortDirectionDetail = searchSortDirection.getLastDetail();
+            var searchSortDirectionName = searchSortDirectionDetail.getSearchSortDirectionName();
+            var isDefault = searchSortDirectionDetail.getIsDefault();
+            var sortOrder = searchSortDirectionDetail.getSortOrder();
+            var description = searchControl.getBestSearchSortDirectionDescription(searchSortDirection, getLanguage());
 
             searchSortDirectionTransfer = new SearchSortDirectionTransfer(searchSortDirectionName, isDefault, sortOrder, description);
             put(searchSortDirection, searchSortDirectionTransfer);

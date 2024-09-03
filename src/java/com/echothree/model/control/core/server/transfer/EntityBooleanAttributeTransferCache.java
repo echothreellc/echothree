@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityBooleanAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -36,12 +34,12 @@ public class EntityBooleanAttributeTransferCache
     }
     
     public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(EntityBooleanAttribute entityBooleanAttribute, EntityInstance entityInstance) {
-        EntityBooleanAttributeTransfer entityBooleanAttributeTransfer = get(entityBooleanAttribute);
+        var entityBooleanAttributeTransfer = get(entityBooleanAttribute);
         
         if(entityBooleanAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBooleanAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBooleanAttribute.getEntityInstance(), false, false, false, false, false, false);
-            Boolean booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBooleanAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBooleanAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
             
             entityBooleanAttributeTransfer = new EntityBooleanAttributeTransfer(entityAttribute, entityInstanceTransfer, booleanAttribute);
             put(entityBooleanAttribute, entityBooleanAttributeTransfer);

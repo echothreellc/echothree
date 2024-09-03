@@ -39,7 +39,7 @@ public class ReverseSwapSequenceEncoder
         var ending = length % 2;
         var hasExtra = ending == 1;
 
-        for(int i = length - 1; i > (hasExtra ? 0 : -1); i -= 2) {
+        for(var i = length - 1; i > (hasExtra ? 0 : -1); i -= 2) {
             result.appendCodePoint(codePoints[i - 1]);
             result.appendCodePoint(codePoints[i]);
         }

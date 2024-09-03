@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.server;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetServerForm;
 import com.echothree.control.user.core.common.result.GetServerResult;
 import com.echothree.model.control.core.common.transfer.ServerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetServerForm commandForm = CoreUtil.getHome().getGetServerForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetServerForm();
 
         commandForm.setServerName(request.getParameter(ParameterConstants.SERVER_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getServer(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getServer(getUserVisitPK(request), commandForm);
         ServerTransfer server = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetServerResult result = (GetServerResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetServerResult)executionResult.getResult();
             
             server = result.getServer();
         }

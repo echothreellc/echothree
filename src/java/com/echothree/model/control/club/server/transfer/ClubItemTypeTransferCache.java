@@ -30,13 +30,13 @@ public class ClubItemTypeTransferCache
     }
     
     public ClubItemTypeTransfer getClubItemTypeTransfer(ClubItemType clubItemType) {
-        ClubItemTypeTransfer clubItemTypeTransfer = get(clubItemType);
+        var clubItemTypeTransfer = get(clubItemType);
         
         if(clubItemTypeTransfer == null) {
-            String clubItemTypeName = clubItemType.getClubItemTypeName();
-            Boolean isDefault = clubItemType.getIsDefault();
-            Integer sortOrder = clubItemType.getSortOrder();
-            String description = clubControl.getBestClubItemTypeDescription(clubItemType, getLanguage());
+            var clubItemTypeName = clubItemType.getClubItemTypeName();
+            var isDefault = clubItemType.getIsDefault();
+            var sortOrder = clubItemType.getSortOrder();
+            var description = clubControl.getBestClubItemTypeDescription(clubItemType, getLanguage());
             
             clubItemTypeTransfer = new ClubItemTypeTransfer(clubItemTypeName, isDefault, sortOrder, description);
             put(clubItemType, clubItemTypeTransfer);

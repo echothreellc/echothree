@@ -16,21 +16,14 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessageAttachmentTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDetail;
-import com.echothree.model.data.forum.server.entity.ForumMessageBlobAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageClobAttachment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ForumMessageAttachmentTransferCache
         extends BaseForumTransferCache<ForumMessageAttachment, ForumMessageAttachmentTransfer> {
@@ -55,22 +48,22 @@ public class ForumMessageAttachmentTransferCache
     }
     
     public ForumMessageAttachmentTransfer getForumMessageAttachmentTransfer(ForumMessageAttachment forumMessageAttachment) {
-        ForumMessageAttachmentTransfer forumMessageAttachmentTransfer = get(forumMessageAttachment);
+        var forumMessageAttachmentTransfer = get(forumMessageAttachment);
         
         if(forumMessageAttachmentTransfer == null) {
-            ForumMessageAttachmentDetail forumMessageAttachmentDetail = forumMessageAttachment.getLastDetail();
-            ForumMessageTransfer forumMessage = forumControl.getForumMessageTransfer(userVisit, forumMessageAttachmentDetail.getForumMessage());
-            Integer forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMessageAttachmentDetail.getMimeType());
-            String description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage());
+            var forumMessageAttachmentDetail = forumMessageAttachment.getLastDetail();
+            var forumMessage = forumControl.getForumMessageTransfer(userVisit, forumMessageAttachmentDetail.getForumMessage());
+            var forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMessageAttachmentDetail.getMimeType());
+            var description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage());
             ByteArray blob = null;
             String clob = null;
             String eTag = null;
             long eTagEntityId = 0;
-            int eTagSize = 0;
+            var eTagSize = 0;
             
             if(includeBlob) {
-                ForumMessageBlobAttachment forumMessageAttachmentBlob = forumControl.getForumMessageBlobAttachment(forumMessageAttachment);
+                var forumMessageAttachmentBlob = forumControl.getForumMessageBlobAttachment(forumMessageAttachment);
                 
                 if(forumMessageAttachmentBlob != null) {
                     blob = forumMessageAttachmentBlob.getBlob();
@@ -78,7 +71,7 @@ public class ForumMessageAttachmentTransferCache
             }
             
             if(includeClob) {
-                ForumMessageClobAttachment forumMessageAttachmentClob = forumControl.getForumMessageClobAttachment(forumMessageAttachment);
+                var forumMessageAttachmentClob = forumControl.getForumMessageClobAttachment(forumMessageAttachment);
                 
                 if(forumMessageAttachmentClob != null) {
                     clob = forumMessageAttachmentClob.getClob();
@@ -87,12 +80,12 @@ public class ForumMessageAttachmentTransferCache
             
             if(includeETag && eTagEntityId != 0) {
                 // Forum Message Attachments do not have their own EntityTime, fall back on the Item's EntityTime.
-                EntityTimeTransfer entityTimeTransfer = forumMessage.getEntityInstance().getEntityTime();
-                Long modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
+                var entityTimeTransfer = forumMessage.getEntityInstance().getEntityTime();
+                var modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
                 long maxTime = modifiedTime == null ? entityTimeTransfer.getUnformattedCreatedTime() : modifiedTime;
 
                 // EntityId-Size-ModifiedTime
-                eTag = new StringBuilder(Long.toHexString(eTagEntityId)).append('-').append(Integer.toHexString(eTagSize)).append('-').append(Long.toHexString(maxTime)).toString();
+                eTag = Long.toHexString(eTagEntityId) + '-' + Integer.toHexString(eTagSize) + '-' + Long.toHexString(maxTime);
             }
 
             forumMessageAttachmentTransfer = new ForumMessageAttachmentTransfer(forumMessage, forumMessageAttachmentSequence, mimeType, description, blob, clob,

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.DeleteContentWebAddressForm;
-import com.echothree.control.user.content.common.form.GetContentWebAddressForm;
 import com.echothree.control.user.content.common.result.GetContentWebAddressResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,14 +58,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContentWebAddressForm commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
+        var commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
 
         commandForm.setContentWebAddressName(actionForm.getContentWebAddressName());
 
-        CommandResult commandResult = ContentUtil.getHome().getContentWebAddress(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentWebAddress(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentWebAddressResult result = (GetContentWebAddressResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentWebAddressResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESS, result.getContentWebAddress());
         }
@@ -77,7 +74,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContentWebAddressForm commandForm = ContentUtil.getHome().getDeleteContentWebAddressForm();
+        var commandForm = ContentUtil.getHome().getDeleteContentWebAddressForm();
 
         commandForm.setContentWebAddressName(actionForm.getContentWebAddressName());
 

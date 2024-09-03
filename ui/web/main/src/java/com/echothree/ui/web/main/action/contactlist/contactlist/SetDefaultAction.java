@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.SetDefaultContactListForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultContactListForm commandForm = ContactListUtil.getHome().getSetDefaultContactListForm();
+        var commandForm = ContactListUtil.getHome().getSetDefaultContactListForm();
 
         commandForm.setContactListName(request.getParameter(ParameterConstants.CONTACT_LIST_NAME));
 

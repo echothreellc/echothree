@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
 import com.echothree.control.user.authentication.common.result.GetEmployeeLoginDefaultsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.message.ExecutionWarnings;
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.message.Messages;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -66,14 +63,14 @@ public class LoginAction
         String forwardKey = null;
         
         if(wasPost(request)) {
-            EmployeeLoginForm commandForm = AuthenticationUtil.getHome().getEmployeeLoginForm();
+            var commandForm = AuthenticationUtil.getHome().getEmployeeLoginForm();
             
             commandForm.setUsername(actionForm.getUsername());
             commandForm.setPassword(actionForm.getPassword());
             commandForm.setCompanyName(actionForm.getCompanyChoice());
             commandForm.setRemoteInet4Address(request.getRemoteAddr());
-            
-            CommandResult commandResult = AuthenticationUtil.getHome().employeeLogin(getUserVisitPK(request), commandForm);
+
+            var commandResult = AuthenticationUtil.getHome().employeeLogin(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() || commandResult.hasWarnings()) {
                 setCommandResultAttribute(request, commandResult);
@@ -81,8 +78,8 @@ public class LoginAction
                 if(commandResult.hasErrors()) {
                     forwardKey = ForwardConstants.FORM;
                 } else if(commandResult.hasWarnings()) {
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    Messages executionWarnings = executionResult.getExecutionWarnings();
+                    var executionResult = commandResult.getExecutionResult();
+                    var executionWarnings = executionResult.getExecutionWarnings();
 
                     if(executionWarnings.containsKey(Messages.EXECUTION_WARNING, ExecutionWarnings.PasswordExpired.name())
                             || executionWarnings.containsKey(Messages.EXECUTION_WARNING, ExecutionWarnings.PasswordExpiration.name())) {
@@ -95,10 +92,10 @@ public class LoginAction
                 forwardKey = ForwardConstants.PORTAL;
             }
         } else {
-            CommandResult commandResult = AuthenticationUtil.getHome().getEmployeeLoginDefaults(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeLoginDefaultsResult result = (GetEmployeeLoginDefaultsResult)executionResult.getResult();
-            EmployeeLoginForm commandForm = result.getEmployeeLoginForm();
+            var commandResult = AuthenticationUtil.getHome().getEmployeeLoginDefaults(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeLoginDefaultsResult)executionResult.getResult();
+            var commandForm = result.getEmployeeLoginForm();
             
             actionForm.setUsername(commandForm.getUsername());
             actionForm.setCompanyChoice(commandForm.getCompanyName());
@@ -109,13 +106,13 @@ public class LoginAction
         
         ActionForward actionForward = null;
         if(!forwardKey.equals(ForwardConstants.FORM)) {
-            String returnUrl = StringUtils.getInstance().trimToNull(actionForm.getReturnUrl());
+            var returnUrl = StringUtils.getInstance().trimToNull(actionForm.getReturnUrl());
 
             if(returnUrl != null) {
                 if(forwardKey.equals(ForwardConstants.PORTAL)) {
                     actionForward = new ActionForward(returnUrl, true);
                 } else if(forwardKey.equals(ForwardConstants.WARNING) || forwardKey.equals(ForwardConstants.FORCE)) {
-                    CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+                    var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
                     Map<String, String> parameters = new HashMap<>(1);
 
                     parameters.put(ParameterConstants.RETURN_URL, returnUrl);

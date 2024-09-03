@@ -18,11 +18,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.letter.common.LetterUtil;
 import com.echothree.control.user.letter.common.LetterService;
-import com.echothree.control.user.letter.common.form.CreateLetterSourceForm;
 import com.echothree.control.user.letter.common.form.LetterFormFactory;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreateDivisionForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.party.common.result.CreateDivisionResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -32,8 +30,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.contact.ContactMechanis
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.document.PartyDocumentsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.letter.LetterSourceHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -68,24 +64,24 @@ public class CompanyHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("division")) {
-            CreateDivisionForm form = PartyFormFactory.getCreateDivisionForm();
+            var form = PartyFormFactory.getCreateDivisionForm();
             
             form.setCompanyName(companyName);
             form.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = partyService.createDivision(initialDataParser.getUserVisit(), form);
+
+            var commandResult = partyService.createDivision(initialDataParser.getUserVisit(), form);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateDivisionResult result = (CreateDivisionResult)executionResult.getResult();
-                String partyName = result.getPartyName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateDivisionResult)executionResult.getResult();
+                var partyName = result.getPartyName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new DivisionHandler(initialDataParser, this, partyName, companyName,
                         form.getDivisionName(), entityRef));
             }
         } else if(localName.equals("letterSource")) {
-            CreateLetterSourceForm commandForm = LetterFormFactory.getCreateLetterSourceForm();
+            var commandForm = LetterFormFactory.getCreateLetterSourceForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.set(getAttrsMap(attrs));

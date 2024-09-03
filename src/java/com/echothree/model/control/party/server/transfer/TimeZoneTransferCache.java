@@ -20,10 +20,8 @@ import com.echothree.model.control.party.common.PartyProperties;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.model.data.party.server.entity.TimeZoneDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class TimeZoneTransferCache
         extends BasePartyTransferCache<TimeZone, TimeZoneTransfer> {
@@ -58,15 +56,15 @@ public class TimeZoneTransferCache
     }
     
     public TimeZoneTransfer getTimeZoneTransfer(TimeZone timeZone) {
-        TimeZoneTransfer timeZoneTransfer = get(timeZone);
+        var timeZoneTransfer = get(timeZone);
         
         if(timeZoneTransfer == null) {
-            TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
-            String javaTimeZoneName = filterJavaTimeZoneName ? null : timeZoneDetail.getJavaTimeZoneName();
-            String unixTimeZoneName = filterUnixTimeZoneName ? null : timeZoneDetail.getUnixTimeZoneName();
-            Boolean isDefault = filterIsDefault ? null : timeZoneDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : timeZoneDetail.getSortOrder();
-            String description = filterDescription ? null : partyControl.getBestTimeZoneDescription(timeZone, getLanguage());
+            var timeZoneDetail = timeZone.getLastDetail();
+            var javaTimeZoneName = filterJavaTimeZoneName ? null : timeZoneDetail.getJavaTimeZoneName();
+            var unixTimeZoneName = filterUnixTimeZoneName ? null : timeZoneDetail.getUnixTimeZoneName();
+            var isDefault = filterIsDefault ? null : timeZoneDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : timeZoneDetail.getSortOrder();
+            var description = filterDescription ? null : partyControl.getBestTimeZoneDescription(timeZone, getLanguage());
             
             timeZoneTransfer = new TimeZoneTransfer(javaTimeZoneName, unixTimeZoneName, isDefault, sortOrder, description);
             put(timeZone, timeZoneTransfer);

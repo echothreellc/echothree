@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.glresourcetype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlResourceTypeDescriptionsForm;
 import com.echothree.control.user.accounting.common.result.GetGlResourceTypeDescriptionsResult;
-import com.echothree.model.control.accounting.common.transfer.GlResourceTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
-            GetGlResourceTypeDescriptionsForm commandForm = AccountingUtil.getHome().getGetGlResourceTypeDescriptionsForm();
+            var glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlResourceTypeDescriptionsForm();
             
             commandForm.setGlResourceTypeName(glResourceTypeName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlResourceTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlResourceTypeDescriptionsResult result = (GetGlResourceTypeDescriptionsResult)executionResult.getResult();
-            GlResourceTypeTransfer glResourceTypeTransfer = result.getGlResourceType();
+
+            var commandResult = AccountingUtil.getHome().getGlResourceTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlResourceTypeDescriptionsResult)executionResult.getResult();
+            var glResourceTypeTransfer = result.getGlResourceType();
             
             request.setAttribute(AttributeConstants.GL_RESOURCE_TYPE, glResourceTypeTransfer);
             request.setAttribute(AttributeConstants.GL_RESOURCE_TYPE_NAME, glResourceTypeTransfer.getGlResourceTypeName());

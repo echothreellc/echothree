@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.shipping.shipmenttypeshippingmethod;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.form.GetShipmentTypeShippingMethodsForm;
 import com.echothree.control.user.shipment.common.result.GetShipmentTypeShippingMethodsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetShipmentTypeShippingMethodsForm commandForm = ShipmentUtil.getHome().getGetShipmentTypeShippingMethodsForm();
-            String shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
+            var commandForm = ShipmentUtil.getHome().getGetShipmentTypeShippingMethodsForm();
+            var shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
             
             commandForm.setShipmentTypeName(shipmentTypeName);
 
-            CommandResult commandResult = ShipmentUtil.getHome().getShipmentTypeShippingMethods(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetShipmentTypeShippingMethodsResult result = (GetShipmentTypeShippingMethodsResult)executionResult.getResult();
+            var commandResult = ShipmentUtil.getHome().getShipmentTypeShippingMethods(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetShipmentTypeShippingMethodsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SHIPMENT_TYPE, result.getShipmentType());
             request.setAttribute(AttributeConstants.SHIPMENT_TYPE_SHIPPING_METHODS, result.getShipmentTypeShippingMethods());

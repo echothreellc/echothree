@@ -81,128 +81,69 @@ import com.echothree.model.control.item.common.transfer.RelatedItemTypeDescripti
 import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.graphql.ItemObject;
-import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeTransferCache;
-import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeUnitTransferCache;
-import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeUseTypeTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemAliasTypeDescriptionTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemAliasTypeTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemCategoryDescriptionTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemCategoryTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemCountryOfOriginTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemDescriptionTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemDescriptionTypeDescriptionTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemDescriptionTypeTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemDescriptionTypeUseTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemDescriptionTypeUseTypeDescriptionTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemDescriptionTypeUseTypeTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemHarmonizedTariffScheduleCodeTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemImageTypeDescriptionTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemImageTypeTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemKitMemberTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemPackCheckRequirementTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemPriceTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemTransferCaches;
-import com.echothree.model.control.item.server.transfer.ItemUnitCustomerTypeLimitTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemUnitLimitTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemUnitOfMeasureTypeTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemUnitPriceLimitTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemVolumeTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemWeightTransferCache;
-import com.echothree.model.control.item.server.transfer.RelatedItemTransferCache;
-import com.echothree.model.control.item.server.transfer.RelatedItemTypeDescriptionTransferCache;
-import com.echothree.model.control.item.server.transfer.RelatedItemTypeTransferCache;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.accounting.common.pk.CurrencyPK;
-import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
-import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.core.common.pk.MimeTypePK;
-import com.echothree.model.data.core.common.pk.MimeTypeUsageTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
-import com.echothree.model.data.customer.common.pk.CustomerTypePK;
 import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.geo.common.pk.GeoCodePK;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.inventory.common.pk.InventoryConditionPK;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodePK;
-import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodeUnitPK;
-import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodeUseTypePK;
 import com.echothree.model.data.item.common.pk.ItemAliasChecksumTypePK;
-import com.echothree.model.data.item.common.pk.ItemAliasPK;
 import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
 import com.echothree.model.data.item.common.pk.ItemCategoryPK;
-import com.echothree.model.data.item.common.pk.ItemCountryOfOriginPK;
 import com.echothree.model.data.item.common.pk.ItemDeliveryTypePK;
 import com.echothree.model.data.item.common.pk.ItemDescriptionPK;
 import com.echothree.model.data.item.common.pk.ItemDescriptionTypePK;
 import com.echothree.model.data.item.common.pk.ItemDescriptionTypeUseTypePK;
-import com.echothree.model.data.item.common.pk.ItemHarmonizedTariffScheduleCodePK;
 import com.echothree.model.data.item.common.pk.ItemImageTypePK;
 import com.echothree.model.data.item.common.pk.ItemInventoryTypePK;
-import com.echothree.model.data.item.common.pk.ItemKitOptionPK;
 import com.echothree.model.data.item.common.pk.ItemPK;
-import com.echothree.model.data.item.common.pk.ItemPackCheckRequirementPK;
-import com.echothree.model.data.item.common.pk.ItemPricePK;
 import com.echothree.model.data.item.common.pk.ItemPriceTypePK;
-import com.echothree.model.data.item.common.pk.ItemShippingTimePK;
 import com.echothree.model.data.item.common.pk.ItemTypePK;
 import com.echothree.model.data.item.common.pk.ItemUseTypePK;
-import com.echothree.model.data.item.common.pk.RelatedItemPK;
 import com.echothree.model.data.item.common.pk.RelatedItemTypePK;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeDetail;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeTranslation;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnit;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnitDescription;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnitDetail;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUse;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseTypeDescription;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseTypeDetail;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumTypeDescription;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.item.server.entity.ItemAliasTypeDescription;
-import com.echothree.model.data.item.server.entity.ItemAliasTypeDetail;
 import com.echothree.model.data.item.server.entity.ItemBlobDescription;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemCategoryDescription;
-import com.echothree.model.data.item.server.entity.ItemCategoryDetail;
 import com.echothree.model.data.item.server.entity.ItemClobDescription;
 import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.item.server.entity.ItemDeliveryTypeDescription;
 import com.echothree.model.data.item.server.entity.ItemDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDetail;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUse;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDetail;
-import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.item.server.entity.ItemFixedPrice;
 import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCodeDetail;
 import com.echothree.model.data.item.server.entity.ItemImageDescription;
 import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.item.server.entity.ItemImageTypeDescription;
-import com.echothree.model.data.item.server.entity.ItemImageTypeDetail;
 import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.item.server.entity.ItemInventoryTypeDescription;
 import com.echothree.model.data.item.server.entity.ItemKitMember;
@@ -225,10 +166,8 @@ import com.echothree.model.data.item.server.entity.ItemVariablePrice;
 import com.echothree.model.data.item.server.entity.ItemVolume;
 import com.echothree.model.data.item.server.entity.ItemWeight;
 import com.echothree.model.data.item.server.entity.RelatedItem;
-import com.echothree.model.data.item.server.entity.RelatedItemDetail;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.item.server.entity.RelatedItemTypeDescription;
-import com.echothree.model.data.item.server.entity.RelatedItemTypeDetail;
 import com.echothree.model.data.item.server.factory.HarmonizedTariffScheduleCodeDetailFactory;
 import com.echothree.model.data.item.server.factory.HarmonizedTariffScheduleCodeFactory;
 import com.echothree.model.data.item.server.factory.HarmonizedTariffScheduleCodeTranslationFactory;
@@ -347,29 +286,19 @@ import com.echothree.model.data.item.server.value.ItemWeightValue;
 import com.echothree.model.data.item.server.value.RelatedItemDetailValue;
 import com.echothree.model.data.item.server.value.RelatedItemTypeDescriptionValue;
 import com.echothree.model.data.item.server.value.RelatedItemTypeDetailValue;
-import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
-import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.style.common.pk.StylePathPK;
 import com.echothree.model.data.style.server.entity.StylePath;
-import com.echothree.model.data.uom.common.pk.UnitOfMeasureKindPK;
-import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.vendor.common.pk.ItemPurchasingCategoryPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -381,15 +310,12 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import static java.lang.Math.toIntExact;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -501,7 +427,7 @@ public class ItemControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = ItemTypeFactory.getInstance().prepareStatement(query);
+        var ps = ItemTypeFactory.getInstance().prepareStatement(query);
 
         return ItemTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -519,7 +445,7 @@ public class ItemControl
     }
     
     public List<ItemType> getItemTypes() {
-        PreparedStatement ps = ItemTypeFactory.getInstance().prepareStatement(
+        var ps = ItemTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM itemtypes " +
                 "ORDER BY ityp_sortorder, ityp_itemtypename " +
@@ -529,7 +455,7 @@ public class ItemControl
     }
     
     public ItemTypeChoicesBean getItemTypeChoices(String defaultItemTypeChoice, Language language, boolean allowNullChoice) {
-        List<ItemType> itemTypes = getItemTypes();
+        var itemTypes = getItemTypes();
         var size = itemTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -596,7 +522,7 @@ public class ItemControl
         ItemTypeDescription itemTypeDescription;
         
         try {
-            PreparedStatement ps = ItemTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ItemTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemtypedescriptions " +
                     "WHERE itypd_ityp_itemtypeid = ? AND itypd_lang_languageid = ?");
@@ -614,7 +540,7 @@ public class ItemControl
     
     public String getBestItemTypeDescription(ItemType itemType, Language language) {
         String description;
-        ItemTypeDescription itemTypeDescription = getItemTypeDescription(itemType, language);
+        var itemTypeDescription = getItemTypeDescription(itemType, language);
         
         if(itemTypeDescription == null && !language.getIsDefault()) {
             itemTypeDescription = getItemTypeDescription(itemType, getPartyControl().getDefaultLanguage());
@@ -714,7 +640,7 @@ public class ItemControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = ItemDeliveryTypeFactory.getInstance().prepareStatement(query);
+        var ps = ItemDeliveryTypeFactory.getInstance().prepareStatement(query);
 
         return ItemDeliveryTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -732,7 +658,7 @@ public class ItemControl
     }
     
     public List<ItemDeliveryType> getItemDeliveryTypes() {
-        PreparedStatement ps = ItemDeliveryTypeFactory.getInstance().prepareStatement(
+        var ps = ItemDeliveryTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM itemdeliverytypes " +
                 "ORDER BY idlvrtyp_sortorder, idlvrtyp_itemdeliverytypename " +
@@ -742,7 +668,7 @@ public class ItemControl
     }
     
     public ItemDeliveryTypeChoicesBean getItemDeliveryTypeChoices(String defaultItemDeliveryTypeChoice, Language language, boolean allowNullChoice) {
-        List<ItemDeliveryType> itemDeliveryTypes = getItemDeliveryTypes();
+        var itemDeliveryTypes = getItemDeliveryTypes();
         var size = itemDeliveryTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -809,7 +735,7 @@ public class ItemControl
         ItemDeliveryTypeDescription itemDeliveryTypeDescription;
         
         try {
-            PreparedStatement ps = ItemDeliveryTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ItemDeliveryTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemdeliverytypedescriptions " +
                     "WHERE idlvrtypd_idlvrtyp_itemdeliverytypeid = ? AND idlvrtypd_lang_languageid = ?");
@@ -827,7 +753,7 @@ public class ItemControl
     
     public String getBestItemDeliveryTypeDescription(ItemDeliveryType itemDeliveryType, Language language) {
         String description;
-        ItemDeliveryTypeDescription itemDeliveryTypeDescription = getItemDeliveryTypeDescription(itemDeliveryType, language);
+        var itemDeliveryTypeDescription = getItemDeliveryTypeDescription(itemDeliveryType, language);
         
         if(itemDeliveryTypeDescription == null && !language.getIsDefault()) {
             itemDeliveryTypeDescription = getItemDeliveryTypeDescription(itemDeliveryType, getPartyControl().getDefaultLanguage());
@@ -927,7 +853,7 @@ public class ItemControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = ItemInventoryTypeFactory.getInstance().prepareStatement(query);
+        var ps = ItemInventoryTypeFactory.getInstance().prepareStatement(query);
 
         return ItemInventoryTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -945,7 +871,7 @@ public class ItemControl
     }
 
     public List<ItemInventoryType> getItemInventoryTypes() {
-        PreparedStatement ps = ItemInventoryTypeFactory.getInstance().prepareStatement(
+        var ps = ItemInventoryTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM iteminventorytypes " +
                 "ORDER BY iinvtyp_sortorder, iinvtyp_iteminventorytypename " +
@@ -955,7 +881,7 @@ public class ItemControl
     }
     
     public ItemInventoryTypeChoicesBean getItemInventoryTypeChoices(String defaultItemInventoryTypeChoice, Language language, boolean allowNullChoice) {
-        List<ItemInventoryType> itemInventoryTypes = getItemInventoryTypes();
+        var itemInventoryTypes = getItemInventoryTypes();
         var size = itemInventoryTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1022,7 +948,7 @@ public class ItemControl
         ItemInventoryTypeDescription itemInventoryTypeDescription;
         
         try {
-            PreparedStatement ps = ItemInventoryTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ItemInventoryTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM iteminventorytypedescriptions " +
                     "WHERE iinvtypd_iinvtyp_iteminventorytypeid = ? AND iinvtypd_lang_languageid = ?");
@@ -1040,7 +966,7 @@ public class ItemControl
     
     public String getBestItemInventoryTypeDescription(ItemInventoryType itemInventoryType, Language language) {
         String description;
-        ItemInventoryTypeDescription itemInventoryTypeDescription = getItemInventoryTypeDescription(itemInventoryType, language);
+        var itemInventoryTypeDescription = getItemInventoryTypeDescription(itemInventoryType, language);
         
         if(itemInventoryTypeDescription == null && !language.getIsDefault()) {
             itemInventoryTypeDescription = getItemInventoryTypeDescription(itemInventoryType, getPartyControl().getDefaultLanguage());
@@ -1140,7 +1066,7 @@ public class ItemControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = ItemUseTypeFactory.getInstance().prepareStatement(query);
+        var ps = ItemUseTypeFactory.getInstance().prepareStatement(query);
 
         return ItemUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -1158,7 +1084,7 @@ public class ItemControl
     }
 
     public List<ItemUseType> getItemUseTypes() {
-        PreparedStatement ps = ItemUseTypeFactory.getInstance().prepareStatement(
+        var ps = ItemUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM itemusetypes " +
                 "ORDER BY iutyp_sortorder, iutyp_itemusetypename " +
@@ -1168,7 +1094,7 @@ public class ItemControl
     }
 
     public ItemUseTypeChoicesBean getItemUseTypeChoices(String defaultItemUseTypeChoice, Language language, boolean allowNullChoice) {
-        List<ItemUseType> itemUseTypes = getItemUseTypes();
+        var itemUseTypes = getItemUseTypes();
         var size = itemUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1235,7 +1161,7 @@ public class ItemControl
         ItemUseTypeDescription itemUseTypeDescription;
         
         try {
-            PreparedStatement ps = ItemUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ItemUseTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemusetypedescriptions " +
                     "WHERE iutypd_iutyp_itemusetypeid = ? AND iutypd_lang_languageid = ?");
@@ -1253,7 +1179,7 @@ public class ItemControl
     
     public String getBestItemUseTypeDescription(ItemUseType itemUseType, Language language) {
         String description;
-        ItemUseTypeDescription itemUseTypeDescription = getItemUseTypeDescription(itemUseType, language);
+        var itemUseTypeDescription = getItemUseTypeDescription(itemUseType, language);
         
         if(itemUseTypeDescription == null && !language.getIsDefault()) {
             itemUseTypeDescription = getItemUseTypeDescription(itemUseType, getPartyControl().getDefaultLanguage());
@@ -1274,20 +1200,20 @@ public class ItemControl
     
     public ItemCategory createItemCategory(String itemCategoryName, ItemCategory parentItemCategory, Sequence itemSequence, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ItemCategory defaultItemCategory = getDefaultItemCategory();
-        boolean defaultFound = defaultItemCategory != null;
+        var defaultItemCategory = getDefaultItemCategory();
+        var defaultFound = defaultItemCategory != null;
         
         if(defaultFound && isDefault) {
-            ItemCategoryDetailValue defaultItemCategoryDetailValue = getDefaultItemCategoryDetailValueForUpdate();
+            var defaultItemCategoryDetailValue = getDefaultItemCategoryDetailValueForUpdate();
             
             defaultItemCategoryDetailValue.setIsDefault(Boolean.FALSE);
             updateItemCategoryFromValue(defaultItemCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ItemCategory itemCategory = ItemCategoryFactory.getInstance().create();
-        ItemCategoryDetail itemCategoryDetail = ItemCategoryDetailFactory.getInstance().create(session,
+
+        var itemCategory = ItemCategoryFactory.getInstance().create();
+        var itemCategoryDetail = ItemCategoryDetailFactory.getInstance().create(session,
                 itemCategory, itemCategoryName, parentItemCategory, itemSequence, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1319,8 +1245,8 @@ public class ItemControl
                         "WHERE ic_activedetailid = icdt_itemcategorydetailid AND icdt_itemcategoryname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, itemCategoryName);
             
@@ -1361,8 +1287,8 @@ public class ItemControl
                     "WHERE ic_activedetailid = icdt_itemcategorydetailid AND icdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ItemCategoryFactory.getInstance().prepareStatement(query);
+
+        var ps = ItemCategoryFactory.getInstance().prepareStatement(query);
         
         return ItemCategoryFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -1393,8 +1319,8 @@ public class ItemControl
                     "WHERE ic_activedetailid = icdt_itemcategorydetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ItemCategoryFactory.getInstance().prepareStatement(query);
+
+        var ps = ItemCategoryFactory.getInstance().prepareStatement(query);
         
         return ItemCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1409,7 +1335,7 @@ public class ItemControl
     
     private List<ItemCategory> getItemCategoriesByParentItemCategory(ItemCategory parentItemCategory,
             EntityPermission entityPermission) {
-        List<ItemCategory> itemCategories = null;
+        List<ItemCategory> itemCategories;
 
         try {
             String query = null;
@@ -1426,7 +1352,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemCategoryFactory.getInstance().prepareStatement(query);
+            var ps = ItemCategoryFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, parentItemCategory.getPrimaryKey().getEntityId());
 
@@ -1452,7 +1378,7 @@ public class ItemControl
 
     public List<ItemCategoryTransfer> getItemCategoryTransfers(UserVisit userVisit, Collection<ItemCategory> itemCategories) {
         List<ItemCategoryTransfer> itemCategoryTransfers = new ArrayList<>(itemCategories.size());
-        ItemCategoryTransferCache itemCategoryTransferCache = getItemTransferCaches(userVisit).getItemCategoryTransferCache();
+        var itemCategoryTransferCache = getItemTransferCaches(userVisit).getItemCategoryTransferCache();
 
         itemCategories.forEach((itemCategory) ->
                 itemCategoryTransfers.add(itemCategoryTransferCache.getTransfer(itemCategory))
@@ -1487,7 +1413,7 @@ public class ItemControl
 
     public ItemCategoryChoicesBean getItemCategoryChoices(String defaultItemCategoryChoice, Language language,
             boolean allowNullChoice) {
-        List<ItemCategory> itemCategories = getItemCategories();
+        var itemCategories = getItemCategories();
         var size = itemCategories.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1503,9 +1429,9 @@ public class ItemControl
         }
         
         for(var itemCategory : itemCategories) {
-            ItemCategoryDetail itemCategoryDetail = itemCategory.getLastDetail();
+            var itemCategoryDetail = itemCategory.getLastDetail();
             
-            var label = allowNullChoice ? new StringBuilder(getBestItemCategoryDescription(itemCategory, language)).append(itemCategoryDetail.getIsDefault() ? " *" : "").toString(): getBestItemCategoryDescription(itemCategory, language);
+            var label = allowNullChoice ? getBestItemCategoryDescription(itemCategory, language) + (itemCategoryDetail.getIsDefault() ? " *" : "") : getBestItemCategoryDescription(itemCategory, language);
             var value = itemCategoryDetail.getItemCategoryName();
             
             labels.add(label == null? value: label);
@@ -1521,7 +1447,7 @@ public class ItemControl
     }
     
     public boolean isParentItemCategorySafe(ItemCategory itemCategory, ItemCategory parentItemCategory) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentItemCategory != null) {
             Set<ItemCategory> parentItemCategories = new HashSet<>();
@@ -1544,27 +1470,27 @@ public class ItemControl
     private void updateItemCategoryFromValue(ItemCategoryDetailValue itemCategoryDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemCategoryDetailValue.hasBeenModified()) {
-            ItemCategory itemCategory = ItemCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemCategory = ItemCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemCategoryDetailValue.getItemCategoryPK());
-            ItemCategoryDetail itemCategoryDetail = itemCategory.getActiveDetailForUpdate();
+            var itemCategoryDetail = itemCategory.getActiveDetailForUpdate();
             
             itemCategoryDetail.setThruTime(session.START_TIME_LONG);
             itemCategoryDetail.store();
-            
-            ItemCategoryPK itemCategoryPK = itemCategoryDetail.getItemCategoryPK();
-            String itemCategoryName = itemCategoryDetailValue.getItemCategoryName();
-            ItemCategoryPK parentItemCategoryPK = itemCategoryDetailValue.getParentItemCategoryPK();
-            SequencePK itemSequencePK = itemCategoryDetailValue.getItemSequencePK();
-            Boolean isDefault = itemCategoryDetailValue.getIsDefault();
-            Integer sortOrder = itemCategoryDetailValue.getSortOrder();
+
+            var itemCategoryPK = itemCategoryDetail.getItemCategoryPK();
+            var itemCategoryName = itemCategoryDetailValue.getItemCategoryName();
+            var parentItemCategoryPK = itemCategoryDetailValue.getParentItemCategoryPK();
+            var itemSequencePK = itemCategoryDetailValue.getItemSequencePK();
+            var isDefault = itemCategoryDetailValue.getIsDefault();
+            var sortOrder = itemCategoryDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ItemCategory defaultItemCategory = getDefaultItemCategory();
-                boolean defaultFound = defaultItemCategory != null && !defaultItemCategory.equals(itemCategory);
+                var defaultItemCategory = getDefaultItemCategory();
+                var defaultFound = defaultItemCategory != null && !defaultItemCategory.equals(itemCategory);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ItemCategoryDetailValue defaultItemCategoryDetailValue = getDefaultItemCategoryDetailValueForUpdate();
+                    var defaultItemCategoryDetailValue = getDefaultItemCategoryDetailValueForUpdate();
                     
                     defaultItemCategoryDetailValue.setIsDefault(Boolean.FALSE);
                     updateItemCategoryFromValue(defaultItemCategoryDetailValue, false, updatedBy);
@@ -1592,25 +1518,25 @@ public class ItemControl
     private void deleteItemCategory(ItemCategory itemCategory, boolean checkDefault, BasePK deletedBy) {
         deleteItemCategoriesByParentItemCategory(itemCategory, deletedBy);
         deleteItemCategoryDescriptionsByItemCategory(itemCategory, deletedBy);
-        
-        ItemCategoryDetail itemCategoryDetail = itemCategory.getLastDetailForUpdate();
+
+        var itemCategoryDetail = itemCategory.getLastDetailForUpdate();
         itemCategoryDetail.setThruTime(session.START_TIME_LONG);
         itemCategory.setActiveDetail(null);
         itemCategory.store();
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ItemCategory defaultItemCategory = getDefaultItemCategory();
+            var defaultItemCategory = getDefaultItemCategory();
 
             if(defaultItemCategory == null) {
-                List<ItemCategory> itemCategories = getItemCategoriesForUpdate();
+                var itemCategories = getItemCategoriesForUpdate();
 
                 if(!itemCategories.isEmpty()) {
-                    Iterator<ItemCategory> iter = itemCategories.iterator();
+                    var iter = itemCategories.iterator();
                     if(iter.hasNext()) {
                         defaultItemCategory = iter.next();
                     }
-                    ItemCategoryDetailValue itemCategoryDetailValue = Objects.requireNonNull(defaultItemCategory).getLastDetailForUpdate().getItemCategoryDetailValue().clone();
+                    var itemCategoryDetailValue = Objects.requireNonNull(defaultItemCategory).getLastDetailForUpdate().getItemCategoryDetailValue().clone();
 
                     itemCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemCategoryFromValue(itemCategoryDetailValue, false, deletedBy);
@@ -1642,7 +1568,7 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     
     public ItemCategoryDescription createItemCategoryDescription(ItemCategory itemCategory, Language language, String description, BasePK createdBy) {
-        ItemCategoryDescription itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().create(itemCategory, language, description, session.START_TIME_LONG,
+        var itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().create(itemCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(itemCategory.getPrimaryKey(), EventTypes.MODIFY, itemCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1666,8 +1592,8 @@ public class ItemControl
                         "WHERE icd_ic_itemcategoryid = ? AND icd_lang_languageid = ? AND icd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1714,8 +1640,8 @@ public class ItemControl
                         "WHERE icd_ic_itemcategoryid = ? AND icd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1738,7 +1664,7 @@ public class ItemControl
     
     public String getBestItemCategoryDescription(ItemCategory itemCategory, Language language) {
         String description;
-        ItemCategoryDescription itemCategoryDescription = getItemCategoryDescription(itemCategory, language);
+        var itemCategoryDescription = getItemCategoryDescription(itemCategory, language);
         
         if(itemCategoryDescription == null && !language.getIsDefault()) {
             itemCategoryDescription = getItemCategoryDescription(itemCategory, getPartyControl().getDefaultLanguage());
@@ -1758,9 +1684,9 @@ public class ItemControl
     }
     
     public List<ItemCategoryDescriptionTransfer> getItemCategoryDescriptionTransfersByItemCategory(UserVisit userVisit, ItemCategory itemCategory) {
-        List<ItemCategoryDescription> itemCategoryDescriptions = getItemCategoryDescriptionsByItemCategory(itemCategory);
+        var itemCategoryDescriptions = getItemCategoryDescriptionsByItemCategory(itemCategory);
         List<ItemCategoryDescriptionTransfer> itemCategoryDescriptionTransfers = new ArrayList<>(itemCategoryDescriptions.size());
-        ItemCategoryDescriptionTransferCache itemCategoryDescriptionTransferCache = getItemTransferCaches(userVisit).getItemCategoryDescriptionTransferCache();
+        var itemCategoryDescriptionTransferCache = getItemTransferCaches(userVisit).getItemCategoryDescriptionTransferCache();
         
         itemCategoryDescriptions.forEach((itemCategoryDescription) ->
                 itemCategoryDescriptionTransfers.add(itemCategoryDescriptionTransferCache.getTransfer(itemCategoryDescription))
@@ -1771,15 +1697,15 @@ public class ItemControl
     
     public void updateItemCategoryDescriptionFromValue(ItemCategoryDescriptionValue itemCategoryDescriptionValue, BasePK updatedBy) {
         if(itemCategoryDescriptionValue.hasBeenModified()) {
-            ItemCategoryDescription itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemCategoryDescriptionValue.getPrimaryKey());
             
             itemCategoryDescription.setThruTime(session.START_TIME_LONG);
             itemCategoryDescription.store();
-            
-            ItemCategory itemCategory = itemCategoryDescription.getItemCategory();
-            Language language = itemCategoryDescription.getLanguage();
-            String description = itemCategoryDescriptionValue.getDescription();
+
+            var itemCategory = itemCategoryDescription.getItemCategory();
+            var language = itemCategoryDescription.getLanguage();
+            var description = itemCategoryDescriptionValue.getDescription();
             
             itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().create(itemCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1796,7 +1722,7 @@ public class ItemControl
     }
     
     public void deleteItemCategoryDescriptionsByItemCategory(ItemCategory itemCategory, BasePK deletedBy) {
-        List<ItemCategoryDescription> itemCategoryDescriptions = getItemCategoryDescriptionsByItemCategoryForUpdate(itemCategory);
+        var itemCategoryDescriptions = getItemCategoryDescriptionsByItemCategoryForUpdate(itemCategory);
         
         itemCategoryDescriptions.forEach((itemCategoryDescription) -> 
                 deleteItemCategoryDescription(itemCategoryDescription, deletedBy)
@@ -1814,8 +1740,8 @@ public class ItemControl
             Long purchaseOrderStartTime, Long purchaseOrderEndTime, Boolean allowClubDiscounts, Boolean allowCouponDiscounts, Boolean allowAssociatePayments,
             UnitOfMeasureKind unitOfMeasureKind, ItemPriceType itemPriceType, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy,
             StylePath stylePath, BasePK createdBy) {
-        Item item = ItemFactory.getInstance().create();
-        ItemDetail itemDetail = ItemDetailFactory.getInstance().create(item, itemName, itemType, itemUseType, itemCategory, itemAccountingCategory,
+        var item = ItemFactory.getInstance().create();
+        var itemDetail = ItemDetailFactory.getInstance().create(item, itemName, itemType, itemUseType, itemCategory, itemAccountingCategory,
                 itemPurchasingCategory, companyParty, itemDeliveryType, itemInventoryType, inventorySerialized, serialNumberSequence, shippingChargeExempt,
                 shippingStartTime, shippingEndTime, salesOrderStartTime, salesOrderEndTime, purchaseOrderStartTime, purchaseOrderEndTime, allowClubDiscounts,
                 allowCouponDiscounts, allowAssociatePayments, unitOfMeasureKind, itemPriceType, cancellationPolicy, returnPolicy, stylePath,
@@ -1942,7 +1868,7 @@ public class ItemControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+        var ps = ItemFactory.getInstance().prepareStatement(query);
 
         return ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1975,7 +1901,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = ItemFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
 
@@ -2015,7 +1941,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = ItemFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
 
@@ -2054,7 +1980,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = ItemFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
 
@@ -2094,7 +2020,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = ItemFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
 
@@ -2134,7 +2060,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = ItemFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
 
@@ -2170,8 +2096,8 @@ public class ItemControl
                         "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_itemname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, itemName);
             
@@ -2200,10 +2126,10 @@ public class ItemControl
     }
     
     private Item getItemByNameThenAlias(String itemName, EntityPermission entityPermission) {
-        Item item = getItemByName(itemName);
+        var item = getItemByName(itemName);
         
         if(item == null) {
-            ItemAlias itemAlias = getItemAliasByAlias(itemName);
+            var itemAlias = getItemAliasByAlias(itemName);
             
             if(itemAlias != null) {
                 item = itemAlias.getItem(session, entityPermission);
@@ -2227,7 +2153,7 @@ public class ItemControl
 
     public List<ItemTransfer> getItemTransfers(UserVisit userVisit, Collection<Item> items) {
         List<ItemTransfer> itemTransfers = new ArrayList<>(items.size());
-        ItemTransferCache itemTransferCache = getItemTransferCaches(userVisit).getItemTransferCache();
+        var itemTransferCache = getItemTransferCaches(userVisit).getItemTransferCache();
 
         items.forEach((item) ->
                 itemTransfers.add(itemTransferCache.getTransfer(item))
@@ -2243,14 +2169,14 @@ public class ItemControl
     public ItemStatusChoicesBean getItemStatusChoices(String defaultItemStatusChoice, Language language, boolean allowNullChoice,
             Item item, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        ItemStatusChoicesBean itemStatusChoicesBean = new ItemStatusChoicesBean();
+        var itemStatusChoicesBean = new ItemStatusChoicesBean();
         
         if(item == null) {
             workflowControl.getWorkflowEntranceChoices(itemStatusChoicesBean, defaultItemStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(ItemStatusConstants.Workflow_ITEM_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(item.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(ItemStatusConstants.Workflow_ITEM_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(item.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(ItemStatusConstants.Workflow_ITEM_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(itemStatusChoicesBean, defaultItemStatusChoice, language, allowNullChoice,
@@ -2262,10 +2188,10 @@ public class ItemControl
     
     public void setItemStatus(ExecutionErrorAccumulator eea, Item item, String itemStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(item);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(ItemStatusConstants.Workflow_ITEM_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(item);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(ItemStatusConstants.Workflow_ITEM_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = itemStatusChoice == null? null:
+        var workflowDestination = itemStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), itemStatusChoice);
         
         if(workflowDestination != null || itemStatusChoice == null) {
@@ -2277,40 +2203,40 @@ public class ItemControl
     
     public void updateItemFromValue(ItemDetailValue itemDetailValue, BasePK updatedBy) {
         if(itemDetailValue.hasBeenModified()) {
-            Item item = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var item = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemDetailValue.getItemPK());
-            ItemDetail itemDetail = item.getActiveDetailForUpdate();
+            var itemDetail = item.getActiveDetailForUpdate();
             
             itemDetail.setThruTime(session.START_TIME_LONG);
             itemDetail.store();
-            
-            ItemPK itemPK = itemDetail.getItemPK(); // Not updated
-            String itemName = itemDetailValue.getItemName(); // Not updated
-            ItemTypePK itemTypePK = itemDetail.getItemTypePK(); // Not updated
-            ItemUseTypePK itemUseTypePK = itemDetail.getItemUseTypePK(); // Not updated
-            ItemCategoryPK itemCategoryPK = itemDetailValue.getItemCategoryPK();
-            ItemAccountingCategoryPK itemAccountingCategoryPK = itemDetailValue.getItemAccountingCategoryPK();
-            ItemPurchasingCategoryPK itemPurchasingCategoryPK = itemDetailValue.getItemPurchasingCategoryPK();
-            PartyPK companyPartyPK = itemDetail.getCompanyPartyPK(); // Not updated
-            ItemDeliveryTypePK itemDeliveryTypePK = itemDetail.getItemDeliveryTypePK(); // Not updated
-            ItemInventoryTypePK itemInventoryTypePK = itemDetail.getItemInventoryTypePK(); // Not updated
-            Boolean inventorySerialized = itemDetail.getInventorySerialized(); // Not updated
-            SequencePK serialNumberSequencePK = itemDetail.getSerialNumberSequencePK(); // Not updated
-            Boolean shippingChargeExempt = itemDetailValue.getShippingChargeExempt();
-            Long shippingStartTime = itemDetailValue.getShippingStartTime();
-            Long shippingEndTime = itemDetailValue.getShippingEndTime();
-            Long salesOrderStartTime = itemDetailValue.getSalesOrderStartTime();
-            Long salesOrderEndTime = itemDetailValue.getSalesOrderEndTime();
-            Long purchaseOrderStartTime = itemDetailValue.getPurchaseOrderStartTime();
-            Long purchaseOrderEndTime = itemDetailValue.getPurchaseOrderEndTime();
-            Boolean allowClubDiscounts = itemDetailValue.getAllowClubDiscounts();
-            Boolean allowCouponDiscounts = itemDetailValue.getAllowCouponDiscounts();
-            Boolean allowAssociatePayments = itemDetailValue.getAllowAssociatePayments();
-            UnitOfMeasureKindPK unitOfMeasureKindPK = itemDetail.getUnitOfMeasureKindPK(); // Not updated
-            ItemPriceTypePK itemPriceTypePK = itemDetail.getItemPriceTypePK(); // Not updated
-            CancellationPolicyPK cancellationPolicyPK = itemDetailValue.getCancellationPolicyPK();
-            ReturnPolicyPK returnPolicyPK = itemDetailValue.getReturnPolicyPK();
-            StylePathPK stylePathPK = itemDetail.getStylePathPK(); // Not updated
+
+            var itemPK = itemDetail.getItemPK(); // Not updated
+            var itemName = itemDetailValue.getItemName(); // Not updated
+            var itemTypePK = itemDetail.getItemTypePK(); // Not updated
+            var itemUseTypePK = itemDetail.getItemUseTypePK(); // Not updated
+            var itemCategoryPK = itemDetailValue.getItemCategoryPK();
+            var itemAccountingCategoryPK = itemDetailValue.getItemAccountingCategoryPK();
+            var itemPurchasingCategoryPK = itemDetailValue.getItemPurchasingCategoryPK();
+            var companyPartyPK = itemDetail.getCompanyPartyPK(); // Not updated
+            var itemDeliveryTypePK = itemDetail.getItemDeliveryTypePK(); // Not updated
+            var itemInventoryTypePK = itemDetail.getItemInventoryTypePK(); // Not updated
+            var inventorySerialized = itemDetail.getInventorySerialized(); // Not updated
+            var serialNumberSequencePK = itemDetail.getSerialNumberSequencePK(); // Not updated
+            var shippingChargeExempt = itemDetailValue.getShippingChargeExempt();
+            var shippingStartTime = itemDetailValue.getShippingStartTime();
+            var shippingEndTime = itemDetailValue.getShippingEndTime();
+            var salesOrderStartTime = itemDetailValue.getSalesOrderStartTime();
+            var salesOrderEndTime = itemDetailValue.getSalesOrderEndTime();
+            var purchaseOrderStartTime = itemDetailValue.getPurchaseOrderStartTime();
+            var purchaseOrderEndTime = itemDetailValue.getPurchaseOrderEndTime();
+            var allowClubDiscounts = itemDetailValue.getAllowClubDiscounts();
+            var allowCouponDiscounts = itemDetailValue.getAllowCouponDiscounts();
+            var allowAssociatePayments = itemDetailValue.getAllowAssociatePayments();
+            var unitOfMeasureKindPK = itemDetail.getUnitOfMeasureKindPK(); // Not updated
+            var itemPriceTypePK = itemDetail.getItemPriceTypePK(); // Not updated
+            var cancellationPolicyPK = itemDetailValue.getCancellationPolicyPK();
+            var returnPolicyPK = itemDetailValue.getReturnPolicyPK();
+            var stylePathPK = itemDetail.getStylePathPK(); // Not updated
                     
             itemDetail = ItemDetailFactory.getInstance().create(itemPK, itemName, itemTypePK, itemUseTypePK, itemCategoryPK, itemAccountingCategoryPK,
                     itemPurchasingCategoryPK, companyPartyPK, itemDeliveryTypePK, itemInventoryTypePK, inventorySerialized, serialNumberSequencePK,
@@ -2335,19 +2261,19 @@ public class ItemControl
     
     public ItemUnitOfMeasureType createItemUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ItemUnitOfMeasureType defaultItemUnitOfMeasureType = getDefaultItemUnitOfMeasureType(item);
-        boolean defaultFound = defaultItemUnitOfMeasureType != null;
+        var defaultItemUnitOfMeasureType = getDefaultItemUnitOfMeasureType(item);
+        var defaultFound = defaultItemUnitOfMeasureType != null;
         
         if(defaultFound && isDefault) {
-            ItemUnitOfMeasureTypeValue defaultItemUnitOfMeasureTypeValue = getDefaultItemUnitOfMeasureTypeValueForUpdate(item);
+            var defaultItemUnitOfMeasureTypeValue = getDefaultItemUnitOfMeasureTypeValueForUpdate(item);
             
             defaultItemUnitOfMeasureTypeValue.setIsDefault(Boolean.FALSE);
             updateItemUnitOfMeasureTypeFromValue(defaultItemUnitOfMeasureTypeValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ItemUnitOfMeasureType itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().create(item, unitOfMeasureType,
+
+        var itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().create(item, unitOfMeasureType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemUnitOfMeasureType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2387,8 +2313,8 @@ public class ItemControl
                         "WHERE iuomt_itm_itemid = ? AND iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -2415,7 +2341,7 @@ public class ItemControl
     }
 
     public ItemUnitOfMeasureTypeValue getItemUnitOfMeasureTypeValueForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        ItemUnitOfMeasureType itemUnitOfMeasureType = getItemUnitOfMeasureTypeForUpdate(item, unitOfMeasureType);
+        var itemUnitOfMeasureType = getItemUnitOfMeasureTypeForUpdate(item, unitOfMeasureType);
         
         return itemUnitOfMeasureType == null? null: itemUnitOfMeasureType.getItemUnitOfMeasureTypeValue().clone();
     }
@@ -2436,8 +2362,8 @@ public class ItemControl
                         "WHERE iuomt_itm_itemid = ? AND iuomt_isdefault = 1 AND iuomt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2459,7 +2385,7 @@ public class ItemControl
     }
     
     public ItemUnitOfMeasureTypeValue getDefaultItemUnitOfMeasureTypeValueForUpdate(Item item) {
-        ItemUnitOfMeasureType itemUnitOfMeasureType = getDefaultItemUnitOfMeasureTypeForUpdate(item);
+        var itemUnitOfMeasureType = getDefaultItemUnitOfMeasureTypeForUpdate(item);
         
         return itemUnitOfMeasureType == null? null: itemUnitOfMeasureType.getItemUnitOfMeasureTypeValue().clone();
     }
@@ -2484,8 +2410,8 @@ public class ItemControl
                         "WHERE iuomt_itm_itemid = ? AND iuomt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2525,8 +2451,8 @@ public class ItemControl
                         "WHERE iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2549,7 +2475,7 @@ public class ItemControl
     
     public List<ItemUnitOfMeasureTypeTransfer> getItemUnitOfMeasureTypeTransfers(UserVisit userVisit, Collection<ItemUnitOfMeasureType> itemUnitOfMeasureTypes) {
         List<ItemUnitOfMeasureTypeTransfer> itemUnitOfMeasureTypeTransfers = new ArrayList<>(itemUnitOfMeasureTypes.size());
-        ItemUnitOfMeasureTypeTransferCache itemUnitOfMeasureTypeTransferCache = getItemTransferCaches(userVisit).getItemUnitOfMeasureTypeTransferCache();
+        var itemUnitOfMeasureTypeTransferCache = getItemTransferCaches(userVisit).getItemUnitOfMeasureTypeTransferCache();
         
         itemUnitOfMeasureTypes.forEach((itemUnitOfMeasureType) ->
                 itemUnitOfMeasureTypeTransfers.add(itemUnitOfMeasureTypeTransferCache.getTransfer(itemUnitOfMeasureType))
@@ -2572,25 +2498,25 @@ public class ItemControl
     
     private void updateItemUnitOfMeasureTypeFromValue(ItemUnitOfMeasureTypeValue itemUnitOfMeasureTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(itemUnitOfMeasureTypeValue.hasBeenModified()) {
-            ItemUnitOfMeasureType itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemUnitOfMeasureTypeValue.getPrimaryKey());
             
             itemUnitOfMeasureType.setThruTime(session.START_TIME_LONG);
             itemUnitOfMeasureType.store();
-            
-            Item item = itemUnitOfMeasureType.getItem(); // Not Updated
-            ItemPK itemPK = item.getPrimaryKey(); // Not Updated
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemUnitOfMeasureType.getUnitOfMeasureTypePK(); // Not Updated
-            Boolean isDefault = itemUnitOfMeasureTypeValue.getIsDefault();
-            Integer sortOrder = itemUnitOfMeasureTypeValue.getSortOrder();
+
+            var item = itemUnitOfMeasureType.getItem(); // Not Updated
+            var itemPK = item.getPrimaryKey(); // Not Updated
+            var unitOfMeasureTypePK = itemUnitOfMeasureType.getUnitOfMeasureTypePK(); // Not Updated
+            var isDefault = itemUnitOfMeasureTypeValue.getIsDefault();
+            var sortOrder = itemUnitOfMeasureTypeValue.getSortOrder();
             
             if(checkDefault) {
-                ItemUnitOfMeasureType defaultItemUnitOfMeasureType = getDefaultItemUnitOfMeasureType(item);
-                boolean defaultFound = defaultItemUnitOfMeasureType != null && !defaultItemUnitOfMeasureType.equals(itemUnitOfMeasureType);
+                var defaultItemUnitOfMeasureType = getDefaultItemUnitOfMeasureType(item);
+                var defaultFound = defaultItemUnitOfMeasureType != null && !defaultItemUnitOfMeasureType.equals(itemUnitOfMeasureType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ItemUnitOfMeasureTypeValue defaultItemUnitOfMeasureTypeValue = getDefaultItemUnitOfMeasureTypeValueForUpdate(item);
+                    var defaultItemUnitOfMeasureTypeValue = getDefaultItemUnitOfMeasureTypeValueForUpdate(item);
                     
                     defaultItemUnitOfMeasureTypeValue.setIsDefault(Boolean.FALSE);
                     updateItemUnitOfMeasureTypeFromValue(defaultItemUnitOfMeasureTypeValue, false, updatedBy);
@@ -2613,8 +2539,8 @@ public class ItemControl
     
     public void deleteItemUnitOfMeasureType(ItemUnitOfMeasureType itemUnitOfMeasureType, BasePK deletedBy) {
         var vendorControl = Session.getModelController(VendorControl.class);
-        Item item = itemUnitOfMeasureType.getItem();
-        UnitOfMeasureType unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
+        var item = itemUnitOfMeasureType.getItem();
+        var unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
         
         deleteItemAliasesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         deleteItemKitMembersByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
@@ -2632,16 +2558,16 @@ public class ItemControl
         itemUnitOfMeasureType.store();
         
         // Check for default, and pick one if necessary
-        ItemUnitOfMeasureType defaultItemUnitOfMeasureType = getDefaultItemUnitOfMeasureType(item);
+        var defaultItemUnitOfMeasureType = getDefaultItemUnitOfMeasureType(item);
         if(defaultItemUnitOfMeasureType == null) {
-            List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes = getItemUnitOfMeasureTypesByItemForUpdate(item);
+            var itemUnitOfMeasureTypes = getItemUnitOfMeasureTypesByItemForUpdate(item);
             
             if(!itemUnitOfMeasureTypes.isEmpty()) {
-                Iterator<ItemUnitOfMeasureType> iter = itemUnitOfMeasureTypes.iterator();
+                var iter = itemUnitOfMeasureTypes.iterator();
                 if(iter.hasNext()) {
                     defaultItemUnitOfMeasureType = iter.next();
                 }
-                ItemUnitOfMeasureTypeValue itemUnitOfMeasureTypeValue = defaultItemUnitOfMeasureType.getItemUnitOfMeasureTypeValue().clone();
+                var itemUnitOfMeasureTypeValue = defaultItemUnitOfMeasureType.getItemUnitOfMeasureTypeValue().clone();
                 
                 itemUnitOfMeasureTypeValue.setIsDefault(Boolean.TRUE);
                 updateItemUnitOfMeasureTypeFromValue(itemUnitOfMeasureTypeValue, false, deletedBy);
@@ -2671,7 +2597,7 @@ public class ItemControl
     
     public ItemShippingTime createItemShippingTime(Item item, CustomerType customerType, Long shippingStartTime, Long shippingEndTime,
             BasePK createdBy) {
-        ItemShippingTime itemShippingTime = ItemShippingTimeFactory.getInstance().create(item, customerType,
+        var itemShippingTime = ItemShippingTimeFactory.getInstance().create(item, customerType,
                 shippingStartTime, shippingEndTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemShippingTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2695,8 +2621,8 @@ public class ItemControl
                         "WHERE istim_itm_itemid = ? AND istim_cuty_customertypeid = ? AND istim_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, customerType.getPrimaryKey().getEntityId());
@@ -2745,8 +2671,8 @@ public class ItemControl
                         "WHERE istim_itm_itemid = ? AND istim_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2786,8 +2712,8 @@ public class ItemControl
                         "WHERE istim_cuty_customertypeid = ? AND istim_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2810,16 +2736,16 @@ public class ItemControl
     
     public void updateItemShippingTimeFromValue(ItemShippingTimeValue itemShippingTimeValue, BasePK updatedBy) {
         if(itemShippingTimeValue.hasBeenModified()) {
-            ItemShippingTimePK itemShippingTimePK = itemShippingTimeValue.getPrimaryKey();
-            ItemShippingTime itemShippingTime = ItemShippingTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemShippingTimePK);
+            var itemShippingTimePK = itemShippingTimeValue.getPrimaryKey();
+            var itemShippingTime = ItemShippingTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemShippingTimePK);
             
             itemShippingTime.setThruTime(session.START_TIME_LONG);
             itemShippingTime.store();
-            
-            ItemPK itemPK = itemShippingTime.getItemPK();
-            CustomerTypePK customerTypePK = itemShippingTime.getCustomerTypePK();
-            Long shippingStartTime = itemShippingTimeValue.getShippingStartTime();
-            Long shippingEndTime = itemShippingTimeValue.getShippingEndTime();
+
+            var itemPK = itemShippingTime.getItemPK();
+            var customerTypePK = itemShippingTime.getCustomerTypePK();
+            var shippingStartTime = itemShippingTimeValue.getShippingStartTime();
+            var shippingEndTime = itemShippingTimeValue.getShippingEndTime();
             
             itemShippingTime = ItemShippingTimeFactory.getInstance().create(itemPK, customerTypePK, shippingStartTime, shippingEndTime,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2837,7 +2763,7 @@ public class ItemControl
     }
     
     public List<ItemShippingTimeTransfer> getItemShippingTimeTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemShippingTime> itemShippingTimes = getItemShippingTimesByItem(item);
+        var itemShippingTimes = getItemShippingTimesByItem(item);
         List<ItemShippingTimeTransfer> itemShippingTimeTransfers = new ArrayList<>(itemShippingTimes.size());
         
         itemShippingTimes.forEach((itemShippingTime) -> {
@@ -2854,7 +2780,7 @@ public class ItemControl
     }
     
     public void deleteItemShippingTimesByItem(Item item, BasePK deletedBy) {
-        List<ItemShippingTime> itemShippingTimes = getItemShippingTimesByItemForUpdate(item);
+        var itemShippingTimes = getItemShippingTimesByItemForUpdate(item);
         
         itemShippingTimes.forEach((itemShippingTime) -> 
                 deleteItemShippingTime(itemShippingTime, deletedBy)
@@ -2862,7 +2788,7 @@ public class ItemControl
     }
     
     public void deleteItemShippingTimesByCustomerType(CustomerType customerType, BasePK deletedBy) {
-        List<ItemShippingTime> itemShippingTimes = getItemShippingTimesByCustomerTypeForUpdate(customerType);
+        var itemShippingTimes = getItemShippingTimesByCustomerTypeForUpdate(customerType);
         
         itemShippingTimes.forEach((itemShippingTime) -> 
                 deleteItemShippingTime(itemShippingTime, deletedBy)
@@ -2954,7 +2880,7 @@ public class ItemControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(query);
+        var ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(query);
 
         return ItemAliasChecksumTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -2972,7 +2898,7 @@ public class ItemControl
     }
 
     public List<ItemAliasChecksumType> getItemAliasChecksumTypes() {
-        PreparedStatement ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(
+        var ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM itemaliaschecksumtypes " +
                 "ORDER BY iact_sortorder, iact_itemaliaschecksumtypename " +
@@ -2982,7 +2908,7 @@ public class ItemControl
     }
 
     public ItemAliasChecksumTypeChoicesBean getItemAliasChecksumTypeChoices(String defaultItemAliasChecksumTypeChoice, Language language, boolean allowNullChoice) {
-        List<ItemAliasChecksumType> itemAliasChecksumTypes = getItemAliasChecksumTypes();
+        var itemAliasChecksumTypes = getItemAliasChecksumTypes();
         var size = itemAliasChecksumTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3046,10 +2972,10 @@ public class ItemControl
     }
 
     public ItemAliasChecksumTypeDescription getItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language) {
-        ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription = null;
+        ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription;
 
         try {
-            PreparedStatement ps = ItemAliasChecksumTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ItemAliasChecksumTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemaliaschecksumtypedescriptions " +
                     "WHERE iactd_iact_itemaliaschecksumtypeid = ? AND iactd_lang_languageid = ?");
@@ -3067,7 +2993,7 @@ public class ItemControl
 
     public String getBestItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language) {
         String description;
-        ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription = getItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
+        var itemAliasChecksumTypeDescription = getItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
 
         if(itemAliasChecksumTypeDescription == null && !language.getIsDefault()) {
             itemAliasChecksumTypeDescription = getItemAliasChecksumTypeDescription(itemAliasChecksumType, getPartyControl().getDefaultLanguage());
@@ -3088,20 +3014,20 @@ public class ItemControl
     
     public ItemAliasType createItemAliasType(String itemAliasTypeName, String validationPattern, ItemAliasChecksumType itemAliasChecksumType, Boolean allowMultiple,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ItemAliasType defaultItemAliasType = getDefaultItemAliasType();
-        boolean defaultFound = defaultItemAliasType != null;
+        var defaultItemAliasType = getDefaultItemAliasType();
+        var defaultFound = defaultItemAliasType != null;
         
         if(defaultFound && isDefault) {
-            ItemAliasTypeDetailValue defaultItemAliasTypeDetailValue = getDefaultItemAliasTypeDetailValueForUpdate();
+            var defaultItemAliasTypeDetailValue = getDefaultItemAliasTypeDetailValueForUpdate();
             
             defaultItemAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateItemAliasTypeFromValue(defaultItemAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ItemAliasType itemAliasType = ItemAliasTypeFactory.getInstance().create();
-        ItemAliasTypeDetail itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create(session, itemAliasType, itemAliasTypeName, validationPattern,
+
+        var itemAliasType = ItemAliasTypeFactory.getInstance().create();
+        var itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create(session, itemAliasType, itemAliasTypeName, validationPattern,
                 itemAliasChecksumType, allowMultiple, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3158,8 +3084,8 @@ public class ItemControl
                         "WHERE iat_activedetailid = iatdt_itemaliastypedetailid AND iatdt_itemaliastypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, itemAliasTypeName);
             
@@ -3200,8 +3126,8 @@ public class ItemControl
                     "WHERE iat_activedetailid = iatdt_itemaliastypedetailid AND iatdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
         
         return ItemAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -3232,8 +3158,8 @@ public class ItemControl
                     "WHERE iat_activedetailid = iatdt_itemaliastypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
         
         return ItemAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -3252,7 +3178,7 @@ public class ItemControl
 
     public List<ItemAliasTypeTransfer> getItemAliasTypeTransfers(UserVisit userVisit, Collection<ItemAliasType> itemAliasTypes) {
         List<ItemAliasTypeTransfer> itemAliasTypeTransfers = new ArrayList<>(itemAliasTypes.size());
-        ItemAliasTypeTransferCache itemAliasTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
+        var itemAliasTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
 
         itemAliasTypes.forEach((itemAliasType) ->
                 itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(itemAliasType))
@@ -3267,7 +3193,7 @@ public class ItemControl
 
     public ItemAliasTypeChoicesBean getItemAliasTypeChoices(String defaultItemAliasTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<ItemAliasType> itemAliasTypes = getItemAliasTypes();
+        var itemAliasTypes = getItemAliasTypes();
         var size = itemAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3283,7 +3209,7 @@ public class ItemControl
         }
         
         for(var itemAliasType : itemAliasTypes) {
-            ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
+            var itemAliasTypeDetail = itemAliasType.getLastDetail();
             
             var label = getBestItemAliasTypeDescription(itemAliasType, language);
             var value = itemAliasTypeDetail.getItemAliasTypeName();
@@ -3351,8 +3277,8 @@ public class ItemControl
     
     public void deleteItemAliasType(ItemAliasType itemAliasType, BasePK deletedBy) {
         var vendorControl = Session.getModelController(VendorControl.class);
-        
-        List<Vendor> vendors = vendorControl.getVendorsByDefaultItemAliasTypeForUpdate(itemAliasType);
+
+        var vendors = vendorControl.getVendorsByDefaultItemAliasTypeForUpdate(itemAliasType);
         vendors.stream().map((vendor) -> vendorControl.getVendorValue(vendor)).map((vendorValue) -> {
             vendorValue.setDefaultItemAliasTypePK(null);
             return vendorValue;            
@@ -3362,23 +3288,23 @@ public class ItemControl
         
         deleteItemAliasTypeDescriptionsByItemAliasType(itemAliasType, deletedBy);
         deleteItemAliasesByItemAliasType(itemAliasType, deletedBy);
-        
-        ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetailForUpdate();
+
+        var itemAliasTypeDetail = itemAliasType.getLastDetailForUpdate();
         itemAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         itemAliasType.setActiveDetail(null);
         itemAliasType.store();
 
         // Check for default, and pick one if necessary
-        ItemAliasType defaultItemAliasType = getDefaultItemAliasType();
+        var defaultItemAliasType = getDefaultItemAliasType();
         if(defaultItemAliasType == null) {
-            List<ItemAliasType> itemAliasTypes = getItemAliasTypesForUpdate();
+            var itemAliasTypes = getItemAliasTypesForUpdate();
             
             if(!itemAliasTypes.isEmpty()) {
-                Iterator<ItemAliasType> iter = itemAliasTypes.iterator();
+                var iter = itemAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultItemAliasType = (ItemAliasType)iter.next();
                 }
-                ItemAliasTypeDetailValue itemAliasTypeDetailValue = Objects.requireNonNull(defaultItemAliasType).getLastDetailForUpdate().getItemAliasTypeDetailValue().clone();
+                var itemAliasTypeDetailValue = Objects.requireNonNull(defaultItemAliasType).getLastDetailForUpdate().getItemAliasTypeDetailValue().clone();
                 
                 itemAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemAliasTypeFromValue(itemAliasTypeDetailValue, false, deletedBy);
@@ -3394,7 +3320,7 @@ public class ItemControl
     
     public ItemAliasTypeDescription createItemAliasTypeDescription(ItemAliasType itemAliasType, Language language,
             String description, BasePK createdBy) {
-        ItemAliasTypeDescription itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().create(session,
+        var itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().create(session,
                 itemAliasType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(itemAliasType.getPrimaryKey(), EventTypes.MODIFY, itemAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3418,8 +3344,8 @@ public class ItemControl
                         "WHERE iatd_iat_itemaliastypeid = ? AND iatd_lang_languageid = ? AND iatd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3467,8 +3393,8 @@ public class ItemControl
                         "WHERE iatd_iat_itemaliastypeid = ? AND iatd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3491,7 +3417,7 @@ public class ItemControl
     
     public String getBestItemAliasTypeDescription(ItemAliasType itemAliasType, Language language) {
         String description;
-        ItemAliasTypeDescription itemAliasTypeDescription = getItemAliasTypeDescription(itemAliasType, language);
+        var itemAliasTypeDescription = getItemAliasTypeDescription(itemAliasType, language);
         
         if(itemAliasTypeDescription == null && !language.getIsDefault()) {
             itemAliasTypeDescription = getItemAliasTypeDescription(itemAliasType, getPartyControl().getDefaultLanguage());
@@ -3511,9 +3437,9 @@ public class ItemControl
     }
     
     public List<ItemAliasTypeDescriptionTransfer> getItemAliasTypeDescriptionTransfersByItemAliasType(UserVisit userVisit, ItemAliasType itemAliasType) {
-        List<ItemAliasTypeDescription> itemAliasTypeDescriptions = getItemAliasTypeDescriptionsByItemAliasType(itemAliasType);
+        var itemAliasTypeDescriptions = getItemAliasTypeDescriptionsByItemAliasType(itemAliasType);
         List<ItemAliasTypeDescriptionTransfer> itemAliasTypeDescriptionTransfers = new ArrayList<>(itemAliasTypeDescriptions.size());
-        ItemAliasTypeDescriptionTransferCache itemAliasTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeDescriptionTransferCache();
+        var itemAliasTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeDescriptionTransferCache();
         
         itemAliasTypeDescriptions.forEach((itemAliasTypeDescription) ->
                 itemAliasTypeDescriptionTransfers.add(itemAliasTypeDescriptionTransferCache.getTransfer(itemAliasTypeDescription))
@@ -3524,15 +3450,15 @@ public class ItemControl
     
     public void updateItemAliasTypeDescriptionFromValue(ItemAliasTypeDescriptionValue itemAliasTypeDescriptionValue, BasePK updatedBy) {
         if(itemAliasTypeDescriptionValue.hasBeenModified()) {
-            ItemAliasTypeDescription itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemAliasTypeDescriptionValue.getPrimaryKey());
             
             itemAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             itemAliasTypeDescription.store();
-            
-            ItemAliasType itemAliasType = itemAliasTypeDescription.getItemAliasType();
-            Language language = itemAliasTypeDescription.getLanguage();
-            String description = itemAliasTypeDescriptionValue.getDescription();
+
+            var itemAliasType = itemAliasTypeDescription.getItemAliasType();
+            var language = itemAliasTypeDescription.getLanguage();
+            var description = itemAliasTypeDescriptionValue.getDescription();
             
             itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().create(itemAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3549,7 +3475,7 @@ public class ItemControl
     }
     
     public void deleteItemAliasTypeDescriptionsByItemAliasType(ItemAliasType itemAliasType, BasePK deletedBy) {
-        List<ItemAliasTypeDescription> itemAliasTypeDescriptions = getItemAliasTypeDescriptionsByItemAliasTypeForUpdate(itemAliasType);
+        var itemAliasTypeDescriptions = getItemAliasTypeDescriptionsByItemAliasTypeForUpdate(itemAliasType);
         
         itemAliasTypeDescriptions.forEach((itemAliasTypeDescription) -> 
                 deleteItemAliasTypeDescription(itemAliasTypeDescription, deletedBy)
@@ -3562,7 +3488,7 @@ public class ItemControl
     
     public ItemAlias createItemAlias(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType, String alias,
             BasePK createdBy) {
-        ItemAlias itemAlias = ItemAliasFactory.getInstance().create(item, unitOfMeasureType, itemAliasType, alias,
+        var itemAlias = ItemAliasFactory.getInstance().create(item, unitOfMeasureType, itemAliasType, alias,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3618,8 +3544,8 @@ public class ItemControl
                         "WHERE itmal_alias = ? AND itmal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, alias);
             ps.setLong(2, Session.MAX_TIME);
@@ -3667,8 +3593,8 @@ public class ItemControl
                         "WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -3710,8 +3636,8 @@ public class ItemControl
                         "WHERE itmal_itm_itemid = ? AND itmal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3751,8 +3677,8 @@ public class ItemControl
                         "WHERE itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3792,8 +3718,8 @@ public class ItemControl
                         "WHERE itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3818,7 +3744,7 @@ public class ItemControl
         List<ItemAlias> itemAliases;
         
         try {
-            PreparedStatement ps = ItemAliasFactory.getInstance().prepareStatement(
+            var ps = ItemAliasFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemaliases " +
                     "WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ? " +
@@ -3839,16 +3765,16 @@ public class ItemControl
     
     public void updateItemAliasFromValue(ItemAliasValue itemAliasValue, BasePK updatedBy) {
         if(itemAliasValue.hasBeenModified()) {
-            ItemAliasPK itemAliasPK = itemAliasValue.getPrimaryKey();
-            ItemAlias itemAlias = ItemAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemAliasPK);
+            var itemAliasPK = itemAliasValue.getPrimaryKey();
+            var itemAlias = ItemAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemAliasPK);
             
             itemAlias.setThruTime(session.START_TIME_LONG);
             itemAlias.store();
-            
-            ItemPK itemPK = itemAlias.getItemPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemAliasValue.getUnitOfMeasureTypePK();
-            ItemAliasTypePK itemAliasTypePK = itemAliasValue.getItemAliasTypePK();
-            String alias = itemAliasValue.getAlias();
+
+            var itemPK = itemAlias.getItemPK();
+            var unitOfMeasureTypePK = itemAliasValue.getUnitOfMeasureTypePK();
+            var itemAliasTypePK = itemAliasValue.getItemAliasTypePK();
+            var alias = itemAliasValue.getAlias();
             
             itemAlias = ItemAliasFactory.getInstance().create(itemPK, unitOfMeasureTypePK, itemAliasTypePK, alias,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3908,7 +3834,7 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     
     public ItemKitOption createItemKitOption(Item item, Boolean allowPartialShipments, BasePK createdBy) {
-        ItemKitOption itemKitOption = ItemKitOptionFactory.getInstance().create(item, allowPartialShipments,
+        var itemKitOption = ItemKitOptionFactory.getInstance().create(item, allowPartialShipments,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemKitOption.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3932,8 +3858,8 @@ public class ItemControl
                         "WHERE ikopt_itm_itemid = ? AND ikopt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitOptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitOptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3960,14 +3886,14 @@ public class ItemControl
     
     public void updateItemKitOptionFromValue(ItemKitOptionValue itemKitOptionValue, BasePK updatedBy) {
         if(itemKitOptionValue.hasBeenModified()) {
-            ItemKitOptionPK itemKitOptionPK = itemKitOptionValue.getPrimaryKey();
-            ItemKitOption itemKitOption = ItemKitOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemKitOptionPK);
+            var itemKitOptionPK = itemKitOptionValue.getPrimaryKey();
+            var itemKitOption = ItemKitOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemKitOptionPK);
             
             itemKitOption.setThruTime(session.START_TIME_LONG);
             itemKitOption.store();
-            
-            ItemPK itemPK = itemKitOption.getItemPK();
-            Boolean allowPartialShipments = itemKitOptionValue.getAllowPartialShipments();
+
+            var itemPK = itemKitOption.getItemPK();
+            var allowPartialShipments = itemKitOptionValue.getAllowPartialShipments();
             
             itemKitOption = ItemKitOptionFactory.getInstance().create(itemPK, allowPartialShipments,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3987,7 +3913,7 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     
     public ItemCountryOfOrigin createItemCountryOfOrigin(Item item, GeoCode countryGeoCode, Integer percent, BasePK createdBy) {
-        ItemCountryOfOrigin itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().create(item, countryGeoCode, percent,
+        var itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().create(item, countryGeoCode, percent,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemCountryOfOrigin.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4019,8 +3945,8 @@ public class ItemControl
                         "WHERE icoorgn_itm_itemid = ? AND icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, countryGeoCode.getPrimaryKey().getEntityId());
@@ -4068,8 +3994,8 @@ public class ItemControl
                         "WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4108,8 +4034,8 @@ public class ItemControl
                         "WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, countryGeoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4132,15 +4058,15 @@ public class ItemControl
     
     public void updateItemCountryOfOriginFromValue(ItemCountryOfOriginValue itemCountryOfOriginValue, BasePK updatedBy) {
         if(itemCountryOfOriginValue.hasBeenModified()) {
-            ItemCountryOfOriginPK itemCountryOfOriginPK = itemCountryOfOriginValue.getPrimaryKey();
-            ItemCountryOfOrigin itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemCountryOfOriginPK);
+            var itemCountryOfOriginPK = itemCountryOfOriginValue.getPrimaryKey();
+            var itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemCountryOfOriginPK);
             
             itemCountryOfOrigin.setThruTime(session.START_TIME_LONG);
             itemCountryOfOrigin.store();
-            
-            ItemPK itemPK = itemCountryOfOrigin.getItemPK();
-            GeoCodePK countryGeoCodePK = itemCountryOfOrigin.getCountryGeoCodePK();
-            Integer percent = itemCountryOfOriginValue.getPercent();
+
+            var itemPK = itemCountryOfOrigin.getItemPK();
+            var countryGeoCodePK = itemCountryOfOrigin.getCountryGeoCodePK();
+            var percent = itemCountryOfOriginValue.getPercent();
             
             itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().create(itemPK, countryGeoCodePK, percent, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -4158,9 +4084,9 @@ public class ItemControl
     }
 
     public List<ItemCountryOfOriginTransfer> getItemCountryOfOriginTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemCountryOfOrigin> itemCountryOfOrigins = getItemCountryOfOriginsByItem(item);
+        var itemCountryOfOrigins = getItemCountryOfOriginsByItem(item);
         List<ItemCountryOfOriginTransfer> itemCountryOfOriginTransfers = new ArrayList<>(itemCountryOfOrigins.size());
-        ItemCountryOfOriginTransferCache itemCountryOfOriginTransferCache = getItemTransferCaches(userVisit).getItemCountryOfOriginTransferCache();
+        var itemCountryOfOriginTransferCache = getItemTransferCaches(userVisit).getItemCountryOfOriginTransferCache();
         
         itemCountryOfOrigins.forEach((itemCountryOfOrigin) ->
                 itemCountryOfOriginTransfers.add(itemCountryOfOriginTransferCache.getTransfer(itemCountryOfOrigin))
@@ -4196,7 +4122,7 @@ public class ItemControl
     public ItemKitMember createItemKitMember(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Item memberItem, InventoryCondition memberInventoryCondition, UnitOfMeasureType memberUnitOfMeasureType,
             Long quantity, BasePK createdBy) {
-        ItemKitMember itemKitMember = ItemKitMemberFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType,
+        var itemKitMember = ItemKitMemberFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType,
                 memberItem, memberInventoryCondition, memberUnitOfMeasureType, quantity, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -4226,8 +4152,8 @@ public class ItemControl
                         "AND ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ?  AND ikm_memberunitofmeasuretypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -4285,8 +4211,8 @@ public class ItemControl
                         "AND ikm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -4331,8 +4257,8 @@ public class ItemControl
                         "AND ikm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, memberItem.getPrimaryKey().getEntityId());
             ps.setLong(2, memberInventoryCondition.getPrimaryKey().getEntityId());
@@ -4374,8 +4300,8 @@ public class ItemControl
                         "WHERE ikm_itm_itemid = ? AND ikm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4413,8 +4339,8 @@ public class ItemControl
                         "WHERE ikm_itm_itemid = ? AND ikm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, memberItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4452,8 +4378,8 @@ public class ItemControl
                         "WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4491,8 +4417,8 @@ public class ItemControl
                         "WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, memberInventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4530,8 +4456,8 @@ public class ItemControl
                         "WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4556,7 +4482,7 @@ public class ItemControl
         List<ItemKitMember> itemKitMembers;
         
         try {
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemkitmembers " +
                     "WHERE ikm_itm_itemid = ? AND ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ? " +
@@ -4591,8 +4517,8 @@ public class ItemControl
                         "WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4617,7 +4543,7 @@ public class ItemControl
         List<ItemKitMember> itemKitMembers;
         
         try {
-            PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemkitmembers " +
                     "WHERE ikm_memberitemid = ? AND ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ? " +
@@ -4637,19 +4563,19 @@ public class ItemControl
     
     public void updateItemKitMemberFromValue(ItemKitMemberValue itemKitMemberValue, BasePK updatedBy) {
         if(itemKitMemberValue.hasBeenModified()) {
-            ItemKitMember itemKitMember = ItemKitMemberFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemKitMember = ItemKitMemberFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemKitMemberValue.getPrimaryKey());
             
             itemKitMember.setThruTime(session.START_TIME_LONG);
             itemKitMember.store();
-            
-            ItemPK itemPK = itemKitMember.getItemPK();
-            InventoryConditionPK inventoryConditionPK = itemKitMember.getInventoryConditionPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemKitMember.getUnitOfMeasureTypePK();
-            ItemPK memberItemPK = itemKitMember.getMemberItemPK();
-            InventoryConditionPK memberInventoryConditionPK = itemKitMember.getMemberInventoryConditionPK();
-            UnitOfMeasureTypePK memberUnitOfMeasureTypePK = itemKitMember.getMemberUnitOfMeasureTypePK();
-            Long quantity = itemKitMemberValue.getQuantity();
+
+            var itemPK = itemKitMember.getItemPK();
+            var inventoryConditionPK = itemKitMember.getInventoryConditionPK();
+            var unitOfMeasureTypePK = itemKitMember.getUnitOfMeasureTypePK();
+            var memberItemPK = itemKitMember.getMemberItemPK();
+            var memberInventoryConditionPK = itemKitMember.getMemberInventoryConditionPK();
+            var memberUnitOfMeasureTypePK = itemKitMember.getMemberUnitOfMeasureTypePK();
+            var quantity = itemKitMemberValue.getQuantity();
             
             itemKitMember = ItemKitMemberFactory.getInstance().create(itemPK, inventoryConditionPK, unitOfMeasureTypePK,
                     memberItemPK, memberInventoryConditionPK, memberUnitOfMeasureTypePK, quantity, session.START_TIME_LONG,
@@ -4670,9 +4596,9 @@ public class ItemControl
     }
 
     public List<ItemKitMemberTransfer> getItemKitMemberTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemKitMember> itemKitMembers = getItemKitMembersByItem(item);
+        var itemKitMembers = getItemKitMembersByItem(item);
         List<ItemKitMemberTransfer> itemKitMemberTransfers = new ArrayList<>(itemKitMembers.size());
-        ItemKitMemberTransferCache itemKitMemberTransferCache = getItemTransferCaches(userVisit).getItemKitMemberTransferCache();
+        var itemKitMemberTransferCache = getItemTransferCaches(userVisit).getItemKitMemberTransferCache();
         
         itemKitMembers.forEach((itemKitMember) ->
                 itemKitMemberTransfers.add(itemKitMemberTransferCache.getTransfer(itemKitMember))
@@ -4720,7 +4646,7 @@ public class ItemControl
     
     public ItemPackCheckRequirement createItemPackCheckRequirement(Item item, UnitOfMeasureType unitOfMeasureType,
             Long minimumQuantity, Long maximumQuantity, BasePK createdBy) {
-        ItemPackCheckRequirement itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().create(item,
+        var itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().create(item,
                 unitOfMeasureType, minimumQuantity, maximumQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemPackCheckRequirement.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4744,8 +4670,8 @@ public class ItemControl
                         "WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -4794,8 +4720,8 @@ public class ItemControl
                         "WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4834,8 +4760,8 @@ public class ItemControl
                         "WHERE ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4861,7 +4787,7 @@ public class ItemControl
         List<ItemPackCheckRequirement> itemPackCheckRequirements;
         
         try {
-            PreparedStatement ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(
+            var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itempackcheckrequirements " +
                     "WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ? " +
@@ -4882,16 +4808,16 @@ public class ItemControl
     
     public void updateItemPackCheckRequirementFromValue(ItemPackCheckRequirementValue itemPackCheckRequirementValue, BasePK updatedBy) {
         if(itemPackCheckRequirementValue.hasBeenModified()) {
-            ItemPackCheckRequirementPK itemPackCheckRequirementPK = itemPackCheckRequirementValue.getPrimaryKey();
-            ItemPackCheckRequirement itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemPackCheckRequirementPK);
+            var itemPackCheckRequirementPK = itemPackCheckRequirementValue.getPrimaryKey();
+            var itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemPackCheckRequirementPK);
             
             itemPackCheckRequirement.setThruTime(session.START_TIME_LONG);
             itemPackCheckRequirement.store();
-            
-            ItemPK itemPK = itemPackCheckRequirement.getItemPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemPackCheckRequirement.getUnitOfMeasureTypePK();
-            Long minimumQuantity = itemPackCheckRequirementValue.getMinimumQuantity();
-            Long maximumQuantity = itemPackCheckRequirementValue.getMaximumQuantity();
+
+            var itemPK = itemPackCheckRequirement.getItemPK();
+            var unitOfMeasureTypePK = itemPackCheckRequirement.getUnitOfMeasureTypePK();
+            var minimumQuantity = itemPackCheckRequirementValue.getMinimumQuantity();
+            var maximumQuantity = itemPackCheckRequirementValue.getMaximumQuantity();
             
             itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().create(itemPK, unitOfMeasureTypePK,
                     minimumQuantity, maximumQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4905,15 +4831,15 @@ public class ItemControl
     }
 
     public ItemPackCheckRequirementTransfer getItemPackCheckRequirementTransfer(UserVisit userVisit, Item item, UnitOfMeasureType unitOfMeasureType) {
-        ItemPackCheckRequirement itemPackCheckRequirement = getItemPackCheckRequirement(item, unitOfMeasureType);
+        var itemPackCheckRequirement = getItemPackCheckRequirement(item, unitOfMeasureType);
 
         return getItemPackCheckRequirementTransfer(userVisit, itemPackCheckRequirement);
     }
 
     public List<ItemPackCheckRequirementTransfer> getItemPackCheckRequirementTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements = getItemPackCheckRequirementsByItem(item);
+        var itemPackCheckRequirements = getItemPackCheckRequirementsByItem(item);
         List<ItemPackCheckRequirementTransfer> itemPackCheckRequirementTransfers = new ArrayList<>(itemPackCheckRequirements.size());
-        ItemPackCheckRequirementTransferCache itemPackCheckRequirementTransferCache = getItemTransferCaches(userVisit).getItemPackCheckRequirementTransferCache();
+        var itemPackCheckRequirementTransferCache = getItemTransferCaches(userVisit).getItemPackCheckRequirementTransferCache();
         
         itemPackCheckRequirements.forEach((itemPackCheckRequirement) ->
                 itemPackCheckRequirementTransfers.add(itemPackCheckRequirementTransferCache.getTransfer(itemPackCheckRequirement))
@@ -4953,7 +4879,7 @@ public class ItemControl
     public ItemUnitCustomerTypeLimit createItemUnitCustomerTypeLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, CustomerType customerType, Long minimumQuantity, Long maximumQuantity,
             BasePK createdBy) {
-        ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().create(item,
+        var itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().create(item,
                 inventoryCondition, unitOfMeasureType, customerType, minimumQuantity, maximumQuantity, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -4981,8 +4907,8 @@ public class ItemControl
                         "AND iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -5037,8 +4963,8 @@ public class ItemControl
                         "WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5079,8 +5005,8 @@ public class ItemControl
                         "WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5121,8 +5047,8 @@ public class ItemControl
                         "WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5148,7 +5074,7 @@ public class ItemControl
         List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
-            PreparedStatement ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(
+            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemunitcustomertypelimits " +
                     "WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
@@ -5187,8 +5113,8 @@ public class ItemControl
                         "WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5211,18 +5137,18 @@ public class ItemControl
     
     public void updateItemUnitCustomerTypeLimitFromValue(ItemUnitCustomerTypeLimitValue itemUnitCustomerTypeLimitValue, BasePK updatedBy) {
         if(itemUnitCustomerTypeLimitValue.hasBeenModified()) {
-            ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemUnitCustomerTypeLimitValue.getPrimaryKey());
             
             itemUnitCustomerTypeLimit.setThruTime(session.START_TIME_LONG);
             itemUnitCustomerTypeLimit.store();
-            
-            ItemPK itemPK = itemUnitCustomerTypeLimit.getItemPK();
-            InventoryConditionPK inventoryConditionPK = itemUnitCustomerTypeLimit.getInventoryConditionPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemUnitCustomerTypeLimit.getUnitOfMeasureTypePK();
-            CustomerTypePK customerTypePK = itemUnitCustomerTypeLimit.getCustomerTypePK();
-            Long minimumQuantity = itemUnitCustomerTypeLimitValue.getMinimumQuantity();
-            Long maximumQuantity = itemUnitCustomerTypeLimitValue.getMaximumQuantity();
+
+            var itemPK = itemUnitCustomerTypeLimit.getItemPK();
+            var inventoryConditionPK = itemUnitCustomerTypeLimit.getInventoryConditionPK();
+            var unitOfMeasureTypePK = itemUnitCustomerTypeLimit.getUnitOfMeasureTypePK();
+            var customerTypePK = itemUnitCustomerTypeLimit.getCustomerTypePK();
+            var minimumQuantity = itemUnitCustomerTypeLimitValue.getMinimumQuantity();
+            var maximumQuantity = itemUnitCustomerTypeLimitValue.getMaximumQuantity();
             
             itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().create(itemPK, inventoryConditionPK,
                     unitOfMeasureTypePK, customerTypePK, minimumQuantity, maximumQuantity, session.START_TIME_LONG,
@@ -5242,9 +5168,9 @@ public class ItemControl
     }
 
     public List<ItemUnitCustomerTypeLimitTransfer> getItemUnitCustomerTypeLimitTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = getItemUnitCustomerTypeLimitsByItem(item);
+        var itemUnitCustomerTypeLimits = getItemUnitCustomerTypeLimitsByItem(item);
         List<ItemUnitCustomerTypeLimitTransfer> itemUnitCustomerTypeLimitTransfers = new ArrayList<>(itemUnitCustomerTypeLimits.size());
-        ItemUnitCustomerTypeLimitTransferCache itemUnitCustomerTypeLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitCustomerTypeLimitTransferCache();
+        var itemUnitCustomerTypeLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitCustomerTypeLimitTransferCache();
         
         itemUnitCustomerTypeLimits.forEach((itemUnitCustomerTypeLimit) ->
                 itemUnitCustomerTypeLimitTransfers.add(itemUnitCustomerTypeLimitTransferCache.getTransfer(itemUnitCustomerTypeLimit))
@@ -5291,7 +5217,7 @@ public class ItemControl
     
     public ItemUnitLimit createItemUnitLimit(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Long minimumQuantity, Long maximumQuantity, BasePK createdBy) {
-        ItemUnitLimit itemUnitLimit = ItemUnitLimitFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType,
+        var itemUnitLimit = ItemUnitLimitFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType,
                 minimumQuantity, maximumQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemUnitLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5318,8 +5244,8 @@ public class ItemControl
                         "AND iul_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -5371,8 +5297,8 @@ public class ItemControl
                         "WHERE iul_itm_itemid = ? AND iul_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5412,8 +5338,8 @@ public class ItemControl
                         "WHERE iul_invcon_inventoryconditionid = ? AND iul_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5453,8 +5379,8 @@ public class ItemControl
                         "WHERE iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5479,7 +5405,7 @@ public class ItemControl
         List<ItemUnitLimit> itemUnitLimits;
         
         try {
-            PreparedStatement ps = ItemUnitLimitFactory.getInstance().prepareStatement(
+            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemunitlimits " +
                     "WHERE iul_itm_itemid = ? AND iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ? " +
@@ -5499,17 +5425,17 @@ public class ItemControl
     
     public void updateItemUnitLimitFromValue(ItemUnitLimitValue itemUnitLimitValue, BasePK updatedBy) {
         if(itemUnitLimitValue.hasBeenModified()) {
-            ItemUnitLimit itemUnitLimit = ItemUnitLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemUnitLimit = ItemUnitLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemUnitLimitValue.getPrimaryKey());
             
             itemUnitLimit.setThruTime(session.START_TIME_LONG);
             itemUnitLimit.store();
-            
-            ItemPK itemPK = itemUnitLimit.getItemPK();
-            InventoryConditionPK inventoryConditionPK = itemUnitLimit.getInventoryConditionPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemUnitLimit.getUnitOfMeasureTypePK();
-            Long minimumQuantity = itemUnitLimitValue.getMinimumQuantity();
-            Long maximumQuantity = itemUnitLimitValue.getMaximumQuantity();
+
+            var itemPK = itemUnitLimit.getItemPK();
+            var inventoryConditionPK = itemUnitLimit.getInventoryConditionPK();
+            var unitOfMeasureTypePK = itemUnitLimit.getUnitOfMeasureTypePK();
+            var minimumQuantity = itemUnitLimitValue.getMinimumQuantity();
+            var maximumQuantity = itemUnitLimitValue.getMaximumQuantity();
             
             itemUnitLimit = ItemUnitLimitFactory.getInstance().create(itemPK, inventoryConditionPK, unitOfMeasureTypePK,
                     minimumQuantity, maximumQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -5528,9 +5454,9 @@ public class ItemControl
     }
 
     public List<ItemUnitLimitTransfer> getItemUnitLimitTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemUnitLimit> itemUnitLimits = getItemUnitLimitsByItem(item);
+        var itemUnitLimits = getItemUnitLimitsByItem(item);
         List<ItemUnitLimitTransfer> itemUnitLimitTransfers = new ArrayList<>(itemUnitLimits.size());
-        ItemUnitLimitTransferCache itemUnitLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitLimitTransferCache();
+        var itemUnitLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitLimitTransferCache();
         
         itemUnitLimits.forEach((itemUnitLimit) ->
                 itemUnitLimitTransfers.add(itemUnitLimitTransferCache.getTransfer(itemUnitLimit))
@@ -5574,7 +5500,7 @@ public class ItemControl
     public ItemUnitPriceLimit createItemUnitPriceLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long minimumUnitPrice, Long maximumUnitPrice,
             BasePK createdBy) {
-        ItemUnitPriceLimit itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().create(item, inventoryCondition,
+        var itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().create(item, inventoryCondition,
                 unitOfMeasureType, currency, minimumUnitPrice, maximumUnitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemUnitPriceLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5601,8 +5527,8 @@ public class ItemControl
                         "AND iupl_cur_currencyid = ? AND iupl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -5657,8 +5583,8 @@ public class ItemControl
                         "WHERE iupl_itm_itemid = ? AND iupl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5699,8 +5625,8 @@ public class ItemControl
                         "WHERE iupl_itm_itemid = ? AND iupl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5741,8 +5667,8 @@ public class ItemControl
                         "WHERE iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5768,7 +5694,7 @@ public class ItemControl
         List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
-            PreparedStatement ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(
+            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemunitpricelimits " +
                     "WHERE iupl_itm_itemid = ? AND iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ? " +
@@ -5788,18 +5714,18 @@ public class ItemControl
     
     public void updateItemUnitPriceLimitFromValue(ItemUnitPriceLimitValue itemUnitPriceLimitValue, BasePK updatedBy) {
         if(itemUnitPriceLimitValue.hasBeenModified()) {
-            ItemUnitPriceLimit itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemUnitPriceLimitValue.getPrimaryKey());
             
             itemUnitPriceLimit.setThruTime(session.START_TIME_LONG);
             itemUnitPriceLimit.store();
-            
-            ItemPK itemPK = itemUnitPriceLimit.getItemPK();
-            InventoryConditionPK inventoryConditionPK = itemUnitPriceLimit.getInventoryConditionPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemUnitPriceLimit.getUnitOfMeasureTypePK();
-            CurrencyPK currencyPK = itemUnitPriceLimit.getCurrencyPK();
-            Long minimumUnitPrice = itemUnitPriceLimitValue.getMinimumUnitPrice();
-            Long maximumUnitPrice = itemUnitPriceLimitValue.getMaximumUnitPrice();
+
+            var itemPK = itemUnitPriceLimit.getItemPK();
+            var inventoryConditionPK = itemUnitPriceLimit.getInventoryConditionPK();
+            var unitOfMeasureTypePK = itemUnitPriceLimit.getUnitOfMeasureTypePK();
+            var currencyPK = itemUnitPriceLimit.getCurrencyPK();
+            var minimumUnitPrice = itemUnitPriceLimitValue.getMinimumUnitPrice();
+            var maximumUnitPrice = itemUnitPriceLimitValue.getMaximumUnitPrice();
             
             itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().create(itemPK, inventoryConditionPK,
                     unitOfMeasureTypePK, currencyPK, minimumUnitPrice, maximumUnitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -5818,9 +5744,9 @@ public class ItemControl
     }
 
     public List<ItemUnitPriceLimitTransfer> getItemUnitPriceLimitTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = getItemUnitPriceLimitsByItem(item);
+        var itemUnitPriceLimits = getItemUnitPriceLimitsByItem(item);
         List<ItemUnitPriceLimitTransfer> itemUnitPriceLimitTransfers = new ArrayList<>(itemUnitPriceLimits.size());
-        ItemUnitPriceLimitTransferCache itemUnitPriceLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitPriceLimitTransferCache();
+        var itemUnitPriceLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitPriceLimitTransferCache();
         
         itemUnitPriceLimits.forEach((itemUnitPriceLimit) ->
                 itemUnitPriceLimitTransfers.add(itemUnitPriceLimitTransferCache.getTransfer(itemUnitPriceLimit))
@@ -5942,7 +5868,7 @@ public class ItemControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = ItemPriceTypeFactory.getInstance().prepareStatement(query);
+        var ps = ItemPriceTypeFactory.getInstance().prepareStatement(query);
 
         return ItemPriceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -5960,7 +5886,7 @@ public class ItemControl
     }
 
     public List<ItemPriceType> getItemPriceTypes() {
-        PreparedStatement ps = ItemPriceTypeFactory.getInstance().prepareStatement(
+        var ps = ItemPriceTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM itempricetypes " +
                 "ORDER BY ipt_sortorder, ipt_itempricetypename " +
@@ -5971,7 +5897,7 @@ public class ItemControl
     
     public ItemPriceTypeChoicesBean getItemPriceTypeChoices(String defaultItemPriceTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<ItemPriceType> itemPriceTypes = getItemPriceTypes();
+        var itemPriceTypes = getItemPriceTypes();
         var size = itemPriceTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -6038,7 +5964,7 @@ public class ItemControl
         ItemPriceTypeDescription itemPriceTypeDescription;
         
         try {
-            PreparedStatement ps = ItemPriceTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ItemPriceTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itempricetypedescriptions " +
                     "WHERE iptd_ipt_itempricetypeid = ? AND iptd_lang_languageid = ?");
@@ -6056,7 +5982,7 @@ public class ItemControl
     
     public String getBestItemPriceTypeDescription(ItemPriceType itemPriceType, Language language) {
         String description;
-        ItemPriceTypeDescription itemPriceTypeDescription = getItemPriceTypeDescription(itemPriceType, language);
+        var itemPriceTypeDescription = getItemPriceTypeDescription(itemPriceType, language);
         
         if(itemPriceTypeDescription == null && !language.getIsDefault()) {
             itemPriceTypeDescription = getItemPriceTypeDescription(itemPriceType, getPartyControl().getDefaultLanguage());
@@ -6077,7 +6003,7 @@ public class ItemControl
     
     public ItemPrice createItemPrice(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, BasePK createdBy) {
-        ItemPrice itemPrice = ItemPriceFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType, currency,
+        var itemPrice = ItemPriceFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType, currency,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6138,8 +6064,8 @@ public class ItemControl
                         "WHERE itmp_itm_itemid = ? AND itmp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6181,8 +6107,8 @@ public class ItemControl
                         "WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6225,7 +6151,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(query);
+            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6268,7 +6194,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(query);
+            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6293,7 +6219,7 @@ public class ItemControl
         List<ItemPrice> itemPrices;
         
         try {
-            PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(
+            var ps = ItemPriceFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM itemprices " +
                     "WHERE itmp_itm_itemid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ? " +
@@ -6332,8 +6258,8 @@ public class ItemControl
                         "AND itmp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -6375,8 +6301,8 @@ public class ItemControl
                         "AND itmp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -6408,7 +6334,7 @@ public class ItemControl
     
     public List<ItemPriceTransfer> getItemPriceTransfers(UserVisit userVisit, Collection<ItemPrice> itemPrices) {
         List<ItemPriceTransfer> itemPriceTransfers = new ArrayList<>(itemPrices.size());
-        ItemPriceTransferCache itemPriceTransferCache = getItemTransferCaches(userVisit).getItemPriceTransferCache();
+        var itemPriceTransferCache = getItemTransferCaches(userVisit).getItemPriceTransferCache();
         
         itemPrices.forEach((itemPrice) ->
                 itemPriceTransfers.add(itemPriceTransferCache.getTransfer(itemPrice))
@@ -6427,17 +6353,17 @@ public class ItemControl
     
     public void deleteItemPrice(ItemPrice itemPrice, BasePK deletedBy) {
         var offerItemControl = Session.getModelController(OfferItemControl.class);
-        Item item = itemPrice.getItem();
-        String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
+        var item = itemPrice.getItem();
+        var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
         
         if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
-            ItemFixedPrice itemFixedPrice = getItemFixedPriceForUpdate(itemPrice);
+            var itemFixedPrice = getItemFixedPriceForUpdate(itemPrice);
             
             if(itemFixedPrice != null) {
                 deleteItemFixedPrice(itemFixedPrice, deletedBy);
             }
         } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
-            ItemVariablePrice itemVariablePrice = getItemVariablePriceForUpdate(itemPrice);
+            var itemVariablePrice = getItemVariablePriceForUpdate(itemPrice);
             
             if(itemVariablePrice != null) {
                 deleteItemVariablePrice(itemVariablePrice, deletedBy);
@@ -6481,7 +6407,7 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     
     public ItemFixedPrice createItemFixedPrice(ItemPrice itemPrice, Long unitPrice, BasePK createdBy) {
-        ItemFixedPrice itemFixedPrice = ItemFixedPriceFactory.getInstance().create(itemPrice, unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var itemFixedPrice = ItemFixedPriceFactory.getInstance().create(itemPrice, unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(itemPrice.getItemPK(), EventTypes.MODIFY, itemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -6504,8 +6430,8 @@ public class ItemControl
                         "WHERE itmfp_itmp_itempriceid = ? AND itmfp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemFixedPriceFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemFixedPriceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemPrice.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6531,7 +6457,7 @@ public class ItemControl
     }
 
     public ItemFixedPriceValue getItemFixedPriceValueForUpdate(ItemPrice itemPrice) {
-        ItemFixedPrice itemFixedPrice = getItemFixedPriceForUpdate(itemPrice);
+        var itemFixedPrice = getItemFixedPriceForUpdate(itemPrice);
         
         return itemFixedPrice == null? null: itemFixedPrice.getItemFixedPriceValue().clone();
     }
@@ -6556,14 +6482,14 @@ public class ItemControl
     
     public void updateItemFixedPriceFromValue(ItemFixedPriceValue itemFixedPriceValue, BasePK updatedBy) {
         if(itemFixedPriceValue.hasBeenModified()) {
-            ItemFixedPrice itemFixedPrice = ItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemFixedPrice = ItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemFixedPriceValue.getPrimaryKey());
             
             itemFixedPrice.setThruTime(session.START_TIME_LONG);
             itemFixedPrice.store();
-            
-            ItemPricePK itemPricePK = itemFixedPrice.getItemPricePK();
-            Long unitPrice = itemFixedPriceValue.getUnitPrice();
+
+            var itemPricePK = itemFixedPrice.getItemPricePK();
+            var unitPrice = itemFixedPriceValue.getUnitPrice();
             
             itemFixedPrice = ItemFixedPriceFactory.getInstance().create(itemPricePK, unitPrice,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6585,7 +6511,7 @@ public class ItemControl
     
     public ItemVariablePrice createItemVariablePrice(ItemPrice itemPrice, Long minimumUnitPrice, Long maximumUnitPrice, Long unitPriceIncrement,
             BasePK createdBy) {
-        ItemVariablePrice itemVariablePrice = ItemVariablePriceFactory.getInstance().create(itemPrice, minimumUnitPrice,
+        var itemVariablePrice = ItemVariablePriceFactory.getInstance().create(itemPrice, minimumUnitPrice,
                 maximumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(itemPrice.getItemPK(), EventTypes.MODIFY, itemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6609,8 +6535,8 @@ public class ItemControl
                         "WHERE itmvp_itmp_itempriceid = ? AND itmvp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemVariablePriceFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemVariablePriceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemPrice.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6636,7 +6562,7 @@ public class ItemControl
     }
 
     public ItemVariablePriceValue getItemVariablePriceValueForUpdate(ItemPrice itemPrice) {
-        ItemVariablePrice itemVariablePrice = getItemVariablePriceForUpdate(itemPrice);
+        var itemVariablePrice = getItemVariablePriceForUpdate(itemPrice);
         
         return itemVariablePrice == null? null: itemVariablePrice.getItemVariablePriceValue().clone();
     }
@@ -6661,16 +6587,16 @@ public class ItemControl
     
     public void updateItemVariablePriceFromValue(ItemVariablePriceValue itemVariablePriceValue, BasePK updatedBy) {
         if(itemVariablePriceValue.hasBeenModified()) {
-            ItemVariablePrice itemVariablePrice = ItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemVariablePrice = ItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemVariablePriceValue.getPrimaryKey());
             
             itemVariablePrice.setThruTime(session.START_TIME_LONG);
             itemVariablePrice.store();
-            
-            ItemPricePK itemPricePK = itemVariablePrice.getItemPricePK();
-            Long maximumUnitPrice = itemVariablePriceValue.getMaximumUnitPrice();
-            Long minimumUnitPrice = itemVariablePriceValue.getMinimumUnitPrice();
-            Long unitPriceIncrement = itemVariablePriceValue.getUnitPriceIncrement();
+
+            var itemPricePK = itemVariablePrice.getItemPricePK();
+            var maximumUnitPrice = itemVariablePriceValue.getMaximumUnitPrice();
+            var minimumUnitPrice = itemVariablePriceValue.getMinimumUnitPrice();
+            var unitPriceIncrement = itemVariablePriceValue.getUnitPriceIncrement();
             
             itemVariablePrice = ItemVariablePriceFactory.getInstance().create(itemPricePK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6693,11 +6619,11 @@ public class ItemControl
     public ItemDescriptionType createItemDescriptionType(String itemDescriptionTypeName, ItemDescriptionType parentItemDescriptionType,
             Boolean useParentIfMissing, MimeTypeUsageType mimeTypeUsageType, Boolean checkContentWebAddress, Boolean includeInIndex, Boolean indexDefault,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ItemDescriptionType defaultItemDescriptionType = getDefaultItemDescriptionType();
-        boolean defaultFound = defaultItemDescriptionType != null;
+        var defaultItemDescriptionType = getDefaultItemDescriptionType();
+        var defaultFound = defaultItemDescriptionType != null;
 
         if(defaultFound && isDefault) {
-            ItemDescriptionTypeDetailValue defaultItemDescriptionTypeDetailValue = getDefaultItemDescriptionTypeDetailValueForUpdate();
+            var defaultItemDescriptionTypeDetailValue = getDefaultItemDescriptionTypeDetailValueForUpdate();
 
             defaultItemDescriptionTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateItemDescriptionTypeFromValue(defaultItemDescriptionTypeDetailValue, false, createdBy);
@@ -6705,8 +6631,8 @@ public class ItemControl
             isDefault = Boolean.TRUE;
         }
 
-        ItemDescriptionType itemDescriptionType = ItemDescriptionTypeFactory.getInstance().create();
-        ItemDescriptionTypeDetail itemDescriptionTypeDetail = ItemDescriptionTypeDetailFactory.getInstance().create(itemDescriptionType, itemDescriptionTypeName,
+        var itemDescriptionType = ItemDescriptionTypeFactory.getInstance().create();
+        var itemDescriptionTypeDetail = ItemDescriptionTypeDetailFactory.getInstance().create(itemDescriptionType, itemDescriptionTypeName,
                 parentItemDescriptionType, useParentIfMissing, mimeTypeUsageType, checkContentWebAddress, includeInIndex, indexDefault, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -6957,7 +6883,7 @@ public class ItemControl
 
     public List<ItemDescriptionTypeTransfer> getItemDescriptionTypeTransfers(UserVisit userVisit, Collection<ItemDescriptionType> itemDescriptionTypes) {
         List<ItemDescriptionTypeTransfer> itemDescriptionTypeTransfers = new ArrayList<>(itemDescriptionTypes.size());
-        ItemDescriptionTypeTransferCache itemDescriptionTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeTransferCache();
+        var itemDescriptionTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeTransferCache();
 
         itemDescriptionTypes.forEach((itemDescriptionType) ->
                 itemDescriptionTypeTransfers.add(itemDescriptionTypeTransferCache.getTransfer(itemDescriptionType))
@@ -6976,7 +6902,7 @@ public class ItemControl
     }
 
     public ItemDescriptionTypeChoicesBean getItemDescriptionTypeChoices(String defaultItemDescriptionTypeChoice, Language language, boolean allowNullChoice) {
-        List<ItemDescriptionType> itemDescriptionTypes = getItemDescriptionTypes();
+        var itemDescriptionTypes = getItemDescriptionTypes();
         var size = itemDescriptionTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -6992,7 +6918,7 @@ public class ItemControl
         }
 
         for(var itemDescriptionType : itemDescriptionTypes) {
-            ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
+            var itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
 
             var label = getBestItemDescriptionTypeDescription(itemDescriptionType, language);
             var value = itemDescriptionTypeDetail.getItemDescriptionTypeName();
@@ -7011,7 +6937,7 @@ public class ItemControl
 
     public boolean isParentItemDescriptionTypeSafe(ItemDescriptionType itemDescriptionType,
             ItemDescriptionType parentItemDescriptionType) {
-        boolean safe = true;
+        var safe = true;
 
         if(parentItemDescriptionType != null) {
             Set<ItemDescriptionType> parentItemDescriptionTypes = new HashSet<>();
@@ -7034,31 +6960,31 @@ public class ItemControl
     private void updateItemDescriptionTypeFromValue(ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemDescriptionTypeDetailValue.hasBeenModified()) {
-            ItemDescriptionType itemDescriptionType = ItemDescriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescriptionType = ItemDescriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemDescriptionTypeDetailValue.getItemDescriptionTypePK());
-            ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getActiveDetailForUpdate();
+            var itemDescriptionTypeDetail = itemDescriptionType.getActiveDetailForUpdate();
 
             itemDescriptionTypeDetail.setThruTime(session.START_TIME_LONG);
             itemDescriptionTypeDetail.store();
 
-            ItemDescriptionTypePK itemDescriptionTypePK = itemDescriptionTypeDetail.getItemDescriptionTypePK(); // Not updated
-            String itemDescriptionTypeName = itemDescriptionTypeDetailValue.getItemDescriptionTypeName();
-            ItemDescriptionTypePK parentItemDescriptionTypePK = itemDescriptionTypeDetailValue.getParentItemDescriptionTypePK();
-            Boolean useParentIfMissing = itemDescriptionTypeDetailValue.getUseParentIfMissing();
-            MimeTypeUsageTypePK mimeTypeUsageTypePK = itemDescriptionTypeDetail.getMimeTypeUsageTypePK(); // Not updated
-            Boolean checkContentWebAddress = itemDescriptionTypeDetailValue.getCheckContentWebAddress();
-            Boolean includeInIndex = itemDescriptionTypeDetailValue.getIncludeInIndex();
-            Boolean indexDefault = itemDescriptionTypeDetailValue.getIndexDefault();
-            Boolean isDefault = itemDescriptionTypeDetailValue.getIsDefault();
-            Integer sortOrder = itemDescriptionTypeDetailValue.getSortOrder();
+            var itemDescriptionTypePK = itemDescriptionTypeDetail.getItemDescriptionTypePK(); // Not updated
+            var itemDescriptionTypeName = itemDescriptionTypeDetailValue.getItemDescriptionTypeName();
+            var parentItemDescriptionTypePK = itemDescriptionTypeDetailValue.getParentItemDescriptionTypePK();
+            var useParentIfMissing = itemDescriptionTypeDetailValue.getUseParentIfMissing();
+            var mimeTypeUsageTypePK = itemDescriptionTypeDetail.getMimeTypeUsageTypePK(); // Not updated
+            var checkContentWebAddress = itemDescriptionTypeDetailValue.getCheckContentWebAddress();
+            var includeInIndex = itemDescriptionTypeDetailValue.getIncludeInIndex();
+            var indexDefault = itemDescriptionTypeDetailValue.getIndexDefault();
+            var isDefault = itemDescriptionTypeDetailValue.getIsDefault();
+            var sortOrder = itemDescriptionTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ItemDescriptionType defaultItemDescriptionType = getDefaultItemDescriptionType();
-                boolean defaultFound = defaultItemDescriptionType != null && !defaultItemDescriptionType.equals(itemDescriptionType);
+                var defaultItemDescriptionType = getDefaultItemDescriptionType();
+                var defaultFound = defaultItemDescriptionType != null && !defaultItemDescriptionType.equals(itemDescriptionType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ItemDescriptionTypeDetailValue defaultItemDescriptionTypeDetailValue = getDefaultItemDescriptionTypeDetailValueForUpdate();
+                    var defaultItemDescriptionTypeDetailValue = getDefaultItemDescriptionTypeDetailValueForUpdate();
 
                     defaultItemDescriptionTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateItemDescriptionTypeFromValue(defaultItemDescriptionTypeDetailValue, false, updatedBy);
@@ -7084,8 +7010,8 @@ public class ItemControl
     }
 
     private void deleteItemDescriptionType(ItemDescriptionType itemDescriptionType, boolean checkDefault, BasePK deletedBy) {
-        ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetailForUpdate();
-        MimeTypeUsageType mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
+        var itemDescriptionTypeDetail = itemDescriptionType.getLastDetailForUpdate();
+        var mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
 
         deleteItemDescriptionsByItemDescriptionType(itemDescriptionType, deletedBy);
         deleteItemDescriptionTypesByParentItemDescriptionType(itemDescriptionType, deletedBy);
@@ -7093,7 +7019,7 @@ public class ItemControl
         deleteItemDescriptionTypeUsesByItemDescriptionType(itemDescriptionType, deletedBy);
 
         if(mimeTypeUsageType != null) {
-            String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
                 deleteItemImageDescriptionTypeByItemDescriptionType(itemDescriptionType, deletedBy);
@@ -7106,17 +7032,17 @@ public class ItemControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ItemDescriptionType defaultItemDescriptionType = getDefaultItemDescriptionType();
+            var defaultItemDescriptionType = getDefaultItemDescriptionType();
             
             if(defaultItemDescriptionType == null) {
-                List<ItemDescriptionType> itemDescriptionTypes = getItemDescriptionTypesForUpdate();
+                var itemDescriptionTypes = getItemDescriptionTypesForUpdate();
 
                 if(!itemDescriptionTypes.isEmpty()) {
-                    Iterator<ItemDescriptionType> iter = itemDescriptionTypes.iterator();
+                    var iter = itemDescriptionTypes.iterator();
                     if(iter.hasNext()) {
                         defaultItemDescriptionType = iter.next();
                     }
-                    ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionType).getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
+                    var itemDescriptionTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionType).getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
 
                     itemDescriptionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemDescriptionTypeFromValue(itemDescriptionTypeDetailValue, false, deletedBy);
@@ -7148,7 +7074,7 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     public ItemDescriptionTypeDescription createItemDescriptionTypeDescription(ItemDescriptionType itemDescriptionType, Language language, String description, BasePK createdBy) {
-        ItemDescriptionTypeDescription itemDescriptionTypeDescription = ItemDescriptionTypeDescriptionFactory.getInstance().create(itemDescriptionType, language, description,
+        var itemDescriptionTypeDescription = ItemDescriptionTypeDescriptionFactory.getInstance().create(itemDescriptionType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(itemDescriptionType.getPrimaryKey(), EventTypes.MODIFY, itemDescriptionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7228,7 +7154,7 @@ public class ItemControl
 
     public String getBestItemDescriptionTypeDescription(ItemDescriptionType itemDescriptionType, Language language) {
         String description;
-        ItemDescriptionTypeDescription itemDescriptionTypeDescription = getItemDescriptionTypeDescription(itemDescriptionType, language);
+        var itemDescriptionTypeDescription = getItemDescriptionTypeDescription(itemDescriptionType, language);
 
         if(itemDescriptionTypeDescription == null && !language.getIsDefault()) {
             itemDescriptionTypeDescription = getItemDescriptionTypeDescription(itemDescriptionType, getPartyControl().getDefaultLanguage());
@@ -7248,9 +7174,9 @@ public class ItemControl
     }
 
     public List<ItemDescriptionTypeDescriptionTransfer> getItemDescriptionTypeDescriptionTransfersByItemDescriptionType(UserVisit userVisit, ItemDescriptionType itemDescriptionType) {
-        List<ItemDescriptionTypeDescription> itemDescriptionTypeDescriptions = getItemDescriptionTypeDescriptionsByItemDescriptionType(itemDescriptionType);
+        var itemDescriptionTypeDescriptions = getItemDescriptionTypeDescriptionsByItemDescriptionType(itemDescriptionType);
         List<ItemDescriptionTypeDescriptionTransfer> itemDescriptionTypeDescriptionTransfers = new ArrayList<>(itemDescriptionTypeDescriptions.size());
-        ItemDescriptionTypeDescriptionTransferCache itemDescriptionTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeDescriptionTransferCache();
+        var itemDescriptionTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeDescriptionTransferCache();
 
         itemDescriptionTypeDescriptions.forEach((itemDescriptionTypeDescription) ->
                 itemDescriptionTypeDescriptionTransfers.add(itemDescriptionTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeDescription))
@@ -7261,15 +7187,15 @@ public class ItemControl
 
     public void updateItemDescriptionTypeDescriptionFromValue(ItemDescriptionTypeDescriptionValue itemDescriptionTypeDescriptionValue, BasePK updatedBy) {
         if(itemDescriptionTypeDescriptionValue.hasBeenModified()) {
-            ItemDescriptionTypeDescription itemDescriptionTypeDescription = ItemDescriptionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescriptionTypeDescription = ItemDescriptionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemDescriptionTypeDescriptionValue.getPrimaryKey());
 
             itemDescriptionTypeDescription.setThruTime(session.START_TIME_LONG);
             itemDescriptionTypeDescription.store();
 
-            ItemDescriptionType itemDescriptionType = itemDescriptionTypeDescription.getItemDescriptionType();
-            Language language = itemDescriptionTypeDescription.getLanguage();
-            String description = itemDescriptionTypeDescriptionValue.getDescription();
+            var itemDescriptionType = itemDescriptionTypeDescription.getItemDescriptionType();
+            var language = itemDescriptionTypeDescription.getLanguage();
+            var description = itemDescriptionTypeDescriptionValue.getDescription();
 
             itemDescriptionTypeDescription = ItemDescriptionTypeDescriptionFactory.getInstance().create(itemDescriptionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -7286,7 +7212,7 @@ public class ItemControl
     }
 
     public void deleteItemDescriptionTypeDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, BasePK deletedBy) {
-        List<ItemDescriptionTypeDescription> itemDescriptionTypeDescriptions = getItemDescriptionTypeDescriptionsByItemDescriptionTypeForUpdate(itemDescriptionType);
+        var itemDescriptionTypeDescriptions = getItemDescriptionTypeDescriptionsByItemDescriptionTypeForUpdate(itemDescriptionType);
 
         itemDescriptionTypeDescriptions.forEach((itemDescriptionTypeDescription) -> 
                 deleteItemDescriptionTypeDescription(itemDescriptionTypeDescription, deletedBy)
@@ -7300,7 +7226,7 @@ public class ItemControl
     public ItemImageDescriptionType createItemImageDescriptionType(ItemDescriptionType itemDescriptionType, Integer minimumHeight, Integer minimumWidth,
             Integer maximumHeight, Integer maximumWidth, Integer preferredHeight, Integer preferredWidth, MimeType preferredMimeType, Integer quality,
             Boolean scaleFromParent, BasePK createdBy) {
-        ItemImageDescriptionType itemImageDescriptionType = ItemImageDescriptionTypeFactory.getInstance().create(itemDescriptionType, minimumHeight,
+        var itemImageDescriptionType = ItemImageDescriptionTypeFactory.getInstance().create(itemDescriptionType, minimumHeight,
                 minimumWidth, maximumHeight, maximumWidth, preferredHeight, preferredWidth, preferredMimeType, quality, scaleFromParent,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -7350,22 +7276,22 @@ public class ItemControl
     /** Use the version located in ItemDescriptionLogic instead. */
     public void updateItemImageDescriptionTypeFromValue(ItemImageDescriptionTypeValue itemImageDescriptionTypeValue, BasePK updatedBy) {
         if(itemImageDescriptionTypeValue.hasBeenModified()) {
-            ItemImageDescriptionType itemImageDescriptionType = ItemImageDescriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemImageDescriptionType = ItemImageDescriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemImageDescriptionTypeValue.getPrimaryKey());
 
             itemImageDescriptionType.setThruTime(session.START_TIME_LONG);
             itemImageDescriptionType.store();
 
-            ItemDescriptionTypePK itemDescriptionTypePK = itemImageDescriptionType.getItemDescriptionTypePK(); // Not updated
-            Integer minimumHeight = itemImageDescriptionTypeValue.getMinimumHeight();
-            Integer minimumWidth = itemImageDescriptionTypeValue.getMinimumWidth();
-            Integer maximumHeight = itemImageDescriptionTypeValue.getMaximumHeight();
-            Integer maximumWidth = itemImageDescriptionTypeValue.getMaximumWidth();
-            Integer preferredHeight = itemImageDescriptionTypeValue.getPreferredHeight();
-            Integer preferredWidth = itemImageDescriptionTypeValue.getPreferredWidth();
-            MimeTypePK preferredMimeTypePK = itemImageDescriptionTypeValue.getPreferredMimeTypePK();
-            Integer quality = itemImageDescriptionTypeValue.getQuality();
-            Boolean scaleFromParent = itemImageDescriptionTypeValue.getScaleFromParent();
+            var itemDescriptionTypePK = itemImageDescriptionType.getItemDescriptionTypePK(); // Not updated
+            var minimumHeight = itemImageDescriptionTypeValue.getMinimumHeight();
+            var minimumWidth = itemImageDescriptionTypeValue.getMinimumWidth();
+            var maximumHeight = itemImageDescriptionTypeValue.getMaximumHeight();
+            var maximumWidth = itemImageDescriptionTypeValue.getMaximumWidth();
+            var preferredHeight = itemImageDescriptionTypeValue.getPreferredHeight();
+            var preferredWidth = itemImageDescriptionTypeValue.getPreferredWidth();
+            var preferredMimeTypePK = itemImageDescriptionTypeValue.getPreferredMimeTypePK();
+            var quality = itemImageDescriptionTypeValue.getQuality();
+            var scaleFromParent = itemImageDescriptionTypeValue.getScaleFromParent();
 
             itemImageDescriptionType = ItemImageDescriptionTypeFactory.getInstance().create(itemDescriptionTypePK, minimumHeight, minimumWidth, maximumHeight,
                     maximumWidth, preferredHeight, preferredWidth, preferredMimeTypePK, quality, scaleFromParent, session.START_TIME_LONG,
@@ -7382,7 +7308,7 @@ public class ItemControl
     }
 
     public void deleteItemImageDescriptionTypeByItemDescriptionType(ItemDescriptionType itemDescriptionType, BasePK deletedBy) {
-        ItemImageDescriptionType itemImageDescriptionType = getItemImageDescriptionTypeForUpdate(itemDescriptionType);
+        var itemImageDescriptionType = getItemImageDescriptionTypeForUpdate(itemDescriptionType);
 
         if(itemImageDescriptionType != null) {
             deleteItemImageDescriptionType(itemImageDescriptionType, deletedBy);
@@ -7395,11 +7321,11 @@ public class ItemControl
 
     public ItemDescriptionTypeUseType createItemDescriptionTypeUseType(String itemDescriptionTypeUseTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ItemDescriptionTypeUseType defaultItemDescriptionTypeUseType = getDefaultItemDescriptionTypeUseType();
-        boolean defaultFound = defaultItemDescriptionTypeUseType != null;
+        var defaultItemDescriptionTypeUseType = getDefaultItemDescriptionTypeUseType();
+        var defaultFound = defaultItemDescriptionTypeUseType != null;
 
         if(defaultFound && isDefault) {
-            ItemDescriptionTypeUseTypeDetailValue defaultItemDescriptionTypeUseTypeDetailValue = getDefaultItemDescriptionTypeUseTypeDetailValueForUpdate();
+            var defaultItemDescriptionTypeUseTypeDetailValue = getDefaultItemDescriptionTypeUseTypeDetailValueForUpdate();
 
             defaultItemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateItemDescriptionTypeUseTypeFromValue(defaultItemDescriptionTypeUseTypeDetailValue, false, createdBy);
@@ -7407,8 +7333,8 @@ public class ItemControl
             isDefault = Boolean.TRUE;
         }
 
-        ItemDescriptionTypeUseType itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeFactory.getInstance().create();
-        ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = ItemDescriptionTypeUseTypeDetailFactory.getInstance().create(itemDescriptionTypeUseType,
+        var itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeFactory.getInstance().create();
+        var itemDescriptionTypeUseTypeDetail = ItemDescriptionTypeUseTypeDetailFactory.getInstance().create(itemDescriptionTypeUseType,
                 itemDescriptionTypeUseTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -7553,7 +7479,7 @@ public class ItemControl
 
     private List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypesByParentItemDescriptionTypeUseType(ItemDescriptionTypeUseType parentItemDescriptionTypeUseType,
             EntityPermission entityPermission) {
-        List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes = null;
+        List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes;
 
         try {
             String query = null;
@@ -7570,7 +7496,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemDescriptionTypeUseTypeFactory.getInstance().prepareStatement(query);
+            var ps = ItemDescriptionTypeUseTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, parentItemDescriptionTypeUseType.getPrimaryKey().getEntityId());
 
@@ -7596,7 +7522,7 @@ public class ItemControl
 
     public List<ItemDescriptionTypeUseTypeTransfer> getItemDescriptionTypeUseTypeTransfers(UserVisit userVisit, Collection<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes) {
         List<ItemDescriptionTypeUseTypeTransfer> itemDescriptionTypeUseTypeTransfers = new ArrayList<>(itemDescriptionTypeUseTypes.size());
-        ItemDescriptionTypeUseTypeTransferCache itemDescriptionTypeUseTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeTransferCache();
+        var itemDescriptionTypeUseTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeTransferCache();
 
         itemDescriptionTypeUseTypes.forEach((itemDescriptionTypeUseType) ->
                 itemDescriptionTypeUseTypeTransfers.add(itemDescriptionTypeUseTypeTransferCache.getTransfer(itemDescriptionTypeUseType))
@@ -7615,7 +7541,7 @@ public class ItemControl
     }
 
     public ItemDescriptionTypeUseTypeChoicesBean getItemDescriptionTypeUseTypeChoices(String defaultItemDescriptionTypeUseTypeChoice, Language language, boolean allowNullChoice) {
-        List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes = getItemDescriptionTypeUseTypes();
+        var itemDescriptionTypeUseTypes = getItemDescriptionTypeUseTypes();
         var size = itemDescriptionTypeUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -7631,7 +7557,7 @@ public class ItemControl
         }
 
         for(var itemDescriptionTypeUseType : itemDescriptionTypeUseTypes) {
-            ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
+            var itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
 
             var label = getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
             var value = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypeName();
@@ -7651,25 +7577,25 @@ public class ItemControl
     private void updateItemDescriptionTypeUseTypeFromValue(ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemDescriptionTypeUseTypeDetailValue.hasBeenModified()) {
-            ItemDescriptionTypeUseType itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemDescriptionTypeUseTypeDetailValue.getItemDescriptionTypeUseTypePK());
-            ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getActiveDetailForUpdate();
+            var itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getActiveDetailForUpdate();
 
             itemDescriptionTypeUseTypeDetail.setThruTime(session.START_TIME_LONG);
             itemDescriptionTypeUseTypeDetail.store();
 
-            ItemDescriptionTypeUseTypePK itemDescriptionTypeUseTypePK = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypePK(); // Not updated
-            String itemDescriptionTypeUseTypeName = itemDescriptionTypeUseTypeDetailValue.getItemDescriptionTypeUseTypeName();
-            Boolean isDefault = itemDescriptionTypeUseTypeDetailValue.getIsDefault();
-            Integer sortOrder = itemDescriptionTypeUseTypeDetailValue.getSortOrder();
+            var itemDescriptionTypeUseTypePK = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypePK(); // Not updated
+            var itemDescriptionTypeUseTypeName = itemDescriptionTypeUseTypeDetailValue.getItemDescriptionTypeUseTypeName();
+            var isDefault = itemDescriptionTypeUseTypeDetailValue.getIsDefault();
+            var sortOrder = itemDescriptionTypeUseTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ItemDescriptionTypeUseType defaultItemDescriptionTypeUseType = getDefaultItemDescriptionTypeUseType();
-                boolean defaultFound = defaultItemDescriptionTypeUseType != null && !defaultItemDescriptionTypeUseType.equals(itemDescriptionTypeUseType);
+                var defaultItemDescriptionTypeUseType = getDefaultItemDescriptionTypeUseType();
+                var defaultFound = defaultItemDescriptionTypeUseType != null && !defaultItemDescriptionTypeUseType.equals(itemDescriptionTypeUseType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ItemDescriptionTypeUseTypeDetailValue defaultItemDescriptionTypeUseTypeDetailValue = getDefaultItemDescriptionTypeUseTypeDetailValueForUpdate();
+                    var defaultItemDescriptionTypeUseTypeDetailValue = getDefaultItemDescriptionTypeUseTypeDetailValueForUpdate();
 
                     defaultItemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateItemDescriptionTypeUseTypeFromValue(defaultItemDescriptionTypeUseTypeDetailValue, false, updatedBy);
@@ -7697,22 +7623,22 @@ public class ItemControl
         deleteItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(itemDescriptionTypeUseType, deletedBy);
         deleteItemDescriptionTypeUsesByItemDescriptionTypeUseType(itemDescriptionTypeUseType, deletedBy);
 
-        ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetailForUpdate();
+        var itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetailForUpdate();
         itemDescriptionTypeUseTypeDetail.setThruTime(session.START_TIME_LONG);
         itemDescriptionTypeUseType.setActiveDetail(null);
         itemDescriptionTypeUseType.store();
 
         // Check for default, and pick one if necessary
-        ItemDescriptionTypeUseType defaultItemDescriptionTypeUseType = getDefaultItemDescriptionTypeUseType();
+        var defaultItemDescriptionTypeUseType = getDefaultItemDescriptionTypeUseType();
         if(defaultItemDescriptionTypeUseType == null) {
-            List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes = getItemDescriptionTypeUseTypesForUpdate();
+            var itemDescriptionTypeUseTypes = getItemDescriptionTypeUseTypesForUpdate();
 
             if(!itemDescriptionTypeUseTypes.isEmpty()) {
-                Iterator<ItemDescriptionTypeUseType> iter = itemDescriptionTypeUseTypes.iterator();
+                var iter = itemDescriptionTypeUseTypes.iterator();
                 if(iter.hasNext()) {
                     defaultItemDescriptionTypeUseType = iter.next();
                 }
-                ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionTypeUseType).getLastDetailForUpdate().getItemDescriptionTypeUseTypeDetailValue().clone();
+                var itemDescriptionTypeUseTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionTypeUseType).getLastDetailForUpdate().getItemDescriptionTypeUseTypeDetailValue().clone();
 
                 itemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemDescriptionTypeUseTypeFromValue(itemDescriptionTypeUseTypeDetailValue, false, deletedBy);
@@ -7728,7 +7654,7 @@ public class ItemControl
 
     public ItemDescriptionTypeUseTypeDescription createItemDescriptionTypeUseTypeDescription(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             Language language, String description, BasePK createdBy) {
-        ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().create(itemDescriptionTypeUseType,
+        var itemDescriptionTypeUseTypeDescription = ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().create(itemDescriptionTypeUseType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(itemDescriptionTypeUseType.getPrimaryKey(), EventTypes.MODIFY, itemDescriptionTypeUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7810,7 +7736,7 @@ public class ItemControl
 
     public String getBestItemDescriptionTypeUseTypeDescription(ItemDescriptionTypeUseType itemDescriptionTypeUseType, Language language) {
         String description;
-        ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
+        var itemDescriptionTypeUseTypeDescription = getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
 
         if(itemDescriptionTypeUseTypeDescription == null && !language.getIsDefault()) {
             itemDescriptionTypeUseTypeDescription = getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getPartyControl().getDefaultLanguage());
@@ -7830,9 +7756,9 @@ public class ItemControl
     }
 
     public List<ItemDescriptionTypeUseTypeDescriptionTransfer> getItemDescriptionTypeUseTypeDescriptionTransfersByItemDescriptionTypeUseType(UserVisit userVisit, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        List<ItemDescriptionTypeUseTypeDescription> itemDescriptionTypeUseTypeDescriptions = getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
+        var itemDescriptionTypeUseTypeDescriptions = getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
         List<ItemDescriptionTypeUseTypeDescriptionTransfer> itemDescriptionTypeUseTypeDescriptionTransfers = new ArrayList<>(itemDescriptionTypeUseTypeDescriptions.size());
-        ItemDescriptionTypeUseTypeDescriptionTransferCache itemDescriptionTypeUseTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeDescriptionTransferCache();
+        var itemDescriptionTypeUseTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeDescriptionTransferCache();
 
         itemDescriptionTypeUseTypeDescriptions.forEach((itemDescriptionTypeUseTypeDescription) ->
                 itemDescriptionTypeUseTypeDescriptionTransfers.add(itemDescriptionTypeUseTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeUseTypeDescription))
@@ -7843,15 +7769,15 @@ public class ItemControl
 
     public void updateItemDescriptionTypeUseTypeDescriptionFromValue(ItemDescriptionTypeUseTypeDescriptionValue itemDescriptionTypeUseTypeDescriptionValue, BasePK updatedBy) {
         if(itemDescriptionTypeUseTypeDescriptionValue.hasBeenModified()) {
-            ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescriptionTypeUseTypeDescription = ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemDescriptionTypeUseTypeDescriptionValue.getPrimaryKey());
 
             itemDescriptionTypeUseTypeDescription.setThruTime(session.START_TIME_LONG);
             itemDescriptionTypeUseTypeDescription.store();
 
-            ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemDescriptionTypeUseTypeDescription.getItemDescriptionTypeUseType();
-            Language language = itemDescriptionTypeUseTypeDescription.getLanguage();
-            String description = itemDescriptionTypeUseTypeDescriptionValue.getDescription();
+            var itemDescriptionTypeUseType = itemDescriptionTypeUseTypeDescription.getItemDescriptionTypeUseType();
+            var language = itemDescriptionTypeUseTypeDescription.getLanguage();
+            var description = itemDescriptionTypeUseTypeDescriptionValue.getDescription();
 
             itemDescriptionTypeUseTypeDescription = ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().create(itemDescriptionTypeUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -7868,7 +7794,7 @@ public class ItemControl
     }
 
     public void deleteItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType, BasePK deletedBy) {
-        List<ItemDescriptionTypeUseTypeDescription> itemDescriptionTypeUseTypeDescriptions = getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeForUpdate(itemDescriptionTypeUseType);
+        var itemDescriptionTypeUseTypeDescriptions = getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeForUpdate(itemDescriptionTypeUseType);
 
         itemDescriptionTypeUseTypeDescriptions.forEach((itemDescriptionTypeUseTypeDescription) -> 
                 deleteItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseTypeDescription, deletedBy)
@@ -7881,7 +7807,7 @@ public class ItemControl
 
     public ItemDescriptionTypeUse createItemDescriptionTypeUse(ItemDescriptionType itemDescriptionType, ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             BasePK createdBy) {
-        ItemDescriptionTypeUse itemDescriptionTypeUse = ItemDescriptionTypeUseFactory.getInstance().create(itemDescriptionType, itemDescriptionTypeUseType,
+        var itemDescriptionTypeUse = ItemDescriptionTypeUseFactory.getInstance().create(itemDescriptionType, itemDescriptionTypeUseType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(itemDescriptionType.getPrimaryKey(), EventTypes.MODIFY, itemDescriptionTypeUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -8014,7 +7940,7 @@ public class ItemControl
 
     public List<ItemDescriptionTypeUseTransfer> getItemDescriptionTypeUseTransfers(final UserVisit userVisit, final Collection<ItemDescriptionTypeUse> itemDescriptionTypeUses) {
         List<ItemDescriptionTypeUseTransfer> itemDescriptionTypeUseTransfers = new ArrayList<>(itemDescriptionTypeUses.size());
-        ItemDescriptionTypeUseTransferCache itemDescriptionTypeUseTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTransferCache();
+        var itemDescriptionTypeUseTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTransferCache();
 
         itemDescriptionTypeUses.forEach((itemDescriptionTypeUse) ->
                 itemDescriptionTypeUseTransfers.add(itemDescriptionTypeUseTransferCache.getTransfer(itemDescriptionTypeUse))
@@ -8058,11 +7984,11 @@ public class ItemControl
 
     public ItemImageType createItemImageType(String itemImageTypeName, MimeType preferredMimeType, Integer quality, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ItemImageType defaultItemImageType = getDefaultItemImageType();
-        boolean defaultFound = defaultItemImageType != null;
+        var defaultItemImageType = getDefaultItemImageType();
+        var defaultFound = defaultItemImageType != null;
 
         if(defaultFound && isDefault) {
-            ItemImageTypeDetailValue defaultItemImageTypeDetailValue = getDefaultItemImageTypeDetailValueForUpdate();
+            var defaultItemImageTypeDetailValue = getDefaultItemImageTypeDetailValueForUpdate();
 
             defaultItemImageTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateItemImageTypeFromValue(defaultItemImageTypeDetailValue, false, createdBy);
@@ -8070,8 +7996,8 @@ public class ItemControl
             isDefault = Boolean.TRUE;
         }
 
-        ItemImageType itemImageType = ItemImageTypeFactory.getInstance().create();
-        ItemImageTypeDetail itemImageTypeDetail = ItemImageTypeDetailFactory.getInstance().create(itemImageType, itemImageTypeName, preferredMimeType, quality,
+        var itemImageType = ItemImageTypeFactory.getInstance().create();
+        var itemImageTypeDetail = ItemImageTypeDetailFactory.getInstance().create(itemImageType, itemImageTypeName, preferredMimeType, quality,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -8220,7 +8146,7 @@ public class ItemControl
 
     public List<ItemImageTypeTransfer> getItemImageTypeTransfers(UserVisit userVisit, Collection<ItemImageType> itemImageTypes) {
         List<ItemImageTypeTransfer> itemImageTypeTransfers = new ArrayList<>(itemImageTypes.size());
-        ItemImageTypeTransferCache itemImageTypeTransferCache = getItemTransferCaches(userVisit).getItemImageTypeTransferCache();
+        var itemImageTypeTransferCache = getItemTransferCaches(userVisit).getItemImageTypeTransferCache();
 
         itemImageTypes.forEach((itemImageType) ->
                 itemImageTypeTransfers.add(itemImageTypeTransferCache.getTransfer(itemImageType))
@@ -8234,7 +8160,7 @@ public class ItemControl
     }
 
     public ItemImageTypeChoicesBean getItemImageTypeChoices(String defaultItemImageTypeChoice, Language language, boolean allowNullChoice) {
-        List<ItemImageType> itemImageTypes = getItemImageTypes();
+        var itemImageTypes = getItemImageTypes();
         var size = itemImageTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -8250,7 +8176,7 @@ public class ItemControl
         }
 
         for(var itemImageType : itemImageTypes) {
-            ItemImageTypeDetail itemImageTypeDetail = itemImageType.getLastDetail();
+            var itemImageTypeDetail = itemImageType.getLastDetail();
 
             var label = getBestItemImageTypeDescription(itemImageType, language);
             var value = itemImageTypeDetail.getItemImageTypeName();
@@ -8270,27 +8196,27 @@ public class ItemControl
     private void updateItemImageTypeFromValue(ItemImageTypeDetailValue itemImageTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemImageTypeDetailValue.hasBeenModified()) {
-            ItemImageType itemImageType = ItemImageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemImageType = ItemImageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemImageTypeDetailValue.getItemImageTypePK());
-            ItemImageTypeDetail itemImageTypeDetail = itemImageType.getActiveDetailForUpdate();
+            var itemImageTypeDetail = itemImageType.getActiveDetailForUpdate();
 
             itemImageTypeDetail.setThruTime(session.START_TIME_LONG);
             itemImageTypeDetail.store();
 
-            ItemImageTypePK itemImageTypePK = itemImageTypeDetail.getItemImageTypePK(); // Not updated
-            String itemImageTypeName = itemImageTypeDetailValue.getItemImageTypeName();
-            MimeTypePK preferredMimeTypePK = itemImageTypeDetailValue.getPreferredMimeTypePK();
-            Integer quality = itemImageTypeDetailValue.getQuality();
-            Boolean isDefault = itemImageTypeDetailValue.getIsDefault();
-            Integer sortOrder = itemImageTypeDetailValue.getSortOrder();
+            var itemImageTypePK = itemImageTypeDetail.getItemImageTypePK(); // Not updated
+            var itemImageTypeName = itemImageTypeDetailValue.getItemImageTypeName();
+            var preferredMimeTypePK = itemImageTypeDetailValue.getPreferredMimeTypePK();
+            var quality = itemImageTypeDetailValue.getQuality();
+            var isDefault = itemImageTypeDetailValue.getIsDefault();
+            var sortOrder = itemImageTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ItemImageType defaultItemImageType = getDefaultItemImageType();
-                boolean defaultFound = defaultItemImageType != null && !defaultItemImageType.equals(itemImageType);
+                var defaultItemImageType = getDefaultItemImageType();
+                var defaultFound = defaultItemImageType != null && !defaultItemImageType.equals(itemImageType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ItemImageTypeDetailValue defaultItemImageTypeDetailValue = getDefaultItemImageTypeDetailValueForUpdate();
+                    var defaultItemImageTypeDetailValue = getDefaultItemImageTypeDetailValueForUpdate();
 
                     defaultItemImageTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateItemImageTypeFromValue(defaultItemImageTypeDetailValue, false, updatedBy);
@@ -8319,22 +8245,22 @@ public class ItemControl
         deleteItemImageTypeDescriptionsByItemImageType(itemImageType, deletedBy);
         deleteItemDescriptionsByItemImageType(itemImageType, deletedBy);
 
-        ItemImageTypeDetail itemImageTypeDetail = itemImageType.getLastDetailForUpdate();
+        var itemImageTypeDetail = itemImageType.getLastDetailForUpdate();
         itemImageTypeDetail.setThruTime(session.START_TIME_LONG);
         itemImageType.setActiveDetail(null);
         itemImageType.store();
 
         // Check for default, and pick one if necessary
-        ItemImageType defaultItemImageType = getDefaultItemImageType();
+        var defaultItemImageType = getDefaultItemImageType();
         if(defaultItemImageType == null) {
-            List<ItemImageType> itemImageTypes = getItemImageTypesForUpdate();
+            var itemImageTypes = getItemImageTypesForUpdate();
 
             if(!itemImageTypes.isEmpty()) {
-                Iterator<ItemImageType> iter = itemImageTypes.iterator();
+                var iter = itemImageTypes.iterator();
                 if(iter.hasNext()) {
                     defaultItemImageType = iter.next();
                 }
-                ItemImageTypeDetailValue itemImageTypeDetailValue = Objects.requireNonNull(defaultItemImageType).getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
+                var itemImageTypeDetailValue = Objects.requireNonNull(defaultItemImageType).getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
 
                 itemImageTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemImageTypeFromValue(itemImageTypeDetailValue, false, deletedBy);
@@ -8350,7 +8276,7 @@ public class ItemControl
 
     public ItemImageTypeDescription createItemImageTypeDescription(ItemImageType itemImageType,
             Language language, String description, BasePK createdBy) {
-        ItemImageTypeDescription itemImageTypeDescription = ItemImageTypeDescriptionFactory.getInstance().create(itemImageType,
+        var itemImageTypeDescription = ItemImageTypeDescriptionFactory.getInstance().create(itemImageType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(itemImageType.getPrimaryKey(), EventTypes.MODIFY, itemImageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -8432,7 +8358,7 @@ public class ItemControl
 
     public String getBestItemImageTypeDescription(ItemImageType itemImageType, Language language) {
         String description;
-        ItemImageTypeDescription itemImageTypeDescription = getItemImageTypeDescription(itemImageType, language);
+        var itemImageTypeDescription = getItemImageTypeDescription(itemImageType, language);
 
         if(itemImageTypeDescription == null && !language.getIsDefault()) {
             itemImageTypeDescription = getItemImageTypeDescription(itemImageType, getPartyControl().getDefaultLanguage());
@@ -8452,9 +8378,9 @@ public class ItemControl
     }
 
     public List<ItemImageTypeDescriptionTransfer> getItemImageTypeDescriptionTransfersByItemImageType(UserVisit userVisit, ItemImageType itemImageType) {
-        List<ItemImageTypeDescription> itemImageTypeDescriptions = getItemImageTypeDescriptionsByItemImageType(itemImageType);
+        var itemImageTypeDescriptions = getItemImageTypeDescriptionsByItemImageType(itemImageType);
         List<ItemImageTypeDescriptionTransfer> itemImageTypeDescriptionTransfers = new ArrayList<>(itemImageTypeDescriptions.size());
-        ItemImageTypeDescriptionTransferCache itemImageTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemImageTypeDescriptionTransferCache();
+        var itemImageTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemImageTypeDescriptionTransferCache();
 
         itemImageTypeDescriptions.forEach((itemImageTypeDescription) ->
                 itemImageTypeDescriptionTransfers.add(itemImageTypeDescriptionTransferCache.getTransfer(itemImageTypeDescription))
@@ -8465,15 +8391,15 @@ public class ItemControl
 
     public void updateItemImageTypeDescriptionFromValue(ItemImageTypeDescriptionValue itemImageTypeDescriptionValue, BasePK updatedBy) {
         if(itemImageTypeDescriptionValue.hasBeenModified()) {
-            ItemImageTypeDescription itemImageTypeDescription = ItemImageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemImageTypeDescription = ItemImageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemImageTypeDescriptionValue.getPrimaryKey());
 
             itemImageTypeDescription.setThruTime(session.START_TIME_LONG);
             itemImageTypeDescription.store();
 
-            ItemImageType itemImageType = itemImageTypeDescription.getItemImageType();
-            Language language = itemImageTypeDescription.getLanguage();
-            String description = itemImageTypeDescriptionValue.getDescription();
+            var itemImageType = itemImageTypeDescription.getItemImageType();
+            var language = itemImageTypeDescription.getLanguage();
+            var description = itemImageTypeDescriptionValue.getDescription();
 
             itemImageTypeDescription = ItemImageTypeDescriptionFactory.getInstance().create(itemImageType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -8490,7 +8416,7 @@ public class ItemControl
     }
 
     public void deleteItemImageTypeDescriptionsByItemImageType(ItemImageType itemImageType, BasePK deletedBy) {
-        List<ItemImageTypeDescription> itemImageTypeDescriptions = getItemImageTypeDescriptionsByItemImageTypeForUpdate(itemImageType);
+        var itemImageTypeDescriptions = getItemImageTypeDescriptionsByItemImageTypeForUpdate(itemImageType);
 
         itemImageTypeDescriptions.forEach((itemImageTypeDescription) -> 
                 deleteItemImageTypeDescription(itemImageTypeDescription, deletedBy)
@@ -8503,8 +8429,8 @@ public class ItemControl
     
     public ItemDescription createItemDescription(ItemDescriptionType itemDescriptionType, Item item, Language language,
             MimeType mimeType, BasePK createdBy) {
-        ItemDescription itemDescription = ItemDescriptionFactory.getInstance().create();
-        ItemDescriptionDetail itemDescriptionDetail = ItemDescriptionDetailFactory.getInstance().create(itemDescription,
+        var itemDescription = ItemDescriptionFactory.getInstance().create();
+        var itemDescriptionDetail = ItemDescriptionDetailFactory.getInstance().create(itemDescription,
                 itemDescriptionType, item, language, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -8625,7 +8551,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, item.getPrimaryKey().getEntityId());
 
@@ -8666,7 +8592,7 @@ public class ItemControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, itemDescriptionType.getPrimaryKey().getEntityId());
 
@@ -8713,8 +8639,8 @@ public class ItemControl
                         "AND idescdt_itm_itemid = ? AND idescdt_lang_languageid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemDescriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
@@ -8750,8 +8676,8 @@ public class ItemControl
     }
     
     private ItemDescription getBestItemDescriptionWithinLanguage(final ItemDescriptionType itemDescriptionType, final Item item, final Language language) {
-        ItemDescription itemDescription = null;
-        ItemDescriptionType attemptedItemDescriptionType = itemDescriptionType;
+        ItemDescription itemDescription;
+        var attemptedItemDescriptionType = itemDescriptionType;
         
         do {
             itemDescription = getItemDescription(attemptedItemDescriptionType, item, language);
@@ -8767,7 +8693,7 @@ public class ItemControl
     }
     
     public ItemDescription getBestItemDescription(final ItemDescriptionType itemDescriptionType, final Item item, final Language language) {
-        ItemDescription itemDescription = getBestItemDescriptionWithinLanguage(itemDescriptionType, item, language);
+        var itemDescription = getBestItemDescriptionWithinLanguage(itemDescriptionType, item, language);
 
         if(itemDescription == null && !language.getIsDefault()) {
             itemDescription = getBestItemDescriptionWithinLanguage(itemDescriptionType, item, getPartyControl().getDefaultLanguage());
@@ -8778,10 +8704,10 @@ public class ItemControl
     
     public String getBestItemStringDescription(ItemDescriptionType itemDescriptionType, Item item, Language language) {
         String description = null;
-        ItemDescription itemDescription = getBestItemDescription(itemDescriptionType, item, language);
+        var itemDescription = getBestItemDescription(itemDescriptionType, item, language);
         
         if(itemDescription != null) {
-            ItemStringDescription itemStringDescription = getItemStringDescription(itemDescription);
+            var itemStringDescription = getItemStringDescription(itemDescription);
             description = itemStringDescription == null? null: itemStringDescription.getStringDescription();
         }
         
@@ -8798,7 +8724,7 @@ public class ItemControl
 
     public List<ItemDescriptionTransfer> getItemDescriptionTransfers(UserVisit userVisit, Collection<ItemDescription> itemDescriptions) {
         List<ItemDescriptionTransfer> itemDescriptionTransfers = new ArrayList<>(itemDescriptions.size());
-        ItemDescriptionTransferCache itemDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTransferCache();
+        var itemDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTransferCache();
 
         itemDescriptions.forEach((itemDescription) ->
                 itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(itemDescription))
@@ -8813,18 +8739,18 @@ public class ItemControl
 
     public void updateItemDescriptionFromValue(ItemDescriptionDetailValue itemDescriptionDetailValue, BasePK updatedBy) {
         if(itemDescriptionDetailValue.hasBeenModified()) {
-            ItemDescription itemDescription = ItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescription = ItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemDescriptionDetailValue.getItemDescriptionPK());
-            ItemDescriptionDetail itemDescriptionDetail = itemDescription.getActiveDetailForUpdate();
+            var itemDescriptionDetail = itemDescription.getActiveDetailForUpdate();
             
             itemDescriptionDetail.setThruTime(session.START_TIME_LONG);
             itemDescriptionDetail.store();
-            
-            ItemDescriptionPK itemDescriptionPK = itemDescriptionDetail.getItemDescriptionPK(); // Not updated
-            ItemDescriptionTypePK itemDescriptionTypePK = itemDescriptionDetailValue.getItemDescriptionTypePK();
-            ItemPK itemPK = itemDescriptionDetailValue.getItemPK();
-            LanguagePK languagePK = itemDescriptionDetailValue.getLanguagePK();
-            MimeTypePK mimeTypePK = itemDescriptionDetailValue.getMimeTypePK();
+
+            var itemDescriptionPK = itemDescriptionDetail.getItemDescriptionPK(); // Not updated
+            var itemDescriptionTypePK = itemDescriptionDetailValue.getItemDescriptionTypePK();
+            var itemPK = itemDescriptionDetailValue.getItemPK();
+            var languagePK = itemDescriptionDetailValue.getLanguagePK();
+            var mimeTypePK = itemDescriptionDetailValue.getMimeTypePK();
             
             itemDescriptionDetail = ItemDescriptionDetailFactory.getInstance().create(itemDescriptionPK,
                     itemDescriptionTypePK, itemPK, languagePK, mimeTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -8837,13 +8763,13 @@ public class ItemControl
     }
     
     public void deleteItemDescription(ItemDescription itemDescription, BasePK deletedBy) {
-        ItemDescriptionDetail itemDescriptionDetail = itemDescription.getLastDetailForUpdate();
-        MimeType mimeType = itemDescriptionDetail.getMimeType();
+        var itemDescriptionDetail = itemDescription.getLastDetailForUpdate();
+        var mimeType = itemDescriptionDetail.getMimeType();
         
         if(mimeType == null) {
             deleteItemStringDescriptionByItemDescription(itemDescription, deletedBy);
         } else {
-            String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+            var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             
             if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
                 deleteItemBlobDescriptionByItemDescription(itemDescription, deletedBy);
@@ -8875,7 +8801,7 @@ public class ItemControl
     }
 
     public void deleteItemDescriptionsByItemImageType(ItemImageType itemImageType, BasePK deletedBy) {
-        List<ItemImageDescription> itemImageDescriptions = getItemImageDescriptionsByItemImageTypeForUpdate(itemImageType);
+        var itemImageDescriptions = getItemImageDescriptionsByItemImageTypeForUpdate(itemImageType);
 
         itemImageDescriptions.forEach((itemImageDescription) -> {
             deleteItemDescription(itemImageDescription.getItemDescription(), deletedBy);
@@ -8888,7 +8814,7 @@ public class ItemControl
     
     public ItemBlobDescription createItemBlobDescription(ItemDescription itemDescription, ByteArray blobDescription,
             BasePK createdBy) {
-        ItemBlobDescription itemBlobDescription = ItemBlobDescriptionFactory.getInstance().create(itemDescription,
+        var itemBlobDescription = ItemBlobDescriptionFactory.getInstance().create(itemDescription,
                 blobDescription, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(itemDescription.getLastDetail().getItemPK(), EventTypes.MODIFY, itemBlobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -8912,8 +8838,8 @@ public class ItemControl
                         "WHERE ibdesc_idesc_itemdescriptionid = ? AND ibdesc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemBlobDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemBlobDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -8945,14 +8871,14 @@ public class ItemControl
     
     public void updateItemBlobDescriptionFromValue(ItemBlobDescriptionValue itemBlobDescriptionValue, BasePK updatedBy) {
         if(itemBlobDescriptionValue.hasBeenModified()) {
-            ItemBlobDescription itemBlobDescription = ItemBlobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemBlobDescription = ItemBlobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemBlobDescriptionValue.getPrimaryKey());
             
             itemBlobDescription.setThruTime(session.START_TIME_LONG);
             itemBlobDescription.store();
-            
-            ItemDescriptionPK itemDescriptionPK = itemBlobDescription.getItemDescriptionPK(); // Not updated
-            ByteArray blobDescription = itemBlobDescriptionValue.getBlobDescription();
+
+            var itemDescriptionPK = itemBlobDescription.getItemDescriptionPK(); // Not updated
+            var blobDescription = itemBlobDescriptionValue.getBlobDescription();
             
             itemBlobDescription = ItemBlobDescriptionFactory.getInstance().create(itemDescriptionPK, blobDescription,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -8968,7 +8894,7 @@ public class ItemControl
     }
     
     public void deleteItemBlobDescriptionByItemDescription(ItemDescription itemDescription, BasePK deletedBy) {
-        ItemBlobDescription itemBlobDescription = getItemBlobDescriptionForUpdate(itemDescription);
+        var itemBlobDescription = getItemBlobDescriptionForUpdate(itemDescription);
         
         if(itemBlobDescription != null) {
             deleteItemBlobDescription(itemBlobDescription, deletedBy);
@@ -8982,7 +8908,7 @@ public class ItemControl
 
     public ItemImageDescription createItemImageDescription(ItemDescription itemDescription, ItemImageType itemImageType, Integer height, Integer width,
             Boolean scaledFromParent, BasePK createdBy) {
-        ItemImageDescription itemImageDescription = ItemImageDescriptionFactory.getInstance().create(itemDescription, itemImageType, height, width,
+        var itemImageDescription = ItemImageDescriptionFactory.getInstance().create(itemDescription, itemImageType, height, width,
                 scaledFromParent, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(itemDescription.getLastDetail().getItemPK(), EventTypes.MODIFY, itemImageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9061,17 +8987,17 @@ public class ItemControl
 
     public void updateItemImageDescriptionFromValue(ItemImageDescriptionValue itemImageDescriptionValue, BasePK updatedBy) {
         if(itemImageDescriptionValue.hasBeenModified()) {
-            ItemImageDescription itemImageDescription = ItemImageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemImageDescription = ItemImageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemImageDescriptionValue.getPrimaryKey());
 
             itemImageDescription.setThruTime(session.START_TIME_LONG);
             itemImageDescription.store();
 
-            ItemDescriptionPK itemDescriptionPK = itemImageDescription.getItemDescriptionPK(); // Not updated
-            ItemImageTypePK itemImageTypePK = itemImageDescriptionValue.getItemImageTypePK();
-            Integer height = itemImageDescriptionValue.getHeight();
-            Integer width = itemImageDescriptionValue.getWidth();
-            Boolean scaledFromParent = itemImageDescriptionValue.getScaledFromParent();
+            var itemDescriptionPK = itemImageDescription.getItemDescriptionPK(); // Not updated
+            var itemImageTypePK = itemImageDescriptionValue.getItemImageTypePK();
+            var height = itemImageDescriptionValue.getHeight();
+            var width = itemImageDescriptionValue.getWidth();
+            var scaledFromParent = itemImageDescriptionValue.getScaledFromParent();
 
             itemImageDescription = ItemImageDescriptionFactory.getInstance().create(itemDescriptionPK, itemImageTypePK, height, width, scaledFromParent,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -9087,7 +9013,7 @@ public class ItemControl
     }
 
     public void deleteItemImageDescriptionByItemDescription(ItemDescription itemDescription, BasePK deletedBy) {
-        ItemImageDescription itemImageDescription = getItemImageDescriptionForUpdate(itemDescription);
+        var itemImageDescription = getItemImageDescriptionForUpdate(itemDescription);
 
         if(itemImageDescription != null) {
             deleteItemImageDescription(itemImageDescription, deletedBy);
@@ -9100,7 +9026,7 @@ public class ItemControl
     
     public ItemClobDescription createItemClobDescription(ItemDescription itemDescription, String clobDescription,
             BasePK createdBy) {
-        ItemClobDescription itemClobDescription = ItemClobDescriptionFactory.getInstance().create(itemDescription,
+        var itemClobDescription = ItemClobDescriptionFactory.getInstance().create(itemDescription,
                 clobDescription, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(itemDescription.getLastDetail().getItemPK(), EventTypes.MODIFY, itemClobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9124,8 +9050,8 @@ public class ItemControl
                         "WHERE icdesc_idesc_itemdescriptionid = ? AND icdesc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemClobDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemClobDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -9156,14 +9082,14 @@ public class ItemControl
     
     public void updateItemClobDescriptionFromValue(ItemClobDescriptionValue itemClobDescriptionValue, BasePK updatedBy) {
         if(itemClobDescriptionValue.hasBeenModified()) {
-            ItemClobDescription itemClobDescription = ItemClobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemClobDescription = ItemClobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemClobDescriptionValue.getPrimaryKey());
             
             itemClobDescription.setThruTime(session.START_TIME_LONG);
             itemClobDescription.store();
-            
-            ItemDescriptionPK itemDescriptionPK = itemClobDescription.getItemDescriptionPK(); // Not updated
-            String clobDescription = itemClobDescriptionValue.getClobDescription();
+
+            var itemDescriptionPK = itemClobDescription.getItemDescriptionPK(); // Not updated
+            var clobDescription = itemClobDescriptionValue.getClobDescription();
             
             itemClobDescription = ItemClobDescriptionFactory.getInstance().create(itemDescriptionPK, clobDescription,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -9179,7 +9105,7 @@ public class ItemControl
     }
     
     public void deleteItemClobDescriptionByItemDescription(ItemDescription itemDescription, BasePK deletedBy) {
-        ItemClobDescription itemClobDescription = getItemClobDescriptionForUpdate(itemDescription);
+        var itemClobDescription = getItemClobDescriptionForUpdate(itemDescription);
         
         if(itemClobDescription != null) {
             deleteItemClobDescription(itemClobDescription, deletedBy);
@@ -9192,7 +9118,7 @@ public class ItemControl
     
     public ItemStringDescription createItemStringDescription(ItemDescription itemDescription, String stringDescription,
             BasePK createdBy) {
-        ItemStringDescription itemStringDescription = ItemStringDescriptionFactory.getInstance().create(itemDescription,
+        var itemStringDescription = ItemStringDescriptionFactory.getInstance().create(itemDescription,
                 stringDescription, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(itemDescription.getLastDetail().getItemPK(), EventTypes.MODIFY, itemStringDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9216,8 +9142,8 @@ public class ItemControl
                         "WHERE isdesc_idesc_itemdescriptionid = ? AND isdesc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemStringDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemStringDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -9248,14 +9174,14 @@ public class ItemControl
     
     public void updateItemStringDescriptionFromValue(ItemStringDescriptionValue itemStringDescriptionValue, BasePK updatedBy) {
         if(itemStringDescriptionValue.hasBeenModified()) {
-            ItemStringDescription itemStringDescription = ItemStringDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemStringDescription = ItemStringDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemStringDescriptionValue.getPrimaryKey());
             
             itemStringDescription.setThruTime(session.START_TIME_LONG);
             itemStringDescription.store();
-            
-            ItemDescriptionPK itemDescriptionPK = itemStringDescription.getItemDescriptionPK(); // Not updated
-            String stringDescription = itemStringDescriptionValue.getStringDescription();
+
+            var itemDescriptionPK = itemStringDescription.getItemDescriptionPK(); // Not updated
+            var stringDescription = itemStringDescriptionValue.getStringDescription();
             
             itemStringDescription = ItemStringDescriptionFactory.getInstance().create(itemDescriptionPK, stringDescription,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -9271,7 +9197,7 @@ public class ItemControl
     }
     
     public void deleteItemStringDescriptionByItemDescription(ItemDescription itemDescription, BasePK deletedBy) {
-        ItemStringDescription itemStringDescription = getItemStringDescriptionForUpdate(itemDescription);
+        var itemStringDescription = getItemStringDescriptionForUpdate(itemDescription);
         
         if(itemStringDescription != null) {
             deleteItemStringDescription(itemStringDescription, deletedBy);
@@ -9284,7 +9210,7 @@ public class ItemControl
     
     public ItemVolume createItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, Long height, Long width, Long depth,
             BasePK createdBy) {
-        ItemVolume itemVolume = ItemVolumeFactory.getInstance().create(item, unitOfMeasureType, height, width, depth,
+        var itemVolume = ItemVolumeFactory.getInstance().create(item, unitOfMeasureType, height, width, depth,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9308,8 +9234,8 @@ public class ItemControl
                         "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemVolumeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -9358,8 +9284,8 @@ public class ItemControl
                         "WHERE ivol_itm_itemid = ? AND ivol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemVolumeFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -9382,17 +9308,17 @@ public class ItemControl
     
     public void updateItemVolumeFromValue(ItemVolumeValue itemVolumeValue, BasePK updatedBy) {
         if(itemVolumeValue.hasBeenModified()) {
-            ItemVolume itemVolume = ItemVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemVolume = ItemVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemVolumeValue.getPrimaryKey());
             
             itemVolume.setThruTime(session.START_TIME_LONG);
             itemVolume.store();
-            
-            ItemPK itemPK = itemVolume.getItemPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemVolume.getUnitOfMeasureTypePK();
-            Long height = itemVolumeValue.getHeight();
-            Long width = itemVolumeValue.getWidth();
-            Long depth = itemVolumeValue.getDepth();
+
+            var itemPK = itemVolume.getItemPK();
+            var unitOfMeasureTypePK = itemVolume.getUnitOfMeasureTypePK();
+            var height = itemVolumeValue.getHeight();
+            var width = itemVolumeValue.getWidth();
+            var depth = itemVolumeValue.getDepth();
             
             itemVolume = ItemVolumeFactory.getInstance().create(itemPK, unitOfMeasureTypePK, height, width, depth,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -9410,9 +9336,9 @@ public class ItemControl
     }
     
     public List<ItemVolumeTransfer> getItemVolumeTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemVolume> itemVolumes = getItemVolumesByItem(item);
+        var itemVolumes = getItemVolumesByItem(item);
         List<ItemVolumeTransfer> itemVolumeTransfers = new ArrayList<>(itemVolumes.size());
-        ItemVolumeTransferCache itemVolumeTransferCache = getItemTransferCaches(userVisit).getItemVolumeTransferCache();
+        var itemVolumeTransferCache = getItemTransferCaches(userVisit).getItemVolumeTransferCache();
         
         itemVolumes.forEach((itemVolume) ->
                 itemVolumeTransfers.add(itemVolumeTransferCache.getTransfer(itemVolume))
@@ -9428,7 +9354,7 @@ public class ItemControl
     }
     
     public void deleteItemVolumesByItem(Item item, BasePK deletedBy) {
-        List<ItemVolume> itemVolumes = getItemVolumesByItemForUpdate(item);
+        var itemVolumes = getItemVolumesByItemForUpdate(item);
         
         itemVolumes.forEach((itemVolume) -> 
                 deleteItemVolume(itemVolume, deletedBy)
@@ -9436,7 +9362,7 @@ public class ItemControl
     }
     
     public void deleteItemVolumeByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        ItemVolume itemVolume = getItemVolumeForUpdate(item, unitOfMeasureType);
+        var itemVolume = getItemVolumeForUpdate(item, unitOfMeasureType);
         
         if(itemVolume!= null) {
             deleteItemVolume(itemVolume, deletedBy);
@@ -9448,7 +9374,7 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     
     public ItemWeight createItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, Long weight, BasePK createdBy) {
-        ItemWeight itemWeight = ItemWeightFactory.getInstance().create(item, unitOfMeasureType, weight,
+        var itemWeight = ItemWeightFactory.getInstance().create(item, unitOfMeasureType, weight,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemWeight.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9472,8 +9398,8 @@ public class ItemControl
                         "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemWeightFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemWeightFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -9522,8 +9448,8 @@ public class ItemControl
                         "WHERE iwght_itm_itemid = ? AND iwght_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemWeightFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemWeightFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -9546,15 +9472,15 @@ public class ItemControl
     
     public void updateItemWeightFromValue(ItemWeightValue itemWeightValue, BasePK updatedBy) {
         if(itemWeightValue.hasBeenModified()) {
-            ItemWeight itemWeight = ItemWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemWeight = ItemWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemWeightValue.getPrimaryKey());
             
             itemWeight.setThruTime(session.START_TIME_LONG);
             itemWeight.store();
-            
-            ItemPK itemPK = itemWeight.getItemPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = itemWeight.getUnitOfMeasureTypePK();
-            Long weight = itemWeightValue.getWeight();
+
+            var itemPK = itemWeight.getItemPK();
+            var unitOfMeasureTypePK = itemWeight.getUnitOfMeasureTypePK();
+            var weight = itemWeightValue.getWeight();
             
             itemWeight = ItemWeightFactory.getInstance().create(itemPK, unitOfMeasureTypePK, weight, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -9572,9 +9498,9 @@ public class ItemControl
     }
     
     public List<ItemWeightTransfer> getItemWeightTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemWeight> itemWeights = getItemWeightsByItem(item);
+        var itemWeights = getItemWeightsByItem(item);
         List<ItemWeightTransfer> itemWeightTransfers = new ArrayList<>(itemWeights.size());
-        ItemWeightTransferCache itemWeightTransferCache = getItemTransferCaches(userVisit).getItemWeightTransferCache();
+        var itemWeightTransferCache = getItemTransferCaches(userVisit).getItemWeightTransferCache();
         
         itemWeights.forEach((itemWeight) ->
                 itemWeightTransfers.add(itemWeightTransferCache.getTransfer(itemWeight))
@@ -9590,7 +9516,7 @@ public class ItemControl
     }
     
     public void deleteItemWeightsByItem(Item item, BasePK deletedBy) {
-        List<ItemWeight> itemWeights = getItemWeightsByItemForUpdate(item);
+        var itemWeights = getItemWeightsByItemForUpdate(item);
         
         itemWeights.forEach((itemWeight) -> 
                 deleteItemWeight(itemWeight, deletedBy)
@@ -9598,7 +9524,7 @@ public class ItemControl
     }
     
     public void deleteItemWeightByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        ItemWeight itemWeight = getItemWeightForUpdate(item, unitOfMeasureType);
+        var itemWeight = getItemWeightForUpdate(item, unitOfMeasureType);
         
         if(itemWeight!= null) {
             deleteItemWeight(itemWeight, deletedBy);
@@ -9611,11 +9537,11 @@ public class ItemControl
 
     public RelatedItemType createRelatedItemType(String relatedItemTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        RelatedItemType defaultRelatedItemType = getDefaultRelatedItemType();
-        boolean defaultFound = defaultRelatedItemType != null;
+        var defaultRelatedItemType = getDefaultRelatedItemType();
+        var defaultFound = defaultRelatedItemType != null;
 
         if(defaultFound && isDefault) {
-            RelatedItemTypeDetailValue defaultRelatedItemTypeDetailValue = getDefaultRelatedItemTypeDetailValueForUpdate();
+            var defaultRelatedItemTypeDetailValue = getDefaultRelatedItemTypeDetailValueForUpdate();
 
             defaultRelatedItemTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateRelatedItemTypeFromValue(defaultRelatedItemTypeDetailValue, false, createdBy);
@@ -9623,8 +9549,8 @@ public class ItemControl
             isDefault = Boolean.TRUE;
         }
 
-        RelatedItemType relatedItemType = RelatedItemTypeFactory.getInstance().create();
-        RelatedItemTypeDetail relatedItemTypeDetail = RelatedItemTypeDetailFactory.getInstance().create(relatedItemType,
+        var relatedItemType = RelatedItemTypeFactory.getInstance().create();
+        var relatedItemTypeDetail = RelatedItemTypeDetailFactory.getInstance().create(relatedItemType,
                 relatedItemTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -9808,7 +9734,7 @@ public class ItemControl
 
     public List<RelatedItemTypeTransfer> getRelatedItemTypeTransfers(UserVisit userVisit, Collection<RelatedItemType> relatedItemTypes) {
         List<RelatedItemTypeTransfer> relatedItemTypeTransfers = new ArrayList<>(relatedItemTypes.size());
-        RelatedItemTypeTransferCache relatedItemTypeTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeTransferCache();
+        var relatedItemTypeTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeTransferCache();
 
         relatedItemTypes.forEach((relatedItemType) ->
                 relatedItemTypeTransfers.add(relatedItemTypeTransferCache.getTransfer(relatedItemType))
@@ -9827,7 +9753,7 @@ public class ItemControl
     }
 
     public RelatedItemTypeChoicesBean getRelatedItemTypeChoices(String defaultRelatedItemTypeChoice, Language language, boolean allowNullChoice) {
-        List<RelatedItemType> relatedItemTypes = getRelatedItemTypes();
+        var relatedItemTypes = getRelatedItemTypes();
         var size = relatedItemTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -9843,7 +9769,7 @@ public class ItemControl
         }
 
         for(var relatedItemType : relatedItemTypes) {
-            RelatedItemTypeDetail relatedItemTypeDetail = relatedItemType.getLastDetail();
+            var relatedItemTypeDetail = relatedItemType.getLastDetail();
 
             var label = getBestRelatedItemTypeDescription(relatedItemType, language);
             var value = relatedItemTypeDetail.getRelatedItemTypeName();
@@ -9863,25 +9789,25 @@ public class ItemControl
     private void updateRelatedItemTypeFromValue(RelatedItemTypeDetailValue relatedItemTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(relatedItemTypeDetailValue.hasBeenModified()) {
-            RelatedItemType relatedItemType = RelatedItemTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var relatedItemType = RelatedItemTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      relatedItemTypeDetailValue.getRelatedItemTypePK());
-            RelatedItemTypeDetail relatedItemTypeDetail = relatedItemType.getActiveDetailForUpdate();
+            var relatedItemTypeDetail = relatedItemType.getActiveDetailForUpdate();
 
             relatedItemTypeDetail.setThruTime(session.START_TIME_LONG);
             relatedItemTypeDetail.store();
 
-            RelatedItemTypePK relatedItemTypePK = relatedItemTypeDetail.getRelatedItemTypePK(); // Not updated
-            String relatedItemTypeName = relatedItemTypeDetailValue.getRelatedItemTypeName();
-            Boolean isDefault = relatedItemTypeDetailValue.getIsDefault();
-            Integer sortOrder = relatedItemTypeDetailValue.getSortOrder();
+            var relatedItemTypePK = relatedItemTypeDetail.getRelatedItemTypePK(); // Not updated
+            var relatedItemTypeName = relatedItemTypeDetailValue.getRelatedItemTypeName();
+            var isDefault = relatedItemTypeDetailValue.getIsDefault();
+            var sortOrder = relatedItemTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                RelatedItemType defaultRelatedItemType = getDefaultRelatedItemType();
-                boolean defaultFound = defaultRelatedItemType != null && !defaultRelatedItemType.equals(relatedItemType);
+                var defaultRelatedItemType = getDefaultRelatedItemType();
+                var defaultFound = defaultRelatedItemType != null && !defaultRelatedItemType.equals(relatedItemType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    RelatedItemTypeDetailValue defaultRelatedItemTypeDetailValue = getDefaultRelatedItemTypeDetailValueForUpdate();
+                    var defaultRelatedItemTypeDetailValue = getDefaultRelatedItemTypeDetailValueForUpdate();
 
                     defaultRelatedItemTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateRelatedItemTypeFromValue(defaultRelatedItemTypeDetailValue, false, updatedBy);
@@ -9909,22 +9835,22 @@ public class ItemControl
         deleteRelatedItemTypeDescriptionsByRelatedItemType(relatedItemType, deletedBy);
         deleteRelatedItemsByRelatedItemType(relatedItemType, deletedBy);
 
-        RelatedItemTypeDetail relatedItemTypeDetail = relatedItemType.getLastDetailForUpdate();
+        var relatedItemTypeDetail = relatedItemType.getLastDetailForUpdate();
         relatedItemTypeDetail.setThruTime(session.START_TIME_LONG);
         relatedItemType.setActiveDetail(null);
         relatedItemType.store();
 
         // Check for default, and pick one if necessary
-        RelatedItemType defaultRelatedItemType = getDefaultRelatedItemType();
+        var defaultRelatedItemType = getDefaultRelatedItemType();
         if(defaultRelatedItemType == null) {
-            List<RelatedItemType> relatedItemTypes = getRelatedItemTypesForUpdate();
+            var relatedItemTypes = getRelatedItemTypesForUpdate();
 
             if(!relatedItemTypes.isEmpty()) {
-                Iterator<RelatedItemType> iter = relatedItemTypes.iterator();
+                var iter = relatedItemTypes.iterator();
                 if(iter.hasNext()) {
                     defaultRelatedItemType = iter.next();
                 }
-                RelatedItemTypeDetailValue relatedItemTypeDetailValue = Objects.requireNonNull(defaultRelatedItemType).getLastDetailForUpdate().getRelatedItemTypeDetailValue().clone();
+                var relatedItemTypeDetailValue = Objects.requireNonNull(defaultRelatedItemType).getLastDetailForUpdate().getRelatedItemTypeDetailValue().clone();
 
                 relatedItemTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, false, deletedBy);
@@ -9940,7 +9866,7 @@ public class ItemControl
 
     public RelatedItemTypeDescription createRelatedItemTypeDescription(RelatedItemType relatedItemType,
             Language language, String description, BasePK createdBy) {
-        RelatedItemTypeDescription relatedItemTypeDescription = RelatedItemTypeDescriptionFactory.getInstance().create(relatedItemType,
+        var relatedItemTypeDescription = RelatedItemTypeDescriptionFactory.getInstance().create(relatedItemType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(relatedItemType.getPrimaryKey(), EventTypes.MODIFY, relatedItemTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -10022,7 +9948,7 @@ public class ItemControl
 
     public String getBestRelatedItemTypeDescription(RelatedItemType relatedItemType, Language language) {
         String description;
-        RelatedItemTypeDescription relatedItemTypeDescription = getRelatedItemTypeDescription(relatedItemType, language);
+        var relatedItemTypeDescription = getRelatedItemTypeDescription(relatedItemType, language);
 
         if(relatedItemTypeDescription == null && !language.getIsDefault()) {
             relatedItemTypeDescription = getRelatedItemTypeDescription(relatedItemType, getPartyControl().getDefaultLanguage());
@@ -10042,9 +9968,9 @@ public class ItemControl
     }
 
     public List<RelatedItemTypeDescriptionTransfer> getRelatedItemTypeDescriptionTransfersByRelatedItemType(UserVisit userVisit, RelatedItemType relatedItemType) {
-        List<RelatedItemTypeDescription> relatedItemTypeDescriptions = getRelatedItemTypeDescriptionsByRelatedItemType(relatedItemType);
+        var relatedItemTypeDescriptions = getRelatedItemTypeDescriptionsByRelatedItemType(relatedItemType);
         List<RelatedItemTypeDescriptionTransfer> relatedItemTypeDescriptionTransfers = new ArrayList<>(relatedItemTypeDescriptions.size());
-        RelatedItemTypeDescriptionTransferCache relatedItemTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeDescriptionTransferCache();
+        var relatedItemTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeDescriptionTransferCache();
 
         relatedItemTypeDescriptions.forEach((relatedItemTypeDescription) ->
                 relatedItemTypeDescriptionTransfers.add(relatedItemTypeDescriptionTransferCache.getTransfer(relatedItemTypeDescription))
@@ -10055,15 +9981,15 @@ public class ItemControl
 
     public void updateRelatedItemTypeDescriptionFromValue(RelatedItemTypeDescriptionValue relatedItemTypeDescriptionValue, BasePK updatedBy) {
         if(relatedItemTypeDescriptionValue.hasBeenModified()) {
-            RelatedItemTypeDescription relatedItemTypeDescription = RelatedItemTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var relatedItemTypeDescription = RelatedItemTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     relatedItemTypeDescriptionValue.getPrimaryKey());
 
             relatedItemTypeDescription.setThruTime(session.START_TIME_LONG);
             relatedItemTypeDescription.store();
 
-            RelatedItemType relatedItemType = relatedItemTypeDescription.getRelatedItemType();
-            Language language = relatedItemTypeDescription.getLanguage();
-            String description = relatedItemTypeDescriptionValue.getDescription();
+            var relatedItemType = relatedItemTypeDescription.getRelatedItemType();
+            var language = relatedItemTypeDescription.getLanguage();
+            var description = relatedItemTypeDescriptionValue.getDescription();
 
             relatedItemTypeDescription = RelatedItemTypeDescriptionFactory.getInstance().create(relatedItemType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -10080,7 +10006,7 @@ public class ItemControl
     }
 
     public void deleteRelatedItemTypeDescriptionsByRelatedItemType(RelatedItemType relatedItemType, BasePK deletedBy) {
-        List<RelatedItemTypeDescription> relatedItemTypeDescriptions = getRelatedItemTypeDescriptionsByRelatedItemTypeForUpdate(relatedItemType);
+        var relatedItemTypeDescriptions = getRelatedItemTypeDescriptionsByRelatedItemTypeForUpdate(relatedItemType);
 
         relatedItemTypeDescriptions.forEach((relatedItemTypeDescription) -> 
                 deleteRelatedItemTypeDescription(relatedItemTypeDescription, deletedBy)
@@ -10092,8 +10018,8 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     public RelatedItem createRelatedItem(RelatedItemType relatedItemType, Item fromItem, Item toItem, Integer sortOrder, BasePK createdBy) {
-        RelatedItem relatedItem = RelatedItemFactory.getInstance().create();
-        RelatedItemDetail relatedItemDetail = RelatedItemDetailFactory.getInstance().create(relatedItem, relatedItemType, fromItem, toItem, sortOrder,
+        var relatedItem = RelatedItemFactory.getInstance().create();
+        var relatedItemDetail = RelatedItemDetailFactory.getInstance().create(relatedItem, relatedItemType, fromItem, toItem, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -10370,7 +10296,7 @@ public class ItemControl
 
     public List<RelatedItemTransfer> getRelatedItemTransfers(UserVisit userVisit, Collection<RelatedItem> relatedItems) {
         List<RelatedItemTransfer> relatedItemTransfers = new ArrayList<>(relatedItems.size());
-        RelatedItemTransferCache relatedItemTransferCache = getItemTransferCaches(userVisit).getRelatedItemTransferCache();
+        var relatedItemTransferCache = getItemTransferCaches(userVisit).getRelatedItemTransferCache();
 
         relatedItems.forEach((relatedItem) ->
                 relatedItemTransfers.add(relatedItemTransferCache.getTransfer(relatedItem))
@@ -10397,18 +10323,18 @@ public class ItemControl
 
     public void updateRelatedItemFromValue(RelatedItemDetailValue relatedItemDetailValue, BasePK updatedBy) {
         if(relatedItemDetailValue.hasBeenModified()) {
-            RelatedItem relatedItem = RelatedItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var relatedItem = RelatedItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      relatedItemDetailValue.getRelatedItemPK());
-            RelatedItemDetail relatedItemDetail = relatedItem.getActiveDetailForUpdate();
+            var relatedItemDetail = relatedItem.getActiveDetailForUpdate();
 
             relatedItemDetail.setThruTime(session.START_TIME_LONG);
             relatedItemDetail.store();
 
-            RelatedItemPK relatedItemPK = relatedItemDetail.getRelatedItemPK(); // Not updated
-            RelatedItemTypePK relatedItemTypePK = relatedItemDetail.getRelatedItemTypePK(); // Not updated
-            ItemPK fromItemPK = relatedItemDetail.getFromItemPK(); // Not updated
-            ItemPK toItemPK = relatedItemDetail.getToItemPK(); // Not updated
-            Integer sortOrder = relatedItemDetailValue.getSortOrder();
+            var relatedItemPK = relatedItemDetail.getRelatedItemPK(); // Not updated
+            var relatedItemTypePK = relatedItemDetail.getRelatedItemTypePK(); // Not updated
+            var fromItemPK = relatedItemDetail.getFromItemPK(); // Not updated
+            var toItemPK = relatedItemDetail.getToItemPK(); // Not updated
+            var sortOrder = relatedItemDetailValue.getSortOrder();
 
             relatedItemDetail = RelatedItemDetailFactory.getInstance().create(relatedItemPK, relatedItemTypePK, fromItemPK, toItemPK, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -10421,7 +10347,7 @@ public class ItemControl
     }
 
     public void deleteRelatedItem(RelatedItem relatedItem, BasePK deletedBy) {
-        RelatedItemDetail relatedItemDetail = relatedItem.getLastDetailForUpdate();
+        var relatedItemDetail = relatedItem.getLastDetailForUpdate();
         relatedItemDetail.setThruTime(session.START_TIME_LONG);
         relatedItem.setActiveDetail(null);
         relatedItem.store();
@@ -10459,11 +10385,11 @@ public class ItemControl
     public HarmonizedTariffScheduleCode createHarmonizedTariffScheduleCode(GeoCode countryGeoCode, String harmonizedTariffScheduleCodeName,
             HarmonizedTariffScheduleCodeUnit firstHarmonizedTariffScheduleCodeUnit, HarmonizedTariffScheduleCodeUnit secondHarmonizedTariffScheduleCodeUnit,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        HarmonizedTariffScheduleCode defaultHarmonizedTariffScheduleCode = getDefaultHarmonizedTariffScheduleCode(countryGeoCode);
-        boolean defaultFound = defaultHarmonizedTariffScheduleCode != null;
+        var defaultHarmonizedTariffScheduleCode = getDefaultHarmonizedTariffScheduleCode(countryGeoCode);
+        var defaultFound = defaultHarmonizedTariffScheduleCode != null;
 
         if(defaultFound && isDefault) {
-            HarmonizedTariffScheduleCodeDetailValue defaultHarmonizedTariffScheduleCodeDetailValue = getDefaultHarmonizedTariffScheduleCodeDetailValueForUpdate(countryGeoCode);
+            var defaultHarmonizedTariffScheduleCodeDetailValue = getDefaultHarmonizedTariffScheduleCodeDetailValueForUpdate(countryGeoCode);
 
             defaultHarmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.FALSE);
             updateHarmonizedTariffScheduleCodeFromValue(defaultHarmonizedTariffScheduleCodeDetailValue, false, createdBy);
@@ -10471,8 +10397,8 @@ public class ItemControl
             isDefault = Boolean.TRUE;
         }
 
-        HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().create();
-        HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = HarmonizedTariffScheduleCodeDetailFactory.getInstance().create(session,
+        var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().create();
+        var harmonizedTariffScheduleCodeDetail = HarmonizedTariffScheduleCodeDetailFactory.getInstance().create(session,
                 harmonizedTariffScheduleCode, countryGeoCode, harmonizedTariffScheduleCodeName, firstHarmonizedTariffScheduleCodeUnit,
                 secondHarmonizedTariffScheduleCodeUnit, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -10498,8 +10424,8 @@ public class ItemControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.HarmonizedTariffScheduleCode */
     public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance) {
-        HarmonizedTariffScheduleCodePK pk = new HarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
-        HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new HarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
+        var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return harmonizedTariffScheduleCode;
     }
@@ -10684,7 +10610,7 @@ public class ItemControl
     }
 
     public HarmonizedTariffScheduleCodeChoicesBean getHarmonizedTariffScheduleCodeChoices(String defaultHarmonizedTariffScheduleCodeChoice, Language language, boolean allowNullChoice, GeoCode countryGeoCode) {
-        List<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodees = getHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode);
+        var harmonizedTariffScheduleCodees = getHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode);
         var size = harmonizedTariffScheduleCodees.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -10700,9 +10626,9 @@ public class ItemControl
         }
         
         for(var harmonizedTariffScheduleCode : harmonizedTariffScheduleCodees) {
-            HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
-            String harmonizedTariffScheduleCodeName = harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName();
-            HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
+            var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
+            var harmonizedTariffScheduleCodeName = harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName();
+            var harmonizedTariffScheduleCodeTranslation = getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
             
             var label = harmonizedTariffScheduleCodeTranslation == null ? harmonizedTariffScheduleCodeName : harmonizedTariffScheduleCodeTranslation.getDescription();
             var value = harmonizedTariffScheduleCodeName;
@@ -10725,7 +10651,7 @@ public class ItemControl
 
     public List<HarmonizedTariffScheduleCodeTransfer> getHarmonizedTariffScheduleCodeTransfers(UserVisit userVisit, Collection<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodes) {
         List<HarmonizedTariffScheduleCodeTransfer> harmonizedTariffScheduleCodeTransfers = new ArrayList<>(harmonizedTariffScheduleCodes.size());
-        HarmonizedTariffScheduleCodeTransferCache harmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeTransferCache();
+        var harmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeTransferCache();
 
         harmonizedTariffScheduleCodes.forEach((harmonizedTariffScheduleCode) ->
                 harmonizedTariffScheduleCodeTransfers.add(harmonizedTariffScheduleCodeTransferCache.getTransfer(harmonizedTariffScheduleCode))
@@ -10741,29 +10667,29 @@ public class ItemControl
     private void updateHarmonizedTariffScheduleCodeFromValue(HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(harmonizedTariffScheduleCodeDetailValue.hasBeenModified()) {
-            HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      harmonizedTariffScheduleCodeDetailValue.getHarmonizedTariffScheduleCodePK());
-            HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getActiveDetailForUpdate();
+            var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getActiveDetailForUpdate();
 
             harmonizedTariffScheduleCodeDetail.setThruTime(session.START_TIME_LONG);
             harmonizedTariffScheduleCodeDetail.store();
 
-            HarmonizedTariffScheduleCodePK harmonizedTariffScheduleCodePK = harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodePK();
-            GeoCode countryGeoCode = harmonizedTariffScheduleCodeDetail.getCountryGeoCode();
-            GeoCodePK countryGeoCodePK = countryGeoCode.getPrimaryKey();
-            String harmonizedTariffScheduleCodeName = harmonizedTariffScheduleCodeDetailValue.getHarmonizedTariffScheduleCodeName();
-            HarmonizedTariffScheduleCodeUnitPK firstHarmonizedTariffScheduleCodeUnitPK = harmonizedTariffScheduleCodeDetailValue.getFirstHarmonizedTariffScheduleCodeUnitPK();
-            HarmonizedTariffScheduleCodeUnitPK secondHarmonizedTariffScheduleCodeUnitPK = harmonizedTariffScheduleCodeDetailValue.getSecondHarmonizedTariffScheduleCodeUnitPK();
-            Boolean isDefault = harmonizedTariffScheduleCodeDetailValue.getIsDefault();
-            Integer sortOrder = harmonizedTariffScheduleCodeDetailValue.getSortOrder();
+            var harmonizedTariffScheduleCodePK = harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodePK();
+            var countryGeoCode = harmonizedTariffScheduleCodeDetail.getCountryGeoCode();
+            var countryGeoCodePK = countryGeoCode.getPrimaryKey();
+            var harmonizedTariffScheduleCodeName = harmonizedTariffScheduleCodeDetailValue.getHarmonizedTariffScheduleCodeName();
+            var firstHarmonizedTariffScheduleCodeUnitPK = harmonizedTariffScheduleCodeDetailValue.getFirstHarmonizedTariffScheduleCodeUnitPK();
+            var secondHarmonizedTariffScheduleCodeUnitPK = harmonizedTariffScheduleCodeDetailValue.getSecondHarmonizedTariffScheduleCodeUnitPK();
+            var isDefault = harmonizedTariffScheduleCodeDetailValue.getIsDefault();
+            var sortOrder = harmonizedTariffScheduleCodeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                HarmonizedTariffScheduleCode defaultHarmonizedTariffScheduleCode = getDefaultHarmonizedTariffScheduleCode(countryGeoCode);
-                boolean defaultFound = defaultHarmonizedTariffScheduleCode != null && !defaultHarmonizedTariffScheduleCode.equals(harmonizedTariffScheduleCode);
+                var defaultHarmonizedTariffScheduleCode = getDefaultHarmonizedTariffScheduleCode(countryGeoCode);
+                var defaultFound = defaultHarmonizedTariffScheduleCode != null && !defaultHarmonizedTariffScheduleCode.equals(harmonizedTariffScheduleCode);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    HarmonizedTariffScheduleCodeDetailValue defaultHarmonizedTariffScheduleCodeDetailValue = getDefaultHarmonizedTariffScheduleCodeDetailValueForUpdate(countryGeoCode);
+                    var defaultHarmonizedTariffScheduleCodeDetailValue = getDefaultHarmonizedTariffScheduleCodeDetailValueForUpdate(countryGeoCode);
 
                     defaultHarmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.FALSE);
                     updateHarmonizedTariffScheduleCodeFromValue(defaultHarmonizedTariffScheduleCodeDetailValue, false, updatedBy);
@@ -10793,23 +10719,23 @@ public class ItemControl
         deleteHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, deletedBy);
         deleteHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, deletedBy);
 
-        HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetailForUpdate();
+        var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetailForUpdate();
         harmonizedTariffScheduleCodeDetail.setThruTime(session.START_TIME_LONG);
         harmonizedTariffScheduleCode.setActiveDetail(null);
         harmonizedTariffScheduleCode.store();
 
         // Check for default, and pick one if necessary
-        GeoCode countryGeoCode = harmonizedTariffScheduleCodeDetail.getCountryGeoCode();
-        HarmonizedTariffScheduleCode defaultHarmonizedTariffScheduleCode = getDefaultHarmonizedTariffScheduleCode(countryGeoCode);
+        var countryGeoCode = harmonizedTariffScheduleCodeDetail.getCountryGeoCode();
+        var defaultHarmonizedTariffScheduleCode = getDefaultHarmonizedTariffScheduleCode(countryGeoCode);
         if(defaultHarmonizedTariffScheduleCode == null) {
-            List<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodes = getHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode);
+            var harmonizedTariffScheduleCodes = getHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode);
 
             if(!harmonizedTariffScheduleCodes.isEmpty()) {
-                Iterator<HarmonizedTariffScheduleCode> iter = harmonizedTariffScheduleCodes.iterator();
+                var iter = harmonizedTariffScheduleCodes.iterator();
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCode = iter.next();
                 }
-                HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCode).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeDetailValue().clone();
+                var harmonizedTariffScheduleCodeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCode).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeDetailValue().clone();
 
                 harmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeFromValue(harmonizedTariffScheduleCodeDetailValue, false, deletedBy);
@@ -10848,7 +10774,7 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeTranslation createHarmonizedTariffScheduleCodeTranslation(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             Language language, String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
-        HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = HarmonizedTariffScheduleCodeTranslationFactory.getInstance().create(harmonizedTariffScheduleCode,
+        var harmonizedTariffScheduleCodeTranslation = HarmonizedTariffScheduleCodeTranslationFactory.getInstance().create(harmonizedTariffScheduleCode,
                 language, description, overviewMimeType, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(harmonizedTariffScheduleCode.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -10926,7 +10852,7 @@ public class ItemControl
     }
 
     public HarmonizedTariffScheduleCodeTranslation getBestHarmonizedTariffScheduleCodeTranslation(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, Language language) {
-        HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = getHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
+        var harmonizedTariffScheduleCodeTranslation = getHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
         
         if(harmonizedTariffScheduleCodeTranslation == null && !language.getIsDefault()) {
             harmonizedTariffScheduleCodeTranslation = getHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, getPartyControl().getDefaultLanguage());
@@ -10940,7 +10866,7 @@ public class ItemControl
     }
 
     public List<HarmonizedTariffScheduleCodeTranslationTransfer> getHarmonizedTariffScheduleCodeTranslationTransfersByHarmonizedTariffScheduleCode(UserVisit userVisit, HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
-        List<HarmonizedTariffScheduleCodeTranslation> harmonizedTariffScheduleCodeTranslations = getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode);
+        var harmonizedTariffScheduleCodeTranslations = getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode);
         List<HarmonizedTariffScheduleCodeTranslationTransfer> harmonizedTariffScheduleCodeTranslationTransfers = new ArrayList<>(harmonizedTariffScheduleCodeTranslations.size());
 
         harmonizedTariffScheduleCodeTranslations.forEach((harmonizedTariffScheduleCodeTranslation) -> {
@@ -10952,17 +10878,17 @@ public class ItemControl
 
     public void updateHarmonizedTariffScheduleCodeTranslationFromValue(HarmonizedTariffScheduleCodeTranslationValue harmonizedTariffScheduleCodeTranslationValue, BasePK updatedBy) {
         if(harmonizedTariffScheduleCodeTranslationValue.hasBeenModified()) {
-            HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = HarmonizedTariffScheduleCodeTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var harmonizedTariffScheduleCodeTranslation = HarmonizedTariffScheduleCodeTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      harmonizedTariffScheduleCodeTranslationValue.getPrimaryKey());
 
             harmonizedTariffScheduleCodeTranslation.setThruTime(session.START_TIME_LONG);
             harmonizedTariffScheduleCodeTranslation.store();
 
-            HarmonizedTariffScheduleCodePK harmonizedTariffScheduleCodePK = harmonizedTariffScheduleCodeTranslation.getHarmonizedTariffScheduleCodePK();
-            LanguagePK languagePK = harmonizedTariffScheduleCodeTranslation.getLanguagePK();
-            String description = harmonizedTariffScheduleCodeTranslationValue.getDescription();
-            MimeTypePK overviewMimeTypePK = harmonizedTariffScheduleCodeTranslationValue.getOverviewMimeTypePK();
-            String overview = harmonizedTariffScheduleCodeTranslationValue.getOverview();
+            var harmonizedTariffScheduleCodePK = harmonizedTariffScheduleCodeTranslation.getHarmonizedTariffScheduleCodePK();
+            var languagePK = harmonizedTariffScheduleCodeTranslation.getLanguagePK();
+            var description = harmonizedTariffScheduleCodeTranslationValue.getDescription();
+            var overviewMimeTypePK = harmonizedTariffScheduleCodeTranslationValue.getOverviewMimeTypePK();
+            var overview = harmonizedTariffScheduleCodeTranslationValue.getOverview();
 
             harmonizedTariffScheduleCodeTranslation = HarmonizedTariffScheduleCodeTranslationFactory.getInstance().create(harmonizedTariffScheduleCodePK,
                     languagePK, description, overviewMimeTypePK, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -10979,7 +10905,7 @@ public class ItemControl
     }
 
     public void deleteHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, BasePK deletedBy) {
-        List<HarmonizedTariffScheduleCodeTranslation> harmonizedTariffScheduleCodeTranslations = getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeForUpdate(harmonizedTariffScheduleCode);
+        var harmonizedTariffScheduleCodeTranslations = getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeForUpdate(harmonizedTariffScheduleCode);
 
         harmonizedTariffScheduleCodeTranslations.forEach((harmonizedTariffScheduleCodeTranslation) -> 
                 deleteHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCodeTranslation, deletedBy)
@@ -10992,11 +10918,11 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeUseType createHarmonizedTariffScheduleCodeUseType(String harmonizedTariffScheduleCodeUseTypeName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        HarmonizedTariffScheduleCodeUseType defaultHarmonizedTariffScheduleCodeUseType = getDefaultHarmonizedTariffScheduleCodeUseType();
-        boolean defaultFound = defaultHarmonizedTariffScheduleCodeUseType != null;
+        var defaultHarmonizedTariffScheduleCodeUseType = getDefaultHarmonizedTariffScheduleCodeUseType();
+        var defaultFound = defaultHarmonizedTariffScheduleCodeUseType != null;
 
         if(defaultFound && isDefault) {
-            HarmonizedTariffScheduleCodeUseTypeDetailValue defaultHarmonizedTariffScheduleCodeUseTypeDetailValue = getDefaultHarmonizedTariffScheduleCodeUseTypeDetailValueForUpdate();
+            var defaultHarmonizedTariffScheduleCodeUseTypeDetailValue = getDefaultHarmonizedTariffScheduleCodeUseTypeDetailValueForUpdate();
 
             defaultHarmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateHarmonizedTariffScheduleCodeUseTypeFromValue(defaultHarmonizedTariffScheduleCodeUseTypeDetailValue, false, createdBy);
@@ -11004,8 +10930,8 @@ public class ItemControl
             isDefault = Boolean.TRUE;
         }
 
-        HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().create();
-        HarmonizedTariffScheduleCodeUseTypeDetail harmonizedTariffScheduleCodeUseTypeDetail = HarmonizedTariffScheduleCodeUseTypeDetailFactory.getInstance().create(harmonizedTariffScheduleCodeUseType,
+        var harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().create();
+        var harmonizedTariffScheduleCodeUseTypeDetail = HarmonizedTariffScheduleCodeUseTypeDetailFactory.getInstance().create(harmonizedTariffScheduleCodeUseType,
                 harmonizedTariffScheduleCodeUseTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -11122,7 +11048,7 @@ public class ItemControl
     }
 
     public HarmonizedTariffScheduleCodeUseTypeChoicesBean getHarmonizedTariffScheduleCodeUseTypeChoices(String defaultHarmonizedTariffScheduleCodeUseTypeChoice, Language language, boolean allowNullChoice) {
-        List<HarmonizedTariffScheduleCodeUseType> harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypes();
+        var harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypes();
         var size = harmonizedTariffScheduleCodeUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -11138,7 +11064,7 @@ public class ItemControl
         }
 
         for(var harmonizedTariffScheduleCodeUseType : harmonizedTariffScheduleCodeUseTypes) {
-            HarmonizedTariffScheduleCodeUseTypeDetail harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getLastDetail();
+            var harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getLastDetail();
 
             var label = getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, language);
             var value = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypeName();
@@ -11160,9 +11086,9 @@ public class ItemControl
     }
 
     public List<HarmonizedTariffScheduleCodeUseTypeTransfer> getHarmonizedTariffScheduleCodeUseTypeTransfers(UserVisit userVisit) {
-        List<HarmonizedTariffScheduleCodeUseType> harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypes();
+        var harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypes();
         List<HarmonizedTariffScheduleCodeUseTypeTransfer> harmonizedTariffScheduleCodeUseTypeTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUseTypes.size());
-        HarmonizedTariffScheduleCodeUseTypeTransferCache harmonizedTariffScheduleCodeUseTypeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUseTypeTransferCache();
+        var harmonizedTariffScheduleCodeUseTypeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUseTypeTransferCache();
 
         harmonizedTariffScheduleCodeUseTypes.forEach((harmonizedTariffScheduleCodeUseType) ->
                 harmonizedTariffScheduleCodeUseTypeTransfers.add(harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(harmonizedTariffScheduleCodeUseType))
@@ -11172,25 +11098,25 @@ public class ItemControl
     }
 
     private void updateHarmonizedTariffScheduleCodeUseTypeFromValue(HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromPK(session,
+        var harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, harmonizedTariffScheduleCodeUseTypeDetailValue.getHarmonizedTariffScheduleCodeUseTypePK());
-        HarmonizedTariffScheduleCodeUseTypeDetail harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getActiveDetailForUpdate();
+        var harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getActiveDetailForUpdate();
 
         harmonizedTariffScheduleCodeUseTypeDetail.setThruTime(session.START_TIME_LONG);
         harmonizedTariffScheduleCodeUseTypeDetail.store();
 
-        HarmonizedTariffScheduleCodeUseTypePK harmonizedTariffScheduleCodeUseTypePK = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypePK();
-        String harmonizedTariffScheduleCodeUseTypeName = harmonizedTariffScheduleCodeUseTypeDetailValue.getHarmonizedTariffScheduleCodeUseTypeName();
-        Boolean isDefault = harmonizedTariffScheduleCodeUseTypeDetailValue.getIsDefault();
-        Integer sortOrder = harmonizedTariffScheduleCodeUseTypeDetailValue.getSortOrder();
+        var harmonizedTariffScheduleCodeUseTypePK = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypePK();
+        var harmonizedTariffScheduleCodeUseTypeName = harmonizedTariffScheduleCodeUseTypeDetailValue.getHarmonizedTariffScheduleCodeUseTypeName();
+        var isDefault = harmonizedTariffScheduleCodeUseTypeDetailValue.getIsDefault();
+        var sortOrder = harmonizedTariffScheduleCodeUseTypeDetailValue.getSortOrder();
 
         if(checkDefault) {
-            HarmonizedTariffScheduleCodeUseType defaultHarmonizedTariffScheduleCodeUseType = getDefaultHarmonizedTariffScheduleCodeUseType();
-            boolean defaultFound = defaultHarmonizedTariffScheduleCodeUseType != null && !defaultHarmonizedTariffScheduleCodeUseType.equals(harmonizedTariffScheduleCodeUseType);
+            var defaultHarmonizedTariffScheduleCodeUseType = getDefaultHarmonizedTariffScheduleCodeUseType();
+            var defaultFound = defaultHarmonizedTariffScheduleCodeUseType != null && !defaultHarmonizedTariffScheduleCodeUseType.equals(harmonizedTariffScheduleCodeUseType);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                HarmonizedTariffScheduleCodeUseTypeDetailValue defaultHarmonizedTariffScheduleCodeUseTypeDetailValue = getDefaultHarmonizedTariffScheduleCodeUseTypeDetailValueForUpdate();
+                var defaultHarmonizedTariffScheduleCodeUseTypeDetailValue = getDefaultHarmonizedTariffScheduleCodeUseTypeDetailValueForUpdate();
 
                 defaultHarmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.FALSE);
                 updateHarmonizedTariffScheduleCodeUseTypeFromValue(defaultHarmonizedTariffScheduleCodeUseTypeDetailValue, false, updatedBy);
@@ -11218,22 +11144,22 @@ public class ItemControl
         deleteHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseType(harmonizedTariffScheduleCodeUseType, deletedBy);
         deleteHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(harmonizedTariffScheduleCodeUseType, deletedBy);
 
-        HarmonizedTariffScheduleCodeUseTypeDetail harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getLastDetailForUpdate();
+        var harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getLastDetailForUpdate();
         harmonizedTariffScheduleCodeUseTypeDetail.setThruTime(session.START_TIME_LONG);
         harmonizedTariffScheduleCodeUseType.setActiveDetail(null);
         harmonizedTariffScheduleCodeUseType.store();
 
         // Check for default, and pick one if necessary
-        HarmonizedTariffScheduleCodeUseType defaultHarmonizedTariffScheduleCodeUseType = getDefaultHarmonizedTariffScheduleCodeUseType();
+        var defaultHarmonizedTariffScheduleCodeUseType = getDefaultHarmonizedTariffScheduleCodeUseType();
         if(defaultHarmonizedTariffScheduleCodeUseType == null) {
-            List<HarmonizedTariffScheduleCodeUseType> harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypesForUpdate();
+            var harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypesForUpdate();
 
             if(!harmonizedTariffScheduleCodeUseTypes.isEmpty()) {
-                Iterator<HarmonizedTariffScheduleCodeUseType> iter = harmonizedTariffScheduleCodeUseTypes.iterator();
+                var iter = harmonizedTariffScheduleCodeUseTypes.iterator();
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCodeUseType = iter.next();
                 }
-                HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUseType).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUseTypeDetailValue().clone();
+                var harmonizedTariffScheduleCodeUseTypeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUseType).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUseTypeDetailValue().clone();
 
                 harmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeUseTypeFromValue(harmonizedTariffScheduleCodeUseTypeDetailValue, false, deletedBy);
@@ -11249,7 +11175,7 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeUseTypeDescription createHarmonizedTariffScheduleCodeUseTypeDescription(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType,
             Language language, String description, BasePK createdBy) {
-        HarmonizedTariffScheduleCodeUseTypeDescription harmonizedTariffScheduleCodeUseTypeDescription = HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUseType,
+        var harmonizedTariffScheduleCodeUseTypeDescription = HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUseType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(harmonizedTariffScheduleCodeUseType.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11328,7 +11254,7 @@ public class ItemControl
 
     public String getBestHarmonizedTariffScheduleCodeUseTypeDescription(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, Language language) {
         String description;
-        HarmonizedTariffScheduleCodeUseTypeDescription harmonizedTariffScheduleCodeUseTypeDescription = getHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, language);
+        var harmonizedTariffScheduleCodeUseTypeDescription = getHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, language);
 
         if(harmonizedTariffScheduleCodeUseTypeDescription == null && !language.getIsDefault()) {
             harmonizedTariffScheduleCodeUseTypeDescription = getHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, getPartyControl().getDefaultLanguage());
@@ -11348,7 +11274,7 @@ public class ItemControl
     }
 
     public List<HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer> getHarmonizedTariffScheduleCodeUseTypeDescriptionTransfersByHarmonizedTariffScheduleCodeUseType(UserVisit userVisit, HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
-        List<HarmonizedTariffScheduleCodeUseTypeDescription> harmonizedTariffScheduleCodeUseTypeDescriptions = getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(harmonizedTariffScheduleCodeUseType);
+        var harmonizedTariffScheduleCodeUseTypeDescriptions = getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(harmonizedTariffScheduleCodeUseType);
         List<HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer> harmonizedTariffScheduleCodeUseTypeDescriptionTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUseTypeDescriptions.size());
 
         harmonizedTariffScheduleCodeUseTypeDescriptions.forEach((harmonizedTariffScheduleCodeUseTypeDescription) -> {
@@ -11360,15 +11286,15 @@ public class ItemControl
 
     public void updateHarmonizedTariffScheduleCodeUseTypeDescriptionFromValue(HarmonizedTariffScheduleCodeUseTypeDescriptionValue harmonizedTariffScheduleCodeUseTypeDescriptionValue, BasePK updatedBy) {
         if(harmonizedTariffScheduleCodeUseTypeDescriptionValue.hasBeenModified()) {
-            HarmonizedTariffScheduleCodeUseTypeDescription harmonizedTariffScheduleCodeUseTypeDescription = HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var harmonizedTariffScheduleCodeUseTypeDescription = HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      harmonizedTariffScheduleCodeUseTypeDescriptionValue.getPrimaryKey());
 
             harmonizedTariffScheduleCodeUseTypeDescription.setThruTime(session.START_TIME_LONG);
             harmonizedTariffScheduleCodeUseTypeDescription.store();
 
-            HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeUseTypeDescription.getHarmonizedTariffScheduleCodeUseType();
-            Language language = harmonizedTariffScheduleCodeUseTypeDescription.getLanguage();
-            String description = harmonizedTariffScheduleCodeUseTypeDescriptionValue.getDescription();
+            var harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeUseTypeDescription.getHarmonizedTariffScheduleCodeUseType();
+            var language = harmonizedTariffScheduleCodeUseTypeDescription.getLanguage();
+            var description = harmonizedTariffScheduleCodeUseTypeDescriptionValue.getDescription();
 
             harmonizedTariffScheduleCodeUseTypeDescription = HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -11385,7 +11311,7 @@ public class ItemControl
     }
 
     public void deleteHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, BasePK deletedBy) {
-        List<HarmonizedTariffScheduleCodeUseTypeDescription> harmonizedTariffScheduleCodeUseTypeDescriptions = getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeForUpdate(harmonizedTariffScheduleCodeUseType);
+        var harmonizedTariffScheduleCodeUseTypeDescriptions = getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeForUpdate(harmonizedTariffScheduleCodeUseType);
 
         harmonizedTariffScheduleCodeUseTypeDescriptions.forEach((harmonizedTariffScheduleCodeUseTypeDescription) -> 
                 deleteHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseTypeDescription, deletedBy)
@@ -11398,11 +11324,11 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeUnit createHarmonizedTariffScheduleCodeUnit(String harmonizedTariffScheduleCodeUnitName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        HarmonizedTariffScheduleCodeUnit defaultHarmonizedTariffScheduleCodeUnit = getDefaultHarmonizedTariffScheduleCodeUnit();
-        boolean defaultFound = defaultHarmonizedTariffScheduleCodeUnit != null;
+        var defaultHarmonizedTariffScheduleCodeUnit = getDefaultHarmonizedTariffScheduleCodeUnit();
+        var defaultFound = defaultHarmonizedTariffScheduleCodeUnit != null;
 
         if(defaultFound && isDefault) {
-            HarmonizedTariffScheduleCodeUnitDetailValue defaultHarmonizedTariffScheduleCodeUnitDetailValue = getDefaultHarmonizedTariffScheduleCodeUnitDetailValueForUpdate();
+            var defaultHarmonizedTariffScheduleCodeUnitDetailValue = getDefaultHarmonizedTariffScheduleCodeUnitDetailValueForUpdate();
 
             defaultHarmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.FALSE);
             updateHarmonizedTariffScheduleCodeUnitFromValue(defaultHarmonizedTariffScheduleCodeUnitDetailValue, false, createdBy);
@@ -11410,8 +11336,8 @@ public class ItemControl
             isDefault = Boolean.TRUE;
         }
 
-        HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().create();
-        HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = HarmonizedTariffScheduleCodeUnitDetailFactory.getInstance().create(harmonizedTariffScheduleCodeUnit,
+        var harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().create();
+        var harmonizedTariffScheduleCodeUnitDetail = HarmonizedTariffScheduleCodeUnitDetailFactory.getInstance().create(harmonizedTariffScheduleCodeUnit,
                 harmonizedTariffScheduleCodeUnitName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -11528,7 +11454,7 @@ public class ItemControl
     }
 
     public HarmonizedTariffScheduleCodeUnitChoicesBean getHarmonizedTariffScheduleCodeUnitChoices(String defaultHarmonizedTariffScheduleCodeUnitChoice, Language language, boolean allowNullChoice) {
-        List<HarmonizedTariffScheduleCodeUnit> harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnits();
+        var harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnits();
         var size = harmonizedTariffScheduleCodeUnits.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -11544,7 +11470,7 @@ public class ItemControl
         }
 
         for(var harmonizedTariffScheduleCodeUnit : harmonizedTariffScheduleCodeUnits) {
-            HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
+            var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
 
             var label = getBestHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
             var value = harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitName();
@@ -11566,9 +11492,9 @@ public class ItemControl
     }
 
     public List<HarmonizedTariffScheduleCodeUnitTransfer> getHarmonizedTariffScheduleCodeUnitTransfers(UserVisit userVisit) {
-        List<HarmonizedTariffScheduleCodeUnit> harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnits();
+        var harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnits();
         List<HarmonizedTariffScheduleCodeUnitTransfer> harmonizedTariffScheduleCodeUnitTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUnits.size());
-        HarmonizedTariffScheduleCodeUnitTransferCache harmonizedTariffScheduleCodeUnitTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUnitTransferCache();
+        var harmonizedTariffScheduleCodeUnitTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUnitTransferCache();
 
         harmonizedTariffScheduleCodeUnits.forEach((harmonizedTariffScheduleCodeUnit) ->
                 harmonizedTariffScheduleCodeUnitTransfers.add(harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(harmonizedTariffScheduleCodeUnit))
@@ -11578,25 +11504,25 @@ public class ItemControl
     }
 
     private void updateHarmonizedTariffScheduleCodeUnitFromValue(HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue, boolean checkDefault, BasePK updatedBy) {
-        HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromPK(session,
+        var harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, harmonizedTariffScheduleCodeUnitDetailValue.getHarmonizedTariffScheduleCodeUnitPK());
-        HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getActiveDetailForUpdate();
+        var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getActiveDetailForUpdate();
 
         harmonizedTariffScheduleCodeUnitDetail.setThruTime(session.START_TIME_LONG);
         harmonizedTariffScheduleCodeUnitDetail.store();
 
-        HarmonizedTariffScheduleCodeUnitPK harmonizedTariffScheduleCodeUnitPK = harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitPK();
-        String harmonizedTariffScheduleCodeUnitName = harmonizedTariffScheduleCodeUnitDetailValue.getHarmonizedTariffScheduleCodeUnitName();
-        Boolean isDefault = harmonizedTariffScheduleCodeUnitDetailValue.getIsDefault();
-        Integer sortOrder = harmonizedTariffScheduleCodeUnitDetailValue.getSortOrder();
+        var harmonizedTariffScheduleCodeUnitPK = harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitPK();
+        var harmonizedTariffScheduleCodeUnitName = harmonizedTariffScheduleCodeUnitDetailValue.getHarmonizedTariffScheduleCodeUnitName();
+        var isDefault = harmonizedTariffScheduleCodeUnitDetailValue.getIsDefault();
+        var sortOrder = harmonizedTariffScheduleCodeUnitDetailValue.getSortOrder();
 
         if(checkDefault) {
-            HarmonizedTariffScheduleCodeUnit defaultHarmonizedTariffScheduleCodeUnit = getDefaultHarmonizedTariffScheduleCodeUnit();
-            boolean defaultFound = defaultHarmonizedTariffScheduleCodeUnit != null && !defaultHarmonizedTariffScheduleCodeUnit.equals(harmonizedTariffScheduleCodeUnit);
+            var defaultHarmonizedTariffScheduleCodeUnit = getDefaultHarmonizedTariffScheduleCodeUnit();
+            var defaultFound = defaultHarmonizedTariffScheduleCodeUnit != null && !defaultHarmonizedTariffScheduleCodeUnit.equals(harmonizedTariffScheduleCodeUnit);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                HarmonizedTariffScheduleCodeUnitDetailValue defaultHarmonizedTariffScheduleCodeUnitDetailValue = getDefaultHarmonizedTariffScheduleCodeUnitDetailValueForUpdate();
+                var defaultHarmonizedTariffScheduleCodeUnitDetailValue = getDefaultHarmonizedTariffScheduleCodeUnitDetailValueForUpdate();
 
                 defaultHarmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.FALSE);
                 updateHarmonizedTariffScheduleCodeUnitFromValue(defaultHarmonizedTariffScheduleCodeUnitDetailValue, false, updatedBy);
@@ -11624,22 +11550,22 @@ public class ItemControl
         deleteHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUnit(harmonizedTariffScheduleCodeUnit, deletedBy);
         deleteHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(harmonizedTariffScheduleCodeUnit, deletedBy);
 
-        HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetailForUpdate();
+        var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetailForUpdate();
         harmonizedTariffScheduleCodeUnitDetail.setThruTime(session.START_TIME_LONG);
         harmonizedTariffScheduleCodeUnit.setActiveDetail(null);
         harmonizedTariffScheduleCodeUnit.store();
 
         // Check for default, and pick one if necessary
-        HarmonizedTariffScheduleCodeUnit defaultHarmonizedTariffScheduleCodeUnit = getDefaultHarmonizedTariffScheduleCodeUnit();
+        var defaultHarmonizedTariffScheduleCodeUnit = getDefaultHarmonizedTariffScheduleCodeUnit();
         if(defaultHarmonizedTariffScheduleCodeUnit == null) {
-            List<HarmonizedTariffScheduleCodeUnit> harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnitsForUpdate();
+            var harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnitsForUpdate();
 
             if(!harmonizedTariffScheduleCodeUnits.isEmpty()) {
-                Iterator<HarmonizedTariffScheduleCodeUnit> iter = harmonizedTariffScheduleCodeUnits.iterator();
+                var iter = harmonizedTariffScheduleCodeUnits.iterator();
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCodeUnit = iter.next();
                 }
-                HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUnit).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUnitDetailValue().clone();
+                var harmonizedTariffScheduleCodeUnitDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUnit).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUnitDetailValue().clone();
 
                 harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeUnitFromValue(harmonizedTariffScheduleCodeUnitDetailValue, false, deletedBy);
@@ -11655,7 +11581,7 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeUnitDescription createHarmonizedTariffScheduleCodeUnitDescription(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit,
             Language language, String description, BasePK createdBy) {
-        HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUnit,
+        var harmonizedTariffScheduleCodeUnitDescription = HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUnit,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(harmonizedTariffScheduleCodeUnit.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeUnitDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11734,7 +11660,7 @@ public class ItemControl
 
     public String getBestHarmonizedTariffScheduleCodeUnitDescription(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, Language language) {
         String description;
-        HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
+        var harmonizedTariffScheduleCodeUnitDescription = getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
 
         if(harmonizedTariffScheduleCodeUnitDescription == null && !language.getIsDefault()) {
             harmonizedTariffScheduleCodeUnitDescription = getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getPartyControl().getDefaultLanguage());
@@ -11754,7 +11680,7 @@ public class ItemControl
     }
 
     public List<HarmonizedTariffScheduleCodeUnitDescriptionTransfer> getHarmonizedTariffScheduleCodeUnitDescriptionTransfersByHarmonizedTariffScheduleCodeUnit(UserVisit userVisit, HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
-        List<HarmonizedTariffScheduleCodeUnitDescription> harmonizedTariffScheduleCodeUnitDescriptions = getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(harmonizedTariffScheduleCodeUnit);
+        var harmonizedTariffScheduleCodeUnitDescriptions = getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(harmonizedTariffScheduleCodeUnit);
         List<HarmonizedTariffScheduleCodeUnitDescriptionTransfer> harmonizedTariffScheduleCodeUnitDescriptionTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUnitDescriptions.size());
 
         harmonizedTariffScheduleCodeUnitDescriptions.forEach((harmonizedTariffScheduleCodeUnitDescription) -> {
@@ -11766,15 +11692,15 @@ public class ItemControl
 
     public void updateHarmonizedTariffScheduleCodeUnitDescriptionFromValue(HarmonizedTariffScheduleCodeUnitDescriptionValue harmonizedTariffScheduleCodeUnitDescriptionValue, BasePK updatedBy) {
         if(harmonizedTariffScheduleCodeUnitDescriptionValue.hasBeenModified()) {
-            HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var harmonizedTariffScheduleCodeUnitDescription = HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      harmonizedTariffScheduleCodeUnitDescriptionValue.getPrimaryKey());
 
             harmonizedTariffScheduleCodeUnitDescription.setThruTime(session.START_TIME_LONG);
             harmonizedTariffScheduleCodeUnitDescription.store();
 
-            HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeUnitDescription.getHarmonizedTariffScheduleCodeUnit();
-            Language language = harmonizedTariffScheduleCodeUnitDescription.getLanguage();
-            String description = harmonizedTariffScheduleCodeUnitDescriptionValue.getDescription();
+            var harmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeUnitDescription.getHarmonizedTariffScheduleCodeUnit();
+            var language = harmonizedTariffScheduleCodeUnitDescription.getLanguage();
+            var description = harmonizedTariffScheduleCodeUnitDescriptionValue.getDescription();
 
             harmonizedTariffScheduleCodeUnitDescription = HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUnit, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -11791,7 +11717,7 @@ public class ItemControl
     }
 
     public void deleteHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, BasePK deletedBy) {
-        List<HarmonizedTariffScheduleCodeUnitDescription> harmonizedTariffScheduleCodeUnitDescriptions = getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitForUpdate(harmonizedTariffScheduleCodeUnit);
+        var harmonizedTariffScheduleCodeUnitDescriptions = getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitForUpdate(harmonizedTariffScheduleCodeUnit);
 
         harmonizedTariffScheduleCodeUnitDescriptions.forEach((harmonizedTariffScheduleCodeUnitDescription) -> 
                 deleteHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnitDescription, deletedBy)
@@ -11804,7 +11730,7 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeUse createHarmonizedTariffScheduleCodeUse(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, BasePK createdBy) {
-        HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse = HarmonizedTariffScheduleCodeUseFactory.getInstance().create(harmonizedTariffScheduleCode,
+        var harmonizedTariffScheduleCodeUse = HarmonizedTariffScheduleCodeUseFactory.getInstance().create(harmonizedTariffScheduleCode,
                 harmonizedTariffScheduleCodeUseType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(harmonizedTariffScheduleCode.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11969,8 +11895,8 @@ public class ItemControl
     public ItemHarmonizedTariffScheduleCode createItemHarmonizedTariffScheduleCode(Item item, GeoCode countryGeoCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             BasePK createdBy) {
-        ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().create();
-        ItemHarmonizedTariffScheduleCodeDetail itemHarmonizedTariffScheduleCodeDetail = ItemHarmonizedTariffScheduleCodeDetailFactory.getInstance().create(session,
+        var itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().create();
+        var itemHarmonizedTariffScheduleCodeDetail = ItemHarmonizedTariffScheduleCodeDetailFactory.getInstance().create(session,
                 itemHarmonizedTariffScheduleCode, item, countryGeoCode, harmonizedTariffScheduleCodeUseType, harmonizedTariffScheduleCode, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -12170,7 +12096,7 @@ public class ItemControl
 
     public List<ItemHarmonizedTariffScheduleCodeTransfer> getItemHarmonizedTariffScheduleCodeTransfers(UserVisit userVisit, Collection<ItemHarmonizedTariffScheduleCode> itemHarmonizedTariffScheduleCodes) {
         List<ItemHarmonizedTariffScheduleCodeTransfer> itemHarmonizedTariffScheduleCodeTransfers = new ArrayList<>(itemHarmonizedTariffScheduleCodes.size());
-        ItemHarmonizedTariffScheduleCodeTransferCache itemHarmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getItemHarmonizedTariffScheduleCodeTransferCache();
+        var itemHarmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getItemHarmonizedTariffScheduleCodeTransferCache();
 
         itemHarmonizedTariffScheduleCodes.forEach((itemHarmonizedTariffScheduleCode) ->
                 itemHarmonizedTariffScheduleCodeTransfers.add(itemHarmonizedTariffScheduleCodeTransferCache.getTransfer(itemHarmonizedTariffScheduleCode))
@@ -12198,18 +12124,18 @@ public class ItemControl
     public void updateItemHarmonizedTariffScheduleCodeFromValue(ItemHarmonizedTariffScheduleCodeDetailValue itemHarmonizedTariffScheduleCodeDetailValue,
             BasePK updatedBy) {
         if(itemHarmonizedTariffScheduleCodeDetailValue.hasBeenModified()) {
-            ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemHarmonizedTariffScheduleCodeDetailValue.getItemHarmonizedTariffScheduleCodePK());
-            ItemHarmonizedTariffScheduleCodeDetail itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getActiveDetailForUpdate();
+            var itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getActiveDetailForUpdate();
 
             itemHarmonizedTariffScheduleCodeDetail.setThruTime(session.START_TIME_LONG);
             itemHarmonizedTariffScheduleCodeDetail.store();
 
-            ItemHarmonizedTariffScheduleCodePK itemHarmonizedTariffScheduleCodePK = itemHarmonizedTariffScheduleCodeDetail.getItemHarmonizedTariffScheduleCodePK();
-            ItemPK itemPK = itemHarmonizedTariffScheduleCodeDetail.getItemPK();
-            GeoCodePK countryGeoCodePK = itemHarmonizedTariffScheduleCodeDetail.getCountryGeoCodePK();
-            HarmonizedTariffScheduleCodeUseTypePK harmonizedTariffScheduleCodeUseTypePK = itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeUseTypePK();
-            HarmonizedTariffScheduleCodePK harmonizedTariffScheduleCodePK = itemHarmonizedTariffScheduleCodeDetailValue.getHarmonizedTariffScheduleCodePK();
+            var itemHarmonizedTariffScheduleCodePK = itemHarmonizedTariffScheduleCodeDetail.getItemHarmonizedTariffScheduleCodePK();
+            var itemPK = itemHarmonizedTariffScheduleCodeDetail.getItemPK();
+            var countryGeoCodePK = itemHarmonizedTariffScheduleCodeDetail.getCountryGeoCodePK();
+            var harmonizedTariffScheduleCodeUseTypePK = itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeUseTypePK();
+            var harmonizedTariffScheduleCodePK = itemHarmonizedTariffScheduleCodeDetailValue.getHarmonizedTariffScheduleCodePK();
 
             itemHarmonizedTariffScheduleCodeDetail = ItemHarmonizedTariffScheduleCodeDetailFactory.getInstance().create(itemHarmonizedTariffScheduleCodePK,
                     itemPK, countryGeoCodePK, harmonizedTariffScheduleCodeUseTypePK, harmonizedTariffScheduleCodePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -12222,7 +12148,7 @@ public class ItemControl
     }
 
     public void deleteItemHarmonizedTariffScheduleCode(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode, BasePK deletedBy) {
-        ItemHarmonizedTariffScheduleCodeDetail itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getLastDetailForUpdate();
+        var itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getLastDetailForUpdate();
         itemHarmonizedTariffScheduleCodeDetail.setThruTime(session.START_TIME_LONG);
         itemHarmonizedTariffScheduleCode.setActiveDetail(null);
         itemHarmonizedTariffScheduleCode.store();
@@ -12271,7 +12197,7 @@ public class ItemControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
         }
 
-        try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             var itemControl = Session.getModelController(ItemControl.class);
 
             while(rs.next()) {

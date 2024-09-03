@@ -17,7 +17,6 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTransfer;
-import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -35,12 +34,12 @@ public class ShipmentAliasTransferCache
 
     @Override
     public ShipmentAliasTransfer getTransfer(ShipmentAlias shipmentAlias) {
-        ShipmentAliasTransfer shipmentAliasTransfer = get(shipmentAlias);
+        var shipmentAliasTransfer = get(shipmentAlias);
         
         if(shipmentAliasTransfer == null) {
 //            ShipmentTransfer shipment = shipmentControl.getShipmentTransfer(userVisit, shipmentAlias.getShipment());
-            ShipmentAliasTypeTransfer shipmentAliasType = shipmentControl.getShipmentAliasTypeTransfer(userVisit, shipmentAlias.getShipmentAliasType());
-            String alias = shipmentAlias.getAlias();
+            var shipmentAliasType = shipmentControl.getShipmentAliasTypeTransfer(userVisit, shipmentAlias.getShipmentAliasType());
+            var alias = shipmentAlias.getAlias();
             
             shipmentAliasTransfer = new ShipmentAliasTransfer(/*shipment,*/ shipmentAliasType, alias);
             put(shipmentAlias, shipmentAliasTransfer);

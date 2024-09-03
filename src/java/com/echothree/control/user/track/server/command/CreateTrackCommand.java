@@ -17,13 +17,11 @@
 package com.echothree.control.user.track.server.command;
 
 import com.echothree.control.user.track.common.form.CreateTrackForm;
-import com.echothree.control.user.track.common.result.CreateTrackResult;
 import com.echothree.control.user.track.common.result.TrackResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.track.server.control.TrackControl;
-import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,10 +65,10 @@ public class CreateTrackCommand
     
     @Override
     protected BaseResult execute() {
-        CreateTrackResult result = TrackResultFactory.getCreateTrackResult();
+        var result = TrackResultFactory.getCreateTrackResult();
         var trackControl = Session.getModelController(TrackControl.class);
-        String value = form.getValue();
-        Track track = trackControl.getTrackByValue(value);
+        var value = form.getValue();
+        var track = trackControl.getTrackByValue(value);
         
         if(track == null) {
             var partyPK = getPartyPK();

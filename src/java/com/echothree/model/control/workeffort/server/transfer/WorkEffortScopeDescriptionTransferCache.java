@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeDescriptionTransfer;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;
@@ -32,12 +30,12 @@ public class WorkEffortScopeDescriptionTransferCache
     }
     
     public WorkEffortScopeDescriptionTransfer getWorkEffortScopeDescriptionTransfer(WorkEffortScopeDescription workEffortScopeDescription) {
-        WorkEffortScopeDescriptionTransfer workEffortScopeDescriptionTransfer = get(workEffortScopeDescription);
+        var workEffortScopeDescriptionTransfer = get(workEffortScopeDescription);
         
         if(workEffortScopeDescriptionTransfer == null) {
-            WorkEffortScopeTransfer workEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScopeDescription.getWorkEffortScope());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, workEffortScopeDescription.getLanguage());
-            String description = workEffortScopeDescription.getDescription();
+            var workEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScopeDescription.getWorkEffortScope());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, workEffortScopeDescription.getLanguage());
+            var description = workEffortScopeDescription.getDescription();
             
             workEffortScopeDescriptionTransfer = new WorkEffortScopeDescriptionTransfer(languageTransfer, workEffortScopeTransfer,
                     description);

@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.result.EditComponentVendorResult;
 import com.echothree.control.user.core.common.result.EditEntityTypeResult;
 import com.echothree.control.user.core.common.spec.CoreSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;

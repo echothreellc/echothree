@@ -17,12 +17,9 @@
 package com.echothree.ui.web.main.action.core.entityattributeentitytype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityAttributeForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;
@@ -32,15 +29,15 @@ public abstract class BaseAddAction
     
     public void setupEntityAttributeTransfer(HttpServletRequest request, String componentVendorName, String entityTypeName, String entityAttributeName)
             throws NamingException {
-        GetEntityAttributeForm commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
         
         commandForm.setComponentVendorName(componentVendorName);
         commandForm.setEntityTypeName(entityTypeName);
         commandForm.setEntityAttributeName(entityAttributeName);
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityAttributeResult result = (GetEntityAttributeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityAttributeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE, result.getEntityAttribute());
     }

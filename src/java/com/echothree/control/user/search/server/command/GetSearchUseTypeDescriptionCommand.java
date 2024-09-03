@@ -17,16 +17,12 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchUseTypeDescriptionForm;
-import com.echothree.control.user.search.common.result.GetSearchUseTypeDescriptionResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.search.server.entity.SearchUseType;
-import com.echothree.model.data.search.server.entity.SearchUseTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,17 +64,17 @@ public class GetSearchUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchUseTypeDescriptionResult result = SearchResultFactory.getGetSearchUseTypeDescriptionResult();
-        String searchUseTypeName = form.getSearchUseTypeName();
-        SearchUseType searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
+        var result = SearchResultFactory.getGetSearchUseTypeDescriptionResult();
+        var searchUseTypeName = form.getSearchUseTypeName();
+        var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
         if(searchUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                SearchUseTypeDescription searchUseTypeDescription = searchControl.getSearchUseTypeDescription(searchUseType, language);
+                var searchUseTypeDescription = searchControl.getSearchUseTypeDescription(searchUseType, language);
 
                 if(searchUseTypeDescription != null) {
                     result.setSearchUseTypeDescription(searchControl.getSearchUseTypeDescriptionTransfer(getUserVisit(), searchUseTypeDescription));

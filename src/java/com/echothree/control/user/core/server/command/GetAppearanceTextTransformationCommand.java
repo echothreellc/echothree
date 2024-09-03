@@ -18,14 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetAppearanceTextTransformationForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetAppearanceTextTransformationResult;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Appearance;
-import com.echothree.model.data.core.server.entity.AppearanceTextTransformation;
-import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,17 +61,17 @@ public class GetAppearanceTextTransformationCommand
     
     @Override
     protected BaseResult execute() {
-        GetAppearanceTextTransformationResult result = CoreResultFactory.getGetAppearanceTextTransformationResult();
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var result = CoreResultFactory.getGetAppearanceTextTransformationResult();
+        var appearanceName = form.getAppearanceName();
+        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            String textTransformationName = form.getTextTransformationName();
-            TextTransformation textTransformation = AppearanceLogic.getInstance().getTextTransformationByName(this, textTransformationName);
+            var textTransformationName = form.getTextTransformationName();
+            var textTransformation = AppearanceLogic.getInstance().getTextTransformationByName(this, textTransformationName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                AppearanceTextTransformation appearanceTextTransformation = coreControl.getAppearanceTextTransformation(appearance, textTransformation);
+                var appearanceTextTransformation = coreControl.getAppearanceTextTransformation(appearance, textTransformation);
 
                 if(appearanceTextTransformation != null) {
                     result.setAppearanceTextTransformation(coreControl.getAppearanceTextTransformationTransfer(getUserVisit(), appearanceTextTransformation));

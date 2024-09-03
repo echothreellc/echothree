@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.content.contentcategory;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCategoryChoicesForm;
 import com.echothree.control.user.content.common.result.GetContentCategoryChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentCategoryChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
 import javax.naming.NamingException;
@@ -39,16 +36,16 @@ public class EditActionForm
     private void setupParentContentCategoryChoices()
             throws NamingException {
         if(parentContentCategoryChoices == null) {
-            GetContentCategoryChoicesForm form = ContentUtil.getHome().getGetContentCategoryChoicesForm();
+            var form = ContentUtil.getHome().getGetContentCategoryChoicesForm();
 
             form.setContentCollectionName(contentCollectionName);
             form.setContentCatalogName(contentCatalogName);
             form.setDefaultContentCategoryChoice(parentContentCategoryChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCategoryChoicesResult getContentCategoryChoicesResult = (GetContentCategoryChoicesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentCategoryChoicesResult = (GetContentCategoryChoicesResult)executionResult.getResult();
             parentContentCategoryChoices = getContentCategoryChoicesResult.getContentCategoryChoices();
 
             if(parentContentCategoryChoice == null) {

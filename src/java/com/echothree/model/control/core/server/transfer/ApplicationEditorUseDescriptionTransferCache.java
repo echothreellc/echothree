@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.ApplicationEditorUseTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUseDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class ApplicationEditorUseDescriptionTransferCache
     }
     
     public ApplicationEditorUseDescriptionTransfer getApplicationEditorUseDescriptionTransfer(ApplicationEditorUseDescription applicationEditorUseDescription) {
-        ApplicationEditorUseDescriptionTransfer applicationEditorUseDescriptionTransfer = get(applicationEditorUseDescription);
+        var applicationEditorUseDescriptionTransfer = get(applicationEditorUseDescription);
         
         if(applicationEditorUseDescriptionTransfer == null) {
-            ApplicationEditorUseTransfer applicationEditorUseTransfer = coreControl.getApplicationEditorUseTransfer(userVisit, applicationEditorUseDescription.getApplicationEditorUse());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, applicationEditorUseDescription.getLanguage());
+            var applicationEditorUseTransfer = coreControl.getApplicationEditorUseTransfer(userVisit, applicationEditorUseDescription.getApplicationEditorUse());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, applicationEditorUseDescription.getLanguage());
             
             applicationEditorUseDescriptionTransfer = new ApplicationEditorUseDescriptionTransfer(languageTransfer, applicationEditorUseTransfer, applicationEditorUseDescription.getDescription());
             put(applicationEditorUseDescription, applicationEditorUseDescriptionTransfer);

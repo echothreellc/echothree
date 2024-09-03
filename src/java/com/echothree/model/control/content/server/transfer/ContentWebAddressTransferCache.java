@@ -17,13 +17,10 @@
 package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.ContentOptions;
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.common.transfer.ContentWebAddressTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
-import com.echothree.model.data.content.server.entity.ContentWebAddressDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class ContentWebAddressTransferCache
         extends BaseContentTransferCache<ContentWebAddress, ContentWebAddressTransfer> {
@@ -44,13 +41,13 @@ public class ContentWebAddressTransferCache
     }
     
     public ContentWebAddressTransfer getContentWebAddressTransfer(ContentWebAddress contentWebAddress) {
-        ContentWebAddressTransfer contentWebAddressTransfer = get(contentWebAddress);
+        var contentWebAddressTransfer = get(contentWebAddress);
         
         if(contentWebAddressTransfer == null) {
-            ContentWebAddressDetail contentWebAddressDetail = contentWebAddress.getLastDetail();
-            String contentWebAddressName = contentWebAddressDetail.getContentWebAddressName();
-            ContentCollectionTransfer contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentWebAddressDetail.getContentCollection());
-            String description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage());
+            var contentWebAddressDetail = contentWebAddress.getLastDetail();
+            var contentWebAddressName = contentWebAddressDetail.getContentWebAddressName();
+            var contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentWebAddressDetail.getContentCollection());
+            var description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage());
             
             contentWebAddressTransfer = new ContentWebAddressTransfer(contentWebAddressName, contentCollectionTransfer, description);
             put(contentWebAddress, contentWebAddressTransfer);

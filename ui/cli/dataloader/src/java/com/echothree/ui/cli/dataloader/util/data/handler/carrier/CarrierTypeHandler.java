@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.carrier;
 import com.echothree.control.user.carrier.common.CarrierUtil;
 import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
-import com.echothree.control.user.carrier.common.form.CreateCarrierTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,7 +49,7 @@ public class CarrierTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("carrierTypeDescription")) {
-            CreateCarrierTypeDescriptionForm commandForm = CarrierFormFactory.getCreateCarrierTypeDescriptionForm();
+            var commandForm = CarrierFormFactory.getCreateCarrierTypeDescriptionForm();
 
             commandForm.setCarrierTypeName(carrierTypeName);
             commandForm.set(getAttrsMap(attrs));

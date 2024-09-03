@@ -18,7 +18,6 @@ package com.echothree.control.user.sequence.common;
 
 import com.echothree.control.user.sequence.server.SequenceLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class SequenceUtil {
@@ -30,7 +29,7 @@ public class SequenceUtil {
     public static SequenceLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (SequenceLocal)ctx.lookup("ejb:echothree/echothree-server/SequenceBean!com.echothree.control.user.sequence.server.SequenceLocal");
         }
@@ -42,7 +41,7 @@ public class SequenceUtil {
     public static SequenceRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (SequenceRemote)ctx.lookup("ejb:echothree/echothree-server/SequenceBean!com.echothree.control.user.sequence.common.SequenceRemote");
         }

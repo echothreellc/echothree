@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetEmailAddressVerificationChoicesForm;
 import com.echothree.control.user.contact.common.result.GetEmailAddressVerificationChoicesResult;
 import com.echothree.model.control.contact.common.choice.EmailAddressVerificationChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class ContactEmailAddressVerificationActionForm
     public void setupEmailAddressVerificationChoices()
             throws NamingException {
         if(emailAddressVerificationChoices == null) {
-            GetEmailAddressVerificationChoicesForm form = ContactUtil.getHome().getGetEmailAddressVerificationChoicesForm();
+            var form = ContactUtil.getHome().getGetEmailAddressVerificationChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultEmailAddressVerificationChoice(emailAddressVerificationChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getEmailAddressVerificationChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmailAddressVerificationChoicesResult result = (GetEmailAddressVerificationChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getEmailAddressVerificationChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmailAddressVerificationChoicesResult)executionResult.getResult();
             emailAddressVerificationChoices = result.getEmailAddressVerificationChoices();
 
             if(emailAddressVerificationChoice == null) {

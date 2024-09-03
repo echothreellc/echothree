@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.glaccountclass;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.edit.GlAccountClassEdit;
-import com.echothree.control.user.accounting.common.form.EditGlAccountClassForm;
 import com.echothree.control.user.accounting.common.result.EditGlAccountClassResult;
-import com.echothree.control.user.accounting.common.spec.GlAccountClassSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalGlAccountClassName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_CLASS_NAME);
+        var originalGlAccountClassName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_CLASS_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditGlAccountClassForm commandForm = AccountingUtil.getHome().getEditGlAccountClassForm();
-                GlAccountClassSpec spec = AccountingUtil.getHome().getGlAccountClassSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = AccountingUtil.getHome().getEditGlAccountClassForm();
+                var spec = AccountingUtil.getHome().getGlAccountClassSpec();
                 
                 if(originalGlAccountClassName == null)
                     originalGlAccountClassName = actionForm.getOriginalGlAccountClassName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setGlAccountClassName(originalGlAccountClassName);
                 
                 if(wasPost(request)) {
-                    GlAccountClassEdit edit = AccountingUtil.getHome().getGlAccountClassEdit();
+                    var edit = AccountingUtil.getHome().getGlAccountClassEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -83,14 +78,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountClass(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountClass(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditGlAccountClassResult result = (EditGlAccountClassResult)executionResult.getResult();
+                            var result = (EditGlAccountClassResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -103,13 +98,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountClass(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGlAccountClassResult result = (EditGlAccountClassResult)executionResult.getResult();
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountClass(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGlAccountClassResult)executionResult.getResult();
                     
                     if(result != null) {
-                        GlAccountClassEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalGlAccountClassName(edit.getGlAccountClassName());

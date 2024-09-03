@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.filter.filteradjustment;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -55,15 +53,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
+                var descriptionAddActionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateFilterAdjustmentDescriptionForm createFilterAdjustmentDescriptionForm = FilterUtil.getHome().getCreateFilterAdjustmentDescriptionForm();
+                    var createFilterAdjustmentDescriptionForm = FilterUtil.getHome().getCreateFilterAdjustmentDescriptionForm();
                     
                     if(filterKindName == null)
                         filterKindName = descriptionAddActionForm.getFilterKindName();
@@ -74,8 +72,8 @@ public class DescriptionAddAction
                     createFilterAdjustmentDescriptionForm.setFilterAdjustmentName(filterAdjustmentName);
                     createFilterAdjustmentDescriptionForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
                     createFilterAdjustmentDescriptionForm.setDescription(descriptionAddActionForm.getDescription());
-                    
-                    CommandResult commandResult = FilterUtil.getHome().createFilterAdjustmentDescription(getUserVisitPK(request), createFilterAdjustmentDescriptionForm);
+
+                    var commandResult = FilterUtil.getHome().createFilterAdjustmentDescription(getUserVisitPK(request), createFilterAdjustmentDescriptionForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -92,8 +90,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute("filterKindName", filterKindName); // TODO: not encoded
             request.setAttribute("filterAdjustmentName", filterAdjustmentName); // TODO: not encoded

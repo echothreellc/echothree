@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.DeleteForumThreadForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.ForumThread;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteForumThreadCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumThreadName = form.getForumThreadName();
-        ForumThread forumThread = forumControl.getForumThreadByNameForUpdate(forumThreadName);
+        var forumThreadName = form.getForumThreadName();
+        var forumThread = forumControl.getForumThreadByNameForUpdate(forumThreadName);
         
         if(forumThread != null) {
             forumControl.deleteForumThread(forumThread, getPartyPK());

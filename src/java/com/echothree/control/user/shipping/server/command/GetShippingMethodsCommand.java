@@ -17,7 +17,6 @@
 package com.echothree.control.user.shipping.server.command;
 
 import com.echothree.control.user.shipping.common.form.GetShippingMethodsForm;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodsResult;
 import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +60,7 @@ public class GetShippingMethodsCommand
     @Override
     protected BaseResult execute() {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        GetShippingMethodsResult result = ShippingResultFactory.getGetShippingMethodsResult();
+        var result = ShippingResultFactory.getGetShippingMethodsResult();
         
         result.setShippingMethods(shippingControl.getShippingMethodTransfers(getUserVisit()));
         

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.commandmessagetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetCommandMessageTypeDescriptionsForm;
 import com.echothree.control.user.core.common.result.GetCommandMessageTypeDescriptionsResult;
-import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String commandMessageTypeName = request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME);
-        GetCommandMessageTypeDescriptionsForm commandForm = CoreUtil.getHome().getGetCommandMessageTypeDescriptionsForm();
+        var commandMessageTypeName = request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME);
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTypeDescriptionsForm();
 
         commandForm.setCommandMessageTypeName(commandMessageTypeName);
 
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getCommandMessageTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageTypeDescriptionsResult result = (GetCommandMessageTypeDescriptionsResult) executionResult.getResult();
-            CommandMessageTypeTransfer commandMessageTypeTransfer = result.getCommandMessageType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageTypeDescriptionsResult) executionResult.getResult();
+            var commandMessageTypeTransfer = result.getCommandMessageType();
 
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE, commandMessageTypeTransfer);
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE_DESCRIPTIONS, result.getCommandMessageTypeDescriptions());

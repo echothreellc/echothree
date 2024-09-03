@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class ItemAccountingCategoryDescriptionTransferCache
     
     @Override
     public ItemAccountingCategoryDescriptionTransfer getTransfer(ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
-        ItemAccountingCategoryDescriptionTransfer itemAccountingCategoryDescriptionTransfer = get(itemAccountingCategoryDescription);
+        var itemAccountingCategoryDescriptionTransfer = get(itemAccountingCategoryDescription);
         
         if(itemAccountingCategoryDescriptionTransfer == null) {
-            ItemAccountingCategoryTransferCache itemAccountingCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache();
-            ItemAccountingCategoryTransfer itemAccountingCategoryTransfer = itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategoryDescription.getItemAccountingCategory());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAccountingCategoryDescription.getLanguage());
+            var itemAccountingCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache();
+            var itemAccountingCategoryTransfer = itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategoryDescription.getItemAccountingCategory());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAccountingCategoryDescription.getLanguage());
             
             itemAccountingCategoryDescriptionTransfer = new ItemAccountingCategoryDescriptionTransfer(languageTransfer, itemAccountingCategoryTransfer, itemAccountingCategoryDescription.getDescription());
             put(itemAccountingCategoryDescription, itemAccountingCategoryDescriptionTransfer);

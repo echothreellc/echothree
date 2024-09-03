@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetAppearanceChoicesForm;
 import com.echothree.control.user.core.common.result.GetAppearanceChoicesResult;
 import com.echothree.model.control.core.common.choice.AppearanceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,14 +37,14 @@ public class EntityAppearanceAddActionForm
     private void setupAppearanceChoices()
             throws NamingException {
         if(appearanceChoices == null) {
-                GetAppearanceChoicesForm commandForm = CoreUtil.getHome().getGetAppearanceChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetAppearanceChoicesForm();
                 
                 commandForm.setDefaultAppearanceChoice(appearanceChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getAppearanceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetAppearanceChoicesResult getAppearanceChoicesResult = (GetAppearanceChoicesResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getAppearanceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getAppearanceChoicesResult = (GetAppearanceChoicesResult)executionResult.getResult();
                 appearanceChoices = getAppearanceChoicesResult.getAppearanceChoices();
                 
                 if(appearanceChoice == null)

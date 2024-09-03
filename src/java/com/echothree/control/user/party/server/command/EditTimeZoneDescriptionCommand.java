@@ -19,14 +19,9 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
 import com.echothree.control.user.party.common.edit.TimeZoneDescriptionEdit;
 import com.echothree.control.user.party.common.form.EditTimeZoneDescriptionForm;
-import com.echothree.control.user.party.common.result.EditTimeZoneDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.TimeZoneDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.model.data.party.server.entity.TimeZoneDescription;
-import com.echothree.model.data.party.server.value.TimeZoneDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,23 +59,23 @@ public class EditTimeZoneDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditTimeZoneDescriptionResult result = PartyResultFactory.getEditTimeZoneDescriptionResult();
-        String javaTimeZoneName = spec.getJavaTimeZoneName();
-        TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+        var result = PartyResultFactory.getEditTimeZoneDescriptionResult();
+        var javaTimeZoneName = spec.getJavaTimeZoneName();
+        var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         
         if(timeZone != null) {
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    TimeZoneDescription timeZoneDescription = partyControl.getTimeZoneDescription(timeZone, language);
+                    var timeZoneDescription = partyControl.getTimeZoneDescription(timeZone, language);
                     
                     if(timeZoneDescription != null) {
                         result.setTimeZoneDescription(partyControl.getTimeZoneDescriptionTransfer(getUserVisit(), timeZoneDescription));
                         
                         if(lockEntity(timeZone)) {
-                            TimeZoneDescriptionEdit edit = PartyEditFactory.getTimeZoneDescriptionEdit();
+                            var edit = PartyEditFactory.getTimeZoneDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(timeZoneDescription.getDescription());
@@ -93,12 +88,12 @@ public class EditTimeZoneDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownTimeZoneDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    TimeZoneDescriptionValue timeZoneDescriptionValue = partyControl.getTimeZoneDescriptionValueForUpdate(timeZone, language);
+                    var timeZoneDescriptionValue = partyControl.getTimeZoneDescriptionValueForUpdate(timeZone, language);
                     
                     if(timeZoneDescriptionValue != null) {
                         if(lockEntityForUpdate(timeZone)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 timeZoneDescriptionValue.setDescription(description);
                                 

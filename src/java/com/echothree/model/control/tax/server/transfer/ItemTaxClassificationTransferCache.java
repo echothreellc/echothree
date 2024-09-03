@@ -16,19 +16,14 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.tax.common.TaxOptions;
 import com.echothree.model.control.tax.common.transfer.ItemTaxClassificationTransfer;
-import com.echothree.model.control.tax.common.transfer.TaxClassificationTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.ItemTaxClassification;
-import com.echothree.model.data.tax.server.entity.ItemTaxClassificationDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ItemTaxClassificationTransferCache
         extends BaseTaxTransferCache<ItemTaxClassification, ItemTaxClassificationTransfer> {
@@ -51,13 +46,13 @@ public class ItemTaxClassificationTransferCache
     
     @Override
     public ItemTaxClassificationTransfer getTransfer(ItemTaxClassification itemTaxClassification) {
-        ItemTaxClassificationTransfer itemTaxClassificationTransfer = get(itemTaxClassification);
+        var itemTaxClassificationTransfer = get(itemTaxClassification);
         
         if(itemTaxClassificationTransfer == null) {
-            ItemTaxClassificationDetail itemTaxClassificationDetail = itemTaxClassification.getLastDetail();
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemTaxClassificationDetail.getItem());
-            CountryTransfer countryGeoCode = geoControl.getCountryTransfer(userVisit, itemTaxClassificationDetail.getCountryGeoCode());
-            TaxClassificationTransfer taxClassification = taxControl.getTaxClassificationTransfer(userVisit, itemTaxClassificationDetail.getTaxClassification());
+            var itemTaxClassificationDetail = itemTaxClassification.getLastDetail();
+            var item = itemControl.getItemTransfer(userVisit, itemTaxClassificationDetail.getItem());
+            var countryGeoCode = geoControl.getCountryTransfer(userVisit, itemTaxClassificationDetail.getCountryGeoCode());
+            var taxClassification = taxControl.getTaxClassificationTransfer(userVisit, itemTaxClassificationDetail.getTaxClassification());
             
             itemTaxClassificationTransfer = new ItemTaxClassificationTransfer(item, countryGeoCode, taxClassification);
             put(itemTaxClassification, itemTaxClassificationTransfer);

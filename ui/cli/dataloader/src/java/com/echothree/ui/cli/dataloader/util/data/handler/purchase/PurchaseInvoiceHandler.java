@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.purchase;
 
 import com.echothree.control.user.purchase.common.PurchaseUtil;
 import com.echothree.control.user.purchase.common.PurchaseService;
-import com.echothree.control.user.purchase.common.form.CreatePurchaseInvoiceLineForm;
 import com.echothree.control.user.purchase.common.form.PurchaseFormFactory;
 import com.echothree.control.user.purchase.common.result.CreatePurchaseInvoiceLineResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -26,8 +25,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -57,19 +54,19 @@ public class PurchaseInvoiceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("purchaseInvoiceLine")) {
-            CreatePurchaseInvoiceLineForm form = PurchaseFormFactory.getCreatePurchaseInvoiceLineForm();
+            var form = PurchaseFormFactory.getCreatePurchaseInvoiceLineForm();
             
             form.setInvoiceName(invoiceName);
             form.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = purchaseService.createPurchaseInvoiceLine(initialDataParser.getUserVisit(), form);
+
+            var commandResult = purchaseService.createPurchaseInvoiceLine(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
                 System.err.println(commandResult);
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreatePurchaseInvoiceLineResult result = (CreatePurchaseInvoiceLineResult)executionResult.getResult();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreatePurchaseInvoiceLineResult)executionResult.getResult();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new PurchaseInvoiceLineHandler(initialDataParser, this, entityRef));
             }

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.entitylistitem;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityListItemDescriptionsForm;
 import com.echothree.control.user.core.common.result.GetEntityListItemDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,20 +52,20 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            String entityListItemName = request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME);
-            GetEntityListItemDescriptionsForm commandForm = CoreUtil.getHome().getGetEntityListItemDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var entityListItemName = request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME);
+            var commandForm = CoreUtil.getHome().getGetEntityListItemDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setEntityListItemName(entityListItemName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEntityListItemDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityListItemDescriptionsResult result = (GetEntityListItemDescriptionsResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getEntityListItemDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityListItemDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_LIST_ITEM, result.getEntityListItem());
             request.setAttribute(AttributeConstants.ENTITY_LIST_ITEM_DESCRIPTIONS, result.getEntityListItemDescriptions());

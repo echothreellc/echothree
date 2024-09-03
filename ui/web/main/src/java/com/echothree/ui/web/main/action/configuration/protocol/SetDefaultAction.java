@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.protocol;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.SetDefaultProtocolForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultProtocolForm commandForm = CoreUtil.getHome().getSetDefaultProtocolForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultProtocolForm();
 
         commandForm.setProtocolName(request.getParameter(ParameterConstants.PROTOCOL_NAME));
 

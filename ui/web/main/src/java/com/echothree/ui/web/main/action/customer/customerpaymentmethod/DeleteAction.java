@@ -17,19 +17,14 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.DeletePartyPaymentMethodForm;
-import com.echothree.control.user.payment.common.form.GetPartyPaymentMethodForm;
 import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodResult;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -66,16 +61,16 @@ public class DeleteAction
     
     public void setupCustomer(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -85,13 +80,13 @@ public class DeleteAction
 
     public void setupPartyPaymentMethodTransfer(HttpServletRequest request, String partyPaymentMethodName)
             throws NamingException {
-        GetPartyPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPartyPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPartyPaymentMethodForm();
 
         commandForm.setPartyPaymentMethodName(partyPaymentMethodName);
 
-        CommandResult commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyPaymentMethodResult result = (GetPartyPaymentMethodResult)executionResult.getResult();
+        var commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyPaymentMethodResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_PAYMENT_METHOD, result.getPartyPaymentMethod());
     }
@@ -106,7 +101,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyPaymentMethodForm commandForm = PaymentUtil.getHome().getDeletePartyPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getDeletePartyPaymentMethodForm();
         
         commandForm.setPartyPaymentMethodName(actionForm.getPartyPaymentMethodName());
 

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offeruse;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.edit.OfferUseEdit;
-import com.echothree.control.user.offer.common.form.EditOfferUseForm;
 import com.echothree.control.user.offer.common.result.EditOfferUseResult;
-import com.echothree.control.user.offer.common.spec.OfferUseSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -59,12 +54,12 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-        String useName = request.getParameter(ParameterConstants.USE_NAME);
-        EditActionForm actionForm = (EditActionForm)form;
-        EditOfferUseForm commandForm = OfferUtil.getHome().getEditOfferUseForm();
-        OfferUseSpec spec = OfferUtil.getHome().getOfferUseSpec();
+        String forwardKey;
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var useName = request.getParameter(ParameterConstants.USE_NAME);
+        var actionForm = (EditActionForm)form;
+        var commandForm = OfferUtil.getHome().getEditOfferUseForm();
+        var spec = OfferUtil.getHome().getOfferUseSpec();
         
         if(offerName == null)
             offerName = actionForm.getOfferName();
@@ -76,20 +71,20 @@ public class EditAction
         spec.setUseName(useName);
         
         if(wasPost(request)) {
-            OfferUseEdit edit = OfferUtil.getHome().getOfferUseEdit();
+            var edit = OfferUtil.getHome().getOfferUseEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
             
             edit.setSalesOrderSequenceName(actionForm.getSalesOrderSequenceChoice());
-            
-            CommandResult commandResult = OfferUtil.getHome().editOfferUse(getUserVisitPK(request), commandForm);
+
+            var commandResult = OfferUtil.getHome().editOfferUse(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditOfferUseResult result = (EditOfferUseResult)executionResult.getResult();
+                    var result = (EditOfferUseResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -102,13 +97,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = OfferUtil.getHome().editOfferUse(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditOfferUseResult result = (EditOfferUseResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().editOfferUse(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditOfferUseResult)executionResult.getResult();
             
             if(result != null) {
-                OfferUseEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setOfferName(offerName);
@@ -123,8 +118,8 @@ public class EditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.OFFER_NAME, offerName);
             request.setAttribute(AttributeConstants.USE_NAME, useName);

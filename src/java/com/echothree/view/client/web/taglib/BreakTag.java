@@ -38,7 +38,7 @@ public class BreakTag
     @Override
     public int doStartTag()
             throws JspException {
-        RepeatHolder repeatHolder = (RepeatHolder)pageContext.getAttribute(WebConstants.Attribute_REPEAT_HOLDER, PageContext.REQUEST_SCOPE);
+        var repeatHolder = (RepeatHolder)pageContext.getAttribute(WebConstants.Attribute_REPEAT_HOLDER, PageContext.REQUEST_SCOPE);
 
         if(repeatHolder == null) {
             throw new JspException("break may only be used inside the body of a repeat tag.");

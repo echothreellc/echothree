@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.chain.lettercontactmechanismpurpose;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.CreateLetterContactMechanismPurposeForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,13 +51,13 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        String forwardKey;
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
         
         if(wasPost(request)) {
-            CreateLetterContactMechanismPurposeForm commandForm = LetterUtil.getHome().getCreateLetterContactMechanismPurposeForm();
+            var commandForm = LetterUtil.getHome().getCreateLetterContactMechanismPurposeForm();
             
             if(chainKindName == null) {
                 chainKindName = actionForm.getChainKindName();
@@ -78,8 +76,8 @@ public class AddAction
             commandForm.setLetterName(actionForm.getLetterName());
             commandForm.setPriority(actionForm.getPriority());
             commandForm.setContactMechanismPurposeName(actionForm.getContactMechanismPurposeChoice());
-            
-            CommandResult commandResult = LetterUtil.getHome().createLetterContactMechanismPurpose(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().createLetterContactMechanismPurpose(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -93,8 +91,8 @@ public class AddAction
             actionForm.setLetterName(letterName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CHAIN_KIND_NAME, chainKindName);
             request.setAttribute(AttributeConstants.CHAIN_TYPE_NAME, chainTypeName);

@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentPageAreaForm;
-import com.echothree.control.user.content.common.form.CreateContentPageDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -65,9 +63,9 @@ public class ContentPageHandler
             String languageIsoName = null;
             String description = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -77,7 +75,7 @@ public class ContentPageHandler
             }
             
             try {
-                CreateContentPageDescriptionForm createContentPageDescriptionForm = ContentFormFactory.getCreateContentPageDescriptionForm();
+                var createContentPageDescriptionForm = ContentFormFactory.getCreateContentPageDescriptionForm();
                 
                 createContentPageDescriptionForm.setContentCollectionName(contentCollectionName);
                 createContentPageDescriptionForm.setContentSectionName(contentSectionName);
@@ -90,8 +88,8 @@ public class ContentPageHandler
                 throw new SAXException(e);
             }
         } else if(localName.equals("contentPageArea")) {
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("sortOrder"))
                     sortOrder = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("contentPageAreaUrl"))
@@ -112,8 +110,8 @@ public class ContentPageHandler
     public void characters(char ch[], int start, int length)
     throws SAXException {
         if(inContentPageArea) {
-            int oldLength = contentPageAreaClob != null? contentPageAreaClob.length: 0;
-            char []newClob = new char[oldLength + length];
+            var oldLength = contentPageAreaClob != null? contentPageAreaClob.length: 0;
+            var newClob = new char[oldLength + length];
             
             if(contentPageAreaClob != null)
                 System.arraycopy(contentPageAreaClob, 0, newClob, 0, contentPageAreaClob.length);
@@ -126,7 +124,7 @@ public class ContentPageHandler
     public void endElement(String namespaceURI, String localName, String qName)
     throws SAXException {
         if(localName.equals("contentPageArea")) {
-            CreateContentPageAreaForm createContentPageAreaForm = ContentFormFactory.getCreateContentPageAreaForm();
+            var createContentPageAreaForm = ContentFormFactory.getCreateContentPageAreaForm();
             
             createContentPageAreaForm.setContentCollectionName(contentCollectionName);
             createContentPageAreaForm.setContentSectionName(contentSectionName);

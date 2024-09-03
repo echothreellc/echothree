@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.SetDefaultCurrencyForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,11 +48,11 @@ public class SetDefaultCurrencyCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = form.getCurrencyIsoName();
-        Currency currency = accountingControl.getCurrencyByIsoNameForUpdate(currencyIsoName);
+        var currencyIsoName = form.getCurrencyIsoName();
+        var currency = accountingControl.getCurrencyByIsoNameForUpdate(currencyIsoName);
         
         if(currency != null) {
-            Currency defaultCurrency = accountingControl.getDefaultCurrencyForUpdate();
+            var defaultCurrency = accountingControl.getDefaultCurrencyForUpdate();
             
             if(!currency.equals(defaultCurrency)) {
                 defaultCurrency.setIsDefault(Boolean.FALSE);

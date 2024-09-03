@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.DeleteEmployeeTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteEmployeeTypeForm commandForm = EmployeeUtil.getHome().getDeleteEmployeeTypeForm();
-            String employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getDeleteEmployeeTypeForm();
+            var employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
             
             commandForm.setEmployeeTypeName(employeeTypeName);
             

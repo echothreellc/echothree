@@ -19,7 +19,6 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.employee.common.transfer.TerminationTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationType;
-import com.echothree.model.data.employee.server.entity.TerminationTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class TerminationTypeTransferCache
@@ -33,14 +32,14 @@ public class TerminationTypeTransferCache
     }
     
     public TerminationTypeTransfer getTerminationTypeTransfer(TerminationType terminationType) {
-        TerminationTypeTransfer terminationTypeTransfer = get(terminationType);
+        var terminationTypeTransfer = get(terminationType);
         
         if(terminationTypeTransfer == null) {
-            TerminationTypeDetail terminationTypeDetail = terminationType.getLastDetail();
-            String terminationTypeName = terminationTypeDetail.getTerminationTypeName();
-            Boolean isDefault = terminationTypeDetail.getIsDefault();
-            Integer sortOrder = terminationTypeDetail.getSortOrder();
-            String description = employeeControl.getBestTerminationTypeDescription(terminationType, getLanguage());
+            var terminationTypeDetail = terminationType.getLastDetail();
+            var terminationTypeName = terminationTypeDetail.getTerminationTypeName();
+            var isDefault = terminationTypeDetail.getIsDefault();
+            var sortOrder = terminationTypeDetail.getSortOrder();
+            var description = employeeControl.getBestTerminationTypeDescription(terminationType, getLanguage());
             
             terminationTypeTransfer = new TerminationTypeTransfer(terminationTypeName, isDefault, sortOrder, description);
             put(terminationType, terminationTypeTransfer);

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
-import com.echothree.control.user.core.common.form.EditEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
-import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,16 +56,16 @@ public class EntityAttributeGroupEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-        String entityAttributeGroupName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+        var entityAttributeGroupName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME);
         
         try {
             if(forwardKey == null) {
-                EntityAttributeGroupEditActionForm actionForm = (EntityAttributeGroupEditActionForm)form;
-                EditEntityAttributeEntityAttributeGroupForm commandForm = CoreUtil.getHome().getEditEntityAttributeEntityAttributeGroupForm();
-                EntityAttributeEntityAttributeGroupSpec spec = CoreUtil.getHome().getEntityAttributeEntityAttributeGroupSpec();
+                var actionForm = (EntityAttributeGroupEditActionForm)form;
+                var commandForm = CoreUtil.getHome().getEditEntityAttributeEntityAttributeGroupForm();
+                var spec = CoreUtil.getHome().getEntityAttributeEntityAttributeGroupSpec();
                 
                 if(componentVendorName == null)
                     componentVendorName = actionForm.getComponentVendorName();
@@ -88,19 +83,19 @@ public class EntityAttributeGroupEditAction
                 spec.setEntityAttributeGroupName(entityAttributeGroupName);
                 
                 if(wasPost(request)) {
-                    EntityAttributeEntityAttributeGroupEdit edit = CoreUtil.getHome().getEntityAttributeEntityAttributeGroupEdit();
+                    var edit = CoreUtil.getHome().getEntityAttributeEntityAttributeGroupEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().editEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEntityAttributeEntityAttributeGroupResult result = (EditEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
+                            var result = (EditEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -113,13 +108,13 @@ public class EntityAttributeGroupEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEntityAttributeEntityAttributeGroupResult result = (EditEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
+
+                    var commandResult = CoreUtil.getHome().editEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EntityAttributeEntityAttributeGroupEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setComponentVendorName(componentVendorName);
@@ -140,8 +135,8 @@ public class EntityAttributeGroupEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

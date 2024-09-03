@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.RelatedItem;
-import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.item.server.value.RelatedItemDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,16 +87,16 @@ public class EditRelatedItemCommand
     public RelatedItem getEntity(EditRelatedItemResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         RelatedItem relatedItem = null;
-        String relatedItemTypeName = spec.getRelatedItemTypeName();
-        RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+        var relatedItemTypeName = spec.getRelatedItemTypeName();
+        var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
         if(relatedItemType != null) {
-            String fromItemName = spec.getFromItemName();
-            Item fromItem = itemControl.getItemByName(fromItemName);
+            var fromItemName = spec.getFromItemName();
+            var fromItem = itemControl.getItemByName(fromItemName);
 
             if(fromItem != null) {
-                String toItemName = spec.getToItemName();
-                Item toItem = itemControl.getItemByName(toItemName);
+                var toItemName = spec.getToItemName();
+                var toItem = itemControl.getItemByName(toItemName);
 
                 if(toItem != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -143,7 +141,7 @@ public class EditRelatedItemCommand
     @Override
     public void doUpdate(RelatedItem relatedItem) {
         var itemControl = Session.getModelController(ItemControl.class);
-        RelatedItemDetailValue relatedItemValueDetail = itemControl.getRelatedItemDetailValueForUpdate(relatedItem);
+        var relatedItemValueDetail = itemControl.getRelatedItemDetailValueForUpdate(relatedItem);
 
         relatedItemValueDetail.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 

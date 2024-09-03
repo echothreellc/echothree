@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected PrinterGroupUseTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        PrinterGroupUseTypeDescriptionSpec spec = PrinterUtil.getHome().getPrinterGroupUseTypeDescriptionSpec();
+        var spec = PrinterUtil.getHome().getPrinterGroupUseTypeDescriptionSpec();
         
         spec.setPrinterGroupUseTypeName(findParameter(request, ParameterConstants.PRINTER_GROUP_USE_TYPE_NAME, actionForm.getPrinterGroupUseTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected PrinterGroupUseTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        PrinterGroupUseTypeDescriptionEdit edit = PrinterUtil.getHome().getPrinterGroupUseTypeDescriptionEdit();
+        var edit = PrinterUtil.getHome().getPrinterGroupUseTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

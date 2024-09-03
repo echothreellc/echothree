@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.filter.filteradjustment;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.edit.FilterAdjustmentDescriptionEdit;
-import com.echothree.control.user.filter.common.form.EditFilterAdjustmentDescriptionForm;
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentDescriptionResult;
-import com.echothree.control.user.filter.common.spec.FilterAdjustmentDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditFilterAdjustmentDescriptionForm commandForm = FilterUtil.getHome().getEditFilterAdjustmentDescriptionForm();
-                FilterAdjustmentDescriptionSpec spec = FilterUtil.getHome().getFilterAdjustmentDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = FilterUtil.getHome().getEditFilterAdjustmentDescriptionForm();
+                var spec = FilterUtil.getHome().getFilterAdjustmentDescriptionSpec();
                 
                 if(filterKindName == null)
                     filterKindName = actionForm.getFilterKindName();
@@ -84,19 +79,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    FilterAdjustmentDescriptionEdit edit = FilterUtil.getHome().getFilterAdjustmentDescriptionEdit();
+                    var edit = FilterUtil.getHome().getFilterAdjustmentDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = FilterUtil.getHome().editFilterAdjustmentDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = FilterUtil.getHome().editFilterAdjustmentDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditFilterAdjustmentDescriptionResult result = (EditFilterAdjustmentDescriptionResult)executionResult.getResult();
+                            var result = (EditFilterAdjustmentDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +104,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = FilterUtil.getHome().editFilterAdjustmentDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditFilterAdjustmentDescriptionResult result = (EditFilterAdjustmentDescriptionResult)executionResult.getResult();
+
+                    var commandResult = FilterUtil.getHome().editFilterAdjustmentDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditFilterAdjustmentDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        FilterAdjustmentDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setFilterKindName(filterKindName);
@@ -135,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FILTER_KIND_NAME, filterKindName);
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT_NAME, filterAdjustmentName);

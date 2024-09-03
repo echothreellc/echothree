@@ -18,7 +18,6 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetCountryChoicesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetCountryChoicesResult;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,9 +65,9 @@ public class GetCountryChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetCountryChoicesResult result = GeoResultFactory.getGetCountryChoicesResult();
-        String defaultCountryChoice = form.getDefaultCountryChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = GeoResultFactory.getGetCountryChoicesResult();
+        var defaultCountryChoice = form.getDefaultCountryChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCountryChoices(geoControl.getCountryChoices(defaultCountryChoice, getPreferredLanguage(), allowNullChoice));
         

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.edit.PrinterDescriptionEdit;
-import com.echothree.control.user.printer.common.form.EditPrinterDescriptionForm;
 import com.echothree.control.user.printer.common.result.EditPrinterDescriptionResult;
-import com.echothree.control.user.printer.common.spec.PrinterDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
-        String printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+        var printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditPrinterDescriptionForm commandForm = PrinterUtil.getHome().getEditPrinterDescriptionForm();
-                PrinterDescriptionSpec spec = PrinterUtil.getHome().getPrinterDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = PrinterUtil.getHome().getEditPrinterDescriptionForm();
+                var spec = PrinterUtil.getHome().getPrinterDescriptionSpec();
                 
                 if(printerGroupName == null)
                     printerGroupName = actionForm.getPrinterGroupName();
@@ -83,19 +78,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    PrinterDescriptionEdit edit = PrinterUtil.getHome().getPrinterDescriptionEdit();
+                    var edit = PrinterUtil.getHome().getPrinterDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = PrinterUtil.getHome().editPrinterDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = PrinterUtil.getHome().editPrinterDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditPrinterDescriptionResult result = (EditPrinterDescriptionResult)executionResult.getResult();
+                            var result = (EditPrinterDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -108,13 +103,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = PrinterUtil.getHome().editPrinterDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditPrinterDescriptionResult result = (EditPrinterDescriptionResult)executionResult.getResult();
+
+                    var commandResult = PrinterUtil.getHome().editPrinterDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditPrinterDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        PrinterDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setPrinterGroupName(printerGroupName);
@@ -134,8 +129,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.PRINTER_GROUP_NAME, printerGroupName);
             request.setAttribute(AttributeConstants.PRINTER_NAME, printerName);

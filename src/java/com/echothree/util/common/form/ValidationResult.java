@@ -22,7 +22,7 @@ import java.io.Serializable;
 public class ValidationResult
         implements Serializable {
 
-    private Messages validationMessages = null;
+    private Messages validationMessages;
 
     /** Creates a new instance of ValidationResult.
      */
@@ -41,7 +41,7 @@ public class ValidationResult
 
     @Override
     public String toString() {
-        return new StringBuilder().append("{ validationMessages = ").append(validationMessages).append(" }").toString();
+        return "{ validationMessages = " + validationMessages + " }";
     }
 
 }

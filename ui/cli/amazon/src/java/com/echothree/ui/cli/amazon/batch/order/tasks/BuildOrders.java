@@ -31,7 +31,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.logging.Log;
@@ -73,7 +72,7 @@ public class BuildOrders {
     private void handleHeaderFields(Iterable<String> headerFields) {
         this.headerFields = new ArrayList<>();
 
-        for(String headerField : headerFields) {
+        for(var headerField : headerFields) {
             this.headerFields.add(headerField);
         }
 
@@ -82,9 +81,9 @@ public class BuildOrders {
 
     private Map<String, String> handleDataFields(long line, Iterable<String> dataFields) {
         Map<String, String> dataFieldMap = new HashMap<>();
-        Iterator<String> headerFieldsIter = this.headerFields.iterator();
+        var headerFieldsIter = this.headerFields.iterator();
 
-        for(String dataField : dataFields) {
+        for(var dataField : dataFields) {
             if(headerFieldsIter.hasNext()) {
                 dataFieldMap.put(headerFieldsIter.next(), dataField);
             } else {
@@ -98,9 +97,9 @@ public class BuildOrders {
     }
 
     private AmazonOrder getOrderFromDataFields(AmazonOrders amazonOrders, Map<String, String> dataFieldMap) {
-        AmazonOrder order = new AmazonOrder(amazonOrders, dataFieldMap);
-        String orderKey = order.getKey();
-        AmazonOrder existingOrder = amazonOrders.getAmazonOrders().get(orderKey);
+        var order = new AmazonOrder(amazonOrders, dataFieldMap);
+        var orderKey = order.getKey();
+        var existingOrder = amazonOrders.getAmazonOrders().get(orderKey);
 
         if(existingOrder == null) {
             amazonOrders.getAmazonOrders().put(orderKey, order);
@@ -112,10 +111,10 @@ public class BuildOrders {
     }
 
     private AmazonOrderShipmentGroup getOrderShipmentGroupFromDataFields(AmazonOrder order, Map<String, String> dataFieldMap) {
-        AmazonOrderShipmentGroup orderShipmentGroup =  new AmazonOrderShipmentGroup(order, dataFieldMap);
-        String orderShipmentGroupKey = orderShipmentGroup.getKey();
-        Map<String, AmazonOrderShipmentGroup> amazonOrderShipmentGroups = order.getAmazonOrderShipmentGroups();
-        AmazonOrderShipmentGroup existingOrderShipmentGroup = amazonOrderShipmentGroups.get(orderShipmentGroupKey);
+        var orderShipmentGroup =  new AmazonOrderShipmentGroup(order, dataFieldMap);
+        var orderShipmentGroupKey = orderShipmentGroup.getKey();
+        var amazonOrderShipmentGroups = order.getAmazonOrderShipmentGroups();
+        var existingOrderShipmentGroup = amazonOrderShipmentGroups.get(orderShipmentGroupKey);
 
         if(existingOrderShipmentGroup == null) {
             amazonOrderShipmentGroups.put(orderShipmentGroupKey, orderShipmentGroup);
@@ -127,10 +126,10 @@ public class BuildOrders {
     }
 
     private AmazonOrderLine getOrderLineFromDataFields(AmazonOrderShipmentGroup orderShipmentGroup, Map<String, String> dataFieldMap) {
-        AmazonOrderLine orderLine = new AmazonOrderLine(orderShipmentGroup, dataFieldMap);
-        String orderLineKey = orderLine.getKey();
-        Map<String, AmazonOrderLine> amazonOrderLines = orderShipmentGroup.getAmazonOrderLines();
-        AmazonOrderLine existingOrderLine = amazonOrderLines.get(orderLineKey);
+        var orderLine = new AmazonOrderLine(orderShipmentGroup, dataFieldMap);
+        var orderLineKey = orderLine.getKey();
+        var amazonOrderLines = orderShipmentGroup.getAmazonOrderLines();
+        var existingOrderLine = amazonOrderLines.get(orderLineKey);
 
         if(existingOrderLine == null) {
             amazonOrderLines.put(orderLineKey, orderLine);
@@ -149,12 +148,12 @@ public class BuildOrders {
             throws IOException {
         log.info(indent + "Using filename: " + filename);
 
-        FileInputStream fis = new FileInputStream(new File(filename));
-        BufferedReader in = new BufferedReader(new InputStreamReader(fis, Charset.forName("windows-1252")));
+        var fis = new FileInputStream(new File(filename));
+        var in = new BufferedReader(new InputStreamReader(fis, Charset.forName("windows-1252")));
         long count = 0;
 
-        for(String line = in.readLine(); line != null; line = in.readLine()) {
-            Iterable<String> fields = TabSplitter.split(new String(line.getBytes(Charsets.UTF_8), Charsets.UTF_8));
+        for(var line = in.readLine(); line != null; line = in.readLine()) {
+            var fields = TabSplitter.split(new String(line.getBytes(Charsets.UTF_8), Charsets.UTF_8));
 
             count++;
 

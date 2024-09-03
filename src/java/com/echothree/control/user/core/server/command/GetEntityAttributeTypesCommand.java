@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityAttributeTypesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,9 +29,7 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetEntityAttributeTypesCommand
@@ -76,7 +73,7 @@ public class GetEntityAttributeTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<EntityAttributeType> entities) {
-        GetEntityAttributeTypesResult result = CoreResultFactory.getGetEntityAttributeTypesResult();
+        var result = CoreResultFactory.getGetEntityAttributeTypesResult();
         var coreControl = getCoreControl();
         
         result.setEntityAttributeTypes(coreControl.getEntityAttributeTypeTransfers(getUserVisit(), entities));

@@ -19,9 +19,6 @@ package com.echothree.control.user.tax.server.command;
 import com.echothree.control.user.tax.common.form.DeleteGeoCodeTaxForm;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.tax.server.entity.GeoCodeTax;
-import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class DeleteGeoCodeTaxCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var taxControl = Session.getModelController(TaxControl.class);
-            String taxName = form.getTaxName();
-            Tax tax = taxControl.getTaxByName(taxName);
+            var taxName = form.getTaxName();
+            var tax = taxControl.getTaxByName(taxName);
             
             if(tax != null) {
-                GeoCodeTax geoCodeTax = taxControl.getGeoCodeTaxForUpdate(geoCode, tax);
+                var geoCodeTax = taxControl.getGeoCodeTaxForUpdate(geoCode, tax);
                 
                 if(geoCodeTax != null) {
                     taxControl.deleteGeoCodeTax(geoCodeTax, getPartyPK());

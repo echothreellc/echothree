@@ -19,7 +19,6 @@ package com.echothree.control.user.purchase.server.command;
 import com.echothree.control.user.purchase.common.form.SetPurchaseInvoiceStatusForm;
 import com.echothree.model.control.invoice.server.logic.PurchaseInvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -57,12 +56,12 @@ public class SetPurchaseInvoiceStatusCommand
     
     @Override
     protected BaseResult execute() {
-        PurchaseInvoiceLogic purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
-        String invoiceName = form.getInvoiceName();
-        Invoice invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
+        var purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
+        var invoiceName = form.getInvoiceName();
+        var invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
         
         if(invoice != null) {
-            String invoiceStatusChoice = form.getInvoiceStatusChoice();
+            var invoiceStatusChoice = form.getInvoiceStatusChoice();
             
             purchaseInvoiceLogic.setPurchaseInvoiceStatus(this, invoice, invoiceStatusChoice, getPartyPK());
         } else {

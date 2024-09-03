@@ -18,14 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetTextDecorationDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetTextDecorationDescriptionResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.TextDecoration;
-import com.echothree.model.data.core.server.entity.TextDecorationDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,17 +63,17 @@ public class GetTextDecorationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetTextDecorationDescriptionResult result = CoreResultFactory.getGetTextDecorationDescriptionResult();
-        String textDecorationName = form.getTextDecorationName();
-        TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var result = CoreResultFactory.getGetTextDecorationDescriptionResult();
+        var textDecorationName = form.getTextDecorationName();
+        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
 
         if(textDecoration != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                TextDecorationDescription textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, language);
+                var textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, language);
 
                 if(textDecorationDescription != null) {
                     result.setTextDecorationDescription(coreControl.getTextDecorationDescriptionTransfer(getUserVisit(), textDecorationDescription));

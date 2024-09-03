@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.searchtype;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetSearchTypeDescriptionsForm;
 import com.echothree.control.user.search.common.result.GetSearchTypeDescriptionsResult;
-import com.echothree.model.control.search.common.transfer.SearchTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetSearchTypeDescriptionsForm commandForm = SearchUtil.getHome().getGetSearchTypeDescriptionsForm();
+        var commandForm = SearchUtil.getHome().getGetSearchTypeDescriptionsForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
 
-        CommandResult commandResult = SearchUtil.getHome().getSearchTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = SearchUtil.getHome().getSearchTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchTypeDescriptionsResult result = (GetSearchTypeDescriptionsResult) executionResult.getResult();
-            SearchTypeTransfer searchTypeTransfer = result.getSearchType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchTypeDescriptionsResult) executionResult.getResult();
+            var searchTypeTransfer = result.getSearchType();
 
             request.setAttribute(AttributeConstants.SEARCH_TYPE, searchTypeTransfer);
             request.setAttribute(AttributeConstants.SEARCH_TYPE_DESCRIPTIONS, result.getSearchTypeDescriptions());

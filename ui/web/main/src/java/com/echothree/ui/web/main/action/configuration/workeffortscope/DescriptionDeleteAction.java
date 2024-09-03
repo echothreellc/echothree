@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.form.DeleteWorkEffortScopeDescriptionForm;
-import com.echothree.control.user.workeffort.common.form.GetWorkEffortScopeDescriptionForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,16 +61,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkEffortScopeDescriptionForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeDescriptionForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeDescriptionForm();
         
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScopeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortScopeDescriptionResult result = (GetWorkEffortScopeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortScopeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.WORK_EFFORT_SCOPE_DESCRIPTION, result.getWorkEffortScopeDescription());
         }
@@ -82,7 +79,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteWorkEffortScopeDescriptionForm commandForm = WorkEffortUtil.getHome().getDeleteWorkEffortScopeDescriptionForm();
+        var commandForm = WorkEffortUtil.getHome().getDeleteWorkEffortScopeDescriptionForm();
 
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());

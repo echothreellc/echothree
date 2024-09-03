@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDivisionForm;
 import com.echothree.control.user.party.common.result.GetDivisionResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -104,7 +101,7 @@ public class DivisionTag
     public int doStartTag()
             throws JspException {
         try {
-            GetDivisionForm commandForm = PartyUtil.getHome().getGetDivisionForm();
+            var commandForm = PartyUtil.getHome().getGetDivisionForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
@@ -113,8 +110,8 @@ public class DivisionTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDivision(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getDivision(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -122,8 +119,8 @@ public class DivisionTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetDivisionResult result = (GetDivisionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetDivisionResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getDivision(), scope);
             }

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.period.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodKindDescriptionTransfer;
-import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.period.server.entity.PeriodKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class PeriodKindDescriptionTransferCache
     }
     
     public PeriodKindDescriptionTransfer getPeriodKindDescriptionTransfer(PeriodKindDescription periodKindDescription) {
-        PeriodKindDescriptionTransfer periodKindDescriptionTransfer = get(periodKindDescription);
+        var periodKindDescriptionTransfer = get(periodKindDescription);
         
         if(periodKindDescriptionTransfer == null) {
-            PeriodKindTransfer periodKindTransfer = periodControl.getPeriodKindTransfer(userVisit, periodKindDescription.getPeriodKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, periodKindDescription.getLanguage());
+            var periodKindTransfer = periodControl.getPeriodKindTransfer(userVisit, periodKindDescription.getPeriodKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, periodKindDescription.getLanguage());
             
             periodKindDescriptionTransfer = new PeriodKindDescriptionTransfer(languageTransfer, periodKindTransfer, periodKindDescription.getDescription());
             put(periodKindDescription, periodKindDescriptionTransfer);

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.commenttype;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.edit.CommentTypeEdit;
-import com.echothree.control.user.comment.common.form.EditCommentTypeForm;
 import com.echothree.control.user.comment.common.result.EditCommentTypeResult;
-import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditCommentTypeForm commandForm = CommentUtil.getHome().getEditCommentTypeForm();
-                CommentTypeSpec spec = CommentUtil.getHome().getCommentTypeSpec();
-                String originalTypeCommentName = request.getParameter(ParameterConstants.ORIGINAL_COMMENT_TYPE_NAME);
+                var actionForm = (EditActionForm)form;
+                var commandForm = CommentUtil.getHome().getEditCommentTypeForm();
+                var spec = CommentUtil.getHome().getCommentTypeSpec();
+                var originalTypeCommentName = request.getParameter(ParameterConstants.ORIGINAL_COMMENT_TYPE_NAME);
                 
                 if(componentVendorName == null)
                     componentVendorName = actionForm.getComponentVendorName();
@@ -84,7 +79,7 @@ public class EditAction
                 spec.setCommentTypeName(originalTypeCommentName);
                 
                 if(wasPost(request)) {
-                    CommentTypeEdit edit = CommentUtil.getHome().getCommentTypeEdit();
+                    var edit = CommentUtil.getHome().getCommentTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -93,14 +88,14 @@ public class EditAction
                     edit.setCommentSequenceName(actionForm.getCommentSequenceChoice());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CommentUtil.getHome().editCommentType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CommentUtil.getHome().editCommentType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCommentTypeResult result = (EditCommentTypeResult)executionResult.getResult();
+                            var result = (EditCommentTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -113,13 +108,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CommentUtil.getHome().editCommentType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCommentTypeResult result = (EditCommentTypeResult)executionResult.getResult();
+
+                    var commandResult = CommentUtil.getHome().editCommentType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCommentTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CommentTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setComponentVendorName(componentVendorName);
@@ -142,8 +137,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

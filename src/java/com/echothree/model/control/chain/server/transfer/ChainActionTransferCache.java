@@ -18,15 +18,10 @@ package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.common.ChainOptions;
-import com.echothree.model.control.chain.common.transfer.ChainActionSetTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainActionTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainActionTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainAction;
-import com.echothree.model.data.chain.server.entity.ChainActionDetail;
-import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class ChainActionTransferCache
         extends BaseChainTransferCache<ChainAction, ChainActionTransfer> {
@@ -46,22 +41,22 @@ public class ChainActionTransferCache
     }
 
     public ChainActionTransfer getChainActionTransfer(ChainAction chainAction) {
-        ChainActionTransfer chainActionTransfer = get(chainAction);
+        var chainActionTransfer = get(chainAction);
 
         if(chainActionTransfer == null) {
-            ChainActionDetail chainActionDetail = chainAction.getLastDetail();
-            ChainActionSetTransfer chainActionSetTransfer = chainControl.getChainActionSetTransfer(userVisit, chainActionDetail.getChainActionSet());
-            String chainActionName = chainActionDetail.getChainActionName();
-            ChainActionType chainActionType = chainActionDetail.getChainActionType();
-            ChainActionTypeTransfer chainActionTypeTransfer = chainControl.getChainActionTypeTransfer(userVisit, chainActionType);
-            Integer sortOrder = chainActionDetail.getSortOrder();
-            String description = chainControl.getBestChainActionDescription(chainAction, getLanguage());
+            var chainActionDetail = chainAction.getLastDetail();
+            var chainActionSetTransfer = chainControl.getChainActionSetTransfer(userVisit, chainActionDetail.getChainActionSet());
+            var chainActionName = chainActionDetail.getChainActionName();
+            var chainActionType = chainActionDetail.getChainActionType();
+            var chainActionTypeTransfer = chainControl.getChainActionTypeTransfer(userVisit, chainActionType);
+            var sortOrder = chainActionDetail.getSortOrder();
+            var description = chainControl.getBestChainActionDescription(chainAction, getLanguage());
 
             chainActionTransfer = new ChainActionTransfer(chainActionSetTransfer, chainActionName, chainActionTypeTransfer, sortOrder, description);
             put(chainAction, chainActionTransfer);
 
             if(includeRelated) {
-                String chainActionTypeName = chainActionType.getLastDetail().getChainActionTypeName();
+                var chainActionTypeName = chainActionType.getLastDetail().getChainActionTypeName();
                 if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
                     chainActionTransfer.setChainActionLetter(chainControl.getChainActionLetterTransfer(userVisit, chainAction));
                 } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {

@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPageLayoutsResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -69,7 +68,7 @@ public class GetContentPageLayoutsCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentPageLayout> entities) {
-        GetContentPageLayoutsResult result = ContentResultFactory.getGetContentPageLayoutsResult();
+        var result = ContentResultFactory.getGetContentPageLayoutsResult();
         var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentPageLayouts(contentControl.getContentPageLayoutTransfers(getUserVisit(), entities));

@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPolicyChoicesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerTypeChoicesForm;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnPolicyChoicesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
@@ -35,8 +31,6 @@ import com.echothree.model.control.cancellationpolicy.common.choice.Cancellation
 import com.echothree.model.control.customer.common.choice.CustomerTypeChoicesBean;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BasePersonActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -71,14 +65,14 @@ public class CustomerEditActionForm
     public void setupCustomerTypeChoices()
             throws NamingException {
         if(customerTypeChoices == null) {
-            GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
             form.setDefaultCustomerTypeChoice(customerTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeChoicesResult getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
             customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
 
             if(customerTypeChoice == null) {
@@ -90,15 +84,15 @@ public class CustomerEditActionForm
     public void setupCancellationPolicyChoices()
             throws NamingException {
         if(cancellationPolicyChoices == null) {
-            GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+            var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
             form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
             cancellationPolicyChoices = result.getCancellationPolicyChoices();
 
             if(cancellationPolicyChoice == null)
@@ -109,15 +103,15 @@ public class CustomerEditActionForm
     public void setupReturnPolicyChoices()
             throws NamingException {
         if(returnPolicyChoices == null) {
-            GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+            var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
             form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
             returnPolicyChoices = result.getReturnPolicyChoices();
 
             if(returnPolicyChoice == null)
@@ -128,15 +122,15 @@ public class CustomerEditActionForm
     public void setupArGlAccountChoices()
             throws NamingException {
         if(arGlAccountChoices == null) {
-            GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+            var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
 
             form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
             form.setDefaultGlAccountChoice(arGlAccountChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
             arGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
 
             if(arGlAccountChoice == null) {

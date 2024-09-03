@@ -41,7 +41,7 @@ public class QueueTypeLogic
     
     public QueueType getQueueTypeByName(final ExecutionErrorAccumulator eea, final String queueTypeName) {
         var queueControl = Session.getModelController(QueueControl.class);
-        QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
+        var queueType = queueControl.getQueueTypeByName(queueTypeName);
 
         if(queueType == null) {
             handleExecutionError(UnknownQueueTypeNameException.class, eea, ExecutionErrors.UnknownQueueTypeName.name(), queueTypeName);

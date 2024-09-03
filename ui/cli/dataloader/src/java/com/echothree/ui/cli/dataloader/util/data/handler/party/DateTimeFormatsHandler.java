@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreateDateTimeFormatForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -64,9 +63,9 @@ public class DateTimeFormatsHandler
             String timeSeparator = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("dateTimeFormatName"))
                     dateTimeFormatName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("javaShortDateFormat"))
@@ -108,7 +107,7 @@ public class DateTimeFormatsHandler
             }
             
             try {
-                CreateDateTimeFormatForm createDateTimeFormatForm = PartyFormFactory.getCreateDateTimeFormatForm();
+                var createDateTimeFormatForm = PartyFormFactory.getCreateDateTimeFormatForm();
                 
                 createDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);
                 createDateTimeFormatForm.setJavaShortDateFormat(javaShortDateFormat);

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.entityattributeentitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityAttributeEntityTypesForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeEntityTypesResult;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,17 +50,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
-        String forwardKey = null;
-        GetEntityAttributeEntityTypesForm commandForm = CoreUtil.getHome().getGetEntityAttributeEntityTypesForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityTypesForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeEntityTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityAttributeEntityTypesResult result = (GetEntityAttributeEntityTypesResult)executionResult.getResult();
-        EntityAttributeTransfer entityAttribute = result.getEntityAttribute();
+        var commandResult = CoreUtil.getHome().getEntityAttributeEntityTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityAttributeEntityTypesResult)executionResult.getResult();
+        var entityAttribute = result.getEntityAttribute();
 
         if(entityAttribute == null) {
             forwardKey = ForwardConstants.ERROR_404;

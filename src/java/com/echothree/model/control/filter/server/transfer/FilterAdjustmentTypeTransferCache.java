@@ -34,13 +34,13 @@ public class FilterAdjustmentTypeTransferCache
 
     @Override
     public FilterAdjustmentTypeTransfer getTransfer(FilterAdjustmentType filterAdjustmentType) {
-        FilterAdjustmentTypeTransfer filterAdjustmentTypeTransfer = get(filterAdjustmentType);
+        var filterAdjustmentTypeTransfer = get(filterAdjustmentType);
         
         if(filterAdjustmentTypeTransfer == null) {
-            String filterAdjustmentTypeName = filterAdjustmentType.getFilterAdjustmentTypeName();
-            Boolean isDefault = filterAdjustmentType.getIsDefault();
-            Integer sortOrder = filterAdjustmentType.getSortOrder();
-            String description = filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, getLanguage());
+            var filterAdjustmentTypeName = filterAdjustmentType.getFilterAdjustmentTypeName();
+            var isDefault = filterAdjustmentType.getIsDefault();
+            var sortOrder = filterAdjustmentType.getSortOrder();
+            var description = filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, getLanguage());
             
             filterAdjustmentTypeTransfer = new FilterAdjustmentTypeTransfer(filterAdjustmentTypeName, isDefault, sortOrder, description);
             put(filterAdjustmentType, filterAdjustmentTypeTransfer);

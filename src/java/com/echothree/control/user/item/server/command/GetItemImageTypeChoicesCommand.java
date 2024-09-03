@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemImageTypeChoicesForm;
-import com.echothree.control.user.item.common.result.GetItemImageTypeChoicesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetItemImageTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemImageTypeChoicesResult result = ItemResultFactory.getGetItemImageTypeChoicesResult();
-        String defaultItemImageTypeChoice = form.getDefaultItemImageTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetItemImageTypeChoicesResult();
+        var defaultItemImageTypeChoice = form.getDefaultItemImageTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setItemImageTypeChoices(itemControl.getItemImageTypeChoices(defaultItemImageTypeChoice, getPreferredLanguage(), allowNullChoice));
         

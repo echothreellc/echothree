@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.club.club;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.form.GetClubForm;
 import com.echothree.control.user.club.common.result.GetClubResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetClubForm commandForm = ClubUtil.getHome().getGetClubForm();
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var commandForm = ClubUtil.getHome().getGetClubForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
             
             commandForm.setClubName(clubName);
-            
-            CommandResult commandResult = ClubUtil.getHome().getClub(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetClubResult result = (GetClubResult)executionResult.getResult();
+
+            var commandResult = ClubUtil.getHome().getClub(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetClubResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CLUB, result.getClub());
             forwardKey = ForwardConstants.DISPLAY;

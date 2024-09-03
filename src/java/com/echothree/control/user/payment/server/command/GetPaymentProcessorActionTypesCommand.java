@@ -18,7 +18,6 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentProcessorActionTypesForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorActionTypesResult;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -56,7 +55,7 @@ public class GetPaymentProcessorActionTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<PaymentProcessorActionType> entities) {
-        GetPaymentProcessorActionTypesResult result = PaymentResultFactory.getGetPaymentProcessorActionTypesResult();
+        var result = PaymentResultFactory.getGetPaymentProcessorActionTypesResult();
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         
         result.setPaymentProcessorActionTypes(paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfers(getUserVisit(), entities));

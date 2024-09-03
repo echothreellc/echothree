@@ -18,12 +18,10 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.CreateFreeOnBoardForm;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
-import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,13 +63,13 @@ public class CreateFreeOnBoardCommand
     
     @Override
     protected BaseResult execute() {
-        CreateFreeOnBoardResult result = ShipmentResultFactory.getCreateFreeOnBoardResult();
-        String freeOnBoardName = form.getFreeOnBoardName();
+        var result = ShipmentResultFactory.getCreateFreeOnBoardResult();
+        var freeOnBoardName = form.getFreeOnBoardName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        FreeOnBoard freeOnBoard = FreeOnBoardLogic.getInstance().createFreeOnBoard(this,
+        var freeOnBoard = FreeOnBoardLogic.getInstance().createFreeOnBoard(this,
                 freeOnBoardName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(freeOnBoard != null && !hasExecutionErrors()) {

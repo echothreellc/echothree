@@ -28,10 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
-import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
-import com.echothree.model.data.offer.server.entity.OfferNameElementDetail;
-import com.echothree.model.data.offer.server.value.OfferNameElementDescriptionValue;
-import com.echothree.model.data.offer.server.value.OfferNameElementDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -112,8 +108,8 @@ public class EditOfferNameElementCommand
     @Override
     public void doLock(OfferNameElementEdit edit, OfferNameElement offerNameElement) {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, getPreferredLanguage());
-        OfferNameElementDetail offerNameElementDetail = offerNameElement.getLastDetail();
+        var offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, getPreferredLanguage());
+        var offerNameElementDetail = offerNameElement.getLastDetail();
         
         edit.setOfferNameElementName(offerNameElementDetail.getOfferNameElementName());
         edit.setOffset(offerNameElementDetail.getOffset().toString());
@@ -128,8 +124,8 @@ public class EditOfferNameElementCommand
     @Override
     public void canUpdate(OfferNameElement offerNameElement) {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        String offerNameElementName = edit.getOfferNameElementName();
-        OfferNameElement duplicateOfferNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
+        var offerNameElementName = edit.getOfferNameElementName();
+        var duplicateOfferNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
 
         if(duplicateOfferNameElement != null && !offerNameElement.equals(duplicateOfferNameElement)) {
             addExecutionError(ExecutionErrors.DuplicateOfferNameElementName.name(), offerNameElementName);
@@ -140,9 +136,9 @@ public class EditOfferNameElementCommand
     public void doUpdate(OfferNameElement offerNameElement) {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var partyPK = getPartyPK();
-        OfferNameElementDetailValue offerNameElementDetailValue = offerNameElementControl.getOfferNameElementDetailValueForUpdate(offerNameElement);
-        OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, getPreferredLanguage());
-        String description = edit.getDescription();
+        var offerNameElementDetailValue = offerNameElementControl.getOfferNameElementDetailValueForUpdate(offerNameElement);
+        var offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, getPreferredLanguage());
+        var description = edit.getDescription();
 
         offerNameElementDetailValue.setOfferNameElementName(edit.getOfferNameElementName());
         offerNameElementDetailValue.setOffset(Integer.valueOf(edit.getOffset()));
@@ -156,7 +152,7 @@ public class EditOfferNameElementCommand
         } else if(offerNameElementDescription != null && description == null) {
             offerNameElementControl.deleteOfferNameElementDescription(offerNameElementDescription, partyPK);
         } else if(offerNameElementDescription != null && description != null) {
-            OfferNameElementDescriptionValue offerNameElementDescriptionValue = offerNameElementControl.getOfferNameElementDescriptionValue(offerNameElementDescription);
+            var offerNameElementDescriptionValue = offerNameElementControl.getOfferNameElementDescriptionValue(offerNameElementDescription);
 
             offerNameElementDescriptionValue.setDescription(description);
             offerNameElementControl.updateOfferNameElementDescriptionFromValue(offerNameElementDescriptionValue, partyPK);

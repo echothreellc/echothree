@@ -17,9 +17,7 @@
 package com.echothree.model.control.security.server.transfer;
 
 import com.echothree.model.control.security.common.transfer.PartySecurityRoleTemplateTrainingClassTransfer;
-import com.echothree.model.control.security.common.transfer.PartySecurityRoleTemplateTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateTrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
     }
     
     public PartySecurityRoleTemplateTrainingClassTransfer getPartySecurityRoleTemplateTrainingClassTransfer(PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass) {
-        PartySecurityRoleTemplateTrainingClassTransfer partySecurityRoleTemplateTrainingClassTransfer = get(partySecurityRoleTemplateTrainingClass);
+        var partySecurityRoleTemplateTrainingClassTransfer = get(partySecurityRoleTemplateTrainingClass);
         
         if(partySecurityRoleTemplateTrainingClassTransfer == null) {
-            PartySecurityRoleTemplateTransfer partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getPartySecurityRoleTemplate());
-            TrainingClassTransfer trainingClass = trainingControl.getTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getTrainingClass());
+            var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getPartySecurityRoleTemplate());
+            var trainingClass = trainingControl.getTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getTrainingClass());
             
             partySecurityRoleTemplateTrainingClassTransfer = new PartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplate, trainingClass);
             put(partySecurityRoleTemplateTrainingClass, partySecurityRoleTemplateTrainingClassTransfer);

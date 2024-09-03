@@ -21,8 +21,6 @@ import com.echothree.control.user.filter.common.result.GetFilterKindsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,12 +48,12 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            CommandResult commandResult = FilterUtil.getHome().getFilterKinds(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterKindsResult getFilterKindsResult = (GetFilterKindsResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterKinds(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getFilterKindsResult = (GetFilterKindsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_KINDS, getFilterKindsResult.getFilterKinds());
             forwardKey = ForwardConstants.DISPLAY;

@@ -26,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.FontStyle;
-import com.echothree.model.data.core.server.entity.FontStyleDescription;
-import com.echothree.model.data.core.server.entity.FontStyleDetail;
-import com.echothree.model.data.core.server.value.FontStyleDescriptionValue;
-import com.echothree.model.data.core.server.value.FontStyleDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,7 +85,7 @@ public class EditFontStyleCommand
     public FontStyle getEntity(EditFontStyleResult result) {
         var coreControl = getCoreControl();
         FontStyle fontStyle;
-        String fontStyleName = spec.getFontStyleName();
+        var fontStyleName = spec.getFontStyleName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             fontStyle = coreControl.getFontStyleByName(fontStyleName);
@@ -119,8 +115,8 @@ public class EditFontStyleCommand
     @Override
     public void doLock(FontStyleEdit edit, FontStyle fontStyle) {
         var coreControl = getCoreControl();
-        FontStyleDescription fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, getPreferredLanguage());
-        FontStyleDetail fontStyleDetail = fontStyle.getLastDetail();
+        var fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, getPreferredLanguage());
+        var fontStyleDetail = fontStyle.getLastDetail();
 
         edit.setFontStyleName(fontStyleDetail.getFontStyleName());
         edit.setIsDefault(fontStyleDetail.getIsDefault().toString());
@@ -134,8 +130,8 @@ public class EditFontStyleCommand
     @Override
     public void canUpdate(FontStyle fontStyle) {
         var coreControl = getCoreControl();
-        String fontStyleName = edit.getFontStyleName();
-        FontStyle duplicateFontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var fontStyleName = edit.getFontStyleName();
+        var duplicateFontStyle = coreControl.getFontStyleByName(fontStyleName);
 
         if(duplicateFontStyle != null && !fontStyle.equals(duplicateFontStyle)) {
             addExecutionError(ExecutionErrors.DuplicateFontStyleName.name(), fontStyleName);
@@ -146,9 +142,9 @@ public class EditFontStyleCommand
     public void doUpdate(FontStyle fontStyle) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        FontStyleDetailValue fontStyleDetailValue = coreControl.getFontStyleDetailValueForUpdate(fontStyle);
-        FontStyleDescription fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, getPreferredLanguage());
-        String description = edit.getDescription();
+        var fontStyleDetailValue = coreControl.getFontStyleDetailValueForUpdate(fontStyle);
+        var fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, getPreferredLanguage());
+        var description = edit.getDescription();
 
         fontStyleDetailValue.setFontStyleName(edit.getFontStyleName());
         fontStyleDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +159,7 @@ public class EditFontStyleCommand
                 coreControl.deleteFontStyleDescription(fontStyleDescription, partyPK);
             } else {
                 if(fontStyleDescription != null && description != null) {
-                    FontStyleDescriptionValue fontStyleDescriptionValue = coreControl.getFontStyleDescriptionValue(fontStyleDescription);
+                    var fontStyleDescriptionValue = coreControl.getFontStyleDescriptionValue(fontStyleDescription);
 
                     fontStyleDescriptionValue.setDescription(description);
                     coreControl.updateFontStyleDescriptionFromValue(fontStyleDescriptionValue, partyPK);

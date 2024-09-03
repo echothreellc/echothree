@@ -21,8 +21,6 @@ import com.echothree.control.user.core.common.result.GetServicesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -49,12 +47,12 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
 
-        CommandResult commandResult = CoreUtil.getHome().getServices(getUserVisitPK(request), null);
+        var commandResult = CoreUtil.getHome().getServices(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetServicesResult result = (GetServicesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetServicesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SERVICES, result.getServices());
             forwardKey = ForwardConstants.DISPLAY;

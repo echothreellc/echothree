@@ -19,9 +19,6 @@ package com.echothree.control.user.scale.server.command;
 import com.echothree.control.user.scale.common.form.CreateScaleTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.scale.server.entity.ScaleType;
-import com.echothree.model.data.scale.server.entity.ScaleTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateScaleTypeDescriptionCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleTypeName = form.getScaleTypeName();
-        ScaleType scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
+       var scaleTypeName = form.getScaleTypeName();
+       var scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
         
         if(scaleType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ScaleTypeDescription scaleDescription = scaleControl.getScaleTypeDescription(scaleType, language);
+                var scaleDescription = scaleControl.getScaleTypeDescription(scaleType, language);
                 
                 if(scaleDescription == null) {
                     var description = form.getDescription();

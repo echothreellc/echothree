@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.timezone;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetTimeZoneDescriptionsForm;
 import com.echothree.control.user.party.common.result.GetTimeZoneDescriptionsResult;
-import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
-            GetTimeZoneDescriptionsForm commandForm = PartyUtil.getHome().getGetTimeZoneDescriptionsForm();
+            var javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
+            var commandForm = PartyUtil.getHome().getGetTimeZoneDescriptionsForm();
             
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getTimeZoneDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTimeZoneDescriptionsResult result = (GetTimeZoneDescriptionsResult)executionResult.getResult();
-            TimeZoneTransfer timeZoneTransfer = result.getTimeZone();
+
+            var commandResult = PartyUtil.getHome().getTimeZoneDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTimeZoneDescriptionsResult)executionResult.getResult();
+            var timeZoneTransfer = result.getTimeZone();
             
             request.setAttribute(AttributeConstants.TIME_ZONE, timeZoneTransfer);
             request.setAttribute(AttributeConstants.JAVA_TIME_ZONE_NAME, timeZoneTransfer.getJavaTimeZoneName());

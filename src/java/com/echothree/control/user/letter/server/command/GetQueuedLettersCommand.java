@@ -17,16 +17,12 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.GetQueuedLettersForm;
-import com.echothree.control.user.letter.common.result.GetQueuedLettersResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,21 +66,21 @@ public class GetQueuedLettersCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetQueuedLettersResult result = LetterResultFactory.getGetQueuedLettersResult();
-        String chainKindName = form.getChainKindName();
-        String chainTypeName = form.getChainTypeName();
-        String letterName = form.getLetterName();
+        var result = LetterResultFactory.getGetQueuedLettersResult();
+        var chainKindName = form.getChainKindName();
+        var chainTypeName = form.getChainTypeName();
+        var letterName = form.getLetterName();
         var parameterCount = (chainKindName != null? 1: 0) + (chainTypeName != null && letterName != null? 1: 0);
 
         if(parameterCount == 0 || parameterCount == 3) {
-            ChainKind chainKind = chainKindName == null ? null : chainControl.getChainKindByName(chainKindName);
+            var chainKind = chainKindName == null ? null : chainControl.getChainKindByName(chainKindName);
 
             if(chainKindName == null || chainKind != null) {
-                ChainType chainType = chainTypeName == null ? null : chainControl.getChainTypeByName(chainKind, chainTypeName);
+                var chainType = chainTypeName == null ? null : chainControl.getChainTypeByName(chainKind, chainTypeName);
 
                 if(chainTypeName == null || chainType != null) {
                     var letterControl = Session.getModelController(LetterControl.class);
-                    Letter letter = letterName == null ? null : letterControl.getLetterByName(chainType, letterName);
+                    var letter = letterName == null ? null : letterControl.getLetterByName(chainType, letterName);
 
                     if(letterName == null || letter != null) {
                         if(letter == null) {

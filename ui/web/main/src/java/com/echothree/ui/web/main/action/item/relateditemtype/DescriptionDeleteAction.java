@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.relateditemtype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteRelatedItemTypeDescriptionForm;
-import com.echothree.control.user.item.common.form.GetRelatedItemTypeDescriptionForm;
 import com.echothree.control.user.item.common.result.GetRelatedItemTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetRelatedItemTypeDescriptionForm commandForm = ItemUtil.getHome().getGetRelatedItemTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getGetRelatedItemTypeDescriptionForm();
         
         commandForm.setRelatedItemTypeName(actionForm.getRelatedItemTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getRelatedItemTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getRelatedItemTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRelatedItemTypeDescriptionResult result = (GetRelatedItemTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRelatedItemTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.RELATED_ITEM_TYPE_DESCRIPTION, result.getRelatedItemTypeDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteRelatedItemTypeDescriptionForm commandForm = ItemUtil.getHome().getDeleteRelatedItemTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getDeleteRelatedItemTypeDescriptionForm();
 
         commandForm.setRelatedItemTypeName(actionForm.getRelatedItemTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

@@ -17,7 +17,6 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetUserLoginForm;
-import com.echothree.control.user.user.common.result.GetUserLoginResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -32,11 +31,8 @@ import static com.echothree.model.control.security.common.SecurityRoleGroups.Emp
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Vendor;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
@@ -77,8 +73,8 @@ public class GetUserLoginCommand
     @Override
     protected UserLogin getEntity() {
         UserLogin userLogin = null;
-        String username = form.getUsername();
-        String partyName = form.getPartyName();
+        var username = form.getUsername();
+        var partyName = form.getPartyName();
         var parameterCount = (username == null ? 0 : 1) + (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -103,7 +99,7 @@ public class GetUserLoginCommand
             }
             
             if(!hasExecutionErrors()) {
-                PartyType partyType = party.getLastDetail().getPartyType();
+                var partyType = party.getLastDetail().getPartyType();
                 String securityRoleGroupName = null;
                 var partyTypeName = partyType.getPartyTypeName();
 
@@ -119,7 +115,7 @@ public class GetUserLoginCommand
                         && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
                         if(partyType.getAllowUserLogins()) {
-                            UserControl userControl = getUserControl();
+                            var userControl = getUserControl();
                             
                             userLogin = userControl.getUserLogin(party);
 
@@ -143,8 +139,8 @@ public class GetUserLoginCommand
     
     @Override
     protected BaseResult getResult(UserLogin userLogin) {
-        UserControl userControl = getUserControl();
-        GetUserLoginResult result = UserResultFactory.getGetUserLoginResult();
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetUserLoginResult();
 
         if(userLogin != null) {
             result.setUserLogin(userControl.getUserLoginTransfer(getUserVisit(), userLogin));

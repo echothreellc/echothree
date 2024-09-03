@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.common.transfer.SourceTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.SourceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -35,14 +33,14 @@ public class SourceTransferCache
     }
     
     public SourceTransfer getSourceTransfer(Source source) {
-        SourceTransfer sourceTransfer = get(source);
+        var sourceTransfer = get(source);
         
         if(sourceTransfer == null) {
-            SourceDetail sourceDetail = source.getLastDetail();
-            String sourceName = sourceDetail.getSourceName();
-            OfferUseTransfer offerUseTransfer = offerUseControl.getOfferUseTransfer(userVisit, sourceDetail.getOfferUse());
-            Boolean isDefault = sourceDetail.getIsDefault();
-            Integer sortOrder = sourceDetail.getSortOrder();
+            var sourceDetail = source.getLastDetail();
+            var sourceName = sourceDetail.getSourceName();
+            var offerUseTransfer = offerUseControl.getOfferUseTransfer(userVisit, sourceDetail.getOfferUse());
+            var isDefault = sourceDetail.getIsDefault();
+            var sortOrder = sourceDetail.getSortOrder();
             
             sourceTransfer = new SourceTransfer(sourceName, offerUseTransfer, isDefault, sortOrder);
             put(source, sourceTransfer);

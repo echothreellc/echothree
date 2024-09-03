@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.itemaliastype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteItemAliasTypeForm;
-import com.echothree.control.user.item.common.form.GetItemAliasTypeForm;
 import com.echothree.control.user.item.common.result.GetItemAliasTypeResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemAliasTypeForm commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
         
         commandForm.setItemAliasTypeName(actionForm.getItemAliasTypeName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemAliasTypeResult result = (GetItemAliasTypeResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemAliasTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM_ALIAS_TYPE, result.getItemAliasType());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemAliasTypeForm commandForm = ItemUtil.getHome().getDeleteItemAliasTypeForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemAliasTypeForm();
 
         commandForm.setItemAliasTypeName(actionForm.getItemAliasTypeName());
 

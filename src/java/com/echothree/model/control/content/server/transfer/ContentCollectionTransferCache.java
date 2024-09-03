@@ -19,14 +19,11 @@ package com.echothree.model.control.content.server.transfer;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentCollectionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ContentCollectionTransferCache
         extends BaseContentTransferCache<ContentCollection, ContentCollectionTransfer> {
@@ -55,13 +52,13 @@ public class ContentCollectionTransferCache
     }
 
     public ContentCollectionTransfer getContentCollectionTransfer(ContentCollection contentCollection) {
-        ContentCollectionTransfer contentCollectionTransfer = get(contentCollection);
+        var contentCollectionTransfer = get(contentCollection);
         
         if(contentCollectionTransfer == null) {
-            ContentCollectionDetail contentCollectionDetail = contentCollection.getLastDetail();
-            String contentCollectionName = contentCollectionDetail.getContentCollectionName();
-            OfferUseTransfer defaultOfferUse = offerUseControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
-            String description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage());
+            var contentCollectionDetail = contentCollection.getLastDetail();
+            var contentCollectionName = contentCollectionDetail.getContentCollectionName();
+            var defaultOfferUse = offerUseControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
+            var description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage());
             
             contentCollectionTransfer = new ContentCollectionTransfer(contentCollectionName, defaultOfferUse, description);
             put(contentCollection, contentCollectionTransfer);

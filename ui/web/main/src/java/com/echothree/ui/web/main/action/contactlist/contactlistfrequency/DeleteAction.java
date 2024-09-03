@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistfrequency;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.DeleteContactListFrequencyForm;
-import com.echothree.control.user.contactlist.common.form.GetContactListFrequencyForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListFrequencyResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListFrequencyForm commandForm = ContactListUtil.getHome().getGetContactListFrequencyForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListFrequencyForm();
         
         commandForm.setContactListFrequencyName(actionForm.getContactListFrequencyName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListFrequency(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContactListFrequencyResult result = (GetContactListFrequencyResult)executionResult.getResult();
+
+        var commandResult = ContactListUtil.getHome().getContactListFrequency(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContactListFrequencyResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CONTACT_LIST_FREQUENCY, result.getContactListFrequency());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContactListFrequencyForm commandForm = ContactListUtil.getHome().getDeleteContactListFrequencyForm();
+        var commandForm = ContactListUtil.getHome().getDeleteContactListFrequencyForm();
 
         commandForm.setContactListFrequencyName(actionForm.getContactListFrequencyName());
 

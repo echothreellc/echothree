@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.CreateBlogEntryForm;
-import com.echothree.control.user.forum.common.form.GetForumForm;
 import com.echothree.control.user.forum.common.result.GetForumResult;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
@@ -28,7 +26,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -60,13 +57,13 @@ public class AddAction
     
     private ForumTransfer getForumTransfer(UserVisitPK userVisitPK, String forumName)
             throws NamingException {
-        GetForumForm commandForm = ForumUtil.getHome().getGetForumForm();
+        var commandForm = ForumUtil.getHome().getGetForumForm();
         
         commandForm.setForumName(forumName);
-        
-        CommandResult commandResult = ForumUtil.getHome().getForum(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumResult result = (GetForumResult)executionResult.getResult();
+
+        var commandResult = ForumUtil.getHome().getForum(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumResult)executionResult.getResult();
         
         return result.getForum();
     }
@@ -74,22 +71,22 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        String forwardKey;
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(forumName == null)
             forumName = actionForm.getForumName();
-        
-        UserVisitPK userVisitPK = getUserVisitPK(request);
-        ForumTransfer forum = getForumTransfer(userVisitPK, forumName);
+
+        var userVisitPK = getUserVisitPK(request);
+        var forum = getForumTransfer(userVisitPK, forumName);
         
         if(wasPost(request)) {
-            String forumTypeName = forum.getForumType().getForumTypeName();
+            var forumTypeName = forum.getForumType().getForumTypeName();
             CommandResult commandResult = null;
             
             if(forumTypeName.equals(ForumConstants.ForumType_BLOG)) {
-                CreateBlogEntryForm commandForm = ForumUtil.getHome().getCreateBlogEntryForm();
+                var commandForm = ForumUtil.getHome().getCreateBlogEntryForm();
                 
                 commandForm.setForumName(forumName);
                 commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
@@ -119,8 +116,8 @@ public class AddAction
             actionForm.setSortOrder("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_NAME, forumName);
             request.setAttribute(AttributeConstants.FORUM, forum);

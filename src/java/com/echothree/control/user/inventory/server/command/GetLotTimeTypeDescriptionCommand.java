@@ -17,16 +17,12 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetLotTimeTypeDescriptionForm;
-import com.echothree.control.user.inventory.common.result.GetLotTimeTypeDescriptionResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.LotTimeType;
-import com.echothree.model.data.inventory.server.entity.LotTimeTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -69,17 +65,17 @@ public class GetLotTimeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        GetLotTimeTypeDescriptionResult result = InventoryResultFactory.getGetLotTimeTypeDescriptionResult();
-        String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
+        var result = InventoryResultFactory.getGetLotTimeTypeDescriptionResult();
+        var lotTimeTypeName = form.getLotTimeTypeName();
+        var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, language);
+                var lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, language);
 
                 if(lotTimeTypeDescription != null) {
                     result.setLotTimeTypeDescription(lotTimeControl.getLotTimeTypeDescriptionTransfer(getUserVisit(), lotTimeTypeDescription));

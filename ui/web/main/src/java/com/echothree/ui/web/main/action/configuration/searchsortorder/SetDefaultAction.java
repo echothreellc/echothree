@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.searchsortorder;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.SetDefaultSearchSortOrderForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,15 +49,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String searchKindName = request.getParameter(ParameterConstants.SEARCH_KIND_NAME);
-        SetDefaultSearchSortOrderForm commandForm = SearchUtil.getHome().getSetDefaultSearchSortOrderForm();
+        var searchKindName = request.getParameter(ParameterConstants.SEARCH_KIND_NAME);
+        var commandForm = SearchUtil.getHome().getSetDefaultSearchSortOrderForm();
 
         commandForm.setSearchKindName(searchKindName);
         commandForm.setSearchSortOrderName(request.getParameter(ParameterConstants.SEARCH_SORT_ORDER_NAME));
 
         SearchUtil.getHome().setDefaultSearchSortOrder(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.SEARCH_KIND_NAME, searchKindName);

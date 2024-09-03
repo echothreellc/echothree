@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDescription;
-import com.echothree.model.data.sequence.server.value.SequenceTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditSequenceTypeDescriptionCommand
     public SequenceTypeDescription getEntity(EditSequenceTypeDescriptionResult result) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceTypeDescription sequenceTypeDescription = null;
-        String sequenceTypeName = spec.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var sequenceTypeName = spec.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(sequenceType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditSequenceTypeDescriptionCommand
     @Override
     public void doUpdate(SequenceTypeDescription sequenceTypeDescription) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        SequenceTypeDescriptionValue sequenceTypeDescriptionValue = sequenceControl.getSequenceTypeDescriptionValue(sequenceTypeDescription);
+        var sequenceTypeDescriptionValue = sequenceControl.getSequenceTypeDescriptionValue(sequenceTypeDescription);
         
         sequenceTypeDescriptionValue.setDescription(edit.getDescription());
         

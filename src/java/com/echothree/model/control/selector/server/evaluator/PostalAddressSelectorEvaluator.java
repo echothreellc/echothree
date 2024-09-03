@@ -22,10 +22,7 @@ import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
-import com.echothree.model.data.selector.server.entity.SelectorNodeGeoCode;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
@@ -41,27 +38,27 @@ public class PostalAddressSelectorEvaluator
     }
     
     private Boolean evaluateGeoCode(final SelectorNodeDetail snd) {
-        SelectorNodeGeoCode sngc = cachedSelector.getSelectorNodeGeoCodeFromSelectorNodeDetail(snd);
-        GeoCode gc = sngc.getGeoCode();
-        String geoCodeTypeName = gc.getLastDetail().getGeoCodeType().getLastDetail().getGeoCodeTypeName();
+        var sngc = cachedSelector.getSelectorNodeGeoCodeFromSelectorNodeDetail(snd);
+        var gc = sngc.getGeoCode();
+        var geoCodeTypeName = gc.getLastDetail().getGeoCodeType().getLastDetail().getGeoCodeTypeName();
         boolean result;
         
         if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_COUNTRY)) {
             result = contactPostalAddress.getCountryGeoCode().equals(gc);
         } else if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_STATE)) {
-            GeoCode cpagc = contactPostalAddress.getStateGeoCode();
+            var cpagc = contactPostalAddress.getStateGeoCode();
             
             result = cpagc == null? false: cpagc.equals(gc);
         } else if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_COUNTY)) {
-            GeoCode cpagc = contactPostalAddress.getCountyGeoCode();
+            var cpagc = contactPostalAddress.getCountyGeoCode();
             
             result = cpagc == null? false: cpagc.equals(gc);
         } else if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_CITY)) {
-            GeoCode cpagc = contactPostalAddress.getCityGeoCode();
+            var cpagc = contactPostalAddress.getCityGeoCode();
             
             result = cpagc == null? false: cpagc.equals(gc);
         } else if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_ZIP_CODE)) {
-            GeoCode cpagc = contactPostalAddress.getPostalCodeGeoCode();
+            var cpagc = contactPostalAddress.getPostalCodeGeoCode();
             
             result = cpagc == null? false: cpagc.equals(gc);
         } else {
@@ -80,8 +77,8 @@ public class PostalAddressSelectorEvaluator
         Boolean result;
         
         if(snd != null) {
-            SelectorNodeType snt = snd.getSelectorNodeType();
-            String sntn = snt.getSelectorNodeTypeName();
+            var snt = snd.getSelectorNodeType();
+            var sntn = snt.getSelectorNodeTypeName();
             
             if(sntn.equals(SelectorNodeTypes.GEO_CODE.name())) {
                 result = evaluateGeoCode(snd);
@@ -101,8 +98,8 @@ public class PostalAddressSelectorEvaluator
 
     public Boolean isPostalAddressSelected(CachedSelector cachedSelector, EntityInstance entityInstance, ContactMechanism contactMechanism) {
         contactPostalAddress = contactControl.getContactPostalAddress(contactMechanism);
-        
-        Boolean result = super.isContactMechanismSelected(cachedSelector, entityInstance, contactMechanism);
+
+        var result = super.isContactMechanismSelected(cachedSelector, entityInstance, contactMechanism);
         
         contactPostalAddress = null;
         

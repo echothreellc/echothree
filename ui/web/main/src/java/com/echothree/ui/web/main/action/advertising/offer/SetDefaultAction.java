@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.SetDefaultOfferForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultOfferForm commandForm = OfferUtil.getHome().getSetDefaultOfferForm();
-            String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+            var commandForm = OfferUtil.getHome().getSetDefaultOfferForm();
+            var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
             
             commandForm.setOfferName(offerName);
             

@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -98,7 +95,7 @@ public class EmployeeTag
     public int doStartTag()
             throws JspException {
         try {
-            GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+            var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
             
             commandForm.setEmployeeName(employeeName);
             commandForm.setPartyName(partyName);
@@ -106,8 +103,8 @@ public class EmployeeTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(), commandForm);
+
+            var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -115,8 +112,8 @@ public class EmployeeTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetEmployeeResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getEmployee(), scope);
             }
