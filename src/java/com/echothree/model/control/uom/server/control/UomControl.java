@@ -396,8 +396,8 @@ public class UomControl
                     uomtDescription = uomtName;
                 }
                 
-                var label = new StringBuilder(uomkDescription).append(", ").append(uomtDescription).toString();
-                var value = new StringBuilder(uomkName).append(':').append(uomtName).toString();
+                var label = uomkDescription + ", " + uomtDescription;
+                var value = uomkName + ':' + uomtName;
                 
                 labels.add(label == null? value: label);
                 values.add(value);

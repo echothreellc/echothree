@@ -122,11 +122,11 @@ public class BaseKeysHelper {
         var baseEncoding = BaseEncoding.base64();
         var keyProperties = new Properties();
         var hostName = InetAddress.getLocalHost().getHostName();
-        var propertiesPath = new StringBuilder(System.getProperty("user.home"))
-                .append(File.separator).append("keys/media").append(whichMedia)
-                .append(File.separator).append(hostName)
-                .append(File.separator).append(baseEncryptionKeyName);
-        var fileName = propertiesPath.append(File.separator).append("key.xml").toString();
+        var fileName = System.getProperty("user.home") +
+                File.separator + "keys/media" + whichMedia +
+                File.separator + hostName +
+                File.separator + baseEncryptionKeyName +
+                File.separator + "key.xml";
 
         keyProperties.loadFromXML(new FileInputStream(fileName));
 

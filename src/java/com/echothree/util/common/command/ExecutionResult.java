@@ -65,8 +65,8 @@ public class ExecutionResult
     
     @Override
     public String toString() {
-        return new StringBuilder().append("{ executionWarnings = ").append(executionWarnings).append(", executionErrors = ").
-                append(executionErrors).append(", result = ").append(result).append(" }").toString();
+        return "{ executionWarnings = " + executionWarnings + ", executionErrors = " +
+                executionErrors + ", result = " + result + " }";
     }
     
 }

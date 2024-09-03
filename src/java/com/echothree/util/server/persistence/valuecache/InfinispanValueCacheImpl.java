@@ -36,10 +36,10 @@ public class InfinispanValueCacheImpl
     }
 
     private String getFqn(BasePK basePK) {
-        return new StringBuilder(FQN_PREFIX)
-                .append('/').append(basePK.getComponentVendorName())
-                .append('/').append(basePK.getEntityTypeName())
-                .append('/').append(basePK.getEntityId()).toString();
+        return FQN_PREFIX +
+                '/' + basePK.getComponentVendorName() +
+                '/' + basePK.getEntityTypeName() +
+                '/' + basePK.getEntityId();
     }
 
     @Override

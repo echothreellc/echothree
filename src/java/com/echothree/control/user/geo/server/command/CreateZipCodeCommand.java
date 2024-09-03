@@ -86,7 +86,7 @@ public class CreateZipCodeCommand
         GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         String countryIso2Letter = countryGeoCodeAlias.getAlias();
         
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_ZIP_CODES").toString();
+        String geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
         GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope != null) {

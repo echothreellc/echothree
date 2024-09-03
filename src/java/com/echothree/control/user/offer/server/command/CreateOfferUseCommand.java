@@ -109,7 +109,7 @@ public class CreateOfferUseCommand
                     
                     if(salesOrderSequenceName == null || salesOrderSequence != null) {
                         var sourceControl = Session.getModelController(SourceControl.class);
-                        String sourceName = new StringBuilder(offerName).append(useName).toString();
+                        String sourceName = offerName + useName;
                         Source source = sourceControl.getSourceByName(sourceName);
                         
                         if(source == null) {

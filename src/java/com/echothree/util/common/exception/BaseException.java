@@ -51,7 +51,7 @@ public abstract class BaseException
                 result = MessageUtils.getInstance().getExceptionMessage(CommandMessageTypes.Error.name(), message);
             }
         } catch(ClassNotFoundException cnfe) {
-            result = new StringBuilder("??").append(message.getKey()).append("??").toString();
+            result = "??" + message.getKey() + "??";
         }
 
         return result;

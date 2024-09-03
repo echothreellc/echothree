@@ -72,13 +72,13 @@ public class FiscalPeriodLogic {
             if (yearPeriodTypeDescription != null) {
                 PeriodTypeDescription monthPeriodTypeDescription = periodControl.getPeriodTypeDescription(monthPeriodType, language);
                 if (monthPeriodTypeDescription != null) {
-                    StringBuilder description = new StringBuilder(periodKindDescription.getDescription())
-                            .append(' ').append(yearPeriodTypeDescription.getDescription())
-                            .append(' ').append(year)
-                            .append(' ').append(monthPeriodTypeDescription.getDescription())
-                            .append(' ').append(month);
+                    String description = periodKindDescription.getDescription() +
+                            ' ' + yearPeriodTypeDescription.getDescription() +
+                            ' ' + year +
+                            ' ' + monthPeriodTypeDescription.getDescription() +
+                            ' ' + month;
 
-                    periodControl.createPeriodDescription(monthPeriod, language, description.toString(), createdBy);
+                    periodControl.createPeriodDescription(monthPeriod, language, description, createdBy);
                 }
             }
         });
@@ -88,7 +88,7 @@ public class FiscalPeriodLogic {
             final PartyPK createdBy) {
         var periodControl = Session.getModelController(PeriodControl.class);
         int year = yearStart.getYear();
-        String periodName = new StringBuilder().append(year).append('_').append('Q').append(quarter).toString();
+        String periodName = String.valueOf(year) + '_' + 'Q' + quarter;
         PeriodType quarterPeriodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_QUARTER);
         int monthOfQuarterStart = 1 + (quarter - 1) * 3;
         ZonedDateTime quarterStart = yearStart.withMonth(monthOfQuarterStart);
@@ -104,13 +104,13 @@ public class FiscalPeriodLogic {
             if (yearPeriodTypeDescription != null) {
                 PeriodTypeDescription quarterPeriodTypeDescription = periodControl.getPeriodTypeDescription(quarterPeriodType, language);
                 if (quarterPeriodTypeDescription != null) {
-                    StringBuilder description = new StringBuilder(periodKindDescription.getDescription())
-                            .append(' ').append(yearPeriodTypeDescription.getDescription())
-                            .append(' ').append(year)
-                            .append(' ').append(quarterPeriodTypeDescription.getDescription())
-                            .append(' ').append(quarter);
+                    String description = periodKindDescription.getDescription() +
+                            ' ' + yearPeriodTypeDescription.getDescription() +
+                            ' ' + year +
+                            ' ' + quarterPeriodTypeDescription.getDescription() +
+                            ' ' + quarter;
 
-                    periodControl.createPeriodDescription(quarterPeriod, language, description.toString(), createdBy);
+                    periodControl.createPeriodDescription(quarterPeriod, language, description, createdBy);
                 }
             }
         });
@@ -122,7 +122,7 @@ public class FiscalPeriodLogic {
     
     private Period createYear(final ExecutionErrorAccumulator eea, final int year, final ZoneId zone, final PartyPK createdBy) {
         var periodControl = Session.getModelController(PeriodControl.class);
-        String periodName = new StringBuilder().append(year).toString();
+        String periodName = String.valueOf(year);
         PeriodKind periodKind = periodControl.getPeriodKindByName(PeriodConstants.PeriodKind_FISCAL);
         Period yearPeriod = periodControl.getPeriodByName(periodKind, periodName);
 
@@ -140,11 +140,11 @@ public class FiscalPeriodLogic {
                 PeriodTypeDescription periodTypeDescription = periodControl.getPeriodTypeDescription(periodType, language);
                 
                 if(periodTypeDescription != null) {
-                    StringBuilder description = new StringBuilder(periodKindDescription.getDescription())
-                            .append(' ').append(periodTypeDescription.getDescription())
-                            .append(' ').append(year);
+                    String description = periodKindDescription.getDescription() +
+                            ' ' + periodTypeDescription.getDescription() +
+                            ' ' + year;
                     
-                    periodControl.createPeriodDescription(yearPeriod, language, description.toString(), createdBy);
+                    periodControl.createPeriodDescription(yearPeriod, language, description, createdBy);
                 }
             }
             

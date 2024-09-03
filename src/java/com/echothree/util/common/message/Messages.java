@@ -384,7 +384,7 @@ public class Messages
          */
         @Override
         public String toString() {
-            return new StringBuilder().append("{ hashMap = ").append(hashMap).append(", iOrder = ").append(iOrder).append(" }").toString();
+            return "{ hashMap = " + hashMap + ", iOrder = " + iOrder + " }";
         }
         
     }
@@ -394,7 +394,7 @@ public class Messages
      */
     @Override
     public String toString() {
-        return new StringBuilder().append("{ messages = ").append(messages).append(", iCount = ").append(iCount).append(" }").toString();
+        return "{ messages = " + messages + ", iCount = " + iCount + " }";
     }
     
 }

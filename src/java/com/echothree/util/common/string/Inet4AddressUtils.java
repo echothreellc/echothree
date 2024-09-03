@@ -37,10 +37,10 @@ public class Inet4AddressUtils {
         int inet4Address1 = (int)((rawInet4Address & 0xFF00) >> 8);
         int inet4Address2 = (int)((rawInet4Address & 0xFF0000) >> 16);
         int inet4Address3 = (int)(rawInet4Address >> 24);
-        StringBuilder sb = new StringBuilder().append(inet4Address3).append('.').append(inet4Address2).append('.').
-                append(inet4Address1).append('.').append(inet4Address0);
+        String sb = String.valueOf(inet4Address3) + '.' + inet4Address2 + '.' +
+                inet4Address1 + '.' + inet4Address0;
 
-        return sb.toString();
+        return sb;
     }
 
 }

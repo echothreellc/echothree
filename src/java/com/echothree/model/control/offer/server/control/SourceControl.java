@@ -284,7 +284,7 @@ public class SourceControl
         String offerDescription = offerControl.getBestOfferDescription(offerUseDetail.getOffer(), language);
         String useDescription = useControl.getBestUseDescription(offerUseDetail.getUse(), language);
 
-        return new StringBuilder(sourceName).append(", ").append(offerDescription).append(", ").append(useDescription).toString();
+        return sourceName + ", " + offerDescription + ", " + useDescription;
     }
 
     public SourceTransfer getSourceTransfer(UserVisit userVisit, Source source) {

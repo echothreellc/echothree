@@ -98,7 +98,7 @@ public class PrinterGroupJobLogic
                 
                 printerControl.removePrinterGroupJob(printerGroupJob);
             } else {
-                String workflowDestinationName = new StringBuilder(workflowStepName).append("_TO_DELETED").toString();
+                String workflowDestinationName = workflowStepName + "_TO_DELETED";
 
                 workflowControl.transitionEntityInWorkflowUsingNames(null, workflowEntityStatus, workflowDestinationName, keepPrintedJobsTime, deletedBy);
             }

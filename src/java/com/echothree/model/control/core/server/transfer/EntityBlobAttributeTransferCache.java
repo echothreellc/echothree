@@ -72,7 +72,7 @@ public class EntityBlobAttributeTransferCache
                 int eTagSize = entityBlobAttribute.getBlobAttribute().length();
 
                 // EntityId-Size-ModifiedTime
-                eTag = new StringBuilder(Long.toHexString(eTagEntityId)).append('-').append(Integer.toHexString(eTagSize)).append('-').append(Long.toHexString(maxTime)).toString();
+                eTag = Long.toHexString(eTagEntityId) + '-' + Integer.toHexString(eTagSize) + '-' + Long.toHexString(maxTime);
             }
             
             entityBlobAttributeTransfer = new EntityBlobAttributeTransfer(entityAttribute, entityInstanceTransfer, language, blobAttribute, mimeType, eTag);

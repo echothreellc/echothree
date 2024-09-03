@@ -152,7 +152,7 @@ public class BaseActionForm
             String fieldName = fieldDefinition.getFieldName();
             
             try {
-                Method method = clazz.getMethod(new StringBuilder("get").append(fieldName).toString());
+                Method method = clazz.getMethod("get" + fieldName);
                 Object fieldValue = method.invoke(this);
 
                 returnTypes.put(fieldName, method.getReturnType());
@@ -190,7 +190,7 @@ public class BaseActionForm
             // values, as they tend to be from functions like getFomName() which don't exist on
             // the ActionForm.
             if(returnType != null) {
-                String methodName = new StringBuilder("set").append(key).toString();
+                String methodName = "set" + key;
                 Object value = entry.getValue();
 
                 if(returnType.equals(Boolean.class) && value instanceof String) {
