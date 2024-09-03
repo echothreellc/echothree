@@ -190,7 +190,7 @@ public abstract class DatabaseUtilities {
     }
     
     /** Returns a string that contains the column prefix, a separator character and the
-     * column name in all lower case, unless its a foreign key and thinks get unnecessarily
+     * column name in all lower case, unless it's a foreign key and thinks get unnecessarily
      * complex
      */
     String getColumnName(Column theColumn)
@@ -501,7 +501,7 @@ public abstract class DatabaseUtilities {
         return null;
     }
     
-    /** Returns the SQL needed for an unique index
+    /** Returns the SQL needed for a unique index
      */
     String getUniqueIndex(Index theIndex) throws Exception {
         return null;
@@ -553,7 +553,7 @@ public abstract class DatabaseUtilities {
         }
     }
     
-    String getDropTable(CurrentTable ct) throws Exception {
+    String getDropTable(CurrentTable ct) {
         return "DROP TABLE " + ct.getTableName();
     }
     
@@ -758,8 +758,7 @@ public abstract class DatabaseUtilities {
         stmt.close();
     }
     
-    String getAlterTableDropColumn(CurrentColumn cc)
-            throws Exception {
+    String getAlterTableDropColumn(CurrentColumn cc) {
         return "ALTER TABLE " + cc.getTable().getTableName() + " DROP COLUMN " + cc.getColumnName();
     }
     
@@ -769,13 +768,11 @@ public abstract class DatabaseUtilities {
         }
     }
     
-    String getAlterTableAddIndex(Index theIndex, String sqlForIndex)
-            throws Exception {
+    String getAlterTableAddIndex(Index theIndex, String sqlForIndex) {
         return "ALTER TABLE " + theIndex.getTable().getNamePlural().toLowerCase(Locale.getDefault())  + " ADD " + sqlForIndex;
     }
     
-    String getAlterTableDropIndex(CurrentIndex ci)
-            throws Exception {
+    String getAlterTableDropIndex(CurrentIndex ci) {
         String result;
         
         if(ci.isPrimaryKey()) {
@@ -789,20 +786,13 @@ public abstract class DatabaseUtilities {
     
     void createMissingIndex(Index theIndex)
             throws Exception {
-        String sqlForIndex = null;
-        
-        switch(theIndex.getType()) {
-            case Index.indexPrimaryKey:
-                sqlForIndex = getPrimaryKeyIndex(theIndex);
-                break;
-            case Index.indexUnique:
-                sqlForIndex = getUniqueIndex(theIndex);
-                break;
-            case Index.indexMultiple:
-                sqlForIndex = getMultipleIndex(theIndex);
-                break;
-        }
-        
+        String sqlForIndex = switch(theIndex.getType()) {
+            case Index.indexPrimaryKey -> getPrimaryKeyIndex(theIndex);
+            case Index.indexUnique -> getUniqueIndex(theIndex);
+            case Index.indexMultiple -> getMultipleIndex(theIndex);
+            default -> null;
+        };
+
         String alterSQL = getAlterTableAddIndex(theIndex, sqlForIndex);
         
         if(verbose) {
@@ -821,13 +811,11 @@ public abstract class DatabaseUtilities {
         }
     }
     
-    String getAlterTableAddForeignKey(Column theFK, String sqlForFK)
-            throws Exception {
+    String getAlterTableAddForeignKey(Column theFK, String sqlForFK) {
         return "ALTER TABLE " + theFK.getTable().getNamePluralLowerCase() + " ADD " + sqlForFK;
     }
     
-    String getAlterTableDropForeignKey(CurrentForeignKey cfk)
-            throws Exception {
+    String getAlterTableDropForeignKey(CurrentForeignKey cfk) {
         return "ALTER TABLE " + cfk.getTable().getTableName() + " DROP FOREIGN KEY " + cfk.getForeignKeyName();
     }
     

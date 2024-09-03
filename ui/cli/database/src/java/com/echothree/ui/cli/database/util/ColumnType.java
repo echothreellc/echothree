@@ -30,40 +30,19 @@ public class ColumnType {
     static final int columnForeignKey = 11;
     
     static public String columnTypeToString(int type) {
-        String result = null;
-        switch(type) {
-            case columnEID:
-                result = "EID";
-                break;
-            case columnInteger:
-                result = "Integer";
-                break;
-            case columnLong:
-                result = "Long";
-                break;
-            case columnString:
-                result = "String";
-                break;
-            case columnBoolean:
-                result = "Boolean";
-                break;
-            case columnDate:
-                result = "Date";
-                break;
-            case columnTime:
-                result = "Time";
-                break;
-            case columnCLOB:
-                result = "CLOB";
-                break;
-            case columnBLOB:
-                result = "BLOB";
-                break;
-            case columnForeignKey:
-                result = "ForeignKey";
-                break;
-        }
-        return result;
+        return switch(type) {
+            case columnEID -> "EID";
+            case columnInteger -> "Integer";
+            case columnLong -> "Long";
+            case columnString -> "String";
+            case columnBoolean -> "Boolean";
+            case columnDate -> "Date";
+            case columnTime -> "Time";
+            case columnCLOB -> "CLOB";
+            case columnBLOB -> "BLOB";
+            case columnForeignKey -> "ForeignKey";
+            default -> null;
+        };
     }
     
     String type;
@@ -76,7 +55,6 @@ public class ColumnType {
     String destinationColumn;
     int onParentDelete;
     
-    /** Creates new ColumnType */
     /** Creates a new instance of ColumnType */
     public ColumnType(String type, String realType, String maxLength, String description, String destinationTable, String destinationColumn,
             String onParentDelete)
@@ -111,7 +89,7 @@ public class ColumnType {
             this.realType = columnLong;
         else if(realType.equals("String")) {
             this.realType = columnString;
-            if(hasMaxLength == false)
+            if(!hasMaxLength)
                 throw new Exception("String column type requires length");
         } else if(realType.equals("Boolean"))
             this.realType = columnBoolean;
