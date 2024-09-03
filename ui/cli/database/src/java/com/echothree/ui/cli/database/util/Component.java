@@ -23,9 +23,7 @@ import java.util.Locale;
 public class Component {
     
     String attrName;
-    String attrPackage;
-    String attrLocalPackage;
-    
+
     List<Table> tables;
     
     String pkPackage = null;
@@ -55,7 +53,7 @@ public class Component {
     
     public String getPKPackage() {
         if(pkPackage == null) {
-            pkPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".common.pk").toString();
+            pkPackage = "com.echothree.model.data." + attrName.toLowerCase(Locale.getDefault()) + ".common.pk";
         }
         
         return pkPackage;
@@ -63,7 +61,7 @@ public class Component {
     
     public String getValuePackage() {
         if(valuePackage == null) {
-            valuePackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".server.value").toString();
+            valuePackage = "com.echothree.model.data." + attrName.toLowerCase(Locale.getDefault()) + ".server.value";
         }
         
         return valuePackage;
@@ -71,7 +69,7 @@ public class Component {
     
     public String getEntityPackage() {
         if(entityPackage == null) {
-            entityPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".server.entity").toString();
+            entityPackage = "com.echothree.model.data." + attrName.toLowerCase(Locale.getDefault()) + ".server.entity";
         }
         
         return entityPackage;
@@ -79,7 +77,7 @@ public class Component {
     
     public String getFactoryPackage() {
         if(factoryPackage == null) {
-            factoryPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".server.factory").toString();
+            factoryPackage = "com.echothree.model.data." + attrName.toLowerCase(Locale.getDefault()) + ".server.factory";
         }
         
         return factoryPackage;
@@ -87,7 +85,7 @@ public class Component {
     
     public String getCommonPackage() {
         if(commonPackage == null) {
-            commonPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".common").toString();
+            commonPackage = "com.echothree.model.data." + attrName.toLowerCase(Locale.getDefault()) + ".common";
         }
         
         return commonPackage;

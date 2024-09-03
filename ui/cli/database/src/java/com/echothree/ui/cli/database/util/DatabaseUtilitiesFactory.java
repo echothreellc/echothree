@@ -22,13 +22,13 @@ import org.apache.commons.logging.LogFactory;
 
 public final class DatabaseUtilitiesFactory {
 
-    private static String BASE = "com.echothree.ui.cli.database.db.";
-    private static String DEFAULT = "default";
+    private static final String BASE = "com.echothree.ui.cli.database.db.";
+    private static final String DEFAULT = "default";
     
-    private static String DB_ECHO_THREE = "echothree";
-    private static String DB_REPORTING = "reporting";
+    private static final String DB_ECHO_THREE = "echothree";
+    private static final String DB_REPORTING = "reporting";
     
-    private static Log log = LogFactory.getLog(DatabaseUtilitiesFactory.class);
+    private static final Log log = LogFactory.getLog(DatabaseUtilitiesFactory.class);
     
     private DatabaseUtilitiesFactory() {
         super();
@@ -52,7 +52,7 @@ public final class DatabaseUtilitiesFactory {
         if(string != null) {
             result = string.trim();
 
-            if(result.length() == 0) {
+            if(result.isEmpty()) {
                 result = null;
             }
         }
@@ -76,7 +76,7 @@ public final class DatabaseUtilitiesFactory {
     
     public DatabaseUtilities getDatabaseUtilities(Configuration configuration, boolean verbose, Database database)
             throws Exception {
-        DatabaseUtilities result = null;
+        DatabaseUtilities result;
         String connectionClass = getProperty(configuration, DB_ECHO_THREE, "class", true);
         String connectionUrl  = getProperty(configuration, DB_ECHO_THREE, "url", true);
         String connectionUser = getProperty(configuration, DB_ECHO_THREE, "user", true);
@@ -94,8 +94,7 @@ public final class DatabaseUtilitiesFactory {
         return result;
     }
 
-    public DatabaseViewUtilities getDatabaseViewUtilities(Configuration configuration, boolean verbose, Database database)
-            throws Exception {
+    public DatabaseViewUtilities getDatabaseViewUtilities(Configuration configuration, boolean verbose, Database database) {
         String connectionClass = getProperty(configuration, DB_REPORTING, "class", true);
         String connectionUrl  = getProperty(configuration, DB_REPORTING, "url", true);
         String connectionUser = getProperty(configuration, DB_REPORTING, "user", true);
@@ -104,8 +103,7 @@ public final class DatabaseUtilitiesFactory {
         return new DatabaseViewUtilities(verbose, database, connectionClass, connectionUrl, connectionUser, connectionPassword);
     }
 
-    public DatabaseUtilitiesForJava getJavaUtilities(boolean verbose, Database theDatabase)
-            throws Exception {
+    public DatabaseUtilitiesForJava getJavaUtilities(boolean verbose, Database theDatabase) {
         return new DatabaseUtilitiesForJava(verbose, theDatabase);
     }
 

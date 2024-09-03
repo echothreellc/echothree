@@ -54,7 +54,7 @@ public class DatabaseUtilitiesForJava {
         } while (nextDot != -1);
         
         File theDirectory = new File(directory);
-        if(theDirectory.exists() == false) {
+        if(!theDirectory.exists()) {
             theDirectory.mkdirs();
         }
         
@@ -177,7 +177,7 @@ public class DatabaseUtilitiesForJava {
     public void writeValueFKImports(PrintWriter pw, Component theComponent, Table theTable)
     throws Exception {
         HashSet<String> foreignImports = new HashSet<>();
-        foreignImports.add(theTable.getPKImport()); // make sure we don't import ourself
+        foreignImports.add(theTable.getPKImport()); // make sure we don't import ourselves
         
         for(Column theForeignKey: theTable.getForeignKeys()) {
             String fkTableName = theForeignKey.getDestinationTable();
@@ -663,7 +663,7 @@ public class DatabaseUtilitiesForJava {
     public void writeEntityFKPKImports(PrintWriter pw, Table theTable)
     throws Exception {
         HashSet<String> foreignImports = new HashSet<>();
-        foreignImports.add(theTable.getPKImport()); // make sure we don't import ourself
+        foreignImports.add(theTable.getPKImport()); // make sure we don't import ourselves
         
         for(Column theForeignKey: theTable.getForeignKeys()) {
             String fkTableName = theForeignKey.getDestinationTable();
@@ -684,7 +684,7 @@ public class DatabaseUtilitiesForJava {
     throws Exception {
         HashSet<String> foreignImports = new HashSet<>();
         
-        foreignImports.add(theTable.getEntityImport()); // make sure we don't import ourself
+        foreignImports.add(theTable.getEntityImport()); // make sure we don't import ourselves
         
         for(Column theForeignKey: theTable.getForeignKeys()) {
             String fkTableName = theForeignKey.getDestinationTable();
@@ -704,7 +704,7 @@ public class DatabaseUtilitiesForJava {
     throws Exception {
         HashSet<String> foreignImports = new HashSet<>();
         
-        foreignImports.add(theTable.getFactoryImport()); // make sure we don't import ourself
+        foreignImports.add(theTable.getFactoryImport()); // make sure we don't import ourselves
         
         for(Column theForeignKey: theTable.getForeignKeys()) {
             String fkTableName = theForeignKey.getDestinationTable();
@@ -953,7 +953,7 @@ public class DatabaseUtilitiesForJava {
     throws Exception {
         HashSet<String> foreignImports = new HashSet<>();
         
-        foreignImports.add(theTable.getPKImport()); // make sure we don't import ourself
+        foreignImports.add(theTable.getPKImport()); // make sure we don't import ourselves
         
         for(Column theForeignKey: theTable.getForeignKeys()) {
             String fkTableName = theForeignKey.getDestinationTable();
@@ -973,7 +973,7 @@ public class DatabaseUtilitiesForJava {
     throws Exception {
         HashSet<String> foreignImports = new HashSet<>();
         
-        foreignImports.add(theTable.getEntityImport()); // make sure we don't import ourself
+        foreignImports.add(theTable.getEntityImport()); // make sure we don't import ourselves
         
         for(Column theForeignKey: theTable.getForeignKeys()) {
             String fkTableName = theForeignKey.getDestinationTable();
@@ -1056,27 +1056,27 @@ public class DatabaseUtilitiesForJava {
             if(type == ColumnType.columnEID) {
                 pkColumn = column.getDbColumnName();
             } else {
-                if(allColumnsExceptPk.length() > 0)
+                if(!allColumnsExceptPk.isEmpty())
                     allColumnsExceptPk += ", ";
                 allColumnsExceptPk += column.getDbColumnName();
                 
-                if(updateColumns.length() > 0)
+                if(!updateColumns.isEmpty())
                     updateColumns += ", ";
                 updateColumns += column.getDbColumnName() + " = ?";
             }
             
-            if(questionMarks.length() > 0)
+            if(!questionMarks.isEmpty())
                 questionMarks += ", ";
             questionMarks += "?";
         }
-        allColumns = allColumnsExceptPk.length() > 0? pkColumn + ", " + allColumnsExceptPk: pkColumn;
+        allColumns = !allColumnsExceptPk.isEmpty() ? pkColumn + ", " + allColumnsExceptPk: pkColumn;
         
         pw.println("    //final private static Log log = LogFactory.getLog(" + factoryClass + ".class);");
         pw.println("    ");
         pw.println("    final private static String SQL_SELECT_READ_ONLY = \"SELECT " + allColumns + " FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
         pw.println("    final private static String SQL_SELECT_READ_WRITE = \"SELECT " + allColumns + " FROM " + dbTableName + " WHERE " + pkColumn + " = ? FOR UPDATE\";");
         pw.println("    final private static String SQL_INSERT = \"INSERT INTO " + dbTableName + " (" + allColumns + ") VALUES (" + questionMarks + ")\";");
-        if(updateColumns.length() > 0)
+        if(!updateColumns.isEmpty())
             pw.println("    final private static String SQL_UPDATE = \"UPDATE " + dbTableName + " SET " + updateColumns + " WHERE " + pkColumn + " = ?\";");
         pw.println("    final private static String SQL_DELETE = \"DELETE FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
         pw.println("    final private static String SQL_VALID = \"SELECT COUNT(*) FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
@@ -1097,8 +1097,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     // http://www.oreillynet.com/onjava/blog/2007/01/singletons_and_lazy_loading.html
-    public void writeFactoryConstructors(PrintWriter pw, Table theTable)
-    throws Exception {
+    public void writeFactoryConstructors(PrintWriter pw, Table theTable) {
         String factoryClass = theTable.getFactoryClass();
         
         pw.println("    /** Creates a new instance of " + factoryClass + " */");
@@ -1116,8 +1115,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    ");
     }
     
-    public void writeFactoryCoreFunctions(PrintWriter pw, Table theTable)
-    throws Exception {
+    public void writeFactoryCoreFunctions(PrintWriter pw, Table theTable) {
         pw.println("    @Override");
         pw.println("    public String getPKColumn() {");
         pw.println("        return PK_COLUMN;");
@@ -1145,8 +1143,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    ");
     }
     
-    public void writeFactoryPrepareFunction(PrintWriter pw, Table theTable)
-    throws Exception {
+    public void writeFactoryPrepareFunction(PrintWriter pw, Table theTable) {
         String factoryClass = theTable.getFactoryClass();
         
         pw.println("    public PreparedStatement prepareStatement(String query) {");
@@ -1212,8 +1209,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    ");
     }
     
-    public void writeFactoryRemoveFunctions(PrintWriter pw, Table theTable)
-    throws Exception {
+    public void writeFactoryRemoveFunctions(PrintWriter pw, Table theTable) {
         String pkClass = theTable.getPKClass();
         
         pw.println("    @Override");
@@ -2237,8 +2233,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    ");
     }
     
-    public void writeFactoryValidFunction(PrintWriter pw, Table theTable)
-    throws Exception {
+    public void writeFactoryValidFunction(PrintWriter pw, Table theTable) {
         pw.println("    @Override");
         pw.println("    public boolean validPK(Session session, " + theTable.getPKClass() + " pk)");
         pw.println("            throws PersistenceDatabaseException {");
@@ -2322,15 +2317,13 @@ public class DatabaseUtilitiesForJava {
         }
     }
     
-    public void writeConstantsInstanceVariables(PrintWriter pw, Table theTable)
-    throws Exception {
+    public void writeConstantsInstanceVariables(PrintWriter pw, Table theTable) {
         pw.println("    String COMPONENT_VENDOR_NAME = \"ECHO_THREE\";");
         pw.println("    String ENTITY_TYPE_NAME = \"" + theTable.getNameSingular() + "\";");
         pw.println("    ");
     }
     
-    public void writeConstantsClass(PrintWriter pw, Table theTable)
-    throws Exception {
+    public void writeConstantsClass(PrintWriter pw, Table theTable) {
         pw.println("public interface " + theTable.getConstantsClass() + " {");
         pw.println("    ");
         

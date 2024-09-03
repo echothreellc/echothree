@@ -26,11 +26,9 @@ import java.util.Locale;
 public class DatabaseUtilitiesForMySQL
         extends DatabaseUtilities {
     
-    /** Creates new DatabaseUtilitiesForMySQL */
     /** Creates a new instance of DatabaseUtilitiesForMySQL */
     public DatabaseUtilitiesForMySQL(boolean verbose, Database theDatabase, String connectionClass, String connectionUrl,
-            String connectionUser, String connectionPassword, String connectionCharacterSet, String connectionCollation)
-            throws Exception {
+            String connectionUser, String connectionPassword, String connectionCharacterSet, String connectionCollation) {
         super(verbose, theDatabase, connectionClass, connectionUrl, connectionUser, connectionPassword, connectionCharacterSet,
                 connectionCollation);
     }
@@ -279,27 +277,23 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getPrimaryKeyIndex(Index theIndex) throws Exception {
-        String result = "PRIMARY KEY (" + getIndexColumnList(theIndex) + ")";
-        return result;
+        return "PRIMARY KEY (" + getIndexColumnList(theIndex) + ")";
     }
     
     @Override
     String getUniqueIndex(Index theIndex) throws Exception {
-        String result = "UNIQUE KEY " + getIndexName(theIndex) + " ("
+        return "UNIQUE KEY " + getIndexName(theIndex) + " ("
                 + getIndexColumnList(theIndex) + ")";
-        return result;
     }
     
     @Override
     String getMultipleIndex(Index theIndex) throws Exception {
-        String result = "KEY " + getIndexName(theIndex) + " ("
+        return "KEY " + getIndexName(theIndex) + " ("
                 + getIndexColumnList(theIndex) + ")";
-        return result;
     }
     
     @Override
-    String getForeignKeyDefinition(Column theFK, Table sourceTable, String sourceColumnName, Table destinationTable, String destinationColumnName)
-            throws Exception {
+    String getForeignKeyDefinition(Column theFK, Table sourceTable, String sourceColumnName, Table destinationTable, String destinationColumnName) {
         String result = "CONSTRAINT " + sourceColumnName + "_fk FOREIGN KEY (" + sourceColumnName + ") REFERENCES "
                 + destinationTable.getNamePlural().toLowerCase(Locale.getDefault()) + "("
                 + destinationColumnName + ") ON DELETE ";

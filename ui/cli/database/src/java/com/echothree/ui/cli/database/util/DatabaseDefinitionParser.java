@@ -18,7 +18,6 @@ package com.echothree.ui.cli.database.util;
 
 import com.echothree.ui.cli.database.CustomEntityResolver;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -138,12 +137,10 @@ public class DatabaseDefinitionParser
     }
     
     void startElementInDatabase(String localName, Attributes attrs) throws SAXException {
-        if(localName.equals("files")) {
-            currentState = cStateInFiles;
-        } else if(localName.equals("components")) {
-            currentState = cStateInComponents;
-        } else if(localName.equals("columnTypes")) {
-            currentState = cStateInColumnTypes;
+        switch(localName) {
+            case "files" -> currentState = cStateInFiles;
+            case "components" -> currentState = cStateInComponents;
+            case "columnTypes" -> currentState = cStateInColumnTypes;
         }
     }
     
@@ -283,7 +280,7 @@ public class DatabaseDefinitionParser
                 if(attrNameSingular == null)
                     whatsMissing += "nameSingular ";
                 if(attrColumnPrefix == null)
-                    whatsMissing += "namePcolumnPrefixlural ";
+                    whatsMissing += "columnPrefix ";
                 throw new SAXException("missing " + whatsMissing + "attribute(s) on table");
             }
         }

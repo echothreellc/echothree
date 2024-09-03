@@ -59,8 +59,7 @@ public class Database {
         return name;
     }
     
-    public Component addComponent(String attrName)
-    throws Exception {
+    public Component addComponent(String attrName) {
         Component result = myComponentsByName.get(attrName);
         
         if(result == null) {

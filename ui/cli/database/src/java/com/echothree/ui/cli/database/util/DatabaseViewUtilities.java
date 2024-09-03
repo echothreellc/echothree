@@ -73,10 +73,9 @@ public class DatabaseViewUtilities {
 
         while(rs.next()) {
             String tableName = rs.getString("TABLE_NAME");
-            StringBuilder dropView = new StringBuilder("DROP VIEW ")
-                    .append(tableName);
 
-            String query = dropView.toString();
+            String query = "DROP VIEW " +
+                    tableName;
             log.info(query);
             stmt.execute(query);
         }
@@ -138,27 +137,27 @@ public class DatabaseViewUtilities {
                     }
                 }
             }
+
+            String createView = "CREATE VIEW " +
+                    table.getDbTableName() +
+                    "(" +
+                    primaryKey.getDbColumnName() +
+                    ", " +
+                    viewColumns +
+                    ") AS SELECT " +
+                    primaryKey.getDbColumnName() +
+                    ", " +
+                    detailColumns +
+                    " FROM echothree." +
+                    table.getDbTableName() +
+                    ", echothree." +
+                    detailTable.getDbTableName() +
+                    " WHERE " +
+                    activeDetail.getDbColumnName() +
+                    " = " +
+                    detailPrimaryKey.getDbColumnName();
             
-            StringBuilder createView = new StringBuilder("CREATE VIEW ")
-                    .append(table.getDbTableName())
-                    .append("(")
-                    .append(primaryKey.getDbColumnName())
-                    .append(", ")
-                    .append(viewColumns)
-                    .append(") AS SELECT ")
-                    .append(primaryKey.getDbColumnName())
-                    .append(", ")
-                    .append(detailColumns)
-                    .append(" FROM echothree.")
-                    .append(table.getDbTableName())
-                    .append(", echothree.")
-                    .append(detailTable.getDbTableName())
-                    .append(" WHERE ")
-                    .append(activeDetail.getDbColumnName())
-                    .append(" = ")
-                    .append(detailPrimaryKey.getDbColumnName());
-            
-            String query = createView.toString();
+            String query = createView;
             log.info(query);
             statement.execute(query);
         }

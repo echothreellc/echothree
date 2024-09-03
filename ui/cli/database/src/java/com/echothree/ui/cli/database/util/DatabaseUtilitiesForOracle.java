@@ -18,7 +18,6 @@ package com.echothree.ui.cli.database.util;
 
 public class DatabaseUtilitiesForOracle {
     
-    /** Creates new DatabaseUtilitiesForOracle */
     /** Creates a new instance of DatabaseUtilitiesForOracle */
     public DatabaseUtilitiesForOracle() {
     }
